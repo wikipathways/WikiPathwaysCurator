@@ -84,4 +84,12 @@ public class Metabolites {
 		Assert.assertEquals("Unexpected PubChem identifiers for non-metabolites:\n" + table, 0, table.getRowCount());
 	}
 
+	@Test
+	public void metabolitesWithIDButNoIdentifier() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("metabolite/metabolitesWithIdentifierButNoDatabase.rq");
+		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT, sparql);
+		Assert.assertNotNull(table);
+		Assert.assertEquals("Unexpected metabolites with identifier but no database source:\n" + table, 0, table.getRowCount());
+	}
+
 }
