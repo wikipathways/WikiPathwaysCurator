@@ -3,11 +3,12 @@ prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
 prefix dcterms: <http://purl.org/dc/terms/>
 prefix xsd:     <http://www.w3.org/2001/XMLSchema#>
 
-select distinct ?pathway ?mb ?label ?identifier 
+select distinct ?homepage ?label ?identifier 
 where {
   ?mb dc:source "Kegg compound"^^xsd:string ;
     rdfs:label ?label ;
     dcterms:identifier ?identifier ;
     dcterms:isPartOf ?pathway .
+  ?pathway foaf:page ?homepage .
   FILTER NOT EXISTS { ?mb a wp:Metabolite }
 } order by ?pathway
