@@ -41,7 +41,7 @@ public class Metabolites {
 		String sparql = ResourceHelper.resourceAsString("metabolite/casNumberNotMarkedAsMetabolite.rq");
 		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT, sparql);
 		Assert.assertNotNull(table);
-		Assert.assertEquals("Expected no results, but found: " + table, 0, table.getRowCount());
+		Assert.assertEquals("Unexpected CAS identifiers for non-metabolites:\n" + table, 0, table.getRowCount());
 	}
 
 	@Test
@@ -49,7 +49,7 @@ public class Metabolites {
 		String sparql = ResourceHelper.resourceAsString("metabolite/chemspiderNumberNotMarkedAsMetabolite.rq");
 		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT, sparql);
 		Assert.assertNotNull(table);
-		Assert.assertEquals("Expected no results, but found: " + table, 0, table.getRowCount());
+		Assert.assertEquals("Unexpected ChemSpider identifiers for non-metabolites:\n" + table, 0, table.getRowCount());
 	}
 
 	@Test
@@ -57,7 +57,7 @@ public class Metabolites {
 		String sparql = ResourceHelper.resourceAsString("metabolite/chebiNumberNotMarkedAsMetabolite.rq");
 		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT, sparql);
 		Assert.assertNotNull(table);
-		Assert.assertEquals("Expected no results, but found: " + table, 0, table.getRowCount());
+		Assert.assertEquals("Unexpected ChEBI identifiers for non-metabolites:\n" + table, 0, table.getRowCount());
 	}
 
 	@Test
@@ -65,7 +65,7 @@ public class Metabolites {
 		String sparql = ResourceHelper.resourceAsString("metabolite/hmdbNumberNotMarkedAsMetabolite.rq");
 		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT, sparql);
 		Assert.assertNotNull(table);
-		Assert.assertEquals("Expected no results, but found: " + table, 0, table.getRowCount());
+		Assert.assertEquals("Unexpected HMDB identifiers for non-metabolites:\n" + table, 0, table.getRowCount());
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class Metabolites {
 		String sparql = ResourceHelper.resourceAsString("metabolite/keggNumberNotMarkedAsMetabolite.rq");
 		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT, sparql);
 		Assert.assertNotNull(table);
-		Assert.assertEquals("Expected no results, but found: " + table, 0, table.getRowCount());
+		Assert.assertEquals("Unexpected KEGG identifiers for non-metabolites:\n" + table, 0, table.getRowCount());
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class Metabolites {
 		String sparql = ResourceHelper.resourceAsString("metabolite/pubchemNumberNotMarkedAsMetabolite.rq");
 		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT, sparql);
 		Assert.assertNotNull(table);
-		Assert.assertEquals("Expected no results, but found: " + table, 0, table.getRowCount());
+		Assert.assertEquals("Unexpected PubChem identifiers for non-metabolites:\n" + table, 0, table.getRowCount());
 	}
 
 }
