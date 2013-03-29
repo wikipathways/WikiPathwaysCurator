@@ -26,8 +26,7 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator.copy;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 public class Metabolites {
