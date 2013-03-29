@@ -38,120 +38,48 @@ public class Metabolites {
 
 	@Test
 	public void casNumbersNotMarkedAsMetabolite() throws Exception {
-		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT,
-			"prefix wp:      <http://vocabularies.wikipathways.org/wp#>" +
-			"prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>" +
-			"prefix dcterms: <http://purl.org/dc/terms/>" +
-			"prefix xsd:     <http://www.w3.org/2001/XMLSchema#>" +
-			"select distinct ?pathway ?mb ?label ?identifier" +
-			"where {" +
-			"  ?mb dc:source \"CAS\"^^xsd:string ;" +
-			"    rdfs:label ?label ;" +
-			"    dcterms:identifier ?identifier ;" +
-			"    dcterms:isPartOf ?pathway ." +
-			"  FILTER NOT EXISTS { ?mb a wp:Metabolite }" +
-			"} order by ?pathway"
-		);
+		String sparql = ResourceHelper.resourceAsString("metabolite/casNumberNotMarkedAsMetabolite.rq");
+		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT, sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Expected no results, but found: " + table, 0, table.getRowCount());
 	}
 
 	@Test
 	public void chemspiderIDsNotMarkedAsMetabolite() throws Exception {
-		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT,
-			"prefix wp:      <http://vocabularies.wikipathways.org/wp#>" +
-			"prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>" +
-			"prefix dcterms: <http://purl.org/dc/terms/>" +
-			"prefix xsd:     <http://www.w3.org/2001/XMLSchema#>" +
-			"select distinct ?pathway ?mb ?label ?identifier" +
-			"where {" +
-			"  ?mb dc:source \"ChemSpider\"^^xsd:string ;" +
-			"    rdfs:label ?label ;" +
-			"    dcterms:identifier ?identifier ;" +
-			"    dcterms:isPartOf ?pathway ." +
-			"  FILTER NOT EXISTS { ?mb a wp:Metabolite }" +
-			"} order by ?pathway"
-		);
+		String sparql = ResourceHelper.resourceAsString("metabolite/chemspiderNumberNotMarkedAsMetabolite.rq");
+		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT, sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Expected no results, but found: " + table, 0, table.getRowCount());
 	}
 
 	@Test
 	public void ChEBIIDsNotMarkedAsMetabolite() throws Exception {
-		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT,
-			"prefix wp:      <http://vocabularies.wikipathways.org/wp#>" +
-			"prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>" +
-			"prefix dcterms: <http://purl.org/dc/terms/>" +
-			"prefix xsd:     <http://www.w3.org/2001/XMLSchema#>" +
-			"select distinct ?pathway ?mb ?label ?identifier" +
-			"where {" +
-			"  ?mb dc:source \"ChEBI\"^^xsd:string ;" +
-			"    rdfs:label ?label ;" +
-			"    dcterms:identifier ?identifier ;" +
-			"    dcterms:isPartOf ?pathway ." +
-			"  FILTER NOT EXISTS { ?mb a wp:Metabolite }" +
-			"} order by ?pathway"
-		);
+		String sparql = ResourceHelper.resourceAsString("metabolite/chebiNumberNotMarkedAsMetabolite.rq");
+		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT, sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Expected no results, but found: " + table, 0, table.getRowCount());
 	}
 
 	@Test
 	public void HMDBIDsNotMarkedAsMetabolite() throws Exception {
-		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT,
-			"prefix wp:      <http://vocabularies.wikipathways.org/wp#>" +
-			"prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>" +
-			"prefix dcterms: <http://purl.org/dc/terms/>" +
-			"prefix xsd:     <http://www.w3.org/2001/XMLSchema#>" +
-			"select distinct ?pathway ?mb ?label ?identifier" +
-			"where {" +
-			"  ?mb dc:source \"HMDB\"^^xsd:string ;" +
-			"    rdfs:label ?label ;" +
-			"    dcterms:identifier ?identifier ;" +
-			"    dcterms:isPartOf ?pathway ." +
-			"  FILTER NOT EXISTS { ?mb a wp:Metabolite }" +
-			"} order by ?pathway"
-		);
+		String sparql = ResourceHelper.resourceAsString("metabolite/hmdbNumberNotMarkedAsMetabolite.rq");
+		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT, sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Expected no results, but found: " + table, 0, table.getRowCount());
 	}
 
 	@Test
 	public void KEGGIDsNotMarkedAsMetabolite() throws Exception {
-		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT,
-			"prefix wp:      <http://vocabularies.wikipathways.org/wp#>" +
-			"prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>" +
-			"prefix dcterms: <http://purl.org/dc/terms/>" +
-			"prefix xsd:     <http://www.w3.org/2001/XMLSchema#>" +
-			"select distinct ?pathway ?mb ?label ?identifier" +
-			"where {" +
-			"  ?mb dc:source \"Kegg compound\"^^xsd:string ;" +
-			"    rdfs:label ?label ;" +
-			"    dcterms:identifier ?identifier ;" +
-			"    dcterms:isPartOf ?pathway ." +
-			"  FILTER NOT EXISTS { ?mb a wp:Metabolite }" +
-			"} order by ?pathway"
-		);
+		String sparql = ResourceHelper.resourceAsString("metabolite/keggNumberNotMarkedAsMetabolite.rq");
+		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT, sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Expected no results, but found: " + table, 0, table.getRowCount());
 	}
 
 	@Test
 	public void PubChemIDsNotMarkedAsMetabolite() throws Exception {
-		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT,
-			"prefix wp:      <http://vocabularies.wikipathways.org/wp#>" +
-			"prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>" +
-			"prefix dcterms: <http://purl.org/dc/terms/>" +
-			"prefix xsd:     <http://www.w3.org/2001/XMLSchema#>" +
-			"select distinct ?pathway ?mb ?label ?identifier" +
-			"where {" +
-			"  ?mb dc:source \"PubChem-compound\"^^xsd:string ;" +
-			"    rdfs:label ?label ;" +
-			"    dcterms:identifier ?identifier ;" +
-			"    dcterms:isPartOf ?pathway ." +
-			"  FILTER NOT EXISTS { ?mb a wp:Metabolite }" +
-			"} order by ?pathway"
-		);
+		String sparql = ResourceHelper.resourceAsString("metabolite/pubchemNumberNotMarkedAsMetabolite.rq");
+		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT, sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Expected no results, but found: " + table, 0, table.getRowCount());
 	}
