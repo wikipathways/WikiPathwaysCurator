@@ -24,7 +24,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package nl.unimaas.bigcat.wikipathways.curator.copy;
+package nl.unimaas.bigcat.wikipathways.curator;
+
+import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
+import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 
 import org.junit.Assert;
 import org.junit.Test;
