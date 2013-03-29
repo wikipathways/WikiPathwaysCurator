@@ -98,21 +98,9 @@ public class SPARQLHelper {
 				if (node != null) {
 					if (node.isResource()) {
 						Resource resource = (Resource)node;
-						// the resource.getLocalName() is not accurate, so I
-						// use some custom code
-						String[] uriLocalSplit = split(prefixMap, resource);
-						if (uriLocalSplit[0] == null) {
-							if (resource.getURI() != null) {
-								table.set(rowCount, colCount, resource.getURI());
-							} else {
-								// anonymous node
-								table.set(rowCount, colCount, "" + resource.hashCode());
-							}
-						} else {
-							table.set(rowCount, colCount,
-								uriLocalSplit[0] + ":" + uriLocalSplit[1]
-							);
-						}
+						table.set(rowCount, colCount,
+							resource.getURI()
+						);
 					} else if (node.isLiteral()) {
 						Literal literal = (Literal)node;
 						table.set(rowCount, colCount, "" + literal.getValue());
@@ -129,7 +117,7 @@ public class SPARQLHelper {
 			return new String[] {null, null};
 		}
 		if (prefixMap == null) {
-			return new String[] {"", uri};
+			return new String[] {uri,null};
 		}
 		Map<String,String> prefixMapMap = prefixMap.getNsPrefixMap();
 		Set<String> prefixes = prefixMapMap.keySet();
