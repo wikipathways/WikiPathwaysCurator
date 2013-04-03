@@ -1,0 +1,7 @@
+SELECT DISTINCT  ?identifier ?pathway ?label
+WHERE {
+        ?concept dc:source "null"^^xsd:string .
+        ?concept dc:identifier ?identifier .
+        ?concept dcterms:isPartOf ?pathway .
+        ?concept rdfs:label ?label
+}
