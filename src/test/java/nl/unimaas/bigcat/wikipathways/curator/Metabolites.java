@@ -92,4 +92,20 @@ public class Metabolites {
 		Assert.assertEquals("Unexpected metabolites with identifier but no database source:\n" + table, 0, table.getRowCount());
 	}
 
+	@Test
+	public void metabolitesWithAnEntrezGeneID() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("metabolite/metabolitesWithAnEntrezGeneID.rq");
+		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT, sparql);
+		Assert.assertNotNull(table);
+		Assert.assertEquals("Unexpected metabolites with an Entrez Gene identifier:\n" + table, 0, table.getRowCount());
+	}
+
+	@Test
+	public void metabolitesWithAnEnsembleID() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("metabolite/metabolitesWithAnEnsembleID.rq");
+		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT, sparql);
+		Assert.assertNotNull(table);
+		Assert.assertEquals("Unexpected metabolites with an Ensemble identifier:\n" + table, 0, table.getRowCount());
+	}
+
 }
