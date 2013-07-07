@@ -85,8 +85,16 @@ public class Metabolites {
 	}
 
 	@Test
-	public void metabolitesWithIDButNoIdentifier() throws Exception {
+	public void metabolitesWithIdentifierButNoDb() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("metabolite/metabolitesWithIdentifierButNoDatabase.rq");
+		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT, sparql);
+		Assert.assertNotNull(table);
+		Assert.assertEquals("Unexpected metabolites with identifier but no database source:\n" + table, 0, table.getRowCount());
+	}
+
+	@Test
+	public void metabolitesWithDbButNoIdentifier() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("metabolite/metabolitesWithDatabaseButNoIdentifier.rq");
 		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT, sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Unexpected metabolites with identifier but no database source:\n" + table, 0, table.getRowCount());
@@ -106,6 +114,14 @@ public class Metabolites {
 		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT, sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Unexpected metabolites with an Ensemble identifier:\n" + table, 0, table.getRowCount());
+	}
+
+	@Test
+	public void metabolitesWithAnOldPubChemDataSource() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("metabolite/metabolitesWithAnOldPubChemDataSource.rq");
+		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT, sparql);
+		Assert.assertNotNull(table);
+		Assert.assertEquals("Unexpected metabolites with an old 'PubChem' data source:\n" + table, 0, table.getRowCount());
 	}
 
 }
