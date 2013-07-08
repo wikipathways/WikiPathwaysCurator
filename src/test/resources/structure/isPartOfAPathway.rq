@@ -1,0 +1,7 @@
+prefix wp:      <http://vocabularies.wikipathways.org/wp#>
+
+select distinct ?mb where {
+  ?mb a wp:Metabolite .
+  OPTIONAL { ?mb <http://purl.org/dc/terms/isPartOf> ?pw . } 
+  FILTER (!bound(?pw))
+}
