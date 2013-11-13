@@ -34,12 +34,10 @@ import org.junit.Test;
 
 public class MetaboliteStructure {
 
-	private static String WP_SPARQL_END_POINT = "http://sparql.wikipathways.org/";
-
 	@Test
 	public void nullDataSources() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("structure/metaboliteClass.rq");
-		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT, sparql);
+		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Metabolite DataNode count failed:\n" + table, 1, table.getRowCount());
 		Assert.assertTrue("Unexpectedly low metabolite count:\n" + table.getColumn("count").get(0),
@@ -50,7 +48,7 @@ public class MetaboliteStructure {
 	@Test
 	public void isPartOfAPathway() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("structure/isPartOfAPathway.rq");
-		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT, sparql);
+		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Found metabolites that are not part of a pathway:\n" + table, 0, table.getRowCount());
 	}
