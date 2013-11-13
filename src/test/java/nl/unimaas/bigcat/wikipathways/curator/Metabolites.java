@@ -44,12 +44,19 @@ public class Metabolites {
 		Assert.assertNotNull(table);
 		Set<String> allowedProteins = new HashSet<String>();
 		allowedProteins.add("IFN-b");
+		String errors = "";
 		if (table.getRowCount() > 0) {
 			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=0; i<table.getRowCount(); i++) {
-				Assert.assertTrue(allowedProteins.contains(table.get(i, "label").trim()));
+				if (!allowedProteins.contains(table.get(i, "label").trim())) {
+					errors += table.get(i, "homepage") + table.get(i, "label") + table.get(i, "identifier");
+				}
 			}
 		}
+		Assert.assertEquals(
+			"Unexpected CAS identifiers for non-metabolites:\n" + errors,
+			0, errors.length()
+		);
 	}
 
 	@Test
