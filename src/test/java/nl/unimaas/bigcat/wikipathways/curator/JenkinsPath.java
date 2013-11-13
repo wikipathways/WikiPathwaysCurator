@@ -27,16 +27,21 @@
 package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FilenameFilter;
 
 import org.junit.Test;
+
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 public class JenkinsPath {
 
 	public final static String WS_OPS_WP2RDF_TTLS = "/var/lib/jenkins/jobs/WikiPathways RDF/workspace/OPSWPRDF/";
 
 	@Test
-	public void testLoadingRDF() {
+	public void testLoadingRDF() throws FileNotFoundException {
 		File dir = new File(WS_OPS_WP2RDF_TTLS);
 		FilenameFilter filter = new FilenameFilter() {
 		    public boolean accept(File dir, String name) {
@@ -47,6 +52,8 @@ public class JenkinsPath {
 		File[] files = dir.listFiles(filter);
 		for (File file : files) {
 			System.out.println(file);
+			Model model = ModelFactory.createDefaultModel();
+	        model.read(new FileReader(file), "", "TURTLE");
 		}
 	}
 
