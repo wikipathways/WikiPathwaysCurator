@@ -26,6 +26,9 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
 import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 
@@ -39,7 +42,14 @@ public class Metabolites {
 		String sparql = ResourceHelper.resourceAsString("metabolite/casNumberNotMarkedAsMetabolite.rq");
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
-		Assert.assertEquals("Unexpected CAS identifiers for non-metabolites:\n" + table, 0, table.getRowCount());
+		Set<String> allowedProteins = new HashSet<String>();
+		allowedProteins.add("IFN-b");
+		if (table.getRowCount() > 0) {
+			// OK, but then it must be proteins, e.g. IFN-b
+			for (int i=0; i<table.getRowCount(); i++) {
+				Assert.assertTrue(allowedProteins.contains(table.get(i, "label").trim()));
+			}
+		}
 	}
 
 	@Test
