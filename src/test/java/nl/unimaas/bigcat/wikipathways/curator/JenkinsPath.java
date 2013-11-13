@@ -33,7 +33,7 @@ import org.junit.Test;
 
 public class JenkinsPath {
 
-	public final static String WS_OPS_WP2RDF_TTLS = "/var/lib/jenkins/jobs/WikiPathways RDF/ws/OPSWPRDF/";
+	public final static String WS_OPS_WP2RDF_TTLS = "/var/lib/jenkins/jobs/WikiPathways RDF/workspace/OPSWPRDF/";
 
 	@Test
 	public void testLoadingRDF() {
