@@ -34,12 +34,10 @@ import org.junit.Test;
 
 public class General {
 
-	private static String WP_SPARQL_END_POINT = "http://sparql.wikipathways.org/";
-
 	@Test
 	public void nullDataSources() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/nullDataSource.rq");
-		StringMatrix table = SPARQLHelper.sparql(WP_SPARQL_END_POINT, sparql);
+		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Data nodes with a 'null' data source:\n" + table, 0, table.getRowCount());
 	}
