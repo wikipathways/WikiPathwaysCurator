@@ -38,12 +38,20 @@ import com.hp.hpl.jena.n3.turtle.TurtleParseException;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
-public class JenkinsPath {
+public class OPSWPRDFFiles {
 
 	public final static String WS_OPS_WP2RDF_TTLS = "/var/lib/jenkins/jobs/WikiPathways RDF/workspace/OPSWPRDF/";
 
-	@Test
-	public void testLoadingRDF() throws FileNotFoundException {
+	private static Model loadedData = null;
+	private static boolean locked = false;
+	private static String parseErrors = "";
+	
+	public static Model loadData() throws InterruptedException {
+		if (loadedData != null) return loadedData;
+
+		while (locked) Thread.sleep(1000);
+
+		locked = true;
 		File dir = new File(WS_OPS_WP2RDF_TTLS);
 		FilenameFilter filter = new FilenameFilter() {
 		    public boolean accept(File dir, String name) {
@@ -53,19 +61,30 @@ public class JenkinsPath {
 	
 		File[] files = dir.listFiles(filter);
 		StringBuffer parseFailReport = new StringBuffer();
-		parseFailReport.append('\n');
+		loadedData = ModelFactory.createDefaultModel();
 		for (File file : files) {
 			Model model = ModelFactory.createDefaultModel();
 			try {
 				model.read(new FileReader(file), "", "TURTLE");
+			} catch (FileNotFoundException exception) {
+				parseFailReport.append(file.getName())
+			    .append(": not found\n");
 			} catch (TurtleParseException exception) {
 				parseFailReport.append(file.getName())
 				    .append(": ").append(exception.getMessage())
 				    .append('\n');
 			}
+			loadedData.add(model);
 		}
-		if (parseFailReport.length() > 0)
-			Assert.fail(parseFailReport.toString());
+		locked = false;
+		parseErrors = parseFailReport.toString();
+		return loadedData;
+	}
+	
+	@Test
+	public void testLoadingRDF() throws InterruptedException {
+		loadData();
+		if (parseErrors.length() > 0) Assert.fail(parseErrors.toString());
 	}
 
 }
