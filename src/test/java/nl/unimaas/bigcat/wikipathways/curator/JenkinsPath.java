@@ -53,13 +53,15 @@ public class JenkinsPath {
 	
 		File[] files = dir.listFiles(filter);
 		StringBuffer parseFailReport = new StringBuffer();
+		parseFailReport.append('\n');
 		for (File file : files) {
 			Model model = ModelFactory.createDefaultModel();
 			try {
 				model.read(new FileReader(file), "", "TURTLE");
 			} catch (TurtleParseException exception) {
 				parseFailReport.append(file.getName())
-				    .append(": ").append(exception.getMessage());
+				    .append(": ").append(exception.getMessage())
+				    .append('\n');
 			}
 		}
 		if (parseFailReport.length() > 0)
