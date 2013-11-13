@@ -31,8 +31,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 
+import org.junit.Assert;
 import org.junit.Test;
 
+import com.hp.hpl.jena.n3.turtle.TurtleParseException;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
@@ -50,11 +52,18 @@ public class JenkinsPath {
 		};
 	
 		File[] files = dir.listFiles(filter);
+		StringBuffer parseFailReport = new StringBuffer();
 		for (File file : files) {
-			System.out.println(file);
 			Model model = ModelFactory.createDefaultModel();
-	        model.read(new FileReader(file), "", "TURTLE");
+			try {
+				model.read(new FileReader(file), "", "TURTLE");
+			} catch (TurtleParseException exception) {
+				parseFailReport.append(file.getName())
+				    .append(": ").append(exception.getMessage());
+			}
 		}
+		if (parseFailReport.length() > 0)
+			Assert.fail(parseFailReport.toString());
 	}
 
 }
