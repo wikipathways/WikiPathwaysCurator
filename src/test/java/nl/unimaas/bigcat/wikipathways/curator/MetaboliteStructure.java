@@ -39,9 +39,9 @@ public class MetaboliteStructure {
 		String sparql = ResourceHelper.resourceAsString("structure/metaboliteClass.rq");
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
-		Assert.assertEquals("Metabolite DataNode count failed:\n" + table, 1, table.getRowCount());
-		Assert.assertTrue("Unexpectedly low metabolite count:\n" + table.getColumn("count").get(0),
-			Integer.valueOf(table.getColumn("count").get(0)) > 5000
+		Assert.assertTrue(
+			"Unexpectedly low metabolite count:\n" + table.getRowCount(),
+			table.getRowCount() > 5000
 		);
 	}
 

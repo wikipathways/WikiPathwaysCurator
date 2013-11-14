@@ -1,5 +1,5 @@
 prefix wp:      <http://vocabularies.wikipathways.org/wp#>
 
-select count(?mb) as ?count where {
+select ?mb where {
   ?mb a wp:Metabolite .
 }
