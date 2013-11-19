@@ -31,7 +31,7 @@ import org.junit.Test;
 
 public class BridgeDbMappings {
 
-	@Test
+	@Test(timeout=10000)
 	public void hasSomeEntrezGeneMappings() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/hasEntrezGeneMappings.rq");
 		Assert.assertNotNull(sparql);
@@ -40,7 +40,7 @@ public class BridgeDbMappings {
 		Assert.assertNotSame("Expected some mapped Entrez Genes.", 0, table.getRowCount());
 	}
 
-	@Test
+	@Test(timeout=10000)
 	public void hasSomeHMDBMappings() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/hasHMDBMappings.rq");
 		Assert.assertNotNull(sparql);
@@ -49,7 +49,7 @@ public class BridgeDbMappings {
 		Assert.assertNotSame("Expected some mapped HMDB identifiers.", 0, table.getRowCount());
 	}
 
-	@Test
+	@Test(timeout=10000)
 	public void hasSomeChemSpiderMappings() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/hasChemSpiderMappings.rq");
 		Assert.assertNotNull(sparql);
@@ -58,7 +58,7 @@ public class BridgeDbMappings {
 		Assert.assertNotSame("Expected some mapped ChemSpider identifiers.", 0, table.getRowCount());
 	}
 
-	@Test
+	@Test(timeout=10000)
 	public void hasSomeEnsemblMappings() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/hasEnsemblMappings.rq");
 		Assert.assertNotNull(sparql);
@@ -67,7 +67,7 @@ public class BridgeDbMappings {
 		Assert.assertNotSame("Expected some mapped Ensembl identifiers.", 0, table.getRowCount());
 	}
 
-	@Test
+	@Test(timeout=10000)
 	public void hasSomeUniprotMappings() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/hasUniprotMappings.rq");
 		Assert.assertNotNull(sparql);

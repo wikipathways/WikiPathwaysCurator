@@ -6,4 +6,4 @@ prefix xsd:     <http://www.w3.org/2001/XMLSchema#>
 SELECT DISTINCT  ?bdbChemspiderId
 WHERE {
   ?concept <http://vocabularies.wikipathways.org/wp#bdbChemspider> ?bdbChemspiderId . 
-}
+} LIMIT 10
