@@ -31,7 +31,7 @@ import org.junit.Test;
 
 public class HMDBMetabolites {
 
-	@Test
+	@Test(timeout=20000)
 	public void outdatedIdentifiers() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("metabolite/hmdb/outdatedHMDBidentifiers.rq");
 		Assert.assertNotNull(sparql);
