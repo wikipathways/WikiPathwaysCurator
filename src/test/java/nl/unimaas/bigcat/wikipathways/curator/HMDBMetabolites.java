@@ -27,9 +27,15 @@
 package nl.unimaas.bigcat.wikipathways.curator;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class HMDBMetabolites {
+
+	@BeforeClass
+	public static void loadData() throws InterruptedException {
+		OPSWPRDFFiles.loadData();
+	}
 
 	@Test(timeout=20000)
 	public void outdatedIdentifiers() throws Exception {
