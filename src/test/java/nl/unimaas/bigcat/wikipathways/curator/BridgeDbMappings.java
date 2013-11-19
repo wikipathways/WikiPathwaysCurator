@@ -37,7 +37,7 @@ public class BridgeDbMappings {
 		Assert.assertNotNull(sparql);
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
-		Assert.assertNotSame("Expected some mapped Entrez Genes.\n" + table, 0, table.getRowCount());
+		Assert.assertNotSame("Expected some mapped Entrez Genes.", 0, table.getRowCount());
 	}
 
 	@Test
@@ -46,7 +46,7 @@ public class BridgeDbMappings {
 		Assert.assertNotNull(sparql);
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
-		Assert.assertNotSame("Expected some mapped HMDB identifiers.\n" + table, 0, table.getRowCount());
+		Assert.assertNotSame("Expected some mapped HMDB identifiers.", 0, table.getRowCount());
 	}
 
 	@Test
@@ -55,7 +55,7 @@ public class BridgeDbMappings {
 		Assert.assertNotNull(sparql);
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
-		Assert.assertNotSame("Expected some mapped ChemSpider identifiers.\n" + table, 0, table.getRowCount());
+		Assert.assertNotSame("Expected some mapped ChemSpider identifiers.", 0, table.getRowCount());
 	}
 
 	@Test
@@ -64,7 +64,7 @@ public class BridgeDbMappings {
 		Assert.assertNotNull(sparql);
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
-		Assert.assertNotSame("Expected some mapped ChemSpider identifiers.\n" + table, 0, table.getRowCount());
+		Assert.assertNotSame("Expected some mapped Ensembl identifiers.", 0, table.getRowCount());
 	}
 
 	@Test
@@ -73,6 +73,6 @@ public class BridgeDbMappings {
 		Assert.assertNotNull(sparql);
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
-		Assert.assertNotSame("Expected some mapped ChemSpider identifiers.\n" + table, 0, table.getRowCount());
+		Assert.assertNotSame("Expected some mapped Uniprot identifiers.", 0, table.getRowCount());
 	}
 }
