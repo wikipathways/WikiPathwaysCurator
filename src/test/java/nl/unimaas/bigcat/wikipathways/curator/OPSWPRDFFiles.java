@@ -35,11 +35,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.hp.hpl.jena.n3.turtle.TurtleParseException;
-import com.hp.hpl.jena.query.Dataset;
-import com.hp.hpl.jena.query.ReadWrite;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.tdb.TDBFactory;
 
 public class OPSWPRDFFiles {
 
@@ -67,12 +64,11 @@ public class OPSWPRDFFiles {
 		String directory = "target/UnitTest" ;
 		File tbdFolder = new File(directory);
 		tbdFolder.mkdir();
-		Dataset dataset = TDBFactory.createDataset(directory) ;
-		dataset.begin(ReadWrite.WRITE);
-		loadedData = dataset.getDefaultModel() ;
+		loadedData = ModelFactory.createDefaultModel();
 		for (File file : files) {
 			try {
-				loadedData.read(new FileReader(file), "", "TURTLE");
+				Model fileModel = loadedData.read(new FileReader(file), "", "TURTLE");
+				loadedData.add(fileModel);
 			} catch (FileNotFoundException exception) {
 				parseFailReport.append(file.getName())
 			    .append(": not found\n");
@@ -82,7 +78,6 @@ public class OPSWPRDFFiles {
 				    .append('\n');
 			}
 		}
-		dataset.end() ;
 		locked = false;
 		parseErrors = parseFailReport.toString();
 		return loadedData;
