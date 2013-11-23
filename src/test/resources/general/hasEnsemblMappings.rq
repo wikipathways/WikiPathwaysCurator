@@ -6,5 +6,5 @@ prefix wp:      <http://vocabularies.wikipathways.org/wp#>
 
 SELECT DISTINCT  ?bdbEnsemblId
 WHERE {
-  ?concept wpbdbEnsembl ?bdbEnsemblId .
+  ?concept wp:bdbEnsembl ?bdbEnsemblId .
 } LIMIT 10
