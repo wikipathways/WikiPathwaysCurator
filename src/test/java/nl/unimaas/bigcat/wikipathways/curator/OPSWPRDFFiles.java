@@ -47,10 +47,9 @@ public class OPSWPRDFFiles {
 	private static String parseErrors = "";
 	
 	public static Model loadData() throws InterruptedException {
-                if (!locked && loadedData != null) return loadedData;
+		if (loadedData != null) return loadedData;
 
 		while (locked) Thread.sleep(1000);
-                if (loadedData != null) return loadedData;
 
 		locked = true;
 		File dir = new File(WS_OPS_WP2RDF_TTLS);
