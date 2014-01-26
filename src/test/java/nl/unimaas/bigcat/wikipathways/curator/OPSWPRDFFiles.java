@@ -67,8 +67,7 @@ public class OPSWPRDFFiles {
 		loadedData = ModelFactory.createDefaultModel();
 		for (File file : files) {
 			try {
-				Model fileModel = loadedData.read(new FileReader(file), "", "TURTLE");
-				loadedData.add(fileModel);
+				loadedData.read(new FileReader(file), "", "TURTLE");
 			} catch (FileNotFoundException exception) {
 				parseFailReport.append(file.getName())
 			    .append(": not found\n");
