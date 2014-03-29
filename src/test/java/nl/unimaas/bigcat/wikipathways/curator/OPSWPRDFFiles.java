@@ -51,7 +51,10 @@ public class OPSWPRDFFiles {
 
 		while (locked) Thread.sleep(1000);
 
+		if (loadedData != null) return loadedData;
+
 		locked = true;
+
 		File dir = new File(WS_OPS_WP2RDF_TTLS);
 		FilenameFilter filter = new FilenameFilter() {
 		    public boolean accept(File dir, String name) {
