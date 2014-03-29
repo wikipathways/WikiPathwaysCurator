@@ -30,10 +30,16 @@ import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
 import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class MetaboliteStructure {
 
+	@BeforeClass
+	public static void loadData() throws InterruptedException {
+		OPSWPRDFFiles.loadData();
+	}
+	
 	@Test
 	public void nullDataSources() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("structure/metaboliteClass.rq");

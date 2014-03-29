@@ -27,10 +27,16 @@
 package nl.unimaas.bigcat.wikipathways.curator;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class BridgeDbMappings {
 
+	@BeforeClass
+	public static void loadData() throws InterruptedException {
+		OPSWPRDFFiles.loadData();
+	}
+	
 	@Test(timeout=10000)
 	public void hasSomeEntrezGeneMappings() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/hasEntrezGeneMappings.rq");

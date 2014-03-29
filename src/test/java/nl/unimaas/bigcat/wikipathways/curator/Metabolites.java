@@ -33,10 +33,16 @@ import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
 import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class Metabolites {
 
+	@BeforeClass
+	public static void loadData() throws InterruptedException {
+		OPSWPRDFFiles.loadData();
+	}
+	
 	@Test
 	public void casNumbersNotMarkedAsMetabolite() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("metabolite/casNumberNotMarkedAsMetabolite.rq");
