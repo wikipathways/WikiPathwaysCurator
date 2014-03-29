@@ -40,7 +40,7 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 public class OPSWPRDFFiles {
 
-	public final static String WS_OPS_WP2RDF_TTLS = "/var/lib/jenkins/jobs/WikiPathways RDF/workspace/OPSWPRDF/";
+	public final static String WS_OPS_WP2RDF_TTLS = "/home/egonw/var/Projects/GitHub/WikiPathwaysCurator/data/OPSWPRDF/";
 
 	private static Model loadedData = null;
 	private static boolean locked = false;
