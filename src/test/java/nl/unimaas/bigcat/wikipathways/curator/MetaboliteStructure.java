@@ -33,11 +33,14 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.hp.hpl.jena.rdf.model.Model;
+
 public class MetaboliteStructure {
 
 	@BeforeClass
 	public static void loadData() throws InterruptedException {
-		OPSWPRDFFiles.loadData();
+		Model data = OPSWPRDFFiles.loadData();
+		Assert.assertTrue(data.size() > 5000);
 	}
 	
 	@Test
