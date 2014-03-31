@@ -153,13 +153,4 @@ public class Metabolites {
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Unexpected metabolites with an Ensemble identifier:\n" + table, 0, table.getRowCount());
 	}
-
-	@Test
-	public void metabolitesWithAnOldPubChemDataSource() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/metabolitesWithAnOldPubChemDataSource.rq");
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
-		Assert.assertEquals("Unexpected metabolites with an old 'PubChem' data source:\n" + table, 0, table.getRowCount());
-	}
-
 }
