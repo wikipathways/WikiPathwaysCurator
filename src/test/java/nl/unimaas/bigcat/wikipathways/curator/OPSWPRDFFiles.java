@@ -55,7 +55,14 @@ public class OPSWPRDFFiles {
 
 		locked = true;
 
-		File dir = new File(WS_OPS_WP2RDF_TTLS);
+		String folder = WS_OPS_WP2RDF_TTLS;
+		if (System.getProperty("OPSWPRDF") != null) {
+			folder = System.getProperty("OPSWPRDF");
+			folder = folder.replace(".", "/");
+		}
+		System.out.println("OPSWPRDF folder: " + folder);
+		
+		File dir = new File(folder);
 		FilenameFilter filter = new FilenameFilter() {
 		    public boolean accept(File dir, String name) {
 		        return name.toLowerCase().endsWith(".ttl");
