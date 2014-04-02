@@ -93,4 +93,13 @@ public class OudatedDataSources {
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Don't use 'InChIKey' data sources yet, but found:\n" + table, 0, table.getRowCount());
 	}
+
+	@Test(timeout=10000)
+	public void outdatedKeggCompoundDataSource() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("outdated/keggcompound.rq");
+		Assert.assertNotNull(sparql);
+		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assert.assertNotNull(table);
+		Assert.assertEquals("Outdated 'Kegg Compound' data sources:\n" + table, 0, table.getRowCount());
+	}
 }
