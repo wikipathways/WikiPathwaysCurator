@@ -51,4 +51,12 @@ public class General {
 		Assert.assertEquals("Data nodes with a 'null' data source:\n" + table, 0, table.getRowCount());
 	}
 
+	@Test
+	public void noIdentifierURIs() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("general/noIdentifierURIs.rq");
+		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assert.assertNotNull(table);
+		Assert.assertEquals("Data nodes with a 'noIdentifier' URI:\n" + table, 0, table.getRowCount());
+	}
+
 }
