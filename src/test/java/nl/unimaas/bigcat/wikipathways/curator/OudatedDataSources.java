@@ -100,6 +100,7 @@ public class OudatedDataSources {
 		Assert.assertNotNull(sparql);
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
-		Assert.assertEquals("Outdated 'Kegg Compound' data sources:\n" + table, 0, table.getRowCount());
+		// the metabolite test pathway has one outdated Kegg Compound deliberately (WP2582)
+		Assert.assertEquals("Outdated 'Kegg Compound' data sources:\n" + table, 1, table.getRowCount());
 	}
 }
