@@ -74,7 +74,7 @@ public class OudatedDataSources {
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		// the metabolite test pathway has one outdated PubChem deliberately (WP2582)
-		Assert.assertEquals("Outdated 'PubChem' data sources:\n" + table, table.getRowCount() <= 1);
+		Assert.assertTrue("Outdated 'PubChem' data sources:\n" + table, table.getRowCount() <= 1);
 	}
 
 	@Test(timeout=10000)
