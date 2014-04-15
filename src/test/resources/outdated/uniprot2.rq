@@ -3,7 +3,7 @@ prefix dc:      <http://purl.org/dc/elements/1.1/>
 prefix xsd:     <http://www.w3.org/2001/XMLSchema#>
 prefix foaf:    <http://xmlns.com/foaf/0.1/>
 
-select distinct ?pathway
+select distinct ?node ?pathway
 where {
   ?node dc:source "UniProt/TrEMBL"^^xsd:string ;
     dcterms:isPartOf ?pathway .
