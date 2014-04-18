@@ -68,6 +68,15 @@ public class OudatedDataSources {
 	}
 
 	@Test(timeout=10000)
+	public void outdatedUniprot4() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("outdated/uniprot4.rq");
+		Assert.assertNotNull(sparql);
+		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assert.assertNotNull(table);
+		Assert.assertEquals("Outdated 'UniProt' data sources:\n" + table, 0, table.getRowCount());
+	}
+
+	@Test(timeout=10000)
 	public void wrongPubChem() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/pubchem.rq");
 		Assert.assertNotNull(sparql);
