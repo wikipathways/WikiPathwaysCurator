@@ -8,5 +8,6 @@ select distinct ?id ?homepage where {
   ?pathway foaf:page ?homepage .
   ?pub a wp:PublicationReference ;
     dcterms:identifier ?id ;
+    dc:source "PubMed"^^xsd:string ;
     dcterms:isPartOf ?pathway .
 } ORDER BY ?homepage
