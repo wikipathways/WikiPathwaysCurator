@@ -26,9 +26,6 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
-import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
-import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
-
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -47,8 +44,23 @@ public class References {
 	public void nonNumericPubMedIDs() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("references/nonNumericPubMedIDs.rq");
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
-		Assert.assertEquals("Data nodes with a non numeric PubMed IDs:\n" + table, 0, table.getRowCount());
+		String errors = "";
+		if (table.getRowCount() > 0) {
+			// OK, but then it must be proteins, e.g. IFN-b
+			for (int i=0; i<table.getRowCount(); i++) {
+				String id = table.get(i, "id");
+				try {
+					Integer.parseInt(id);
+				} catch (NumberFormatException exception) {
+					errors += table.get(i, "homepage") + ", " + 
+					  table.get(i, "id") + "\n";
+				}
+			}
+		}
+		Assert.assertEquals(
+			"Found PubMed IDs that are not numbers:\n" + errors,
+			0, errors.length()
+		);
 	}
 
 }

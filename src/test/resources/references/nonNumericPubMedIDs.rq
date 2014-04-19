@@ -9,5 +9,4 @@ select distinct ?pub ?id ?homepage where {
   ?pub a wp:PublicationReference ;
     dcterms:identifier ?id ;
     dcterms:isPartOf ?pathway .
-  FILTER NOT isNumeric(?id) .
 } ORDER BY ?pub
