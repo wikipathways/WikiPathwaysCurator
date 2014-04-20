@@ -49,11 +49,13 @@ public class References {
 			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=0; i<table.getRowCount(); i++) {
 				String id = table.get(i, "id");
-				try {
-					Integer.parseInt(id);
-				} catch (NumberFormatException exception) {
-					errors += table.get(i, "homepage") + ", " + 
-					  table.get(i, "id") + "\n";
+				if (id != null && id.length() > 0) {
+					try {
+						Integer.parseInt(id);
+					} catch (NumberFormatException exception) {
+						errors += table.get(i, "homepage") + ", " +
+								table.get(i, "id") + "\n";
+					}
 				}
 			}
 		}
