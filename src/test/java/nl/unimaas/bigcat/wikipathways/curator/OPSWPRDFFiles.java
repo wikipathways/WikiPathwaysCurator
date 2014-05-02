@@ -62,11 +62,17 @@ public class OPSWPRDFFiles {
 			folder = folder.replace("_", " ");
 		}
 		System.out.println("OPSWPRDF folder: " + folder);
-		
+
+		String subsetPrefix = "wp1";
+		if (System.getProperty("SUBSETPREFIX") != null) {
+			subsetPrefix = System.getProperty("SUBSETPREFIX");
+		}
+
 		File dir = new File(folder);
+		final String finalSetsetPrefix = subsetPrefix;
 		FilenameFilter filter = new FilenameFilter() {
 		    public boolean accept(File dir, String name) {
-		        return name.toLowerCase().endsWith(".ttl");
+		        return name.toLowerCase().endsWith(".ttl") && name.toLowerCase().startsWith(finalSetsetPrefix);
 		    }
 		};
 	
