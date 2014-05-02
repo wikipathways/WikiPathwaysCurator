@@ -50,7 +50,7 @@ public class MetaboliteStructure {
 		Assert.assertNotNull(table);
 		Assert.assertTrue(
 			"Unexpectedly low metabolite count:\n" + table.getRowCount(),
-			table.getRowCount() > 5000
+			table.getRowCount() > 100
 		);
 	}
 
