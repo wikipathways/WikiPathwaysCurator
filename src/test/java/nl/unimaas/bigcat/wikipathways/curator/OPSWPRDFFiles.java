@@ -63,10 +63,11 @@ public class OPSWPRDFFiles {
 		}
 		System.out.println("OPSWPRDF folder: " + folder);
 
-		String subsetPrefix = "wp1";
+		String subsetPrefix = "wp111";
 		if (System.getProperty("SUBSETPREFIX") != null) {
 			subsetPrefix = System.getProperty("SUBSETPREFIX");
 		}
+		System.out.println("WP subset: " + subsetPrefix);
 
 		File dir = new File(folder);
 		final String finalSetsetPrefix = subsetPrefix;
