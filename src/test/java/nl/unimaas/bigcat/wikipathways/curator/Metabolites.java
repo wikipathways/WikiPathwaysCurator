@@ -123,6 +123,28 @@ public class Metabolites {
 	}
 
 	@Test
+	public void PubChemIDsNotNumbers() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("metabolite/allPubChemIdentifiers.rq");
+		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assert.assertNotNull(table);
+		String errors = "";
+		if (table.getRowCount() > 0) {
+			for (int i=0; i<table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				try {
+					Integer.parseInt(identifier);
+				} catch (NumberFormatException exception) {
+					errors += table.get(i, "homepage") + table.get(i, "label") + table.get(i, "identifier");
+				}
+			}
+		}
+		Assert.assertEquals(
+			"Unexpected PubChem identifiers for non-metabolites:\n" + errors,
+			0, errors.length()
+		);
+	}
+
+	@Test
 	public void metabolitesWithIdentifierButNoDb() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("metabolite/metabolitesWithIdentifierButNoDatabase.rq");
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
