@@ -28,6 +28,7 @@ package nl.unimaas.bigcat.wikipathways.curator;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -123,7 +124,7 @@ public class OudatedDataSources {
 		Assert.assertTrue("Outdated 'Kegg Compound' data sources:\n" + table, table.getRowCount() <= 1);
 	}
 
-	@Test(timeout=10000)
+	@Ignore
 	public void outdatedKeggOrthologDataSource() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/keggortholog.rq");
 		Assert.assertNotNull(sparql);
@@ -131,5 +132,15 @@ public class OudatedDataSources {
 		Assert.assertNotNull(table);
 		// the metabolite test pathway has one outdated Kegg Compound deliberately (WP2582)
 		Assert.assertTrue("Outdated 'Kegg ortholog' data sources:\n" + table, table.getRowCount() <= 1);
+	}
+
+	@Test(timeout=10000)
+	public void outdatedKeggEnzymeDataSource() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("outdated/keggenzyme.rq");
+		Assert.assertNotNull(sparql);
+		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assert.assertNotNull(table);
+		// the metabolite test pathway has one outdated Kegg enzyme deliberately (WP2582)
+		Assert.assertTrue("Outdated 'Kegg enzyme' data sources:\n" + table, table.getRowCount() <= 1);
 	}
 }
