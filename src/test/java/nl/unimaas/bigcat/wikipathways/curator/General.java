@@ -59,4 +59,12 @@ public class General {
 		Assert.assertEquals("Data nodes with a 'noIdentifier' URI:\n" + table, 0, table.getRowCount());
 	}
 
+	@Test
+	public void emptyLabelOfNodeWithIdentifier() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("general/emptyLabelsWithIdentifiers.rq");
+		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assert.assertNotNull(table);
+		Assert.assertEquals("Data nodes with an identifier but empty label:\n" + table, 0, table.getRowCount());
+	}
+
 }
