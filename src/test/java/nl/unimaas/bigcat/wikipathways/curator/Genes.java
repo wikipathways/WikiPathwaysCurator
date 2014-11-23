@@ -41,7 +41,7 @@ public class Genes {
 	}
 
 	@Test
-	public void metabolitesWithAnEnsembleID() throws Exception {
+	public void entrezGeneIdentifiersNotNumber() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("genes/allEntrezGenesIdentifiers.rq");
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
