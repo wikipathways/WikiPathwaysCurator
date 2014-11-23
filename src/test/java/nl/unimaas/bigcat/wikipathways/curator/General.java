@@ -67,4 +67,12 @@ public class General {
 		Assert.assertEquals("Data nodes with an identifier but empty label:\n" + table, 0, table.getRowCount());
 	}
 
+	@Test
+	public void dataNodeWithoutGraphId() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("structure/dataNodeWithoutGraphId.rq");
+		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assert.assertNotNull(table);
+		Assert.assertEquals("Data nodes without @GraphId:\n" + table, 0, table.getRowCount());
+	}
+
 }
