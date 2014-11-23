@@ -9,7 +9,7 @@ WHERE {
   ?mb dc:source "Entrez Gene"^^xsd:string ;
     rdfs:label ?label ;
     dcterms:identifier ?identifier ;
-    wp:bdbEntrezGene ?bdbEntrezGeneId .
+    wp:bdbEntrezGene ?bdbEntrezGeneId ;
     dcterms:isPartOf ?pathway .
   ?pathway foaf:page ?homepage .
 }
