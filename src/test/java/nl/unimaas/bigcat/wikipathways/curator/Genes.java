@@ -49,11 +49,14 @@ public class Genes {
 		if (table.getRowCount() > 0) {
 			for (int i=0; i<table.getRowCount(); i++) {
 				String identifier = table.get(i, "identifier");
-				try {
-					Integer.parseInt(identifier);
-				} catch (NumberFormatException exception) {
-					errors += table.get(i, "homepage") + " -> " + table.get(i, "label") +
-							  ", " + table.get(i, "identifier");
+				identifier = identifier.trim();
+				if (!identifier.isEmpty()) {
+					try {
+						Integer.parseInt(identifier);
+					} catch (NumberFormatException exception) {
+						errors += table.get(i, "homepage") + " -> " + table.get(i, "label") +
+								", " + table.get(i, "identifier");
+					}
 				}
 			}
 		}
