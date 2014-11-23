@@ -5,12 +5,11 @@ prefix xsd:     <http://www.w3.org/2001/XMLSchema#>
 prefix wp:      <http://vocabularies.wikipathways.org/wp#>
 prefix foaf:    <http://xmlns.com/foaf/0.1/>
 
-SELECT DISTINCT  ?bdbEntrezGeneId
+SELECT DISTINCT ?homepage ?label ?identifier 
 WHERE {
   ?mb dc:source "Entrez Gene"^^xsd:string ;
     rdfs:label ?label ;
     dcterms:identifier ?identifier ;
-    wp:bdbEntrezGene ?bdbEntrezGeneId ;
     dcterms:isPartOf ?pathway .
   ?pathway foaf:page ?homepage .
 }
