@@ -1,0 +1,3 @@
+select * where {
+  ?node ?predicate <http://vocabularies.wikipathways.org/gpml#requiresCurationAttention> .
+}
