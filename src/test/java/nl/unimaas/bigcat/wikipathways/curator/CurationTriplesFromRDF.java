@@ -44,7 +44,7 @@ public class CurationTriplesFromRDF {
 	}
 
 	@Test
-	public void hasPoints() throws Exception {
+	public void hasRequiresCurationAttention() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/curationTriples.rq");
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
