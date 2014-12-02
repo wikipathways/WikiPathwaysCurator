@@ -75,4 +75,12 @@ public class General {
 		Assert.assertEquals("Data nodes without @GraphId:\n" + table, 0, table.getRowCount());
 	}
 
+	@Test
+	public void hasPoints() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("structure/pointClass.rq");
+		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assert.assertNotNull(table);
+		Assert.assertNotSame("Expected things of type gpml:Point.", 0, table.getRowCount());
+	}
+
 }
