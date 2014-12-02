@@ -1,3 +1,5 @@
-select * where {
-  ?node ?predicate <http://vocabularies.wikipathways.org/gpml#requiresCurationAttention> .
+select distinct ?node ?homepage where {
+  ?node ?predicate <http://vocabularies.wikipathways.org/gpml#requiresCurationAttention> ;
+    dcterms:isPartOf ?pathway .
+  ?pathway foaf:page ?homepage .
 }
