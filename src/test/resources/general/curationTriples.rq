@@ -1,9 +1,12 @@
 prefix gpml:    <http://vocabularies.wikipathways.org/gpml#>
+prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
 prefix dcterms: <http://purl.org/dc/terms/>
 prefix foaf:    <http://xmlns.com/foaf/0.1/>
 
-select distinct ?node ?homepage where {
+select distinct ?node ?homepage ?label ?graphid where {
   ?node ?predicate gpml:requiresCurationAttention ;
+    ?node rdfs:label ?label ;
+    gpml:graphid ?graphid ;
     dcterms:isPartOf ?pathway .
   ?pathway foaf:page ?homepage .
 }
