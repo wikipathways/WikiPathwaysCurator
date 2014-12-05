@@ -1,5 +1,9 @@
+prefix gpml:    <http://vocabularies.wikipathways.org/gpml#>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix foaf:    <http://xmlns.com/foaf/0.1/>
+
 select distinct ?node ?homepage where {
-  ?node ?predicate <http://vocabularies.wikipathways.org/gpml#requiresCurationAttention> ;
+  ?node ?predicate gpml:requiresCurationAttention ;
     dcterms:isPartOf ?pathway .
   ?pathway foaf:page ?homepage .
 }
