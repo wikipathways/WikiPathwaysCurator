@@ -5,7 +5,7 @@ prefix foaf:    <http://xmlns.com/foaf/0.1/>
 
 select distinct ?node ?homepage ?label ?graphid where {
   ?node ?predicate gpml:requiresCurationAttention ;
-    ?node rdfs:label ?label ;
+    rdfs:label ?label ;
     gpml:graphid ?graphid ;
     dcterms:isPartOf ?pathway .
   ?pathway foaf:page ?homepage .
