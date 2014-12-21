@@ -40,8 +40,6 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 public class OPSWPRDFFiles {
 
-	public final static String WS_OPS_WP2RDF_TTLS = "/var/lib/jenkins/jobs/WikiPathways RDF/workspace/OPSWPRDF/";
-
 	private static Model loadedData = null;
 	private static boolean locked = false;
 	private static String parseErrors = "";
@@ -55,7 +53,7 @@ public class OPSWPRDFFiles {
 
 		locked = true;
 
-		String folder = WS_OPS_WP2RDF_TTLS;
+		String folder = "/tmp/doesntexist/";
 		if (System.getProperty("OPSWPRDF") != null) {
 			folder = System.getProperty("OPSWPRDF");
 			folder = folder.replace(".", "/");
