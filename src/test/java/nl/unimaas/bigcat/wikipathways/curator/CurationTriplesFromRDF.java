@@ -32,6 +32,7 @@ import org.junit.Ignore;
 
 import com.hp.hpl.jena.rdf.model.Model;
 
+@Ignore
 public class CurationTriplesFromRDF {
 
 	@BeforeClass
