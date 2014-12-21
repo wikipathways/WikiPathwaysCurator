@@ -26,12 +26,9 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
-import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
-import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
-
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.Ignore;
 
 import com.hp.hpl.jena.rdf.model.Model;
 
@@ -43,7 +40,7 @@ public class CurationTriplesFromRDF {
 		Assert.assertTrue(data.size() > 5000);
 	}
 
-	@Test
+	@Ignore("Ignored for now, because it is not very specific and hard to curate")
 	public void hasRequiresCurationAttention() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/curationTriples.rq");
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
