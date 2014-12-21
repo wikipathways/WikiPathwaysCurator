@@ -58,6 +58,8 @@ public class OPSWPRDFFiles {
 			folder = System.getProperty("OPSWPRDF");
 			folder = folder.replace(".", "/");
 			folder = folder.replace("_", " ");
+			folder = folder.replace("[", "(");
+			folder = folder.replace("]", ")");
 		}
 		System.out.println("OPSWPRDF folder: " + folder);
 
