@@ -88,7 +88,7 @@ public class General {
 		String sparql = ResourceHelper.resourceAsString("structure/groupDetails.rq");
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
-		Assert.assertNotSame("Expected details for things of type gpml:Group.", 0, table.getRowCount());
+		Assert.assertNotSame("Expected details for things of type gpml:Group: " + table, 0, table.getRowCount());
 	}
 
 	@Test
@@ -96,7 +96,7 @@ public class General {
 		String sparql = ResourceHelper.resourceAsString("structure/nodesHaveTypedParents.rq");
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
-		Assert.assertNotSame("Parents of DataNodes should be typed.", 0, table.getRowCount());
+		Assert.assertNotSame("Parents of DataNodes should be typed: " + table, 0, table.getRowCount());
 	}
 
 }

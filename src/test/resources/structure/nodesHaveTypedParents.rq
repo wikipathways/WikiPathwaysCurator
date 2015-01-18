@@ -3,7 +3,7 @@ prefix gpml:    <http://vocabularies.wikipathways.org/gpml#>
 prefix xsd:     <http://www.w3.org/2001/XMLSchema#>
 prefix dcterms: <http://purl.org/dc/terms/>
 
-select ?node where {
+select ?node ?parent where {
  ?node a gpml:DataNode .
  OPTIONAL {
    ?node dcterms:isPartOf ?parent .
