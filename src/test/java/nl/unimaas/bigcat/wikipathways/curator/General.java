@@ -99,4 +99,12 @@ public class General {
 		Assert.assertEquals("Parents of DataNodes should be typed: " + table, 0, table.getRowCount());
 	}
 
+	@Test
+	public void nodesPointingToUnspecifiedGroups() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("structure/nodesInEmptyGroups.rq");
+		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assert.assertNotNull(table);
+		Assert.assertEquals("Nodes should not be part of unspecified groups: " + table, 0, table.getRowCount());
+	}
+
 }
