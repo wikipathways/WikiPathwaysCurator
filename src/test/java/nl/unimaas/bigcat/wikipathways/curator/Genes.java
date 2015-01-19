@@ -55,7 +55,7 @@ public class Genes {
 						Integer.parseInt(identifier);
 					} catch (NumberFormatException exception) {
 						errors += table.get(i, "homepage") + " -> " + table.get(i, "label") +
-								", " + table.get(i, "identifier");
+								", " + table.get(i, "identifier" + "; ");
 					}
 				}
 			}
