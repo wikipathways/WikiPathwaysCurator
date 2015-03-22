@@ -85,6 +85,7 @@ public class Metabolites {
 		Set<String> allowed = new HashSet<String>();
 		allowed.add("CHEBI:15986"); // polynucleotide
 		allowed.add("CHEBI:9160");  // single stranded DNA
+		allowed.add("CHEBI:16991"); // double stranded DNA
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
