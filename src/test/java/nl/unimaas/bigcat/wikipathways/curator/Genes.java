@@ -46,6 +46,7 @@ public class Genes {
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		String errors = "";
+		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String identifier = table.get(i, "identifier");
@@ -55,14 +56,15 @@ public class Genes {
 						Integer.parseInt(identifier);
 					} catch (NumberFormatException exception) {
 						errors += table.get(i, "homepage") + " -> " + table.get(i, "label") +
-								", " + table.get(i, "identifier") + "; ";
+								", " + table.get(i, "identifier") + "\n ";
+						errorCount++;
 					}
 				}
 			}
 		}
 		Assert.assertEquals(
 			"Entrez Gene identifiers that are not numbers:\n" + errors,
-			0, errors.length()
+			0, errorCount
 		);
 	}
 }
