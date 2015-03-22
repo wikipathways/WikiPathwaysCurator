@@ -47,7 +47,7 @@ public class Genes {
 		Assert.assertNotNull(table);
 		String errors = "";
 		if (table.getRowCount() > 0) {
-			for (int i=0; i<table.getRowCount(); i++) {
+			for (int i=1; i<=table.getRowCount(); i++) {
 				String identifier = table.get(i, "identifier");
 				identifier = identifier.trim();
 				if (!identifier.isEmpty()) {

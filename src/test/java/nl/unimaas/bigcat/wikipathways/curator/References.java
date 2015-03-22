@@ -47,7 +47,7 @@ public class References {
 		String errors = "";
 		if (table.getRowCount() > 0) {
 			// OK, but then it must be proteins, e.g. IFN-b
-			for (int i=0; i<table.getRowCount(); i++) {
+			for (int i=1; i<=table.getRowCount(); i++) {
 				String id = table.get(i, "id");
 				if (id != null && id.length() > 0) {
 					try {
