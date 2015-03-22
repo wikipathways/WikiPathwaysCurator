@@ -49,13 +49,13 @@ public class StringMatrix {
                 checkCols(col);
         }
         private void checkRows(int row) {
-                if (row < 0 || row > rows)
+                if (row < 1 || row > rows)
                         throw new ArrayIndexOutOfBoundsException(
                                 "Incorrect row number: " + row
                         );
         }
         private void checkCols(int col) {
-                if (col < 0 || col > cols)
+                if (col < 1 || col > cols)
                         throw new ArrayIndexOutOfBoundsException(
                                 "Incorrect column number: " + col
                         );

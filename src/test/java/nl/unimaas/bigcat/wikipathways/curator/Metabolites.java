@@ -56,7 +56,7 @@ public class Metabolites {
 		String errors = "";
 		if (table.getRowCount() > 0) {
 			// OK, but then it must be proteins, e.g. IFN-b
-			for (int i=0; i<table.getRowCount(); i++) {
+			for (int i=1; i<=table.getRowCount(); i++) {
 				if (!allowedProteins.contains(table.get(i, "label").trim())) {
 					errors += table.get(i, "homepage") + table.get(i, "label") + table.get(i, "identifier");
 				}
@@ -84,17 +84,19 @@ public class Metabolites {
 		allowed.add("CHEBI:15986"); // polynucleotide
 		allowed.add("CHEBI:9160");  // single stranded DNA
 		String errors = "";
+		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			// OK, but then it must be proteins, e.g. IFN-b
-			for (int i=0; i<table.getRowCount(); i++) {
+			for (int i=1; i<=table.getRowCount(); i++) {
 				if (!allowed.contains(table.get(i, "identifier").trim())) {
 					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " -> " + table.get(i, "identifier") + ", ";
+					errorCount++;
 				}
 			}
 		}
 		Assert.assertEquals(
 			"Unexpected ChEBI identifiers for non-metabolites:\n" + errors,
-			0, errors.length()
+			0, errorCount
 		);
 	}
 
@@ -122,17 +124,19 @@ public class Metabolites {
 		Set<String> allowedProteins = new HashSet<String>();
 		allowedProteins.add("Fibrin");
 		String errors = "";
+		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			// OK, but then it must be proteins, e.g. IFN-b
-			for (int i=0; i<table.getRowCount(); i++) {
+			for (int i=1; i<=table.getRowCount(); i++) {
 				if (!allowedProteins.contains(table.get(i, "label").trim())) {
 					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " -> " + table.get(i, "identifier") + ", ";
+					errorCount++;
 				}
 			}
 		}
 		Assert.assertEquals(
 			"Unexpected PubChem identifiers for non-metabolites:\n" + errors,
-			0, errors.length()
+			0, errorCount
 		);
 	}
 
@@ -142,19 +146,21 @@ public class Metabolites {
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		String errors = "";
+		int errorCount = 0;
 		if (table.getRowCount() > 0) {
-			for (int i=0; i<table.getRowCount(); i++) {
+			for (int i=1; i<=table.getRowCount(); i++) {
 				String identifier = table.get(i, "identifier");
 				try {
 					Integer.parseInt(identifier);
 				} catch (NumberFormatException exception) {
 					errors += table.get(i, "homepage") + table.get(i, "label") + table.get(i, "identifier");
+					errorCount++;
 				}
 			}
 		}
 		Assert.assertEquals(
 			"Unexpected PubChem identifiers for non-metabolites:\n" + errors,
-			0, errors.length()
+			0, errorCount
 		);
 	}
 
