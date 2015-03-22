@@ -54,17 +54,19 @@ public class Metabolites {
 		Set<String> allowedProteins = new HashSet<String>();
 		allowedProteins.add("IFN-b");
 		String errors = "";
+		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
 				if (!allowedProteins.contains(table.get(i, "label").trim())) {
-					errors += table.get(i, "homepage") + table.get(i, "label") + table.get(i, "identifier");
+					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " -> " + table.get(i, "identifier") + "\n";
+					errorCount++;
 				}
 			}
 		}
 		Assert.assertEquals(
 			"Unexpected CAS identifiers for non-metabolites:\n" + errors,
-			0, errors.length()
+			0, errorCount
 		);
 	}
 
@@ -89,7 +91,7 @@ public class Metabolites {
 			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
 				if (!allowed.contains(table.get(i, "identifier").trim())) {
-					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " -> " + table.get(i, "identifier") + ", ";
+					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " -> " + table.get(i, "identifier") + "\n";
 					errorCount++;
 				}
 			}
@@ -129,7 +131,7 @@ public class Metabolites {
 			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
 				if (!allowedProteins.contains(table.get(i, "label").trim())) {
-					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " -> " + table.get(i, "identifier") + ", ";
+					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " -> " + table.get(i, "identifier") + "\n";
 					errorCount++;
 				}
 			}
