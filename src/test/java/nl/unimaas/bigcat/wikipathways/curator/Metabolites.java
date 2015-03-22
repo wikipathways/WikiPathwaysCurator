@@ -80,8 +80,22 @@ public class Metabolites {
 	public void ChEBIIDsNotMarkedAsMetabolite() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("metabolite/chebiNumberNotMarkedAsMetabolite.rq");
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
-		Assert.assertEquals("Unexpected ChEBI identifiers for non-metabolites:\n" + table, 0, table.getRowCount());
+		Set<String> allowed = new HashSet<String>();
+		allowed.add("CHEBI:15986"); // polynucleotide
+		allowed.add("CHEBI:9160");  // single stranded DNA
+		String errors = "";
+		if (table.getRowCount() > 0) {
+			// OK, but then it must be proteins, e.g. IFN-b
+			for (int i=0; i<table.getRowCount(); i++) {
+				if (!allowed.contains(table.get(i, "identifier").trim())) {
+					errors += table.get(i, "homepage") + table.get(i, "label") + table.get(i, "identifier");
+				}
+			}
+		}
+		Assert.assertEquals(
+			"Unexpected ChEBI identifiers for non-metabolites:\n" + errors,
+			0, errors.length()
+		);
 	}
 
 	@Test
