@@ -92,7 +92,8 @@ public class Metabolites {
 			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
 				if (!allowed.contains(table.get(i, "identifier").trim())) {
-					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " -> " + table.get(i, "identifier") + "\n";
+					errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+					    " -> " + table.get(i, "identifier") + "\n";
 					errorCount++;
 				}
 			}
