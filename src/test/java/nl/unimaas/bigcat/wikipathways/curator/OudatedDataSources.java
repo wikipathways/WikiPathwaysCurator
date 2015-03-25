@@ -143,4 +143,22 @@ public class OudatedDataSources {
 		// the metabolite test pathway has one outdated Kegg enzyme deliberately (WP2582)
 		Assert.assertTrue("Outdated 'Kegg enzyme' data sources:\n" + table, table.getRowCount() <= 1);
 	}
+
+	@Test(timeout=10000)
+	public void outdatedEnsemblMouseDataSource() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("outdated/ensembl.rq");
+		Assert.assertNotNull(sparql);
+		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assert.assertNotNull(table);
+		Assert.assertTrue("Outdated 'Ensembl Mouse' data sources:\n" + table, table.getRowCount() <= 1);
+	}
+
+	@Test(timeout=10000)
+	public void outdatedEnsemblHumanDataSource() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("outdated/ensembl2.rq");
+		Assert.assertNotNull(sparql);
+		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assert.assertNotNull(table);
+		Assert.assertTrue("Outdated 'Ensembl Human' data sources:\n" + table, table.getRowCount() <= 1);
+	}
 }
