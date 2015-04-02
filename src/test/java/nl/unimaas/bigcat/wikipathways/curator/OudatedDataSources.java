@@ -161,4 +161,13 @@ public class OudatedDataSources {
 		Assert.assertNotNull(table);
 		Assert.assertTrue("Outdated 'Ensembl Human' data sources (use 'Ensembl'):\n" + table, table.getRowCount() <= 1);
 	}
+
+	@Test(timeout=10000)
+	public void outdatedECNumberDataSource() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("outdated/ecNumber.rq");
+		Assert.assertNotNull(sparql);
+		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assert.assertNotNull(table);
+		Assert.assertTrue("Outdated 'EC Number' data sources (use 'Enzyme Nomenclature'):\n" + table, table.getRowCount() < 1);
+	}
 }
