@@ -47,7 +47,7 @@ public class OudatedDataSources {
 		Assert.assertNotNull(sparql);
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
-		Assert.assertEquals("Outdated 'Uniprot' data sources:\n" + table, 0, table.getRowCount());
+		Assert.assertEquals("Outdated 'Uniprot' data sources (use 'Uniprot-TrEMBL'):\n" + table, 0, table.getRowCount());
 	}
 
 	@Test(timeout=10000)
@@ -56,7 +56,7 @@ public class OudatedDataSources {
 		Assert.assertNotNull(sparql);
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
-		Assert.assertEquals("Outdated 'UniProt/TrEMBL' data sources:\n" + table, 0, table.getRowCount());
+		Assert.assertEquals("Outdated 'UniProt/TrEMBL' data sources (use 'Uniprot-TrEMBL'):\n" + table, 0, table.getRowCount());
 	}
 
 	@Test(timeout=10000)
@@ -65,7 +65,7 @@ public class OudatedDataSources {
 		Assert.assertNotNull(sparql);
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
-		Assert.assertEquals("Outdated 'Uniprot/TrEMBL' data sources:\n" + table, 0, table.getRowCount());
+		Assert.assertEquals("Outdated 'Uniprot/TrEMBL' data sources (use 'Uniprot-TrEMBL'):\n" + table, 0, table.getRowCount());
 	}
 
 	@Test(timeout=10000)
@@ -74,7 +74,7 @@ public class OudatedDataSources {
 		Assert.assertNotNull(sparql);
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
-		Assert.assertEquals("Outdated 'UniProt' data sources:\n" + table, 0, table.getRowCount());
+		Assert.assertEquals("Outdated 'UniProt' data sources (use 'Uniprot-TrEMBL'):\n" + table, 0, table.getRowCount());
 	}
 
 	@Test(timeout=10000)
@@ -83,7 +83,7 @@ public class OudatedDataSources {
 		Assert.assertNotNull(sparql);
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
-		Assert.assertEquals("Outdated 'Uniprot-SwissProt' data sources:\n" + table, 0, table.getRowCount());
+		Assert.assertEquals("Outdated 'Uniprot-SwissProt' data sources (use 'Uniprot-TrEMBL'):\n" + table, 0, table.getRowCount());
 	}
 
 	@Test(timeout=10000)
@@ -93,7 +93,7 @@ public class OudatedDataSources {
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		// the metabolite test pathway has one outdated PubChem deliberately (WP2582)
-		Assert.assertTrue("Outdated 'PubChem' data sources:\n" + table, table.getRowCount() <= 1);
+		Assert.assertTrue("Outdated 'PubChem' data sources (use 'PubChem-compound' or 'PubChem-substance'):\n" + table, table.getRowCount() <= 1);
 	}
 
 	@Test(timeout=10000)
@@ -121,7 +121,7 @@ public class OudatedDataSources {
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		// the metabolite test pathway has one outdated Kegg Compound deliberately (WP2582)
-		Assert.assertTrue("Outdated 'Kegg Compound' data sources:\n" + table, table.getRowCount() <= 1);
+		Assert.assertTrue("Outdated 'Kegg Compound' data sources (use 'KEGG Compound'):\n" + table, table.getRowCount() <= 1);
 	}
 
 	@Ignore
@@ -150,7 +150,7 @@ public class OudatedDataSources {
 		Assert.assertNotNull(sparql);
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
-		Assert.assertTrue("Outdated 'Ensembl Mouse' data sources:\n" + table, table.getRowCount() <= 1);
+		Assert.assertTrue("Outdated 'Ensembl Mouse' data sources (use 'Ensembl'):\n" + table, table.getRowCount() <= 1);
 	}
 
 	@Test(timeout=10000)
@@ -159,6 +159,6 @@ public class OudatedDataSources {
 		Assert.assertNotNull(sparql);
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
-		Assert.assertTrue("Outdated 'Ensembl Human' data sources:\n" + table, table.getRowCount() <= 1);
+		Assert.assertTrue("Outdated 'Ensembl Human' data sources (use 'Ensembl'):\n" + table, table.getRowCount() <= 1);
 	}
 }
