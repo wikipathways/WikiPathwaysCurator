@@ -150,7 +150,7 @@ public class OudatedDataSources {
 		Assert.assertNotNull(sparql);
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
-		Assert.assertTrue("Outdated 'Ensembl Mouse' data sources (use 'Ensembl'):\n" + table, table.getRowCount() <= 1);
+		Assert.assertTrue("Outdated 'Ensembl Mouse' data sources (use 'Ensembl'):\n" + table, table.getRowCount() < 1);
 	}
 
 	@Test(timeout=10000)
@@ -159,7 +159,7 @@ public class OudatedDataSources {
 		Assert.assertNotNull(sparql);
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
-		Assert.assertTrue("Outdated 'Ensembl Human' data sources (use 'Ensembl'):\n" + table, table.getRowCount() <= 1);
+		Assert.assertTrue("Outdated 'Ensembl Human' data sources (use 'Ensembl'):\n" + table, table.getRowCount() < 1);
 	}
 
 	@Test(timeout=10000)
