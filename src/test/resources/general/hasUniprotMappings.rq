@@ -4,7 +4,7 @@ prefix dcterms: <http://purl.org/dc/terms/>
 prefix xsd:     <http://www.w3.org/2001/XMLSchema#>
 prefix wp:      <http://vocabularies.wikipathways.org/wp#>
 
-SELECT DISTINCT  ?bdbEnsemblId
+SELECT DISTINCT  ?bdbUniprot
 WHERE {
-  ?concept wp:bdbEnsembl ?bdbEnsemblId .
+  ?concept wp:bdbUniprot ?bdbUniprot .
 } LIMIT 10
