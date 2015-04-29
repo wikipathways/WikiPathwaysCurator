@@ -43,7 +43,7 @@ public class EnsemblGenes {
 
 	@Test(timeout=20000)
 	public void wrongEnsemblIDForHumanSpecies() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("ensemblGenesWrongSpecies_Human.rq");
+		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Human.rq");
 		Assert.assertNotNull(sparql);
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
@@ -55,7 +55,7 @@ public class EnsemblGenes {
 
 	@Test(timeout=20000)
 	public void wrongEnsemblIDForRatSpecies() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("ensemblGenesWrongSpecies_Rat.rq");
+		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Rat.rq");
 		Assert.assertNotNull(sparql);
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
@@ -67,7 +67,7 @@ public class EnsemblGenes {
 
 	@Test(timeout=20000)
 	public void wrongEnsemblIDForMouseSpecies() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("ensemblGenesWrongSpecies_Mouse.rq");
+		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Mouse.rq");
 		Assert.assertNotNull(sparql);
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
@@ -79,7 +79,7 @@ public class EnsemblGenes {
 
 	@Test(timeout=20000)
 	public void wrongEnsemblIDForCowSpecies() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("ensemblGenesWrongSpecies_Cow.rq");
+		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Cow.rq");
 		Assert.assertNotNull(sparql);
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
