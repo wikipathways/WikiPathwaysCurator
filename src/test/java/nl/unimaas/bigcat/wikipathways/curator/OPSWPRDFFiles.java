@@ -29,7 +29,9 @@ package nl.unimaas.bigcat.wikipathways.curator;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FilenameFilter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -69,15 +71,7 @@ public class OPSWPRDFFiles {
 		}
 		System.out.println("WP subset: " + subsetPrefix);
 
-		File dir = new File(folder);
-		final String finalSetsetPrefix = subsetPrefix;
-		FilenameFilter filter = new FilenameFilter() {
-		    public boolean accept(File dir, String name) {
-		        return name.toLowerCase().endsWith(".ttl") && name.toLowerCase().startsWith(finalSetsetPrefix);
-		    }
-		};
-	
-		File[] files = dir.listFiles(filter);
+		File[] files = (File[])findAllFiles(folder, subsetPrefix).toArray();
 		StringBuffer parseFailReport = new StringBuffer();
 		String directory = "target/UnitTest" ;
 		File tbdFolder = new File(directory);
@@ -98,6 +92,25 @@ public class OPSWPRDFFiles {
 		locked = false;
 		parseErrors = parseFailReport.toString();
 		return loadedData;
+	}
+
+	private static List<File> findAllFiles(String folder, String subsetPrefix) {
+		List<File> files = new ArrayList<File>();
+
+		File root = new File(folder);
+		File[] list = root.listFiles();
+        if (list == null) return Collections.emptyList();
+
+        for ( File file : list ) {
+            if ( file.isDirectory() ) {
+            	files.addAll(findAllFiles(file.getAbsolutePath(), subsetPrefix));
+            } else {
+            	String name = file.getName();
+            	if (name.toLowerCase().endsWith(".ttl") && name.toLowerCase().startsWith(subsetPrefix))
+            		files.add(file);
+            }
+        }
+		return files;
 	}
 	
 	@Test
