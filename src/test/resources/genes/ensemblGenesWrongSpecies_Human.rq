@@ -11,7 +11,7 @@ WHERE {
     rdfs:label ?label ;
     dcterms:identifier ?identifier ;
     dcterms:isPartOf ?pathway .
+  FILTER (!strStarts(?identifier, "ENSG"))
   ?pathway wp:organism <http://purl.obolibrary.org/obo/NCBITaxon_9606> ;
     foaf:page ?homepage .
-  FILTER (!strStarts(?identifier, "ENSG"))
 }
