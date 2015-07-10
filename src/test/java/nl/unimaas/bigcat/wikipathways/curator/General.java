@@ -26,9 +26,6 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
-import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
-import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
-
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -76,6 +73,7 @@ public class General {
 		Assert.assertEquals("Data nodes without @GraphId:\n" + table, 0, table.getRowCount());
 	}
 
+	@Ignore
 	@Test
 	public void hasPoints() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("structure/pointClass.rq");
