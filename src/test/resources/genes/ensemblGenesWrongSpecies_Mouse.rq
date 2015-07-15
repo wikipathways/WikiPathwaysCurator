@@ -10,7 +10,8 @@ WHERE {
   ?gene dc:source "Ensembl"^^xsd:string ;
     rdfs:label ?label ;
     dcterms:identifier ?identifier ;
-    dcterms:isPartOf ?pathway .
+    dcterms:isPartOf ?pathway ;
+    a wp:GeneProduct .
   ?pathway wp:organism <http://purl.obolibrary.org/obo/NCBITaxon_10090> ;
     foaf:page ?homepage .
   FILTER (!strStarts(?identifier, "ENSMUSG"))
