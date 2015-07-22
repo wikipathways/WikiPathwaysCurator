@@ -89,4 +89,13 @@ public class EnsemblGenes {
 		);
 	}
 
+	@Test(timeout=20000)
+	public void outdatedIdentifiers() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("genes/possiblyOutdatedEnsemblIdentifiers.rq");
+		Assert.assertNotNull(sparql);
+		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assert.assertNotNull(table);
+		Assert.assertEquals("Outdated HMDB identifiers:\n" + table, 0, table.getRowCount());
+	}
+
 }
