@@ -28,6 +28,7 @@ package nl.unimaas.bigcat.wikipathways.curator;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.hp.hpl.jena.rdf.model.Model;
