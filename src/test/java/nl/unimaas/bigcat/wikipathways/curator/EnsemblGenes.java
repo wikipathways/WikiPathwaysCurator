@@ -89,6 +89,7 @@ public class EnsemblGenes {
 		);
 	}
 
+	@Ignore("Too many false positives at this moment")
 	@Test(timeout=20000)
 	public void outdatedIdentifiers() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("genes/possiblyOutdatedEnsemblIdentifiers.rq");
