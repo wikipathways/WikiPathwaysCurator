@@ -121,7 +121,7 @@ public class OPSWPRDFFiles {
 
 	private static boolean testOrTutorial(String filename) {
 		for (String pathway : pathwaysToIgnore) {
-			if (filename.contains(pathway + ".ttl")) return true;
+			if (filename.contains(pathway + "_")) return true;
 		}
 		return false;
 	}
