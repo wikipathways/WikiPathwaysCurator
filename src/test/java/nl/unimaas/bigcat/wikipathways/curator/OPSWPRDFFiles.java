@@ -116,7 +116,8 @@ public class OPSWPRDFFiles {
 
 	@SuppressWarnings("serial")
 	private static final List<String> pathwaysToIgnore = new ArrayList<String>() {{
-		add("WP4");
+		add("WP4"); // the edit playground
+		add("WP2582"); // the metabolite tests
 	}};
 
 	private static boolean testOrTutorial(String filename) {
