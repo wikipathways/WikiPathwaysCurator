@@ -106,13 +106,26 @@ public class OPSWPRDFFiles {
             	files.addAll(findAllFiles(file.getAbsolutePath(), subsetPrefix));
             } else {
             	String name = file.getName();
-            	if (name.toLowerCase().endsWith(".ttl") && name.toLowerCase().startsWith(subsetPrefix))
-            		files.add(file);
+            	if (name.toLowerCase().endsWith(".ttl") && name.toLowerCase().startsWith(subsetPrefix)) {
+            		if (!testOrTutorial(name)) files.add(file);
+            	}
             }
         }
 		return files;
 	}
-	
+
+	@SuppressWarnings("serial")
+	private static final List<String> pathwaysToIgnore = new ArrayList<String>() {{
+		add("WP4");
+	}};
+
+	private static boolean testOrTutorial(String filename) {
+		for (String pathway : pathwaysToIgnore) {
+			if (filename.contains(pathway + ".ttl")) return true;
+		}
+		return false;
+	}
+
 	@Test
 	public void testLoadingRDF() throws InterruptedException {
 		loadData();
