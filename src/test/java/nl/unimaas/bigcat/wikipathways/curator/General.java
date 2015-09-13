@@ -31,6 +31,7 @@ import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -99,7 +100,7 @@ public class General {
 		Assert.assertEquals("Parents of DataNodes should be typed: " + table, 0, table.getRowCount());
 	}
 
-	@Test
+	@Ignore("Apparently, groups without a type are a common use case; examples are WP2940 and WP2543.")
 	public void nodesPointingToUnspecifiedGroups() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("structure/nodesInEmptyGroups.rq");
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
