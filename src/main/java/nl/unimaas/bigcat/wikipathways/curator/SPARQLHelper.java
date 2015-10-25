@@ -26,6 +26,7 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -36,6 +37,7 @@ import java.util.Set;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.StatusLine;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -82,14 +84,17 @@ public class SPARQLHelper {
 		HttpPost httppost = new HttpPost(endpoint);
 		httppost.setEntity(entity);
 		HttpResponse response = httpclient.execute(httppost);
+		StatusLine status = response.getStatusLine(); 
 		HttpEntity responseEntity = response.getEntity();
+		if (status.getStatusCode() != 200) {
+			ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+			responseEntity.writeTo(buffer);
+			throw new Exception("Invalid SPARQL result: " + status.getReasonPhrase() + ": " + buffer.toString());
+		}
 		InputStream in = responseEntity.getContent();
 
 		// now the Jena part
 		ResultSet results = ResultSetFactory.fromXML(in);
-		// also use Jena for getting the prefixes...
-		// Query query = QueryFactory.create(queryString);
-		// PrefixMapping prefixMap = query.getPrefixMapping();
 		table = convertIntoTable(null, results);
 
 		in.close();
