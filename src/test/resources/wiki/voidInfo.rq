@@ -1,6 +1,0 @@
-select distinct ?dataset str(?titleLit) as ?title ?date ?license where {
-  ?dataset a void:Dataset ;
-    dcterms:title ?titleLit ;
-    dcterms:license ?license ;
-    pav:createdOn ?date .
-}

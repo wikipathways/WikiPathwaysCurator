@@ -1,3 +1,0 @@
-SELECT ?pathway WHERE {
-  ?pathway a wp:Pathway 
-} LIMIT 1
