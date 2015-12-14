@@ -43,7 +43,7 @@ public class PubChemMetabolites {
 
 	@Test(timeout=20000)
 	public void nonNumericIDs() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite.badformat/nonNumericPubChem.rq");
+		String sparql = ResourceHelper.resourceAsString("metabolite/badformat/nonNumericPubChem.rq");
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		String errors = "";
 		if (table.getRowCount() > 0) {
