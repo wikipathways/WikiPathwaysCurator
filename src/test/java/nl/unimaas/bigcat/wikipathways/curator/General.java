@@ -52,7 +52,7 @@ public class General {
 		Assert.assertEquals("Data nodes with a 'null' data source:\n" + table, 0, table.getRowCount());
 	}
 
-	@Test
+	@Ignore("This test was predominantly for the WPRDF generation, but in the new generation RDF this no longer causes problems")
 	public void noIdentifierURIs() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/noIdentifierURIs.rq");
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
