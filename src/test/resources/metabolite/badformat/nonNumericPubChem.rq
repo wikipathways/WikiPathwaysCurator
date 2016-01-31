@@ -9,7 +9,6 @@ select distinct ?id ?homepage where {
     foaf:page ?homepage .
   ?pub a wp:Metabolite ;
     dcterms:identifier ?id ;
-    dc:source ?source ;
+    dc:source "PubChem-compound"^^xsd:string ;
     dcterms:isPartOf ?pathway .
-  FILTER (str(?source) = "PubChem-compound")
 } ORDER BY ?homepage
