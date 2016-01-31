@@ -5,7 +5,8 @@ prefix foaf:    <http://xmlns.com/foaf/0.1/>
 prefix wp:      <http://vocabularies.wikipathways.org/wp#>
 
 select distinct ?id ?homepage where {
-  ?pathway foaf:page ?homepage .
+  ?pathway a wp:Pathway ;
+    foaf:page ?homepage .
   ?pub a wp:Metabolite ;
     dcterms:identifier ?id ;
     dc:source ?source ;
