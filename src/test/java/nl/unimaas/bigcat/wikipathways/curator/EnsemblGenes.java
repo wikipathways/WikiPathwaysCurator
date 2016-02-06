@@ -101,7 +101,7 @@ public class EnsemblGenes {
 		Assert.assertNotNull(sparql);
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
-		Assert.assertEquals("Outdated HMDB identifiers:\n" + table, 0, table.getRowCount());
+		Assert.assertEquals("Outdated Ensembl identifiers:\n" + table, 0, table.getRowCount());
 	}
 
 }
