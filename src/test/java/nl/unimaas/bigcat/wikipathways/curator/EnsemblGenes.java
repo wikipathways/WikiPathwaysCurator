@@ -42,10 +42,11 @@ public class EnsemblGenes {
 		Assert.assertTrue(data.size() > 5000);
 	}
 
-	@Test(timeout=20000)
+	@Test(timeout=50000)
 	public void wrongEnsemblIDForHumanSpecies() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Human.rq");
 		Assert.assertNotNull(sparql);
+		System.out.println("Wrong Ensembl gene for human for: " + System.getProperty("SUBSETPREFIX"));
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals(
@@ -54,10 +55,11 @@ public class EnsemblGenes {
 		);
 	}
 
-	@Test(timeout=20000)
+	@Test(timeout=50000)
 	public void wrongEnsemblIDForRatSpecies() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Rat.rq");
 		Assert.assertNotNull(sparql);
+		System.out.println("Wrong Ensembl gene for rat for: " + System.getProperty("SUBSETPREFIX"));
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals(
@@ -66,10 +68,11 @@ public class EnsemblGenes {
 		);
 	}
 
-	@Test(timeout=20000)
+	@Test(timeout=50000)
 	public void wrongEnsemblIDForMouseSpecies() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Mouse.rq");
 		Assert.assertNotNull(sparql);
+		System.out.println("Wrong Ensembl gene for mouse for: " + System.getProperty("SUBSETPREFIX"));
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals(
@@ -78,10 +81,11 @@ public class EnsemblGenes {
 		);
 	}
 
-	@Test(timeout=20000)
+	@Test(timeout=50000)
 	public void wrongEnsemblIDForCowSpecies() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Cow.rq");
 		Assert.assertNotNull(sparql);
+		System.out.println("Wrong Ensembl gene for cow for: " + System.getProperty("SUBSETPREFIX"));
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals(
@@ -91,7 +95,7 @@ public class EnsemblGenes {
 	}
 
 	@Ignore("Too many false positives at this moment")
-	@Test(timeout=20000)
+	@Test(timeout=50000)
 	public void outdatedIdentifiers() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("genes/possiblyOutdatedEnsemblIdentifiers.rq");
 		Assert.assertNotNull(sparql);
