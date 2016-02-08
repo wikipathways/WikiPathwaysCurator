@@ -145,6 +145,29 @@ public class Metabolites {
 	}
 
 	@Test
+	public void PubChemSubstanceIDsNotMarkedAsMetabolite() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("metabolite/pubchemSubstanceNumberNotMarkedAsMetabolite.rq");
+		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assert.assertNotNull(table);
+		Set<String> allowedProteins = new HashSet<String>();
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			// OK, but then it must be proteins, e.g. IFN-b
+			for (int i=1; i<=table.getRowCount(); i++) {
+				if (!allowedProteins.contains(table.get(i, "label").trim())) {
+					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " -> " + table.get(i, "identifier") + "\n";
+					errorCount++;
+				}
+			}
+		}
+		Assert.assertEquals(
+			"Unexpected PubChem Substance identifiers for non-metabolites:\n" + errors,
+			0, errorCount
+		);
+	}
+
+	@Test
 	public void PubChemIDsNotNumbers() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("metabolite/allPubChemIdentifiers.rq");
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
