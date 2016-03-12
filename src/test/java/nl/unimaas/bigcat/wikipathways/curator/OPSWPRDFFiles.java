@@ -73,6 +73,7 @@ public class OPSWPRDFFiles {
 		System.out.println("WP subset: " + subsetPrefix);
 
 		List<File> files = findAllFiles(folder, subsetPrefix);
+		System.out.println("Testing these files: " + files);
 		StringBuffer parseFailReport = new StringBuffer();
 		String directory = "target/UnitTest" ;
 		File tbdFolder = new File(directory);
