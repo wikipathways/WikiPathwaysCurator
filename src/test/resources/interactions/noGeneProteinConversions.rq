@@ -1,3 +1,7 @@
+prefix wp:      <http://vocabularies.wikipathways.org/wp#>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix foaf:    <http://xmlns.com/foaf/0.1/>
+
 select (str(?organismName) as ?organism) ?page ?gene ?protein ?interaction where {
   ?gene a wp:GeneProduct .
   ?protein a wp:Protein .
