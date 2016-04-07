@@ -36,9 +36,9 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.hp.hpl.jena.n3.turtle.TurtleParseException;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
+import org.apache.jena.n3.turtle.TurtleParseException;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 
 public class OPSWPRDFFiles {
 
