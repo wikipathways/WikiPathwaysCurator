@@ -5,10 +5,10 @@ prefix foaf:    <http://xmlns.com/foaf/0.1/>
 select (str(?organismName) as ?organism) ?page ?protein1 ?protein2 ?interaction where {
   ?protein1 a wp:Protein .
   ?protein2 a wp:Protein .
-  ?interaction wp:participants ?protein1, ?protein2 ;
+  ?interaction wp:source ?protein1 ;
+    wp:target ?protein2 ;
     a wp:Interaction, wp:Conversion ;
     dcterms:isPartOf ?pathway .
   ?pathway foaf:page ?page ;
     wp:organismName ?organismName .
-  FILTER (?protein1 != ?protein2)
-} ORDER BY ASC(?organism) ASC(?pathway)
+} ORDER BY ASC(?organism)
