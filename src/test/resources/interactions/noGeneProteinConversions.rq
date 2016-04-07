@@ -1,4 +1,4 @@
-select str(?organismName) as ?organism ?page ?gene ?protein ?interaction where {
+select (str(?organismName) as ?organism) ?page ?gene ?protein ?interaction where {
   ?gene a wp:GeneProduct .
   ?protein a wp:Protein .
   ?interaction wp:participants ?gene, ?protein ;
