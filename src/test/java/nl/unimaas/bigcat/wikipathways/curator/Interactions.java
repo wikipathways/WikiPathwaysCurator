@@ -40,7 +40,7 @@ public class Interactions {
 		Assert.assertTrue(data.size() > 5000);
 	}
 
-	@Test
+	@Test(timeout=10000)
 	public void noGeneGeneConversions() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("interactions/noGeneGeneConversions.rq");
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
@@ -62,7 +62,7 @@ public class Interactions {
 		);
 	}
 
-	@Test
+	@Test(timeout=10000)
 	public void noGeneProteinConversions() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("interactions/noGeneProteinConversions.rq");
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
@@ -84,7 +84,7 @@ public class Interactions {
 		);
 	}
 
-	@Test
+	@Test(timeout=10000)
 	public void noProteinProteinConversions() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("interactions/noProteinProteinConversions.rq");
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
