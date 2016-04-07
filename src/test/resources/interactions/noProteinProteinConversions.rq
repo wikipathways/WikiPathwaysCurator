@@ -1,0 +1,10 @@
+select str(?organismName) as ?organism ?page ?protein1 ?protein2 ?interaction where {
+  ?protein1 a wp:Protein .
+  ?protein2 a wp:Protein .
+  ?interaction wp:participants ?protein1, ?protein2 ;
+    a wp:Interaction, wp:Conversion ;
+    dcterms:isPartOf ?pathway .
+  ?pathway foaf:page ?page ;
+    wp:organismName ?organismName .
+  FILTER (?protein1 != ?protein2)
+} ORDER BY ASC(?organism) ASC(?pathway)
