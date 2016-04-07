@@ -7,7 +7,7 @@ select (str(?organismName) as ?organism) ?page ?gene1 ?gene2 ?interaction where 
   ?gene2 a wp:GeneProduct .
   ?interaction wp:source ?gene1 ;
     wp:target ?gene2 ;
-    a wp:Interaction, wp:Conversion ;
+    a wp:Conversion ;
     dcterms:isPartOf ?pathway .
   ?pathway foaf:page ?page ;
     wp:organismName ?organismName .
