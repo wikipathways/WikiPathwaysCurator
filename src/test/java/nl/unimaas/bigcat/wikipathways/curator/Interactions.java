@@ -51,7 +51,7 @@ public class Interactions {
 			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
 				errors += table.get(i, "organism") + " " + table.get(i, "page") + " -> " +
-				  table.get(i, "protein1") + " " + table.get(i, "protein2") + " " +
+				  table.get(i, "gene1") + " " + table.get(i, "gene2") + " " +
 				  table.get(i, "interaction") + "\n";
 				errorCount++;
 			}
@@ -73,7 +73,7 @@ public class Interactions {
 			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
 				errors += table.get(i, "organism") + " " + table.get(i, "page") + " -> " +
-				  table.get(i, "protein1") + " " + table.get(i, "protein2") + " " +
+				  table.get(i, "protein") + " " + table.get(i, "gene") + " " +
 				  table.get(i, "interaction") + "\n";
 				errorCount++;
 			}
