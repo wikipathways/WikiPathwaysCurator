@@ -11,4 +11,5 @@ select (str(?organismName) as ?organism) ?page ?gene ?protein ?interaction where
     dcterms:isPartOf ?pathway .
   ?pathway foaf:page ?page ;
     wp:organismName ?organismName .
+  FILTER (?gene != ?protein)
 } ORDER BY ASC(?organism)
