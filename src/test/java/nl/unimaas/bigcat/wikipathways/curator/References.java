@@ -65,4 +65,29 @@ public class References {
 		);
 	}
 
+	@Test
+	public void zeroPubMedIDs() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("references/nonNumericPubMedIDs.rq");
+		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		String errors = "";
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String id = table.get(i, "id");
+				if (id != null && id.length() > 0) {
+					try {
+						if (Integer.parseInt(id) == 0) {
+							errors += table.get(i, "homepage") + ", " +
+									table.get(i, "id") + "\n";
+						}
+					} catch (NumberFormatException exception) {
+						// already reporting these in nonNumericPubMedIDs()
+					}
+				}
+			}
+		}
+		Assert.assertEquals(
+			"Found '0's as PubMed IDs:\n" + errors,
+			0, errors.length()
+		);
+	}
 }
