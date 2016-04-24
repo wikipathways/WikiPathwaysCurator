@@ -186,7 +186,31 @@ public class Metabolites {
 			}
 		}
 		Assert.assertEquals(
-			"Unexpected PubChem identifiers for non-metabolites:\n" + errors,
+			"Unexpected PubChem Compound identifiers for non-metabolites:\n" + errors,
+			0, errorCount
+		);
+	}
+
+	@Test
+	public void PubChemSubstanceIDsNotNumbers() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("metabolite/allPubChemSubstanceIdentifiers.rq");
+		StringMatrix table = SPARQLHelper.sparql("http://sparql.wikipathways.org/", sparql);
+		Assert.assertNotNull(table);
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				try {
+					Integer.parseInt(identifier);
+				} catch (NumberFormatException exception) {
+					errors += table.get(i, "homepage") + table.get(i, "label") + table.get(i, "identifier");
+					errorCount++;
+				}
+			}
+		}
+		Assert.assertEquals(
+			"Unexpected PubChem Substance identifiers for non-metabolites:\n" + errors,
 			0, errorCount
 		);
 	}
