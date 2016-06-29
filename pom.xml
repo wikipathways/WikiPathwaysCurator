@@ -59,7 +59,7 @@
           <reportsDirectory>${project.build.directory}/${report.directory}</reportsDirectory>
           <forkCount>0</forkCount>
           <parallel>none</parallel>
-          <argLine>-Xms512m -Xmx1G -XX:MaxPermSize=256m -DSUBSETPREFIX=${SUBSETPREFIX} -DOPSWPRDF=${OPSWPRDF}</argLine>
+          <argLine>-Xms2G -Xmx8G -server -DSUBSETPREFIX=${SUBSETPREFIX} -DOPSWPRDF=${OPSWPRDF}</argLine>
           <includes>
             <include>**/*.java</include>
           </includes>
