@@ -6,9 +6,8 @@ select (str(?organismName) as ?organism) ?page ?protein1 ?protein2 ?interaction 
   ?interaction wp:source ?protein1 ;
     wp:target ?protein2 ;
     a wp:Conversion ;
-    dcterms:isPartOf ?pathway .
-  ?pathway foaf:page ?page ;
-    wp:organismName ?organismName .
+    dcterms:isPartOf/foaf:page ?pathway ;
+    dcterms:isPartOf/wp:organismName ?organismName .
   FILTER (?protein1 != ?protein2)
   FILTER EXISTS {?protein1 a wp:Protein}
   FILTER EXISTS {?protein2 a wp:Protein}

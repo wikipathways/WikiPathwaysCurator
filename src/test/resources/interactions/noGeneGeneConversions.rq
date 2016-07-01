@@ -6,9 +6,8 @@ select (str(?organismName) as ?organism) ?page ?gene1 ?gene2 ?interaction where 
   ?interaction wp:source ?gene1 ;
     wp:target ?gene2 ;
     a wp:Conversion ;
-    dcterms:isPartOf ?pathway .
-  ?pathway foaf:page ?page ;
-    wp:organismName ?organismName .
+    dcterms:isPartOf/foaf:page ?pathway ;
+    dcterms:isPartOf/wp:organismName ?organismName .
   FILTER (!sameTerm(?gene1, ?gene2))
   FILTER EXISTS {?gene1 a wp:GeneProduct}
   FILTER EXISTS {?gene2 a wp:GeneProduct}
