@@ -12,4 +12,4 @@ select (str(?organismName) as ?organism) ?page ?gene1 ?gene2 ?interaction where 
   ?pathway foaf:page ?page ;
     wp:organismName ?organismName .
   FILTER (?gene1 != ?gene2)
-} ORDER BY ASC(?organism)
+}
