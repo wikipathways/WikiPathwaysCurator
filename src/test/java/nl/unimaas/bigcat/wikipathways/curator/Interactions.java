@@ -50,7 +50,7 @@ public class Interactions {
 		if (table.getRowCount() > 0) {
 			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
-				errors += table.get(i, "organism") + " " + table.get(i, "page") + " -> " +
+				errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
 				  table.get(i, "gene1") + " " + table.get(i, "gene2") + " " +
 				  table.get(i, "interaction") + "\n";
 				errorCount++;
@@ -72,7 +72,7 @@ public class Interactions {
 		if (table.getRowCount() > 0) {
 			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
-				errors += table.get(i, "organism") + " " + table.get(i, "page") + " -> " +
+				errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
 				  table.get(i, "protein") + " " + table.get(i, "gene") + " " +
 				  table.get(i, "interaction") + "\n";
 				errorCount++;
@@ -94,7 +94,7 @@ public class Interactions {
 		if (table.getRowCount() > 0) {
 			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
-				errors += table.get(i, "organism") + " " + table.get(i, "page") + " -> " +
+				errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
 				  table.get(i, "protein1") + " " + table.get(i, "protein2") + " " +
 				  table.get(i, "interaction") + "\n";
 				errorCount++;

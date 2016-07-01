@@ -2,7 +2,7 @@ prefix wp:      <http://vocabularies.wikipathways.org/wp#>
 prefix dcterms: <http://purl.org/dc/terms/>
 prefix foaf:    <http://xmlns.com/foaf/0.1/>
 
-select (str(?organismName) as ?organism) ?page ?protein1 ?protein2 ?interaction where {
+select (str(?organismName) as ?organism) ?pathway ?protein1 ?protein2 ?interaction where {
   ?interaction wp:source ?protein1 ;
     wp:target ?protein2 ;
     a wp:Conversion ;
