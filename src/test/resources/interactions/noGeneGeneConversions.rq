@@ -10,6 +10,6 @@ select (str(?organismName) as ?organism) ?page ?gene1 ?gene2 ?interaction where 
   ?pathway foaf:page ?page ;
     wp:organismName ?organismName .
   FILTER (!sameTerm(?gene1, ?gene2))
-  FILTER (?gene1 a wp:GeneProduct)
-  FILTER (?gene2 a wp:GeneProduct)
+  FILTER EXISTS {?gene1 a wp:GeneProduct}
+  FILTER EXISTS {?gene2 a wp:GeneProduct}
 } ORDER BY ASC(?organism)

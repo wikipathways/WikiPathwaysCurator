@@ -10,6 +10,6 @@ select (str(?organismName) as ?organism) ?page ?protein1 ?protein2 ?interaction 
   ?pathway foaf:page ?page ;
     wp:organismName ?organismName .
   FILTER (?protein1 != ?protein2)
-  FILTER {?protein1 a wp:Protein}
-  FILTER {?protein2 a wp:Protein}
+  FILTER EXISTS {?protein1 a wp:Protein}
+  FILTER EXISTS {?protein2 a wp:Protein}
 } ORDER BY ASC(?organism)
