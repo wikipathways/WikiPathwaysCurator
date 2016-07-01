@@ -3,8 +3,6 @@ prefix dcterms: <http://purl.org/dc/terms/>
 prefix foaf:    <http://xmlns.com/foaf/0.1/>
 
 select (str(?organismName) as ?organism) ?page ?gene1 ?gene2 ?interaction where {
-  ?gene1 a wp:GeneProduct .
-  ?gene2 a wp:GeneProduct .
   ?interaction wp:source ?gene1 ;
     wp:target ?gene2 ;
     a wp:Conversion ;
@@ -12,4 +10,6 @@ select (str(?organismName) as ?organism) ?page ?gene1 ?gene2 ?interaction where 
   ?pathway foaf:page ?page ;
     wp:organismName ?organismName .
   FILTER (!sameTerm(?gene1, ?gene2))
+  FILTER (?gene1 a wp:GeneProduct)
+  FILTER (?gene2 a wp:GeneProduct)
 } ORDER BY ASC(?organism)
