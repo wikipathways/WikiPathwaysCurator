@@ -50,14 +50,17 @@ public class Genes {
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String identifier = table.get(i, "identifier");
-				identifier = identifier.trim();
-				if (!identifier.isEmpty()) {
-					try {
-						Integer.parseInt(identifier);
-					} catch (NumberFormatException exception) {
-						errors += table.get(i, "homepage") + " -> " + table.get(i, "label") +
-								", " + table.get(i, "identifier") + "\n ";
-						errorCount++;
+				String pathwayPage = table.get(i, "homepage");
+				if (!pathwayPage.contains("WP2806")) { // this pathway has a number of non-human genes
+					identifier = identifier.trim();
+					if (!identifier.isEmpty()) {
+						try {
+							Integer.parseInt(identifier);
+						} catch (NumberFormatException exception) {
+							errors += table.get(i, "homepage") + " -> " + table.get(i, "label") +
+									", " + table.get(i, "identifier") + "\n ";
+							errorCount++;
+						}
 					}
 				}
 			}
