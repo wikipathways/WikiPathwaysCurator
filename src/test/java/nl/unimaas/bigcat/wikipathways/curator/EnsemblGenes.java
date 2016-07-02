@@ -75,9 +75,30 @@ public class EnsemblGenes {
 		System.out.println("Wrong Ensembl gene for mouse for: " + System.getProperty("SUBSETPREFIX"));
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				String pathwayPage = table.get(i, "homepage");
+				if (!pathwayPage.contains("WP2087") && // this pathway has a few of human mirs
+					!pathwayPage.contains("WP2087")) { // this pathway has a few human genes (pinged Freddie)
+					identifier = identifier.trim();
+					if (!identifier.isEmpty()) {
+						try {
+							Integer.parseInt(identifier);
+						} catch (NumberFormatException exception) {
+							errors += table.get(i, "homepage") + " -> " + table.get(i, "label") +
+									", " + table.get(i, "identifier") + "\n ";
+							errorCount++;
+						}
+					}
+				}
+			}
+		}
 		Assert.assertEquals(
-			"Ensembl identifiers for wrong species for a mouse pathway:\n" + table,
-			0, table.getRowCount()
+			"Ensembl identifiers for wrong species for a mouse pathway:\n" + errors,
+			0, errorCount
 		);
 	}
 
