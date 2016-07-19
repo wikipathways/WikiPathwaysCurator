@@ -100,7 +100,8 @@ public class EnsemblGenes {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String identifier = table.get(i, "identifier");
 				String pathwayPage = table.get(i, "homepage");
-				if (!pathwayPage.contains("WP2087") && // this pathway has a few of human mirs
+				if (!pathwayPage.contains("WP2080") && // this pathway has a few of human mirs
+					!pathwayPage.contains("WP2087") && // this pathway has a few of human mirs
 					!pathwayPage.contains("WP3632")) { // this pathway has a few human genes (pinged Freddie)
 					identifier = identifier.trim();
 					if (!identifier.isEmpty()) {
