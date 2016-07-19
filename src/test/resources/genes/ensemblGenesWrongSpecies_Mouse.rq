@@ -15,4 +15,5 @@ WHERE {
   ?pathway wp:organism <http://purl.obolibrary.org/obo/NCBITaxon_10090> ;
     foaf:page ?homepage .
   FILTER (!strStarts(?identifier, "ENSMUSG"))
+  FILTER (!strStarts(?identifier, "ENSMUST"))
 }
