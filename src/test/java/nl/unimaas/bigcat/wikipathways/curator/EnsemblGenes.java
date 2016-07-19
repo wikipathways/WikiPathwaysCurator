@@ -49,9 +49,28 @@ public class EnsemblGenes {
 		System.out.println("Wrong Ensembl gene for human for: " + System.getProperty("SUBSETPREFIX"));
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				if (!identifier.contains("LRG_482")) { // in pathway WP3658
+					identifier = identifier.trim();
+					if (!identifier.isEmpty()) {
+						try {
+							Integer.parseInt(identifier);
+						} catch (NumberFormatException exception) {
+							errors += table.get(i, "homepage") + " -> " + table.get(i, "label") +
+									", " + table.get(i, "identifier") + "\n ";
+							errorCount++;
+						}
+					}
+				}
+			}
+		}
 		Assert.assertEquals(
 			"Ensembl identifiers for wrong species for a human pathway:\n" + table,
-			0, table.getRowCount()
+			0, errorCount
 		);
 	}
 
