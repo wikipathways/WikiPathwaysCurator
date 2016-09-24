@@ -60,7 +60,7 @@ public class ChemSpiderMetabolites {
 				try {
 					Integer csid = Integer.valueOf(identifier);
 					if (deprecated.contains(csid)) {
-						errors += table.get(i, "homepage") + table.get(i, "label") + table.get(i, "identifier");
+						errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " +table.get(i, "identifier");
 						errorCount++;
 					}
 				} catch (NumberFormatException exception) {

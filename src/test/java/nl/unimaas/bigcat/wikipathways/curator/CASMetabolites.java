@@ -60,7 +60,8 @@ public class CASMetabolites {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String identifier = table.get(i, "identifier");
 				if (deprecated.containsKey(identifier)) {
-					errors += table.get(i, "homepage") + table.get(i, "label") + table.get(i, "identifier") + " should be " + deprecated.get(identifier);
+					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " + table.get(i, "identifier") +
+							  " should be " + deprecated.get(identifier) + "; ";
 					errorCount++;
 				}
 			}
