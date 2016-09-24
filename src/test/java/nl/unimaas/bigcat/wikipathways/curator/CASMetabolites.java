@@ -39,7 +39,6 @@ public class CASMetabolites {
 	@SuppressWarnings({ "serial" })
 	private static final Map<String,String> deprecated = new HashMap<String,String>() {{
 		put("2646-71-1", "53-57-6"); // the first is a salt of the second
-		put("25513-46-6", "56-86-0"); // the first is the homopolymer of the second (L-glutamic acid)
 	}};
 
 	@BeforeClass
