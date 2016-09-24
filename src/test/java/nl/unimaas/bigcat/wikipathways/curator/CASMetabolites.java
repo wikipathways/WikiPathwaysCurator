@@ -53,6 +53,7 @@ public class CASMetabolites {
 		String sparql = ResourceHelper.resourceAsString("metabolite/allCASIdentifiers.rq");
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
+		Assert.assertNotSame(0, table.getColumnCount());
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
