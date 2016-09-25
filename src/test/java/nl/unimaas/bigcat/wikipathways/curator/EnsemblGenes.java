@@ -135,14 +135,4 @@ public class EnsemblGenes {
 		);
 	}
 
-	@Ignore("Too many false positives at this moment")
-	@Test(timeout=50000)
-	public void outdatedIdentifiers() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("genes/possiblyOutdatedEnsemblIdentifiers.rq");
-		Assert.assertNotNull(sparql);
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
-		Assert.assertEquals("Outdated Ensembl identifiers:\n" + table, 0, table.getRowCount());
-	}
-
 }
