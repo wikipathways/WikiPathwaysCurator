@@ -194,7 +194,7 @@ public class Metabolites {
 	@Test
 	public void PubChemSubstanceIDsNotNumbers() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("metabolite/allPubChemSubstanceIdentifiers.rq");
-		StringMatrix table = SPARQLHelper.sparql("http://sparql.wikipathways.org/", sparql);
+		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		String errors = "";
 		int errorCount = 0;
