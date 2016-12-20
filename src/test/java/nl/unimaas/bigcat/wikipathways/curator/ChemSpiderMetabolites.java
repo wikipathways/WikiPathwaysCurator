@@ -38,6 +38,9 @@ public class ChemSpiderMetabolites {
 	@SuppressWarnings("serial")
 	private static final ArrayList<Integer> deprecated = new ArrayList<Integer>() {{
 		add(Integer.valueOf(358));
+		add(Integer.valueOf(20016012));
+		add(Integer.valueOf(20476395));
+		add(Integer.valueOf(20477287));
 	}};
 
 	@BeforeClass
