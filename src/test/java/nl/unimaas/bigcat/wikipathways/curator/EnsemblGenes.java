@@ -69,7 +69,7 @@ public class EnsemblGenes {
 			}
 		}
 		Assert.assertEquals(
-			"Ensembl identifiers for wrong species for a human pathway:\n" + table,
+			"Ensembl identifiers for wrong species for a human pathway:\n" + errors,
 			0, errorCount
 		);
 	}
