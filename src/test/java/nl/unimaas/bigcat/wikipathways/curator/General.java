@@ -49,6 +49,22 @@ public class General {
 		Assert.assertEquals("Data nodes with a 'null' data source:\n" + table, 0, table.getRowCount());
 	}
 
+	@Test
+	public void undefinedDataSources() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("general/undefinedDataSource.rq");
+		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assert.assertNotNull(table);
+		Assert.assertEquals("Data nodes with an 'undefined' data source:\n" + table, 0, table.getRowCount());
+	}
+
+	@Test
+	public void undefinedIdentifier() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("general/allUndefinedIdentifiers.rq");
+		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assert.assertNotNull(table);
+		Assert.assertEquals("Data nodes with an 'undefined' identifier:\n" + table, 0, table.getRowCount());
+	}
+
 	@Ignore("This test was predominantly for the WPRDF generation, but in the new generation RDF this no longer causes problems")
 	public void noIdentifierURIs() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/noIdentifierURIs.rq");
