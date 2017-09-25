@@ -70,4 +70,37 @@ public class Genes {
 			0, errorCount
 		);
 	}
+
+	@Test
+	public void affyProbeIdentifiersNotCorrect() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("genes/allAffyProbeIdentifiers.rq");
+		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assert.assertNotNull(table);
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				String pathwayPage = table.get(i, "homepage");
+				if (!pathwayPage.contains("WP2806")) { // this pathway has a number of non-human genes
+					identifier = identifier.trim();
+					if (!identifier.isEmpty()) {
+						if (identifier.contains("CHEBI:")) {
+							errors += table.get(i, "homepage") + " -> " + table.get(i, "label") +
+									", " + table.get(i, "identifier") + "\n ";
+							errorCount++;
+						} else if (identifier.contains("ENS:")) {
+							errors += table.get(i, "homepage") + " -> " + table.get(i, "label") +
+									", " + table.get(i, "identifier") + "\n ";
+							errorCount++;
+						}
+					}
+				}
+			}
+		}
+		Assert.assertEquals(
+			"Affy Probe identifiers that do not look right:\n" + errors,
+			0, errorCount
+		);
+	}
 }
