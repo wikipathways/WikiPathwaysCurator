@@ -28,6 +28,7 @@ package nl.unimaas.bigcat.wikipathways.curator;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import org.apache.jena.rdf.model.Model;
@@ -41,6 +42,7 @@ public class HMDBMetabolites {
 		Assert.assertTrue(data.size() > 5000);
 	}
 
+	@Ignore("This test needs updating for the new HMDB identifiers")
 	@Test(timeout=20000)
 	public void outdatedIdentifiers() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("metabolite/hmdb/outdatedHMDBidentifiers.rq");
