@@ -42,7 +42,6 @@ public class HMDBMetabolites {
 		Assert.assertTrue(data.size() > 5000);
 	}
 
-	@Ignore("This test needs updating for the new HMDB identifiers")
 	@Test(timeout=20000)
 	public void outdatedIdentifiers() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("metabolite/hmdb/outdatedHMDBidentifiers.rq");
