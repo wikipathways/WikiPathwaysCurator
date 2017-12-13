@@ -74,7 +74,7 @@ public class Interactions {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
 				  table.get(i, "protein") + " " + table.get(i, "gene") + " " +
-				  table.get(i, "interaction") + "\n";
+				  table.get(i, "interaction") + " Did you mean wp:TranscriptionTranslation?\n";
 				errorCount++;
 			}
 		}
