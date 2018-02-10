@@ -1,4 +1,4 @@
-/* Copyright (C) 2016  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2016,2018  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -41,8 +41,8 @@ public class Interactions {
 	}
 
 	@Test(timeout=30000)
-	public void noGeneGeneConversions() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("interactions/noGeneGeneConversions.rq");
+	public void noMetaboliteToNonMetaboliteConversions() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("interactions/noMetaboliteNonMetaboliteConversions.rq");
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		String errors = "";
@@ -51,13 +51,35 @@ public class Interactions {
 			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
 				errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
-				  table.get(i, "gene1") + " " + table.get(i, "gene2") + " " +
+				  table.get(i, "metabolite") + " " + table.get(i, "target") + " " +
 				  table.get(i, "interaction") + "\n";
 				errorCount++;
 			}
 		}
 		Assert.assertEquals(
-			"Unexpected gene-gene conversions:\n" + errors,
+			"Unexpected metabolite to non-metabolite conversions:\n" + errors,
+			0, errorCount
+		);
+	}
+
+	@Test(timeout=30000)
+	public void noNonMetaboliteToMetaboliteConversions() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("interactions/noNonMetaboliteMetaboliteConversions.rq");
+		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assert.assertNotNull(table);
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			// OK, but then it must be proteins, e.g. IFN-b
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
+				  table.get(i, "target") + " " + table.get(i, "metabolite") + " " +
+				  table.get(i, "interaction") + "\n";
+				errorCount++;
+			}
+		}
+		Assert.assertEquals(
+			"Unexpected non-metabolite to metabolite conversions:\n" + errors,
 			0, errorCount
 		);
 	}

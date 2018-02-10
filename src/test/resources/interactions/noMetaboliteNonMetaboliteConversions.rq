@@ -1,0 +1,15 @@
+prefix wp:      <http://vocabularies.wikipathways.org/wp#>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix foaf:    <http://xmlns.com/foaf/0.1/>
+
+select (str(?organismName) as ?organism) ?pathway ?metabolite ?target ?interaction where {
+  ?interaction wp:source ?metabolite ;
+    wp:target ?target ;
+    a wp:Conversion ;
+    dcterms:isPartOf/foaf:page ?pathway ;
+    dcterms:isPartOf/wp:organismName ?organismName .
+  VALUES ?type { wp:GeneProduct wp:Rna wp:Protein wp:Complex wp:Pathway }
+  ?target a ?type .
+  FILTER (!sameTerm(?metabolite, ?target))
+  FILTER EXISTS {?metabolite a wp:Metabolite}
+} ORDER BY ASC(?organism)
