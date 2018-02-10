@@ -45,7 +45,27 @@ public class Metabolites {
 		Model data = OPSWPRDFFiles.loadData();
 		Assert.assertTrue(data.size() > 5000);
 	}
-	
+
+	@Test
+	public void metaboliteAlsoOtherType() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("metabolite/badType.rq");
+		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assert.assertNotNull(table);
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			// OK, but then it must be proteins, e.g. IFN-b
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errors += table.get(i, "metabolite") + " is also found to be " + table.get(i, "type") + "\n";
+				errorCount++;
+			}
+		}
+		Assert.assertEquals(
+			"Metabolite is also found to be another type:\n" + errors,
+			0, errorCount
+		);
+	}
+
 	@Test
 	public void casNumbersNotMarkedAsMetabolite() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("metabolite/casNumberNotMarkedAsMetabolite.rq");
