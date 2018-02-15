@@ -3,7 +3,7 @@ prefix dcterms: <http://purl.org/dc/terms/>
 prefix foaf:    <http://xmlns.com/foaf/0.1/>
 
 select (str(?organismName) as ?organism) ?pathway ?metabolite ?target ?targetID ?interaction where {
-  ?target dcterms:identifier ?targetID ;
+  ?target dcterms:identifier ?targetID .
   ?interaction wp:source ?metabolite ;
     wp:target ?target ;
     a wp:Conversion ;
