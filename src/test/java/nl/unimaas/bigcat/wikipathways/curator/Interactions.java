@@ -75,15 +75,20 @@ public class Interactions {
 		String sparql = ResourceHelper.resourceAsString("interactions/noNonMetaboliteMetaboliteConversions.rq");
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
+		Set<String> allowedProducts = new HashSet<String>();
+		allowedProducts.add("http://identifiers.org/hmdb/HMDB04246"); // from KNG1, e.g. in WP
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
-				errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
-				  table.get(i, "target") + " " + table.get(i, "metabolite") + " " +
-				  table.get(i, "interaction") + "\n";
-				errorCount++;
+				String metabolite = table.get(i, "metabolite");
+				if (!allowedProducts.contains(metabolite)) {
+				    errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
+				        table.get(i, "target") + " " + table.get(i, "metabolite") + " " +
+				        table.get(i, "interaction") + "\n";
+				    errorCount++;
+				}
 			}
 		}
 		Assert.assertEquals(
