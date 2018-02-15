@@ -49,7 +49,7 @@ public class Interactions {
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Set<String> allowedProteinProducts = new HashSet<String>();
-		allowedProteinProducts.add("	http://identifiers.org/uniprot/H9ZYJ2"); // theoredoxin, e.g. WP3580
+		allowedProteinProducts.add("http://identifiers.org/uniprot/H9ZYJ2"); // theoredoxin, e.g. WP3580
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
