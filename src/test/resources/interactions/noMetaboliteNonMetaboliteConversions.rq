@@ -2,9 +2,7 @@ prefix wp:      <http://vocabularies.wikipathways.org/wp#>
 prefix dcterms: <http://purl.org/dc/terms/>
 prefix foaf:    <http://xmlns.com/foaf/0.1/>
 
-select (str(?organismName) as ?organism) ?pathway ?metabolite ?target 
-       (str(?targetLit) as ?targetID) ?interaction where {
-  ?target dcterms:identifier ?targetLit .
+select (str(?organismName) as ?organism) ?pathway ?metabolite ?target ?interaction where {
   ?interaction wp:source ?metabolite ;
     wp:target ?target ;
     a wp:Conversion ;
