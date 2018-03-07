@@ -71,6 +71,7 @@ public class ChEBIMetabolites {
 					errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
 						" has " + identifier + " but has primary identifier CHEBI:" +
 						oldToNew.get(identifier) + "\n";
+					errorCount++;
 				}
 			}
 		}
