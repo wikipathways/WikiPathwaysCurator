@@ -56,7 +56,7 @@ public class ChEBIMetabolites {
 
 	@Test(timeout=20000)
 	public void secondaryChEBIIdentifiers() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/chebiNumberNotMarkedAsMetabolite.rq");
+		String sparql = ResourceHelper.resourceAsString("metabolite/allChEBIIdentifiers.rq");
 		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		String errors = "";
 		int errorCount = 0;
@@ -65,7 +65,7 @@ public class ChEBIMetabolites {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String identifier = table.get(i, "identifier");
 				if (identifier.startsWith("CHEBI:")) {
-					identifier = identifier.substring(7);
+					identifier = identifier.substring(6);
 				}
 				if (oldToNew.containsKey(identifier)) {
 					errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
