@@ -77,15 +77,19 @@ public class Interactions {
 		Assert.assertNotNull(table);
 		Set<String> allowedProducts = new HashSet<String>();
 		allowedProducts.add("http://identifiers.org/hmdb/HMDB04246"); // from KNG1, e.g. in WP
+		Set<String> allowedProteinSubstrates = new HashSet<String>();
+		allowedProteinSubstrates.add("http://identifiers.org/uniprot/H9ZYJ2"); // theoredoxin, e.g. WP3580
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String metabolite = table.get(i, "metabolite");
-				if (!allowedProducts.contains(metabolite)) {
+				String nonmetabolite = table.get(i, "target");
+				if (!allowedProducts.contains(metabolite) &&
+					!allowedProteinSubstrates.contains(nonmetabolite)) {
 				    errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
-				        table.get(i, "target") + " " + table.get(i, "metabolite") + " " +
+				    		nonmetabolite + " " + metabolite + " " +
 				        table.get(i, "interaction") + "\n";
 				    errorCount++;
 				}
