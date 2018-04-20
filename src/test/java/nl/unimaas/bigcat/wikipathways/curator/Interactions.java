@@ -77,6 +77,7 @@ public class Interactions {
 		Assert.assertNotNull(table);
 		Set<String> allowedProducts = new HashSet<String>();
 		allowedProducts.add("http://identifiers.org/hmdb/HMDB04246"); // from KNG1, e.g. in WP
+		allowedProducts.add("http://identifiers.org/hmdb/HMDB0004246"); // from KNG1, e.g. in WP
 		Set<String> allowedProteinSubstrates = new HashSet<String>();
 		allowedProteinSubstrates.add("http://identifiers.org/uniprot/H9ZYJ2"); // theoredoxin, e.g. WP3580
 		String errors = "";
