@@ -1,4 +1,5 @@
 +/* Copyright (C) 2018  Egon Willighagen <egon.willighagen@gmail.com>
++ * Copyright (C) 2018  Denise Slenter <dslentermsc@gmail.com>
 + *
 + * All rights reserved.
 + * 
