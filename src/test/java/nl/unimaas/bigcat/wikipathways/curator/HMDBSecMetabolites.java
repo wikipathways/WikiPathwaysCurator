@@ -35,7 +35,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class HMDBMetabolites {
+public class HMDBSecMetabolites {
 
 	private static Map<String,String> oldToNew = new HashMap<String, String>();
 
