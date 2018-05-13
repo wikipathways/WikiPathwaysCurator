@@ -60,7 +60,9 @@ public class BridgeDbMappings {
 	public void hasSomeHMDBMappings() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/hasHMDBMappings.rq");
 		Assert.assertNotNull(sparql);
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertNotSame("Expected some mapped HMDB identifiers.", 0, table.getRowCount());
 	}
@@ -69,7 +71,9 @@ public class BridgeDbMappings {
 	public void hasSomeChemSpiderMappings() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/hasChemSpiderMappings.rq");
 		Assert.assertNotNull(sparql);
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertNotSame("Expected some mapped ChemSpider identifiers.", 0, table.getRowCount());
 	}
@@ -78,7 +82,9 @@ public class BridgeDbMappings {
 	public void hasSomeEnsemblMappings() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/hasEnsemblMappings.rq");
 		Assert.assertNotNull(sparql);
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertNotSame("Expected some mapped Ensembl identifiers.", 0, table.getRowCount());
 	}
@@ -87,7 +93,9 @@ public class BridgeDbMappings {
 	public void hasSomeUniprotMappings() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/hasUniprotMappings.rq");
 		Assert.assertNotNull(sparql);
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertNotSame("Expected some mapped Uniprot identifiers.", 0, table.getRowCount());
 	}
