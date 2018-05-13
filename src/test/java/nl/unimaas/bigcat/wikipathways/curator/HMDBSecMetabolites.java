@@ -61,12 +61,28 @@ public class HMDBSecMetabolites {
 
 	@Test(timeout=20000)
 	public void outdatedIdentifiers() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/hmdb/outdatedHMDBidentifiers.rq");
-		Assert.assertNotNull(sparql);
+		String sparql = ResourceHelper.resourceAsString("metabolite/allHMDBIdentifiers.rq");
 		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
-		Assert.assertEquals("Outdated HMDB identifiers:\n" + table, 0, table.getRowCount());
+		String errors = "";
+		int errorCount = 0;
+		Assert.assertNotSame("I expected more than zero HMDB identifiers.", 0, table.getRowCount());
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				System.out.println("Testing " + identifier);
+				if (oldToNew.containsKey(identifier)) {
+					errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+						" has " + identifier + " but has primary identifier HMDB:" +
+						oldToNew.get(identifier) + "\n";
+					errorCount++;
+				}
+			}
+		}
+		Assert.assertEquals(
+			"Secondary HMDB identifiers detected:\n" + errors,
+			0, errorCount
+		);
 	}
 }
