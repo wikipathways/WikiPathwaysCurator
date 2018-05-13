@@ -1,4 +1,4 @@
-/* Copyright (C) 2013  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2013,2018  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -48,6 +48,10 @@ public class OPSWPRDFFiles {
 	private static String parseErrors = "";
 	
 	public static Model loadData() throws InterruptedException {
+		if (System.getProperty("SPARQLEP").startsWith("http")) {
+			return null;
+		}
+
 		if (loadedData != null) return loadedData;
 
 		while (locked) Thread.sleep(1000);

@@ -1,4 +1,4 @@
-/* Copyright (C) 2013  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2013,2018  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -37,14 +37,21 @@ public class General {
 
 	@BeforeClass
 	public static void loadData() throws InterruptedException {
-		Model data = OPSWPRDFFiles.loadData();
-		Assert.assertTrue(data.size() > 5000);
+		if (System.getProperty("SPARQLEP").startsWith("http")) {
+			// ok, assume the SPARQL end point is online
+			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
+		} else {
+			Model data = OPSWPRDFFiles.loadData();
+			Assert.assertTrue(data.size() > 5000);
+		}
 	}
 	
 	@Test
 	public void nullDataSources() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/nullDataSource.rq");
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Data nodes with a 'null' data source:\n" + table, 0, table.getRowCount());
 	}
@@ -52,7 +59,9 @@ public class General {
 	@Test
 	public void undefinedDataSources() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/undefinedDataSource.rq");
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Data nodes with an 'undefined' data source:\n" + table, 0, table.getRowCount());
 	}
@@ -60,7 +69,9 @@ public class General {
 	@Test
 	public void undefinedIdentifier() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/allUndefinedIdentifiers.rq");
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Data nodes with an 'undefined' identifier:\n" + table, 0, table.getRowCount());
 	}
@@ -68,7 +79,9 @@ public class General {
 	@Ignore("This test was predominantly for the WPRDF generation, but in the new generation RDF this no longer causes problems")
 	public void noIdentifierURIs() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/noIdentifierURIs.rq");
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Data nodes with a 'noIdentifier' URI:\n" + table, 0, table.getRowCount());
 	}
@@ -76,7 +89,9 @@ public class General {
 	@Test
 	public void emptyLabelOfNodeWithIdentifier() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/emptyLabelsWithIdentifiers.rq");
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Data nodes with an identifier but empty label:\n" + table, 0, table.getRowCount());
 	}
@@ -84,7 +99,9 @@ public class General {
 	@Test
 	public void dataNodeWithoutGraphId() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("structure/dataNodeWithoutGraphId.rq");
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Data nodes without @GraphId:\n" + table, 0, table.getRowCount());
 	}
@@ -92,7 +109,9 @@ public class General {
 	@Test
 	public void groupsHaveDetail() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("structure/groupDetails.rq");
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Expected details for things of type gpml:Group: " + table, 0, table.getRowCount());
 	}
@@ -100,7 +119,9 @@ public class General {
 	@Test
 	public void nodesHaveTypedParents() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("structure/nodesHaveTypedParents.rq");
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Parents of DataNodes should be typed: " + table, 0, table.getRowCount());
 	}
@@ -108,7 +129,9 @@ public class General {
 	@Ignore("Apparently, groups without a type are a common use case; examples are WP2940 and WP2543.")
 	public void nodesPointingToUnspecifiedGroups() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("structure/nodesInEmptyGroups.rq");
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Nodes should not be part of unspecified groups: " + table, 0, table.getRowCount());
 	}

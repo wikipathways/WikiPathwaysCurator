@@ -1,4 +1,4 @@
-/* Copyright (C) 2015  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2015,2018  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -37,9 +37,13 @@ public class EnsemblGenes {
 
 	@BeforeClass
 	public static void loadData() throws InterruptedException {
-		OPSWPRDFFiles.loadData();
-		Model data = OPSWPRDFFiles.loadData();
-		Assert.assertTrue(data.size() > 5000);
+		if (System.getProperty("SPARQLEP").startsWith("http")) {
+			// ok, assume the SPARQL end point is online
+			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
+		} else {
+			Model data = OPSWPRDFFiles.loadData();
+			Assert.assertTrue(data.size() > 5000);
+		}
 	}
 
 	@Test(timeout=50000)
@@ -47,7 +51,9 @@ public class EnsemblGenes {
 		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Human.rq");
 		Assert.assertNotNull(sparql);
 		System.out.println("Wrong Ensembl gene for human for: " + System.getProperty("SUBSETPREFIX"));
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		String errors = "";
 		int errorCount = 0;
@@ -79,7 +85,9 @@ public class EnsemblGenes {
 		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Rat.rq");
 		Assert.assertNotNull(sparql);
 		System.out.println("Wrong Ensembl gene for rat for: " + System.getProperty("SUBSETPREFIX"));
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals(
 			"Ensembl identifiers for wrong species for a rat pathway:\n" + table,
@@ -92,7 +100,9 @@ public class EnsemblGenes {
 		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Mouse.rq");
 		Assert.assertNotNull(sparql);
 		System.out.println("Wrong Ensembl gene for mouse for: " + System.getProperty("SUBSETPREFIX"));
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		String errors = "";
 		int errorCount = 0;
@@ -127,7 +137,9 @@ public class EnsemblGenes {
 		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Cow.rq");
 		Assert.assertNotNull(sparql);
 		System.out.println("Wrong Ensembl gene for cow for: " + System.getProperty("SUBSETPREFIX"));
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals(
 			"Ensembl identifiers for wrong species for a cow pathway:\n" + table,

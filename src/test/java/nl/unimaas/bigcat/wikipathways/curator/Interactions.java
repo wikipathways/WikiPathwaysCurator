@@ -39,14 +39,21 @@ public class Interactions {
 
 	@BeforeClass
 	public static void loadData() throws InterruptedException {
-		Model data = OPSWPRDFFiles.loadData();
-		Assert.assertTrue(data.size() > 5000);
+		if (System.getProperty("SPARQLEP").startsWith("http")) {
+			// ok, assume the SPARQL end point is online
+			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
+		} else {
+			Model data = OPSWPRDFFiles.loadData();
+			Assert.assertTrue(data.size() > 5000);
+		}
 	}
 
 	@Test(timeout=30000)
 	public void noMetaboliteToNonMetaboliteConversions() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("interactions/noMetaboliteNonMetaboliteConversions.rq");
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Set<String> allowedProteinProducts = new HashSet<String>();
 		allowedProteinProducts.add("http://identifiers.org/uniprot/H9ZYJ2"); // theoredoxin, e.g. WP3580
@@ -73,7 +80,9 @@ public class Interactions {
 	@Test(timeout=30000)
 	public void noNonMetaboliteToMetaboliteConversions() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("interactions/noNonMetaboliteMetaboliteConversions.rq");
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Set<String> allowedProducts = new HashSet<String>();
 		allowedProducts.add("http://identifiers.org/hmdb/HMDB04246"); // from KNG1, e.g. in WP
@@ -105,7 +114,9 @@ public class Interactions {
 	@Test(timeout=30000)
 	public void noGeneProteinConversions() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("interactions/noGeneProteinConversions.rq");
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		String errors = "";
 		int errorCount = 0;
@@ -127,7 +138,9 @@ public class Interactions {
 	@Test(timeout=30000)
 	public void noProteinProteinConversions() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("interactions/noProteinProteinConversions.rq");
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		String errors = "";
 		int errorCount = 0;

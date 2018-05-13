@@ -1,4 +1,4 @@
-/* Copyright (C) 2014  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2014,2018  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -37,15 +37,22 @@ public class OudatedDataSources {
 
 	@BeforeClass
 	public static void loadData() throws InterruptedException {
-		Model data = OPSWPRDFFiles.loadData();
-		Assert.assertTrue(data.size() > 5000);
+		if (System.getProperty("SPARQLEP").startsWith("http")) {
+			// ok, assume the SPARQL end point is online
+			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
+		} else {
+			Model data = OPSWPRDFFiles.loadData();
+			Assert.assertTrue(data.size() > 5000);
+		}
 	}
 
 	@Test(timeout=10000)
 	public void outdatedUniprot() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/uniprot.rq");
 		Assert.assertNotNull(sparql);
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Outdated 'Uniprot' data sources (use 'Uniprot-TrEMBL'):\n" + table, 0, table.getRowCount());
 	}
@@ -54,7 +61,9 @@ public class OudatedDataSources {
 	public void outdatedUniprot2() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/uniprot2.rq");
 		Assert.assertNotNull(sparql);
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Outdated 'UniProt/TrEMBL' data sources (use 'Uniprot-TrEMBL'):\n" + table, 0, table.getRowCount());
 	}
@@ -63,7 +72,9 @@ public class OudatedDataSources {
 	public void outdatedUniprot3() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/uniprot3.rq");
 		Assert.assertNotNull(sparql);
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Outdated 'Uniprot/TrEMBL' data sources (use 'Uniprot-TrEMBL'):\n" + table, 0, table.getRowCount());
 	}
@@ -72,7 +83,9 @@ public class OudatedDataSources {
 	public void outdatedUniprot4() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/uniprot4.rq");
 		Assert.assertNotNull(sparql);
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Outdated 'UniProt' data sources (use 'Uniprot-TrEMBL'):\n" + table, 0, table.getRowCount());
 	}
@@ -81,7 +94,9 @@ public class OudatedDataSources {
 	public void oldUniprotSwissProt() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/swissprot.rq");
 		Assert.assertNotNull(sparql);
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Outdated 'Uniprot-SwissProt' data sources (use 'Uniprot-TrEMBL'):\n" + table, 0, table.getRowCount());
 	}
@@ -90,7 +105,9 @@ public class OudatedDataSources {
 	public void wrongPubChem() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/pubchem.rq");
 		Assert.assertNotNull(sparql);
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		// the metabolite test pathway has one outdated PubChem deliberately (WP2582)
 		Assert.assertTrue("Outdated 'PubChem' data sources (use 'PubChem-compound' or 'PubChem-substance'):\n" + table, table.getRowCount() <= 1);
@@ -100,7 +117,9 @@ public class OudatedDataSources {
 	public void noInChIDataSourceYet() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/inchi.rq");
 		Assert.assertNotNull(sparql);
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Don't use 'InChI' data sources yet, but found:\n" + table, 0, table.getRowCount());
 	}
@@ -109,7 +128,9 @@ public class OudatedDataSources {
 	public void noInChIKeyDataSourceYet() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/inchikey.rq");
 		Assert.assertNotNull(sparql);
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Don't use 'InChIKey' data sources yet, but found:\n" + table, 0, table.getRowCount());
 	}
@@ -118,7 +139,9 @@ public class OudatedDataSources {
 	public void outdatedKeggCompoundDataSource() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/keggcompound.rq");
 		Assert.assertNotNull(sparql);
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		// the metabolite test pathway has one outdated Kegg Compound deliberately (WP2582)
 		Assert.assertTrue("Outdated 'Kegg Compound' data sources (use 'KEGG Compound'):\n" + table, table.getRowCount() <= 1);
@@ -128,7 +151,9 @@ public class OudatedDataSources {
 	public void outdatedKeggOrthologDataSource() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/keggortholog.rq");
 		Assert.assertNotNull(sparql);
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		// the metabolite test pathway has one outdated Kegg Compound deliberately (WP2582)
 		Assert.assertTrue("Outdated 'Kegg ortholog' data sources:\n" + table, table.getRowCount() <= 1);
@@ -138,7 +163,9 @@ public class OudatedDataSources {
 	public void outdatedKeggEnzymeDataSource() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/keggenzyme.rq");
 		Assert.assertNotNull(sparql);
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		// the metabolite test pathway has one outdated Kegg enzyme deliberately (WP2582)
 		Assert.assertTrue("Outdated 'Kegg enzyme' data sources:\n" + table, table.getRowCount() <= 1);
@@ -148,7 +175,9 @@ public class OudatedDataSources {
 	public void outdatedEnsemblMouseDataSource() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/ensembl.rq");
 		Assert.assertNotNull(sparql);
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertTrue("Outdated 'Ensembl Mouse' data sources (use 'Ensembl'):\n" + table, table.getRowCount() < 1);
 	}
@@ -157,7 +186,9 @@ public class OudatedDataSources {
 	public void outdatedEnsemblHumanDataSource() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/ensembl2.rq");
 		Assert.assertNotNull(sparql);
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertTrue("Outdated 'Ensembl Human' data sources (use 'Ensembl'):\n" + table, table.getRowCount() < 1);
 	}
@@ -166,7 +197,9 @@ public class OudatedDataSources {
 	public void outdatedEnsemblYeastDataSource() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/ensembl3.rq");
 		Assert.assertNotNull(sparql);
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertTrue("Outdated 'Ensembl Yeast' data sources (use 'Ensembl'):\n" + table, table.getRowCount() < 1);
 	}
@@ -175,7 +208,9 @@ public class OudatedDataSources {
 	public void outdatedEnsemblCowDataSource() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/ensembl4.rq");
 		Assert.assertNotNull(sparql);
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertTrue("Outdated 'Ensembl Cow' data sources (use 'Ensembl'):\n" + table, table.getRowCount() < 1);
 	}
@@ -184,7 +219,9 @@ public class OudatedDataSources {
 	public void outdatedECNumberDataSource() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/ecNumber.rq");
 		Assert.assertNotNull(sparql);
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertTrue("Outdated 'EC Number' data sources (use 'Enzyme Nomenclature'):\n" + table, table.getRowCount() < 1);
 	}
@@ -193,7 +230,9 @@ public class OudatedDataSources {
 	public void outdatedChemSpiderDataSource() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/chemspider.rq");
 		Assert.assertNotNull(sparql);
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertTrue("Outdated 'ChemSpider' data sources (use 'Chemspider'):\n" + table, table.getRowCount() < 1);
 	}

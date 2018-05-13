@@ -1,4 +1,4 @@
-/* Copyright (C) 2013  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2013,2018  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -39,14 +39,21 @@ public class MetaboliteStructure {
 
 	@BeforeClass
 	public static void loadData() throws InterruptedException {
-		Model data = OPSWPRDFFiles.loadData();
-		Assert.assertTrue(data.size() > 5000);
+		if (System.getProperty("SPARQLEP").startsWith("http")) {
+			// ok, assume the SPARQL end point is online
+			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
+		} else {
+			Model data = OPSWPRDFFiles.loadData();
+			Assert.assertTrue(data.size() > 5000);
+		}
 	}
 	
 	@Test
 	public void nullDataSources() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("structure/metaboliteClass.rq");
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertTrue(
 			"Unexpectedly low metabolite count:\n" + table.getRowCount(),
@@ -57,7 +64,9 @@ public class MetaboliteStructure {
 	@Test
 	public void isPartOfAPathway() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("structure/isPartOfAPathway.rq");
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Found metabolites that are not part of a pathway:\n" + table, 0, table.getRowCount());
 	}

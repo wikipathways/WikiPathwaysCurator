@@ -1,4 +1,4 @@
-/* Copyright (C) 2013  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2013,2018  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -36,14 +36,21 @@ public class References {
 
 	@BeforeClass
 	public static void loadData() throws InterruptedException {
-		Model data = OPSWPRDFFiles.loadData();
-		Assert.assertTrue(data.size() > 5000);
+		if (System.getProperty("SPARQLEP").startsWith("http")) {
+			// ok, assume the SPARQL end point is online
+			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
+		} else {
+			Model data = OPSWPRDFFiles.loadData();
+			Assert.assertTrue(data.size() > 5000);
+		}
 	}
 	
 	@Test
 	public void nonNumericPubMedIDs() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("references/nonNumericPubMedIDs.rq");
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		String errors = "";
 		if (table.getRowCount() > 0) {
 			// OK, but then it must be proteins, e.g. IFN-b
@@ -68,7 +75,9 @@ public class References {
 	@Test
 	public void zeroPubMedIDs() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("references/nonNumericPubMedIDs.rq");
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		String errors = "";
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
