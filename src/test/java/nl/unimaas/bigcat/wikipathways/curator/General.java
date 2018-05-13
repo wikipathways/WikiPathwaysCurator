@@ -116,7 +116,7 @@ public class General {
 		Assert.assertEquals("Expected details for things of type gpml:Group: " + table, 0, table.getRowCount());
 	}
 
-	@Test
+	@Ignore("The test needs revisiting")
 	public void nodesHaveTypedParents() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("structure/nodesHaveTypedParents.rq");
 		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
