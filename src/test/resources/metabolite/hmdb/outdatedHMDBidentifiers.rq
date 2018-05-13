@@ -9,7 +9,7 @@ select distinct ?identifier ?homepage
 where {
   ?mb a wp:Metabolite ;
     dc:source "HMDB"^^xsd:string ;
-    dc:identifier ?identifier ;
+    dcterms:identifier ?identifier ;
     dcterms:isPartOf ?pathway .
   ?pathway foaf:page ?homepage .
   OPTIONAL { ?mb  wp:bdbHmdb ?bridgedb . }
