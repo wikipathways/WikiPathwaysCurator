@@ -27,19 +27,18 @@
 package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.junit.Assert;
-import org.junit.Test;
 
 import org.apache.jena.n3.turtle.TurtleParseException;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.riot.RiotException;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class OPSWPRDFFiles {
 
@@ -85,7 +84,7 @@ public class OPSWPRDFFiles {
 		loadedData = ModelFactory.createDefaultModel();
 		for (File file : files) {
 			try {
-				loadedData.read(new FileReader(file), "", "TURTLE");
+				loadedData.read(new FileInputStream(file), "", "TURTLE");
 			} catch (FileNotFoundException exception) {
 				parseFailReport.append(file.getName())
 			    .append(": not found\n");
