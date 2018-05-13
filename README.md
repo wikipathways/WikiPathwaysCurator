@@ -1,6 +1,11 @@
-Unit tests for curating WikiPathways using SPARQL.
+# Unit tests for curating WikiPathways using SPARQL.
 
-License: MIT license
+This code base runs a number of SPARQL queries wrapped in JUnit files to detect
+issues in the GPML content, by assessing the WPRDF.
+
+## License
+
+MIT license
 
 # Running the tests
 
