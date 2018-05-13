@@ -71,11 +71,14 @@ public class HMDBSecMetabolites {
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String identifier = table.get(i, "identifier");
+				if (identifier.length() == 11) identifier.replace("HMDB00", "HMDB");
 				if (oldToNew.containsKey(identifier)) {
-					errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
-						" has " + identifier + " but has primary identifier " +
-						oldToNew.get(identifier) + "\n";
-					errorCount++;
+					String primID = oldToNew.get(identifier);
+					if (!primID.equals(identifier.replace("HMDB", "HMDB00"))) { // ignore longer format
+  					    errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+						    " has " + identifier + " but has primary identifier " + primID + "\n";
+					    errorCount++;
+					}
 				}
 			}
 		}
