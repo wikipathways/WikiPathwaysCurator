@@ -74,7 +74,7 @@ public class HMDBSecMetabolites {
 				System.out.println("Testing " + identifier);
 				if (oldToNew.containsKey(identifier)) {
 					errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
-						" has " + identifier + " but has primary identifier HMDB:" +
+						" has " + identifier + " but has primary identifier " +
 						oldToNew.get(identifier) + "\n";
 					errorCount++;
 				}
