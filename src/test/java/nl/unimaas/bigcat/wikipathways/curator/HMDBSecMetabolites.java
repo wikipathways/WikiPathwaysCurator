@@ -41,9 +41,13 @@ public class HMDBSecMetabolites {
 
 	@BeforeClass
 	public static void loadData() throws InterruptedException {
-		OPSWPRDFFiles.loadData();
-		Model data = OPSWPRDFFiles.loadData();
-		Assert.assertTrue(data.size() > 5000);
+		if (System.getProperty("SPARQLEP").startsWith("http")) {
+			// ok, assume the SPARQL end point is online
+			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
+		} else {
+			Model data = OPSWPRDFFiles.loadData();
+			Assert.assertTrue(data.size() > 5000);
+		}
 
 		// now load the deprecation data
 		String deprecatedData = ResourceHelper.resourceAsString("metabolite/hmdb/HMDBDataSecondaryAll_Final.csv");
@@ -59,7 +63,9 @@ public class HMDBSecMetabolites {
 	public void outdatedIdentifiers() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("metabolite/hmdb/outdatedHMDBidentifiers.rq");
 		Assert.assertNotNull(sparql);
-		StringMatrix table = SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assert.assertNotNull(table);
 		Assert.assertEquals("Outdated HMDB identifiers:\n" + table, 0, table.getRowCount());
 	}
