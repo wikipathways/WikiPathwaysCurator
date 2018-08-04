@@ -39,6 +39,7 @@ public class CASMetabolites {
 	@SuppressWarnings({ "serial" })
 	private static final Map<String,String> deprecated = new HashMap<String,String>() {{
 		put("2646-71-1", "53-57-6"); // the first is a salt of the second
+		put("142-10-9", "591-57-1"); // the first is a stereo-aspecific version of the second
 	}};
 
 	@BeforeClass
