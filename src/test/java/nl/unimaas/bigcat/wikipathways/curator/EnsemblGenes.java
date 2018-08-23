@@ -28,12 +28,19 @@ package nl.unimaas.bigcat.wikipathways.curator;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.jena.rdf.model.Model;
 
 public class EnsemblGenes {
+
+	@SuppressWarnings({ "serial" })
+	private static final Map<String,String> deprecated = new HashMap<String,String>() {{
+		put("ENSG00000199004", "ENSG00000284190"); // old MIR21 identifier
+	}};
 
 	@BeforeClass
 	public static void loadData() throws InterruptedException {
@@ -44,6 +51,32 @@ public class EnsemblGenes {
 			Model data = OPSWPRDFFiles.loadData();
 			Assert.assertTrue(data.size() > 5000);
 		}
+	}
+
+	@Test(timeout=20000)
+	public void outdatedIdentifiers() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("genes/allEnsemblIdentifiers.rq");
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assert.assertNotNull(table);
+		Assert.assertNotSame(0, table.getColumnCount());
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				if (deprecated.containsKey(identifier)) {
+					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " + table.get(i, "identifier") +
+							  " should be " + deprecated.get(identifier) + "; ";
+					errorCount++;
+				}
+			}
+		}
+		Assert.assertEquals(
+			"Deprecated Ensembl identifiers:\n" + errors,
+			0, errorCount
+		);
 	}
 
 	@Test(timeout=50000)
