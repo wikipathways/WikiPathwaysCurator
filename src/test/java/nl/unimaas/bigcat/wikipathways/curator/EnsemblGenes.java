@@ -40,6 +40,12 @@ public class EnsemblGenes {
 	@SuppressWarnings({ "serial" })
 	private static final Map<String,String> deprecated = new HashMap<String,String>() {{
 		put("ENSG00000199004", "ENSG00000284190"); // old MIR21 identifier
+		put("ENSG00000132142", "ENSG00000132142.1");
+		put("ENSG00000011177", "ENSG00000011177.5");
+		put("ENSG00000079782", "ENSG00000079782.8");
+		put("ENSG00000096087", "ENSG00000096087.5");
+		put("ENSG00000105663", "ENSG00000105663.1");
+		put("ENSG00000172070", "ENSG00000172070.5");
 	}};
 
 	@BeforeClass
@@ -68,7 +74,7 @@ public class EnsemblGenes {
 				String identifier = table.get(i, "identifier");
 				if (deprecated.containsKey(identifier)) {
 					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " + table.get(i, "identifier") +
-							  " should be " + deprecated.get(identifier) + "; ";
+							  " is deprecated and possibly replaced by " + deprecated.get(identifier) + "; ";
 					errorCount++;
 				}
 			}
