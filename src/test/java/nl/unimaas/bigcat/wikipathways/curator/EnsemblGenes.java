@@ -106,7 +106,7 @@ public class EnsemblGenes {
 				String identifier = table.get(i, "identifier");
 				if (deprecated.containsKey(identifier)) {
 					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " + table.get(i, "identifier") +
-							  " is deprecated and possibly replaced by " + deprecated.get(identifier) + "; ";
+							  " is deprecated and possibly replaced by " + deprecated.get(identifier) + "; \n";
 					errorCount++;
 				}
 			}
