@@ -26,7 +26,9 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.jena.rdf.model.Model;
@@ -37,6 +39,9 @@ import org.junit.Test;
 public class ChEBIMetabolites {
 
 	private static Map<String,String> oldToNew = new HashMap<String, String>();
+
+	private static List<String> nonexisting = new ArrayList<String>();
+	static {{ nonexisting.add(""); }}
 
 	@BeforeClass
 	public static void loadData() throws InterruptedException {
@@ -77,6 +82,36 @@ public class ChEBIMetabolites {
 					errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
 						" has " + identifier + " but has primary identifier CHEBI:" +
 						oldToNew.get(identifier) + "\n";
+					errorCount++;
+				}
+			}
+		}
+		Assert.assertEquals(
+			"Secondary ChEBI identifiers detected:\n" + errors,
+			0, errorCount
+		);
+	}
+
+	@Test(timeout=20000)
+	public void faultyChEBIIdentifiers() throws Exception {
+		Assert.assertNotSame("Unepxected empty list of unexpected identifiers", 0, nonexisting.size());
+		String sparql = ResourceHelper.resourceAsString("metabolite/allChEBIIdentifiers.rq");
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			// OK, but then it must be proteins, e.g. IFN-b
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				if (identifier.startsWith("CHEBI:")) {
+					identifier = identifier.substring(6);
+				}
+				if (nonexisting.contains(identifier)) {
+					errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+						" has a non-existing identifier CHEBI:" +
+						identifier + "\n";
 					errorCount++;
 				}
 			}
