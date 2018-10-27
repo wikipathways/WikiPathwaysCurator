@@ -41,7 +41,10 @@ public class ChEBIMetabolites {
 	private static Map<String,String> oldToNew = new HashMap<String, String>();
 
 	private static List<String> nonexisting = new ArrayList<String>();
-	static {{ nonexisting.add(""); }}
+	static {{
+		  nonexisting.add("443041");
+		  nonexisting.add("594834");
+	}}
 
 	@BeforeClass
 	public static void loadData() throws InterruptedException {
