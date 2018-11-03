@@ -64,6 +64,7 @@
           <includes>
             <include>**/*.java</include>
           </includes>
+          <excludedGroups>outdated</excludedGroups>
         </configuration>
       </plugin>
     </plugins>
