@@ -26,13 +26,14 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.jena.rdf.model.Model;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class CASMetabolites {
 
@@ -42,41 +43,43 @@ public class CASMetabolites {
 		put("142-10-9", "591-57-1"); // the first is a stereo-aspecific version of the second
 	}};
 
-	@BeforeClass
+	@BeforeAll
 	public static void loadData() throws InterruptedException {
 		if (System.getProperty("SPARQLEP").startsWith("http")) {
 			// ok, assume the SPARQL end point is online
 			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
 		} else {
 			Model data = OPSWPRDFFiles.loadData();
-			Assert.assertTrue(data.size() > 5000);
+			Assertions.assertTrue(data.size() > 5000);
 		}
 	}
 
-	@Test(timeout=20000)
+	@Test
 	public void outdatedIdentifiers() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("metabolite/allCASIdentifiers.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
-		Assert.assertNotSame(0, table.getColumnCount());
-		String errors = "";
-		int errorCount = 0;
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				String identifier = table.get(i, "identifier");
-				if (deprecated.containsKey(identifier)) {
-					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " + table.get(i, "identifier") +
-							  " should be " + deprecated.get(identifier) + "; ";
-					errorCount++;
+		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+			Assertions.assertNotNull(table);
+			Assertions.assertNotSame(0, table.getColumnCount());
+			String errors = "";
+			int errorCount = 0;
+			if (table.getRowCount() > 0) {
+				for (int i=1; i<=table.getRowCount(); i++) {
+					String identifier = table.get(i, "identifier");
+					if (deprecated.containsKey(identifier)) {
+						errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " + table.get(i, "identifier") +
+							" should be " + deprecated.get(identifier) + "; ";
+						errorCount++;
+					}
 				}
 			}
-		}
-		Assert.assertEquals(
-			"Deprecated CAS Registry numbers for non-metabolites:\n" + errors,
-			0, errorCount
-		);
+			final String finalErrors = errors;
+			Assertions.assertEquals(
+				0, errorCount, () -> "Deprecated CAS Registry numbers for non-metabolites:\n" + finalErrors
+			);
+		});
 	}
 
 }
