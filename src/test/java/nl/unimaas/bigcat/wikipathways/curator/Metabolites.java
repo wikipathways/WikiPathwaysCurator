@@ -32,22 +32,21 @@ import java.util.Set;
 import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
 import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import org.apache.jena.rdf.model.Model;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class Metabolites {
 
-	@BeforeClass
+	@BeforeAll
 	public static void loadData() throws InterruptedException {
 		if (System.getProperty("SPARQLEP").startsWith("http")) {
 			// ok, assume the SPARQL end point is online
 			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
 		} else {
 			Model data = OPSWPRDFFiles.loadData();
-			Assert.assertTrue(data.size() > 5000);
+			Assertions.assertTrue(data.size() > 5000);
 		}
 	}
 
@@ -57,7 +56,7 @@ public class Metabolites {
 		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
+		Assertions.assertNotNull(table);
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -67,9 +66,8 @@ public class Metabolites {
 				errorCount++;
 			}
 		}
-		Assert.assertEquals(
-			"Metabolite is also found to be another type:\n" + errors,
-			0, errorCount
+		Assertions.assertEquals(
+		    0, errorCount, "Metabolite is also found to be another type:\n" + errors
 		);
 	}
 
@@ -79,7 +77,7 @@ public class Metabolites {
 		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
+		Assertions.assertNotNull(table);
 		Set<String> allowedProteins = new HashSet<String>();
 		allowedProteins.add("IFN-b");
 		String errors = "";
@@ -93,9 +91,8 @@ public class Metabolites {
 				}
 			}
 		}
-		Assert.assertEquals(
-			"Unexpected CAS identifiers for non-metabolites:\n" + errors,
-			0, errorCount
+		Assertions.assertEquals(
+			0, errorCount, "Unexpected CAS identifiers for non-metabolites:\n" + errors
 		);
 	}
 
@@ -105,8 +102,8 @@ public class Metabolites {
 		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
-		Assert.assertEquals("Unexpected ChemSpider identifiers for non-metabolites:\n" + table, 0, table.getRowCount());
+		Assertions.assertNotNull(table);
+		Assertions.assertEquals(0, table.getRowCount(), "Unexpected ChemSpider identifiers for non-metabolites:\n" + table);
 	}
 
 	@Test
@@ -132,9 +129,8 @@ public class Metabolites {
 				}
 			}
 		}
-		Assert.assertEquals(
-			"Unexpected ChEBI identifiers for non-metabolites:\n" + errors,
-			0, errorCount
+		Assertions.assertEquals(
+			0, errorCount, "Unexpected ChEBI identifiers for non-metabolites:\n" + errors
 		);
 	}
 
@@ -144,8 +140,8 @@ public class Metabolites {
 		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
-		Assert.assertEquals("Unexpected HMDB identifiers for non-metabolites:\n" + table, 0, table.getRowCount());
+		Assertions.assertNotNull(table);
+		Assertions.assertEquals(0, table.getRowCount(), "Unexpected HMDB identifiers for non-metabolites:\n" + table);
 	}
 
 	@Test
@@ -154,8 +150,8 @@ public class Metabolites {
 		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
-		Assert.assertEquals("Unexpected KEGG identifiers for non-metabolites:\n" + table, 0, table.getRowCount());
+		Assertions.assertNotNull(table);
+		Assertions.assertEquals(0, table.getRowCount(), "Unexpected KEGG identifiers for non-metabolites:\n" + table);
 	}
 
 	@Test
@@ -164,7 +160,7 @@ public class Metabolites {
 		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
+		Assertions.assertNotNull(table);
 		Set<String> allowedProteins = new HashSet<String>();
 		allowedProteins.add("Fibrin");
 		String errors = "";
@@ -178,9 +174,8 @@ public class Metabolites {
 				}
 			}
 		}
-		Assert.assertEquals(
-			"Unexpected PubChem identifiers for non-metabolites:\n" + errors,
-			0, errorCount
+		Assertions.assertEquals(
+			0, errorCount, "Unexpected PubChem identifiers for non-metabolites:\n" + errors
 		);
 	}
 
@@ -190,7 +185,7 @@ public class Metabolites {
 		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
+		Assertions.assertNotNull(table);
 		Set<String> allowedProteins = new HashSet<String>();
 		String errors = "";
 		int errorCount = 0;
@@ -203,9 +198,8 @@ public class Metabolites {
 				}
 			}
 		}
-		Assert.assertEquals(
-			"Unexpected PubChem Substance identifiers for non-metabolites:\n" + errors,
-			0, errorCount
+		Assertions.assertEquals(
+			0, errorCount, "Unexpected PubChem Substance identifiers for non-metabolites:\n" + errors
 		);
 	}
 
@@ -215,7 +209,7 @@ public class Metabolites {
 		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
+		Assertions.assertNotNull(table);
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -229,9 +223,8 @@ public class Metabolites {
 				}
 			}
 		}
-		Assert.assertEquals(
-			"Unexpected PubChem Compound identifiers for non-metabolites:\n" + errors,
-			0, errorCount
+		Assertions.assertEquals(
+			0, errorCount, "Unexpected PubChem Compound identifiers for non-metabolites:\n" + errors
 		);
 	}
 
@@ -241,7 +234,7 @@ public class Metabolites {
 		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
+		Assertions.assertNotNull(table);
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -255,9 +248,8 @@ public class Metabolites {
 				}
 			}
 		}
-		Assert.assertEquals(
-			"Unexpected PubChem Substance identifiers for non-metabolites:\n" + errors,
-			0, errorCount
+		Assertions.assertEquals(
+			0, errorCount, "Unexpected PubChem Substance identifiers for non-metabolites:\n" + errors
 		);
 	}
 
@@ -267,8 +259,8 @@ public class Metabolites {
 		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
-		Assert.assertEquals("Unexpected metabolites with identifier but no database source:\n" + table, 0, table.getRowCount());
+		Assertions.assertNotNull(table);
+		Assertions.assertEquals(0, table.getRowCount(), "Unexpected metabolites with identifier but no database source:\n" + table);
 	}
 
 	@Test
@@ -277,8 +269,8 @@ public class Metabolites {
 		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
-		Assert.assertEquals("Unexpected metabolites with identifier but no database source:\n" + table, 0, table.getRowCount());
+		Assertions.assertNotNull(table);
+		Assertions.assertEquals(0, table.getRowCount(), "Unexpected metabolites with identifier but no database source:\n" + table);
 	}
 
 	@Test
@@ -287,8 +279,8 @@ public class Metabolites {
 		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
-		Assert.assertEquals("Unexpected metabolites with an Entrez Gene identifier:\n" + table, 0, table.getRowCount());
+		Assertions.assertNotNull(table);
+		Assertions.assertEquals(0, table.getRowCount(), "Unexpected metabolites with an Entrez Gene identifier:\n" + table);
 	}
 
 	@Test
@@ -297,7 +289,7 @@ public class Metabolites {
 		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
-		Assert.assertEquals("Unexpected metabolites with an Ensemble identifier:\n" + table, 0, table.getRowCount());
+		Assertions.assertNotNull(table);
+		Assertions.assertEquals(0, table.getRowCount(), "Unexpected metabolites with an Ensemble identifier:\n" + table);
 	}
 }

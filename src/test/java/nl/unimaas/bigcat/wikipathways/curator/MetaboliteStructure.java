@@ -29,22 +29,21 @@ package nl.unimaas.bigcat.wikipathways.curator;
 import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
 import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import org.apache.jena.rdf.model.Model;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class MetaboliteStructure {
 
-	@BeforeClass
+	@BeforeAll
 	public static void loadData() throws InterruptedException {
 		if (System.getProperty("SPARQLEP").startsWith("http")) {
 			// ok, assume the SPARQL end point is online
 			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
 		} else {
 			Model data = OPSWPRDFFiles.loadData();
-			Assert.assertTrue(data.size() > 5000);
+			Assertions.assertTrue(data.size() > 5000);
 		}
 	}
 	
@@ -54,10 +53,9 @@ public class MetaboliteStructure {
 		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
-		Assert.assertTrue(
-			"Unexpectedly low metabolite count:\n" + table.getRowCount(),
-			table.getRowCount() > 15
+		Assertions.assertNotNull(table);
+		Assertions.assertTrue(
+			table.getRowCount() > 15, "Unexpectedly low metabolite count:\n" + table.getRowCount()
 		);
 	}
 
@@ -67,8 +65,8 @@ public class MetaboliteStructure {
 		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
-		Assert.assertEquals("Found metabolites that are not part of a pathway:\n" + table, 0, table.getRowCount());
+		Assertions.assertNotNull(table);
+		Assertions.assertEquals(0, table.getRowCount(), "Found metabolites that are not part of a pathway:\n" + table);
 	}
 
 }

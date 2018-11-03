@@ -26,45 +26,50 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import java.time.Duration;
 
 import org.apache.jena.rdf.model.Model;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class KEGGMetabolites {
 
-	@BeforeClass
+	@BeforeAll
 	public static void loadData() throws InterruptedException {
 		if (System.getProperty("SPARQLEP").startsWith("http")) {
 			// ok, assume the SPARQL end point is online
 			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
 		} else {
 			Model data = OPSWPRDFFiles.loadData();
-			Assert.assertTrue(data.size() > 5000);
+			Assertions.assertTrue(data.size() > 5000);
 		}
 	}
 
-	@Test(timeout=20000)
+	@Test
 	public void noCnumber() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("metabolite/badformat/badKEGG.rq");
-		Assert.assertNotNull(sparql);
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+		Assertions.assertNotNull(sparql);
+		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
-		Assert.assertEquals("KEGG Compound identifiers that are not C\\d+:\n" + table, 0, table.getRowCount());
+			Assertions.assertNotNull(table);
+			Assertions.assertEquals(0, table.getRowCount(), "KEGG Compound identifiers that are not C\\d+:\n" + table);
+		});
 	}
 
-	@Test(timeout=20000)
+	@Test
 	public void hasCPDprefix() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("metabolite/badformat/badKEGG2.rq");
-		Assert.assertNotNull(sparql);
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+		Assertions.assertNotNull(sparql);
+		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
-		Assert.assertEquals("KEGG Compound identifiers should not have a 'cpd:' prefix:\n" + table, 0, table.getRowCount());
+			Assertions.assertNotNull(table);
+			Assertions.assertEquals(0, table.getRowCount(), "KEGG Compound identifiers should not have a 'cpd:' prefix:\n" + table);
+		});
 	}
 
 }

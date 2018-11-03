@@ -26,22 +26,21 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import org.apache.jena.rdf.model.Model;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class Genes {
 
-	@BeforeClass
+	@BeforeAll
 	public static void loadData() throws InterruptedException {
 		if (System.getProperty("SPARQLEP").startsWith("http")) {
 			// ok, assume the SPARQL end point is online
 			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
 		} else {
 			Model data = OPSWPRDFFiles.loadData();
-			Assert.assertTrue(data.size() > 5000);
+			Assertions.assertTrue(data.size() > 5000);
 		}
 	}
 
@@ -51,7 +50,7 @@ public class Genes {
 		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
+		Assertions.assertNotNull(table);
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -72,9 +71,8 @@ public class Genes {
 				}
 			}
 		}
-		Assert.assertEquals(
-			"Entrez Gene identifiers that are not numbers:\n" + errors,
-			0, errorCount
+		Assertions.assertEquals(
+			0, errorCount, "Entrez Gene identifiers that are not numbers:\n" + errors
 		);
 	}
 
@@ -84,7 +82,7 @@ public class Genes {
 		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
+		Assertions.assertNotNull(table);
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -107,9 +105,8 @@ public class Genes {
 				}
 			}
 		}
-		Assert.assertEquals(
-			"Affy Probe identifiers that do not look right:\n" + errors,
-			0, errorCount
+		Assertions.assertEquals(
+			0, errorCount, "Affy Probe identifiers that do not look right:\n" + errors
 		);
 	}
 }
