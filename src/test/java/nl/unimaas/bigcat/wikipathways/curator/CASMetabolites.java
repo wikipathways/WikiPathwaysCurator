@@ -75,9 +75,8 @@ public class CASMetabolites {
 					}
 				}
 			}
-			final String finalErrors = errors;
 			Assertions.assertEquals(
-				0, errorCount, () -> "Deprecated CAS Registry numbers for non-metabolites:\n" + finalErrors
+				0, errorCount, "Deprecated CAS Registry numbers for non-metabolites:\n" + errors
 			);
 		});
 	}
