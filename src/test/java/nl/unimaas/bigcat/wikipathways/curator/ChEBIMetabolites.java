@@ -26,15 +26,16 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.jena.rdf.model.Model;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class ChEBIMetabolites {
 
@@ -46,14 +47,14 @@ public class ChEBIMetabolites {
 		  nonexisting.add("594834");
 	}}
 
-	@BeforeClass
+	@BeforeAll
 	public static void loadData() throws InterruptedException {
 		if (System.getProperty("SPARQLEP").startsWith("http")) {
 			// ok, assume the SPARQL end point is online
 			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
 		} else {
 			Model data = OPSWPRDFFiles.loadData();
-			Assert.assertTrue(data.size() > 5000);
+			Assertions.assertTrue(data.size() > 5000);
 		}
 
 		// now load the deprecation data
@@ -66,63 +67,65 @@ public class ChEBIMetabolites {
 		System.out.println("size: " + oldToNew.size());
 	}
 
-	@Test(timeout=20000)
+	@Test
 	public void secondaryChEBIIdentifiers() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("metabolite/allChEBIIdentifiers.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		String errors = "";
-		int errorCount = 0;
-		if (table.getRowCount() > 0) {
-			// OK, but then it must be proteins, e.g. IFN-b
-			for (int i=1; i<=table.getRowCount(); i++) {
-				String identifier = table.get(i, "identifier");
-				if (identifier.startsWith("CHEBI:")) {
-					identifier = identifier.substring(6);
-				}
-				if (oldToNew.containsKey(identifier)) {
-					errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
-						" has " + identifier + " but has primary identifier CHEBI:" +
-						oldToNew.get(identifier) + "\n";
-					errorCount++;
+			String errors = "";
+			int errorCount = 0;
+			if (table.getRowCount() > 0) {
+				// OK, but then it must be proteins, e.g. IFN-b
+				for (int i=1; i<=table.getRowCount(); i++) {
+					String identifier = table.get(i, "identifier");
+					if (identifier.startsWith("CHEBI:")) {
+						identifier = identifier.substring(6);
+					}
+					if (oldToNew.containsKey(identifier)) {
+						errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+							" has " + identifier + " but has primary identifier CHEBI:" +
+							oldToNew.get(identifier) + "\n";
+						errorCount++;
+					}
 				}
 			}
-		}
-		Assert.assertEquals(
-			"Secondary ChEBI identifiers detected:\n" + errors,
-			0, errorCount
-		);
+			Assertions.assertEquals(
+				0, errorCount, "Secondary ChEBI identifiers detected:\n" + errors
+			);
+		});
 	}
 
-	@Test(timeout=20000)
+	@Test
 	public void faultyChEBIIdentifiers() throws Exception {
-		Assert.assertNotSame("Unepxected empty list of unexpected identifiers", 0, nonexisting.size());
+		Assertions.assertNotSame(0, nonexisting.size(), "Unepxected empty list of unexpected identifiers");
 		String sparql = ResourceHelper.resourceAsString("metabolite/allChEBIIdentifiers.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		String errors = "";
-		int errorCount = 0;
-		if (table.getRowCount() > 0) {
-			// OK, but then it must be proteins, e.g. IFN-b
-			for (int i=1; i<=table.getRowCount(); i++) {
-				String identifier = table.get(i, "identifier");
-				if (identifier.startsWith("CHEBI:")) {
-					identifier = identifier.substring(6);
-				}
-				if (nonexisting.contains(identifier)) {
-					errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
-						" has a non-existing identifier CHEBI:" +
-						identifier + "\n";
-					errorCount++;
-				}
-			}
-		}
-		Assert.assertEquals(
-			"Secondary ChEBI identifiers detected:\n" + errors,
-			0, errorCount
-		);
+		    String errors = "";
+		    int errorCount = 0;
+		    if (table.getRowCount() > 0) {
+		    	// OK, but then it must be proteins, e.g. IFN-b
+		    	for (int i=1; i<=table.getRowCount(); i++) {
+		    		String identifier = table.get(i, "identifier");
+		    		if (identifier.startsWith("CHEBI:")) {
+		    			identifier = identifier.substring(6);
+		    		}
+		    		if (nonexisting.contains(identifier)) {
+		    			errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+						    " has a non-existing identifier CHEBI:" +
+						    identifier + "\n";
+		    			errorCount++;
+		    		}
+		    	}
+		    }
+		    Assertions.assertEquals(
+		    	0, errorCount, "Secondary ChEBI identifiers detected:\n" + errors
+		    );
+		});
 	}
 
 }
