@@ -26,49 +26,52 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
 
 import org.apache.jena.rdf.model.Model;
 
 public class PubChemMetabolites {
 
-	@BeforeClass
+	@BeforeAll
 	public static void loadData() throws InterruptedException {
 		if (System.getProperty("SPARQLEP").startsWith("http")) {
 			// ok, assume the SPARQL end point is online
 			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
 		} else {
 			Model data = OPSWPRDFFiles.loadData();
-			Assert.assertTrue(data.size() > 5000);
+			Assertions.assertTrue(data.size() > 5000);
 		}
 	}
 
-	@Test(timeout=50000)
+	@Test
 	public void nonNumericIDs() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("metabolite/badformat/nonNumericPubChem.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+		Assertions.assertTimeout(Duration.ofSeconds(50), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		String errors = "";
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				String id = table.get(i, "id");
-				if (id != null && id.length() > 0) {
-					try {
-						Integer.parseInt(id);
-					} catch (NumberFormatException exception) {
-						errors += table.get(i, "homepage") + ", " +
-								table.get(i, "id") + "\n";
+			String errors = "";
+			if (table.getRowCount() > 0) {
+				for (int i=1; i<=table.getRowCount(); i++) {
+					String id = table.get(i, "id");
+					if (id != null && id.length() > 0) {
+						try {
+							Integer.parseInt(id);
+						} catch (NumberFormatException exception) {
+							errors += table.get(i, "homepage") + ", " +
+									table.get(i, "id") + "\n";
+						}
 					}
 				}
 			}
-		}
-		Assert.assertEquals(
-			"Found PubChem-compound IDs that are not numbers:\n" + errors,
-			0, errors.length()
-		);
+			Assertions.assertEquals(
+				0, errors.length(), "Found PubChem-compound IDs that are not numbers:\n" + errors
+			);
+		});
 	}
 
 }
