@@ -26,22 +26,21 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import org.apache.jena.rdf.model.Model;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class References {
 
-	@BeforeClass
+	@BeforeAll
 	public static void loadData() throws InterruptedException {
 		if (System.getProperty("SPARQLEP").startsWith("http")) {
 			// ok, assume the SPARQL end point is online
 			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
 		} else {
 			Model data = OPSWPRDFFiles.loadData();
-			Assert.assertTrue(data.size() > 5000);
+			Assertions.assertTrue(data.size() > 5000);
 		}
 	}
 	
@@ -66,9 +65,8 @@ public class References {
 				}
 			}
 		}
-		Assert.assertEquals(
-			"Found PubMed IDs that are not numbers:\n" + errors,
-			0, errors.length()
+		Assertions.assertEquals(
+			0, errors.length(), "Found PubMed IDs that are not numbers:\n" + errors
 		);
 	}
 
@@ -94,9 +92,8 @@ public class References {
 				}
 			}
 		}
-		Assert.assertEquals(
-			"Found '0's as PubMed IDs:\n" + errors,
-			0, errors.length()
+		Assertions.assertEquals(
+			0, errors.length(), "Found '0's as PubMed IDs:\n" + errors
 		);
 	}
 }
