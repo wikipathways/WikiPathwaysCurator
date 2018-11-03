@@ -33,8 +33,11 @@ public class ResourceHelper {
 
 	public static String resourceAsString(String resource) {
 		InputStream iStream = ResourceHelper.class.getClassLoader().getResourceAsStream(resource);
-		Scanner scanner = new Scanner(iStream).useDelimiter("\\A");
-	    return scanner.hasNext() ? scanner.next() : "";
+		Scanner scanner2 = new Scanner(iStream);
+		Scanner scanner = scanner2.useDelimiter("\\A");
+	    String content = scanner.hasNext() ? scanner.next() : "";
+	    scanner2.close();
+	    return content;
 	}
 
 }
