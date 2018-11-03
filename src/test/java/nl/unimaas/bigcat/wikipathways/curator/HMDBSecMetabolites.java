@@ -27,26 +27,27 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.jena.rdf.model.Model;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class HMDBSecMetabolites {
 
 	private static Map<String,String> oldToNew = new HashMap<String, String>();
 
-	@BeforeClass
+	@BeforeAll
 	public static void loadData() throws InterruptedException {
 		if (System.getProperty("SPARQLEP").startsWith("http")) {
 			// ok, assume the SPARQL end point is online
 			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
 		} else {
 			Model data = OPSWPRDFFiles.loadData();
-			Assert.assertTrue(data.size() > 5000);
+			Assertions.assertTrue(data.size() > 5000);
 		}
 
 		// now load the deprecation data
@@ -59,32 +60,33 @@ public class HMDBSecMetabolites {
 		System.out.println("size: " + oldToNew.size());
 	}
 
-	@Test(timeout=20000)
+	@Test
 	public void outdatedIdentifiers() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("metabolite/allHMDBIdentifiers.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		String errors = "";
-		int errorCount = 0;
-		Assert.assertNotSame("I expected more than zero HMDB identifiers.", 0, table.getRowCount());
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				String identifier = table.get(i, "identifier");
-				if (identifier.length() == 11) identifier.replace("HMDB00", "HMDB");
-				if (oldToNew.containsKey(identifier)) {
-					String primID = oldToNew.get(identifier);
-					if (!primID.equals(identifier.replace("HMDB", "HMDB00"))) { // ignore longer format
-  					    errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
-						    " has " + identifier + " but has primary identifier " + primID + "\n";
-					    errorCount++;
+			String errors = "";
+			int errorCount = 0;
+			Assertions.assertNotSame(0, table.getRowCount(), "I expected more than zero HMDB identifiers.");
+			if (table.getRowCount() > 0) {
+				for (int i=1; i<=table.getRowCount(); i++) {
+					String identifier = table.get(i, "identifier");
+					if (identifier.length() == 11) identifier.replace("HMDB00", "HMDB");
+					if (oldToNew.containsKey(identifier)) {
+						String primID = oldToNew.get(identifier);
+						if (!primID.equals(identifier.replace("HMDB", "HMDB00"))) { // ignore longer format
+							errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+									" has " + identifier + " but has primary identifier " + primID + "\n";
+							errorCount++;
+						}
 					}
 				}
 			}
-		}
-		Assert.assertEquals(
-			"Secondary HMDB identifiers detected:\n" + errors,
-			0, errorCount
-		);
+			Assertions.assertEquals(
+				0, errorCount, "Secondary HMDB identifiers detected:\n" + errors
+			);
+		});
 	}
 }
