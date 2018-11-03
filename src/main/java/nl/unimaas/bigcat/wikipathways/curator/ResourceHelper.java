@@ -32,7 +32,7 @@ import java.util.Scanner;
 public class ResourceHelper {
 
 	public static String resourceAsString(String resource) {
-		InputStream iStream = ClassLoader.getSystemResourceAsStream(resource);
+		InputStream iStream = ResourceHelper.class.getClassLoader().getResourceAsStream(resource);
 		Scanner scanner = new Scanner(iStream).useDelimiter("\\A");
 	    return scanner.hasNext() ? scanner.next() : "";
 	}
