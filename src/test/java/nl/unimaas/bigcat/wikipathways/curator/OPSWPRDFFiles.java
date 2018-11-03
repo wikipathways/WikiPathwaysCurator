@@ -37,8 +37,8 @@ import org.apache.jena.n3.turtle.TurtleParseException;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.riot.RiotException;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class OPSWPRDFFiles {
 
@@ -139,7 +139,7 @@ public class OPSWPRDFFiles {
 	@Test
 	public void testLoadingRDF() throws InterruptedException {
 		loadData();
-		if (parseErrors.length() > 0) Assert.fail(parseErrors.toString());
+		if (parseErrors.length() > 0) Assertions.fail(parseErrors.toString());
 	}
 
 }

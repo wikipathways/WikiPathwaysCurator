@@ -26,77 +26,88 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import java.time.Duration;
 
 import org.apache.jena.rdf.model.Model;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class BridgeDbMappings {
 
-	@BeforeClass
+	@BeforeAll
 	public static void loadData() throws InterruptedException {
 		if (System.getProperty("SPARQLEP").startsWith("http")) {
 			// ok, assume the SPARQL end point is online
 			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
 		} else {
 			Model data = OPSWPRDFFiles.loadData();
-			Assert.assertTrue(data.size() > 5000);
+			Assertions.assertTrue(data.size() > 5000);
 		}
 	}
 	
-	@Test(timeout=10000)
+	@Test
 	public void hasSomeEntrezGeneMappings() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/hasEntrezGeneMappings.rq");
-		Assert.assertNotNull(sparql);
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+		Assertions.assertNotNull(sparql);
+		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
-		Assert.assertNotSame("Expected some mapped Entrez Genes.", 0, table.getRowCount());
+				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+			Assertions.assertNotNull(table);
+			Assertions.assertNotSame(0, table.getRowCount(), () -> "Expected some mapped Entrez Genes.");
+		});
 	}
 
-	@Test(timeout=10000)
+	@Test
 	public void hasSomeHMDBMappings() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/hasHMDBMappings.rq");
-		Assert.assertNotNull(sparql);
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+		Assertions.assertNotNull(sparql);
+		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
-		Assert.assertNotSame("Expected some mapped HMDB identifiers.", 0, table.getRowCount());
+			Assertions.assertNotNull(table);
+			Assertions.assertNotSame(0, table.getRowCount(), () -> "Expected some mapped HMDB identifiers.");
+		});
 	}
 
-	@Test(timeout=10000)
+	@Test
 	public void hasSomeChemSpiderMappings() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/hasChemSpiderMappings.rq");
-		Assert.assertNotNull(sparql);
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+		Assertions.assertNotNull(sparql);
+		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
-		Assert.assertNotSame("Expected some mapped ChemSpider identifiers.", 0, table.getRowCount());
+			Assertions.assertNotNull(table);
+			Assertions.assertNotSame(0, table.getRowCount(), () -> "Expected some mapped ChemSpider identifiers.");
+		});
 	}
 
-	@Test(timeout=10000)
+	@Test
 	public void hasSomeEnsemblMappings() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/hasEnsemblMappings.rq");
-		Assert.assertNotNull(sparql);
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+		Assertions.assertNotNull(sparql);
+		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
-		Assert.assertNotSame("Expected some mapped Ensembl identifiers.", 0, table.getRowCount());
+			Assertions.assertNotNull(table);
+			Assertions.assertNotSame(0, table.getRowCount(), () -> "Expected some mapped Ensembl identifiers.");
+		});
 	}
 
-	@Test(timeout=10000)
+	@Test
 	public void hasSomeUniprotMappings() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/hasUniprotMappings.rq");
-		Assert.assertNotNull(sparql);
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+		Assertions.assertNotNull(sparql);
+		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assert.assertNotNull(table);
-		Assert.assertNotSame("Expected some mapped Uniprot identifiers.", 0, table.getRowCount());
+			Assertions.assertNotNull(table);
+			Assertions.assertNotSame(0, table.getRowCount(), () -> "Expected some mapped Uniprot identifiers.");
+		});
 	}
 }
