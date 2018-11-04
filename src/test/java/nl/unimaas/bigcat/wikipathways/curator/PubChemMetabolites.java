@@ -31,12 +31,21 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.jena.rdf.model.Model;
 
 public class PubChemMetabolites {
+
+	private static List<String> nonexisting = new ArrayList<String>();
+	static {{
+	    nonexisting.add("329970432");
+	    nonexisting.add("329970434");
+	    nonexisting.add("329970435");
+	}}
 
 	private static Map<String,String> nonLive = new HashMap<String,String>();
 	static {{
@@ -104,6 +113,32 @@ public class PubChemMetabolites {
 			}
 			Assertions.assertEquals(
 				0, errorCount, "Non-live PubChem CIDs detected:\n" + errors
+			);
+		});
+	}
+
+	@Test
+	public void nonExistingIdentifiers() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("metabolite/allPubChemIdentifiers.rq");
+		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+			String errors = "";
+			int errorCount = 0;
+			if (table.getRowCount() > 0) {
+				// OK, but then it must be proteins, e.g. IFN-b
+				for (int i=1; i<=table.getRowCount(); i++) {
+					String identifier = table.get(i, "identifier");
+					if (nonexisting.contains(identifier)) {
+						errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+							" has PubChem CID " + identifier + " but does not exist.\n";
+						errorCount++;
+					}
+				}
+			}
+			Assertions.assertEquals(
+				0, errorCount, "Non-existing PubChem CIDs detected:\n" + errors
 			);
 		});
 	}
