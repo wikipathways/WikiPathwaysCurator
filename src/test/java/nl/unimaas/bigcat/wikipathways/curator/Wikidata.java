@@ -173,7 +173,7 @@ public class Wikidata {
 
 	@Tag("wikidata")
 	@Test
-	public void lipidMapsCIDWithoutMapping() throws Exception {
+	public void lipidMapsWithoutMapping() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteLipidMaps.rq");
 		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
