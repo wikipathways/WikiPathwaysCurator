@@ -31,10 +31,17 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.jena.rdf.model.Model;
 
 public class PubChemMetabolites {
+
+	private static Map<String,String> nonLive = new HashMap<String,String>();
+	static {{
+		nonLive.put("25203785", "6409687");
+	}}
 
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
@@ -70,6 +77,33 @@ public class PubChemMetabolites {
 			}
 			Assertions.assertEquals(
 				0, errors.length(), "Found PubChem-compound IDs that are not numbers:\n" + errors
+			);
+		});
+	}
+
+	@Test
+	public void nonLive2LiveIdentifiers() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("metabolite/allPubChemIdentifiers.rq");
+		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+			String errors = "";
+			int errorCount = 0;
+			if (table.getRowCount() > 0) {
+				// OK, but then it must be proteins, e.g. IFN-b
+				for (int i=1; i<=table.getRowCount(); i++) {
+					String identifier = table.get(i, "identifier");
+					if (nonLive.containsKey(identifier)) {
+						errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+							" has " + identifier + " but has a better PubChem CID: " +
+							nonLive.get(identifier) + "\n";
+						errorCount++;
+					}
+				}
+			}
+			Assertions.assertEquals(
+				0, errorCount, "Non-live PubChem CIDs detected:\n" + errors
 			);
 		});
 	}
