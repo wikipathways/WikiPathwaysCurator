@@ -87,4 +87,109 @@ public class Wikidata {
 		);
 	}
 
+	@Tag("wikidata")
+	@Test
+	public void hmdbWithoutMapping() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteHMDB.rq");
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assertions.assertNotNull(table);
+		String errors = "";
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
+					    + "does not have a Wikidata mapping; \n";
+			}
+		}
+		Assertions.assertEquals(
+			0, table.getRowCount(),
+			"HMDB identifiers without Wikidata mappings:\n" + errors
+		);
+	}
+
+	@Tag("wikidata")
+	@Test
+	public void keggWithoutMapping() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteKEGG.rq");
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assertions.assertNotNull(table);
+		String errors = "";
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
+					    + "does not have a Wikidata mapping; \n";
+			}
+		}
+		Assertions.assertEquals(
+			0, table.getRowCount(),
+			"KEGG Compound identifiers without Wikidata mappings:\n" + errors
+		);
+	}
+
+	@Tag("wikidata")
+	@Test
+	public void pubchemCIDWithoutMapping() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metabolitePubChemCID.rq");
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assertions.assertNotNull(table);
+		String errors = "";
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
+					    + "does not have a Wikidata mapping; \n";
+			}
+		}
+		Assertions.assertEquals(
+			0, table.getRowCount(),
+			"PubChem-compound identifiers without Wikidata mappings:\n" + errors
+		);
+	}
+
+	@Tag("wikidata")
+	@Test
+	public void chemspiderCIDWithoutMapping() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteChemspider.rq");
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assertions.assertNotNull(table);
+		String errors = "";
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
+					    + "does not have a Wikidata mapping; \n";
+			}
+		}
+		Assertions.assertEquals(
+			0, table.getRowCount(),
+			"Chemspider identifiers without Wikidata mappings:\n" + errors
+		);
+	}
+
+	@Tag("wikidata")
+	@Test
+	public void lipidMapsCIDWithoutMapping() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteLipidMaps.rq");
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assertions.assertNotNull(table);
+		String errors = "";
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
+					    + "does not have a Wikidata mapping; \n";
+			}
+		}
+		Assertions.assertEquals(
+			0, table.getRowCount(),
+			"LIPID MAPS identifiers without Wikidata mappings:\n" + errors
+		);
+	}
+
 }
