@@ -1,0 +1,12 @@
+PREFIX wp:      <http://vocabularies.wikipathways.org/wp#>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#>
+PREFIX dc:      <http://purl.org/dc/elements/1.1/>
+
+SELECT DISTINCT ?metabolite (STR(?labelStr) AS ?label) WHERE {
+  ?metabolite a wp:Metabolite ;
+    dc:source "CAS"^^xsd:string ;
+    rdfs:label ?labelStr .
+  MINUS { ?metabolite wp:bdbWikidata ?wikidata }
+} ORDER BY ASC(?metabolite)
