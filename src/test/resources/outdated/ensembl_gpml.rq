@@ -5,10 +5,10 @@ prefix foaf:    <http://xmlns.com/foaf/0.1/>
 prefix gpml:  <http://vocabularies.wikipathways.org/gpml#>
 prefix wp: <http://vocabularies.wikipathways.org/wp#>
 
-select distinct ?wpnode ?homepage
+select distinct ?node ?homepage
 where {
-  ?gpmlnode gpml:xrefDataSource "Ensembl Mouse"^^xsd:string .
-  ?wpnode wp:isAbout ?gpmlnode ;
-          dcterms:isPartOf ?pathway .
-  ?pathway foaf:page ?homepage .
+  ?node gpml:xrefDataSource "Ensembl Mouse"^^xsd:string ;
+        dcterms:isPartOf ?gpmlpw .
+  ?wppw wp:isAbout ?gpmlpw ;
+        foaf:page ?homepage .
 }
