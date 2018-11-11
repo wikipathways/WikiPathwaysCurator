@@ -5,7 +5,8 @@ prefix foaf:    <http://xmlns.com/foaf/0.1/>
 
 select distinct ?homepage
 where {
-  ?node dc:source "Kegg ortholog"^^xsd:string ;
-    dcterms:isPartOf ?pathway .
-  ?pathway foaf:page ?homepage .
+  ?node gpml:xrefDataSource "Kegg ortholog"^^xsd:string ;
+        dcterms:isPartOf ?gpmlpw .
+  ?wppw wp:isAbout ?gpmlpw ;
+        foaf:page ?homepage .
 }

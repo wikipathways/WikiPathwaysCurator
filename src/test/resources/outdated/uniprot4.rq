@@ -5,7 +5,8 @@ prefix foaf:    <http://xmlns.com/foaf/0.1/>
 
 select distinct ?node ?homepage
 where {
-  ?node dc:source "UniProt"^^xsd:string ;
-    dcterms:isPartOf ?pathway .
-  ?pathway foaf:page ?homepage .
+  ?node gpml:xrefDataSource "UniProt"^^xsd:string ;
+        dcterms:isPartOf ?gpmlpw .
+  ?wppw wp:isAbout ?gpmlpw ;
+        foaf:page ?homepage .
 }

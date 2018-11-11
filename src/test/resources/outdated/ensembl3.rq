@@ -5,7 +5,8 @@ prefix foaf:    <http://xmlns.com/foaf/0.1/>
 
 select distinct ?node ?homepage
 where {
-  ?node dc:source "Ensembl Yeast"^^xsd:string ;
-    dcterms:isPartOf ?pathway .
-  ?pathway foaf:page ?homepage .
+  ?node gpml:xrefDataSource "Ensembl Yeast"^^xsd:string ;
+        dcterms:isPartOf ?gpmlpw .
+  ?wppw wp:isAbout ?gpmlpw ;
+        foaf:page ?homepage .
 }
