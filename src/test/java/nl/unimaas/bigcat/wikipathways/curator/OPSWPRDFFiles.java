@@ -37,8 +37,6 @@ import org.apache.jena.n3.turtle.TurtleParseException;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.riot.RiotException;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public class OPSWPRDFFiles {
 
@@ -47,6 +45,7 @@ public class OPSWPRDFFiles {
 	private static String parseErrors = "";
 	
 	public static Model loadData() throws InterruptedException {
+		parseErrors = "";
 		if (System.getProperty("SPARQLEP").startsWith("http")) {
 			return null;
 		}
@@ -136,10 +135,8 @@ public class OPSWPRDFFiles {
 		return false;
 	}
 
-	@Test
-	public void testLoadingRDF() throws InterruptedException {
-		loadData();
-		if (parseErrors.length() > 0) Assertions.fail(parseErrors.toString());
+	public static String getParseErrors() {
+		return parseErrors;
 	}
 
 }

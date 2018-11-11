@@ -29,6 +29,7 @@ package nl.unimaas.bigcat.wikipathways.curator;
 import java.time.Duration;
 
 import org.apache.jena.rdf.model.Model;
+import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -43,6 +44,9 @@ public class BridgeDbMappings {
 		} else {
 			Model data = OPSWPRDFFiles.loadData();
 			Assertions.assertTrue(data.size() > 5000);
+			String parseErrors = OPSWPRDFFiles.getParseErrors();
+			Assert.assertNotNull(parseErrors);
+			Assertions.assertEquals(0, parseErrors.length(), parseErrors.toString());
 		}
 	}
 	
