@@ -42,6 +42,9 @@ public class Wikidata {
 		} else {
 			Model data = OPSWPRDFFiles.loadData();
 			Assertions.assertTrue(data.size() > 5000);
+			String parseErrors = OPSWPRDFFiles.getParseErrors();
+			Assertions.assertNotNull(parseErrors);
+			Assertions.assertEquals(0, parseErrors.length(), parseErrors.toString());
 		}
 	}
 
