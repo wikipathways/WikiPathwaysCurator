@@ -221,6 +221,32 @@ public class OudatedDataSources {
 	}
 
 	@Test
+	public void outdatedEnsemblMouseDataSourceFromGPML() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("outdated/ensembl_gpml.rq");
+		Assertions.assertNotNull(sparql);
+		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+			Assertions.assertNotNull(table);
+			Assertions.assertTrue(table.getRowCount() < 1, "Outdated 'Ensembl Mouse' data sources (use 'Ensembl'):\n" + table);
+		});
+	}
+
+	@Test
+	public void outdatedEnsemblHumanDataSourceFromGPML() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("outdated/ensembl2_gpml.rq");
+		Assertions.assertNotNull(sparql);
+		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+			Assertions.assertNotNull(table);
+			Assertions.assertTrue(table.getRowCount() < 1, "Outdated 'Ensembl Human' data sources (use 'Ensembl'):\n" + table);
+		});
+	}
+
+	@Test
 	public void outdatedEnsemblYeastDataSource() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/ensembl3.rq");
 		Assertions.assertNotNull(sparql);

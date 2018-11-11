@@ -1,0 +1,12 @@
+prefix dcterms:  <http://purl.org/dc/terms/>
+prefix dc:      <http://purl.org/dc/elements/1.1/>
+prefix xsd:     <http://www.w3.org/2001/XMLSchema#>
+prefix foaf:    <http://xmlns.com/foaf/0.1/>
+
+select distinct ?wpnode ?homepage
+where {
+  ?gpmlnode gpml:xrefDataSource "Ensembl Mouse"^^xsd:string .
+  ?wpnode wp:isAbout ?gpmlnode ;
+          dcterms:isPartOf ?pathway .
+  ?pathway foaf:page ?homepage .
+}
