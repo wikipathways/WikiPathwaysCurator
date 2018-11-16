@@ -72,8 +72,8 @@ public class General {
 		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertEquals(0, table.getRowCount(), "Data nodes with an 'undefined' identifier:\n" + table);
+		Assertions.assertNotNull(table);
+		Assertions.assertEquals(0, table.getRowCount(), "Data nodes with an 'undefined' identifier:\n" + table);
 	}
 
 	@Disabled("This test was predominantly for the WPRDF generation, but in the new generation RDF this no longer causes problems")
