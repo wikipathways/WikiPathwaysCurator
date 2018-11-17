@@ -4,9 +4,9 @@ prefix xsd:     <http://www.w3.org/2001/XMLSchema#>
 prefix foaf:    <http://xmlns.com/foaf/0.1/>
 prefix wp:      <http://vocabularies.wikipathways.org/wp#>
 
-select distinct ?id ?homepage where {
+select distinct (str(?idLit) as ?id) ?homepage where {
   ?pub a wp:PublicationReference ;
-    dcterms:identifier ?id ;
-    dc:source "PubMed"^^xsd:string ;
-    dcterms:isPartOf/foaf:homepage ?homepage .
+    gpml:id ?idLit ;
+    gpml:database "Pubmed"^^xsd:string ;
+    dcterms:isPartOf/foaf:page ?homepage .
 } ORDER BY ?homepage
