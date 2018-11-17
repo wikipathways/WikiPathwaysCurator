@@ -10,7 +10,7 @@ select distinct ?homepage (str(?labelLit) as ?label) ?mb
 where {
   ?mb
       gpml:textlabel ?labelLit ;
-      gpml:xrefDataSource "undefined"^^xsd:string ;
+      gpml:xrefId "undefined"^^xsd:string ;
       dcterms:isPartOf ?gpmlpw .
   ?pathway wp:isAbout ?gpmlpw ;
            foaf:page ?homepage .
