@@ -213,4 +213,36 @@ public class Wikidata {
 		);
 	}
 
+	@Test
+	public void wikidataIdentifiersWrong() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("general/allWikidataIdentifiers.rq");
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assertions.assertNotNull(table);
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier").trim();
+				String pathwayPage = table.get(i, "homepage");
+				if (identifier.isEmpty() || !identifier.startsWith("Q")) {
+					errors += pathwayPage + " -> " + table.get(i, "label") +
+							", '" + table.get(i, "identifier") + "'\n ";
+					errorCount++;
+				} else if (!identifier.isEmpty() && identifier.startsWith("Q")) {
+					try {
+						Integer.parseInt(identifier.substring(1));
+					} catch (NumberFormatException exception) {
+						errors += pathwayPage + " -> " + table.get(i, "label") +
+								", " + table.get(i, "identifier") + "\n ";
+						errorCount++;
+					}
+				}
+			}
+		}
+		Assertions.assertEquals(
+			0, errorCount, "Wikidata identifiers that do not start with a 'Q' followed by a number:\n" + errors
+		);
+	}
 }
