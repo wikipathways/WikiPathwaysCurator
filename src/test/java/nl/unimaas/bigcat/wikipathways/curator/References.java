@@ -51,6 +51,7 @@ public class References {
 				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		String errors = "";
+		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
@@ -59,14 +60,15 @@ public class References {
 					try {
 						Integer.parseInt(id);
 					} catch (NumberFormatException exception) {
-						errors += table.get(i, "homepage") + ", " +
-								table.get(i, "id") + "\n";
+						errors += table.get(i, "homepage") + ", '" +
+								table.get(i, "id") + "'\n";
+						errorCount++;
 					}
 				}
 			}
 		}
 		Assertions.assertEquals(
-			0, errors.length(), "Found PubMed IDs that are not numbers:\n" + errors
+			0, errorCount, "Found PubMed IDs that are not numbers:\n" + errors
 		);
 	}
 
@@ -77,6 +79,7 @@ public class References {
 				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		String errors = "";
+		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String id = table.get(i, "id");
@@ -85,6 +88,7 @@ public class References {
 						if (Integer.parseInt(id) == 0) {
 							errors += table.get(i, "homepage") + ", '" +
 									table.get(i, "id") + "'\n";
+							errorCount++;
 						}
 					} catch (NumberFormatException exception) {
 						// already reporting these in nonNumericPubMedIDs()
@@ -93,7 +97,7 @@ public class References {
 			}
 		}
 		Assertions.assertEquals(
-			0, errors.length(), "Found '0's as PubMed IDs:\n" + errors
+			0, errorCount, "Found '0's as PubMed IDs:\n" + errors
 		);
 	}
 }
