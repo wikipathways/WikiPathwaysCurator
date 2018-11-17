@@ -83,8 +83,8 @@ public class References {
 				if (id != null && id.length() > 0) {
 					try {
 						if (Integer.parseInt(id) == 0) {
-							errors += table.get(i, "homepage") + ", " +
-									table.get(i, "id") + "\n";
+							errors += table.get(i, "homepage") + ", '" +
+									table.get(i, "id") + "'\n";
 						}
 					} catch (NumberFormatException exception) {
 						// already reporting these in nonNumericPubMedIDs()
