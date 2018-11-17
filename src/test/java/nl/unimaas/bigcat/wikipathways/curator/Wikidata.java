@@ -192,4 +192,25 @@ public class Wikidata {
 		);
 	}
 
+	@Tag("wikidata")
+	@Test
+	public void replaceWikipedia() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("outdated/wikipedia.rq");
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assertions.assertNotNull(table);
+		String errors = "";
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errors += table.get(i, "node") +
+					" can be replaced by the matching Wikidata identifier; \n";
+			}
+		}
+		Assertions.assertEquals(
+			0, table.getRowCount(),
+			"Wikipedia identifies that can be replaced by Wikidata identifiers:\n" + errors
+		);
+	}
+
 }
