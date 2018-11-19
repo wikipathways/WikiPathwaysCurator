@@ -6,7 +6,7 @@ PREFIX dc:      <http://purl.org/dc/elements/1.1/>
 
 SELECT DISTINCT ?metabolite (STR(?labelStr) AS ?label) WHERE {
   ?metabolite a wp:Metabolite ;
-    dc:source "LIPID MAPS"^^xsd:string ;
+    dc:source "KNApSAcK"^^xsd:string ;
     rdfs:label ?labelStr .
   MINUS { ?metabolite wp:bdbWikidata ?wikidata }
 } ORDER BY ASC(?metabolite)
