@@ -194,6 +194,27 @@ public class Wikidata {
 
 	@Tag("wikidata")
 	@Test
+	public void kNApSAcKWithoutMapping() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteKNApSAcK.rq");
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assertions.assertNotNull(table);
+		String errors = "";
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
+					    + "does not have a Wikidata mapping; \n";
+			}
+		}
+		Assertions.assertEquals(
+			0, table.getRowCount(),
+			"KNApSAcK identifiers without Wikidata mappings:\n" + errors
+		);
+	}
+
+	@Tag("wikidata")
+	@Test
 	public void replaceWikipedia() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/wikipedia.rq");
 		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
