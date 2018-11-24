@@ -269,4 +269,27 @@ public class Wikidata {
 			0, errorCount, "Wikidata identifiers that do not start with a 'Q' followed by a number:\n" + errors
 		);
 	}
+
+	@Tag("wikidata")
+	@Test
+	public void duplicateWikidataMappings() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("metabolite/duplicateWikidata.rq");
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assertions.assertNotNull(table);
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String metaboliteID = table.get(i, "metaboliteID").trim();
+				String results = table.get(i, "results");
+				errors += metaboliteID + " mapped to Wikidata: " + results + "\n ";
+				errorCount++;
+			}
+		}
+		Assertions.assertEquals(
+			0, errorCount, "More than one Wikidata identifier for:\n" + errors
+		);
+	}
 }
