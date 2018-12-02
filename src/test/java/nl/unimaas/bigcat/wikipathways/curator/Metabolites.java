@@ -57,13 +57,18 @@ public class Metabolites {
 			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assertions.assertNotNull(table);
+		Set<String> exceptions = new HashSet<String>();
+		exceptions.add("http://identifiers.org/chebi/CHEBI:16991");
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
-				errors += table.get(i, "metabolite") + " is also found to be " + table.get(i, "type") + "\n";
-				errorCount++;
+				String metabolite = table.get(i, "metabolite");
+				if (!exceptions.contains(metabolite)) {
+  				    errors += metabolite + " is also found to be " + table.get(i, "type") + "\n";
+				    errorCount++;
+				}
 			}
 		}
 		Assertions.assertEquals(
