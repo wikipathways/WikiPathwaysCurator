@@ -58,7 +58,8 @@ public class Metabolites {
 		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assertions.assertNotNull(table);
 		Set<String> exceptions = new HashSet<String>();
-		exceptions.add("http://identifiers.org/chebi/CHEBI:16991");
+		exceptions.add("http://identifiers.org/chebi/CHEBI:16991"); // DNA
+		exceptions.add("http://identifiers.org/chebi/CHEBI:39026"); // LDL
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
