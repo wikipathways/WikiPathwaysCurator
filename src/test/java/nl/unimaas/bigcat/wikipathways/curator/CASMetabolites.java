@@ -37,6 +37,9 @@ import org.junit.jupiter.api.Test;
 
 public class CASMetabolites {
 
+	// the content comes from the resource metabolite/cas/deprecated.csv (see below in the loadData() method)
+	private static Map<String,String> oldToNew = new HashMap<String, String>();
+
 	@SuppressWarnings({ "serial" })
 	private static final Map<String,String> deprecated = new HashMap<String,String>() {{
 		put("2646-71-1", "53-57-6"); // the first is a salt of the second
@@ -53,6 +56,42 @@ public class CASMetabolites {
 			Model data = OPSWPRDFFiles.loadData();
 			Assertions.assertTrue(data.size() > 5000);
 		}
+
+		// now load the deprecation data
+		String deprecatedData = ResourceHelper.resourceAsString("metabolite/cas/deprecated.csv");
+		String lines[] = deprecatedData.split("\\r?\\n");
+		for (int i=0; i<lines.length; i++) {
+			String[] ids = lines[i].split(",");
+			oldToNew.put(ids[0], ids[1]);
+		}
+	}
+
+	@Test
+	public void secondaryChEBIIdentifiers() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("metabolite/allCASIdentifiers.rq");
+		Assertions.assertNotEquals(0, oldToNew.size(), "Error while loading the deleted CAS numbers");
+		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+			String errors = "";
+			int errorCount = 0;
+			if (table.getRowCount() > 0) {
+				// OK, but then it must be proteins, e.g. IFN-b
+				for (int i=1; i<=table.getRowCount(); i++) {
+					String identifier = table.get(i, "identifier");
+					if (oldToNew.containsKey(identifier)) {
+						errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+							" has " + identifier + " but has new identifier " +
+							oldToNew.get(identifier) + "\n";
+						errorCount++;
+					}
+				}
+			}
+			Assertions.assertEquals(
+				0, errorCount, "Deleted CAS registry numbers detected:\n" + errors
+			);
+		});
 	}
 
 	@Test
