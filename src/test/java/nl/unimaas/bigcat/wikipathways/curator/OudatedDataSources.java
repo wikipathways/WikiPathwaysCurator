@@ -31,7 +31,6 @@ import java.time.Duration;
 import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class OudatedDataSources {
@@ -166,7 +165,7 @@ public class OudatedDataSources {
 		});
 	}
 
-	@Disabled
+	@Test
 	public void outdatedKeggOrthologDataSource() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/keggortholog.rq");
 		Assertions.assertNotNull(sparql);
