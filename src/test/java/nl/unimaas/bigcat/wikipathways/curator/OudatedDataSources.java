@@ -166,6 +166,20 @@ public class OudatedDataSources {
 	}
 
 	@Test
+	public void outdatedKeggCompoundDataSource2() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("outdated/keggcompound2.rq");
+		Assertions.assertNotNull(sparql);
+		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+			Assertions.assertNotNull(table);
+			// the metabolite test pathway has one outdated Kegg Compound deliberately (WP2582)
+			Assertions.assertTrue(table.getRowCount() <= 1, "Outdated 'kegg.compound' data sources (use 'KEGG Compound'):\n" + table);
+		});
+	}
+
+	@Test
 	public void outdatedKeggOrthologDataSource() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/keggortholog.rq");
 		Assertions.assertNotNull(sparql);
