@@ -128,4 +128,16 @@ public class ChEBIMetabolites {
 		});
 	}
 
+	@Test
+	public void chebiDataTypo() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("outdated/chebi.rq");
+		Assertions.assertNotNull(sparql);
+		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+			Assertions.assertNotNull(table);
+			Assertions.assertTrue(table.getRowCount() < 1, "Typo 'CHEBI' data sources (use 'ChEBI'):\n" + table);
+		});
+	}
 }

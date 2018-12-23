@@ -26,6 +26,8 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
+import java.time.Duration;
+
 import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -291,5 +293,18 @@ public class Wikidata {
 		Assertions.assertEquals(
 			0, errorCount, "More than one Wikidata identifier for:\n" + errors
 		);
+	}
+
+	@Test
+	public void wikDataTypo() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("outdated/wikidata.rq");
+		Assertions.assertNotNull(sparql);
+		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+			Assertions.assertNotNull(table);
+			Assertions.assertTrue(table.getRowCount() < 1, "Typo 'Wikdata' data sources (use 'Wikidata'):\n" + table);
+		});
 	}
 }
