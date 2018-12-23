@@ -67,7 +67,7 @@ public class CASMetabolites {
 	}
 
 	@Test
-	public void secondaryChEBIIdentifiers() throws Exception {
+	public void deletedCASIdentifiers() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("metabolite/allCASIdentifiers.rq");
 		Assertions.assertNotEquals(0, oldToNew.size(), "Error while loading the deleted CAS numbers");
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
