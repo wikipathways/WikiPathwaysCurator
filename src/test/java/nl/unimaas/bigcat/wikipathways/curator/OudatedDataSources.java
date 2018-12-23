@@ -273,6 +273,19 @@ public class OudatedDataSources {
 	}
 
 	@Test
+	public void outdatedEnsemblChickenDataSource() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("outdated/ensembl_chicken.rq");
+		Assertions.assertNotNull(sparql);
+		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+			Assertions.assertNotNull(table);
+			Assertions.assertTrue(table.getRowCount() < 1, "Outdated 'Ensembl Chicken' data sources (use 'Ensembl'):\n" + table);
+		});
+	}
+
+	@Test
 	public void outdatedECNumberDataSource() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/ecNumber.rq");
 		Assertions.assertNotNull(sparql);
