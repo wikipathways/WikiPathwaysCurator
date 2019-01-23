@@ -129,6 +129,33 @@ public class ChEBIMetabolites {
 	}
 
 	@Test
+	public void faultyChEBIChEBIIdentifiers() throws Exception {
+		Assertions.assertNotSame(0, nonexisting.size(), "Unepxected empty list of unexpected identifiers");
+		String sparql = ResourceHelper.resourceAsString("metabolite/allChEBIIdentifiers.rq");
+		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		    String errors = "";
+		    int errorCount = 0;
+		    if (table.getRowCount() > 0) {
+		    	for (int i=1; i<=table.getRowCount(); i++) {
+		    		String identifier = table.get(i, "identifier");
+		    		if (identifier.startsWith("ChEBI:")) {
+		    			errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+						    " has a faulty identifier " +
+						    identifier + " (it should be a number or start with \"CHEBI:\")\n";
+		    			errorCount++;
+		    		}
+		    	}
+		    }
+		    Assertions.assertEquals(
+		    	0, errorCount, "Faulty ChEBI identifiers detected:\n" + errors
+		    );
+		});
+	}
+
+	@Test
 	public void chebiDataTypo() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/chebi.rq");
 		Assertions.assertNotNull(sparql);
