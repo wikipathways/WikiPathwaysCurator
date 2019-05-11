@@ -160,4 +160,31 @@ public class Interactions {
 			0, errorCount, "Unexpected protein-protein conversions:\n" + errors
 		);
 	}
+
+	@Test
+	public void nonNumericIDs() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("interactions/nonNumericRhea.rq");
+		Assertions.assertTimeout(Duration.ofSeconds(50), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+			String errors = "";
+			if (table.getRowCount() > 0) {
+				for (int i=1; i<=table.getRowCount(); i++) {
+					String id = table.get(i, "id");
+					if (id != null && id.length() > 0) {
+						try {
+							Integer.parseInt(id);
+						} catch (NumberFormatException exception) {
+							errors += table.get(i, "homepage") + ", " +
+									table.get(i, "id") + "\n";
+						}
+					}
+				}
+			}
+			Assertions.assertEquals(
+				0, errors.length(), "Found Rhea IDs that are not numbers (they should not include a 'Rhea:' prefix):\n" + errors
+			);
+		});
+	}
 }
