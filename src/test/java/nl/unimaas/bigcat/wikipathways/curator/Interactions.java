@@ -91,6 +91,7 @@ public class Interactions {
 			allowedProducts.add("http://identifiers.org/hmdb/HMDB0004246"); // from KNG1, e.g. in WP
 			Set<String> allowedProteinSubstrates = new HashSet<String>();
 			allowedProteinSubstrates.add("http://identifiers.org/uniprot/H9ZYJ2"); // theoredoxin, e.g. WP3580
+			allowedProteinSubstrates.add("http://identifiers.org/chebi/CHEBI:39026"); // LDL
 			String errors = "";
 			int errorCount = 0;
 			if (table.getRowCount() > 0) {
