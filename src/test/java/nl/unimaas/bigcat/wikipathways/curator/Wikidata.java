@@ -307,4 +307,26 @@ public class Wikidata {
 			Assertions.assertTrue(table.getRowCount() < 1, "Typo 'Wikdata' data sources (use 'Wikidata'):\n" + table);
 		});
 	}
+
+	@Tag("wikidata")
+	@Test
+	public void noWikidataForGenes() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("genes/noWikidataYet.rq");
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assertions.assertNotNull(table);
+		String errors = "";
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errors += table.get(i, "homepage") +
+					" has " + table.get(i, "identifier") + " for the " +
+					table.get(i, "wpType") + " " + table.get(i, "label") + "\n";
+			}
+		}
+		Assertions.assertEquals(
+			0, table.getRowCount(),
+			"Wikidata identifiers cannot be used for GeneProduct or Protein yet:\n" + errors
+		);
+	}
 }
