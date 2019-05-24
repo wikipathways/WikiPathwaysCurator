@@ -6,12 +6,12 @@ prefix wp:      <http://vocabularies.wikipathways.org/wp#>
 prefix foaf:    <http://xmlns.com/foaf/0.1/>
 
 SELECT DISTINCT ?homepage (STR(SUBSTR(STR(?type),41)) AS ?wpType)
-  (STR(?label) AS ?label) (STR(?identifier) AS ?identifier)
+  (STR(?labelLit) AS ?label) (STR(?identifier) AS ?identifier)
 WHERE {
   VALUES ?type { wp:GeneProduct wp:Protein }
   ?gene a ?type ;
     dc:source "Wikidata"^^xsd:string ;
-    rdfs:label ?label ;
+    rdfs:label ?labelLit ;
     dcterms:identifier ?identifier ;
     dcterms:isPartOf ?pathway .
   ?pathway foaf:page ?homepage .
