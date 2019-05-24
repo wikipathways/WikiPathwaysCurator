@@ -177,7 +177,7 @@ public class Interactions {
 						try {
 							Integer.parseInt(id);
 						} catch (NumberFormatException exception) {
-							errors += table.get(i, "homepage") + ", " +
+							errors += table.get(i, "homepage") + " " +
 									table.get(i, "id") + "\n";
 						}
 					}
