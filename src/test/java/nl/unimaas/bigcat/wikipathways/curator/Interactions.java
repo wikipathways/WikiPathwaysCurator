@@ -31,6 +31,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.jena.rdf.model.Model;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
@@ -191,7 +192,7 @@ public class Interactions {
 	}
 
 	@Tag("curation")
-	@Test
+	@Ignore
 	public void interactionsWithLabels() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("interactions/interactionsWithLabels.rq");
 		Assertions.assertTimeout(Duration.ofSeconds(50), () -> {
