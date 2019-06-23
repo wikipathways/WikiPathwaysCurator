@@ -1,0 +1,7 @@
+prefix void:  <http://rdfs.org/ns/void#>
+prefix pav:   <http://purl.org/pav/>
+
+select distinct ?date where {
+  ?dataset a void:Dataset ;
+    pav:createdOn ?date .
+}
