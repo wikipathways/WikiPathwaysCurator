@@ -29,6 +29,7 @@ package nl.unimaas.bigcat.wikipathways.curator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.text.SimpleDateFormat;
@@ -51,6 +52,7 @@ public class General {
 	}
 
 	@Test
+	@Tag("void")
 	public void recentness() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/rdfDate.rq");
 		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
