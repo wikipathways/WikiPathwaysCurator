@@ -191,7 +191,6 @@ public class Interactions {
 	}
 
 	@Tag("curation")
-	@Test
 	public void interactionsWithLabels() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("interactions/interactionsWithLabels.rq");
 		Assertions.assertTimeout(Duration.ofSeconds(50), () -> {
@@ -201,9 +200,16 @@ public class Interactions {
 			String errors = "";
 			if (table.getRowCount() > 0) {
 				for (int i=1; i<=table.getRowCount(); i++) {
-					errors += table.get(i, "homepage") + " \"" +
-					          table.get(i, "label") + "\" with graphId " +
-						      table.get(i, "id") + "\n";
+					String id = table.get(i, "id");
+					if (id != null && id.length() > 0) {
+						try {
+							Integer.parseInt(id);
+						} catch (NumberFormatException exception) {
+							errors += table.get(i, "homepage") + " \"" +
+									table.get(i, "label") + "\" with graphId " +
+								table.get(i, "id") + "\n";
+						}
+					}
 				}
 			}
 			Assertions.assertEquals(
