@@ -27,6 +27,8 @@
 package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.time.Duration;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
@@ -113,6 +115,31 @@ public class Wikidata {
 		);
 	}
 
+	private static Set<String> noWarnKEGGCIDs = new HashSet<>();
+	{{ noWarnKEGGCIDs.add("C04688");
+		noWarnKEGGCIDs.add("C05729");
+		noWarnKEGGCIDs.add("C05746");
+		noWarnKEGGCIDs.add("C05747");
+		noWarnKEGGCIDs.add("C05748");
+		noWarnKEGGCIDs.add("C05749");
+		noWarnKEGGCIDs.add("C05750");
+		noWarnKEGGCIDs.add("C05751");
+		noWarnKEGGCIDs.add("C05752");
+		noWarnKEGGCIDs.add("C05753");
+		noWarnKEGGCIDs.add("C05754");
+		noWarnKEGGCIDs.add("C05755");
+		noWarnKEGGCIDs.add("C05757");
+		noWarnKEGGCIDs.add("C05758");
+		noWarnKEGGCIDs.add("C05759");
+		noWarnKEGGCIDs.add("C05759");
+		noWarnKEGGCIDs.add("C05761");
+		noWarnKEGGCIDs.add("C05761");
+		noWarnKEGGCIDs.add("C05762");
+		noWarnKEGGCIDs.add("C05763");
+		noWarnKEGGCIDs.add("C05764");
+		noWarnKEGGCIDs.add("C16255");
+	}}
+
 	@Tag("wikidata")
 	@Test
 	public void keggWithoutMapping() throws Exception {
@@ -124,8 +151,11 @@ public class Wikidata {
 		String errors = "";
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
-				errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
-					    + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
+				String keggID = table.get(i, "metabolite");
+				if (!noWarnKEGGCIDs.contains(keggID.substring(37))) {
+					errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
+						   + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
+				}
 			}
 		}
 		Assertions.assertEquals(
