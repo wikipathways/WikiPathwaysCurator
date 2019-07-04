@@ -116,7 +116,8 @@ public class Wikidata {
 	}
 
 	private static Set<String> noWarnKEGGCIDs = new HashSet<>();
-	{{ noWarnKEGGCIDs.add("C04688");
+	{{  // ACPs
+		noWarnKEGGCIDs.add("C04688");
 		noWarnKEGGCIDs.add("C05729");
 		noWarnKEGGCIDs.add("C05746");
 		noWarnKEGGCIDs.add("C05747");
@@ -138,6 +139,8 @@ public class Wikidata {
 		noWarnKEGGCIDs.add("C05763");
 		noWarnKEGGCIDs.add("C05764");
 		noWarnKEGGCIDs.add("C16255");
+		noWarnKEGGCIDs.add("C00173");
+		noWarnKEGGCIDs.add("C16239");
 	}}
 
 	@Tag("wikidata")
