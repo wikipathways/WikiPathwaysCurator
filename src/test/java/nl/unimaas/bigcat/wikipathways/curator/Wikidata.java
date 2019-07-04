@@ -149,17 +149,19 @@ public class Wikidata {
 		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assertions.assertNotNull(table);
 		String errors = "";
+		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String keggID = table.get(i, "metabolite");
 				if (!noWarnKEGGCIDs.contains(keggID.substring(37))) {
 					errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
 						   + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
+					errorCount++;
 				}
 			}
 		}
 		Assertions.assertEquals(
-			0, table.getRowCount(),
+			0, errorCount,
 			"KEGG Compound identifiers without Wikidata mappings:\n" + errors
 		);
 	}
