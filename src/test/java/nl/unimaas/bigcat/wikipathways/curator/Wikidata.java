@@ -327,7 +327,7 @@ public class Wikidata {
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String metaboliteID = table.get(i, "metaboliteID").trim();
-				if (!metaboliteID.contains(metaboliteID.substring(37))) {
+				if (!metaboliteID.contains(metaboliteID.substring(27))) {
 				    String results = table.get(i, "results");
 				    errors += metaboliteID + " mapped to Wikidata: " + results + "\n ";
 				    errorCount++;
