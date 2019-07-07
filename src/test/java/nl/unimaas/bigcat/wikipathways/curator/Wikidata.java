@@ -116,7 +116,7 @@ public class Wikidata {
 	}
 
 	private static Set<String> noWarnKEGGCIDs = new HashSet<>();
-	{{  // ACPs
+	{{  // ACPs (acyl-carrier proteins)
 		noWarnKEGGCIDs.add("C04688");
 		noWarnKEGGCIDs.add("C05729");
 		noWarnKEGGCIDs.add("C05746");
@@ -309,6 +309,11 @@ public class Wikidata {
 		);
 	}
 
+	private static Set<String> allowedDuplicates = new HashSet<>();
+	{{
+		allowedDuplicates.add("7732-18-5"); // water + demi water
+	}}
+
 	@Tag("wikidata")
 	@Test
 	public void duplicateWikidataMappings() throws Exception {
@@ -322,9 +327,11 @@ public class Wikidata {
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String metaboliteID = table.get(i, "metaboliteID").trim();
-				String results = table.get(i, "results");
-				errors += metaboliteID + " mapped to Wikidata: " + results + "\n ";
-				errorCount++;
+				if (!metaboliteID.contains(metaboliteID.substring(37))) {
+				    String results = table.get(i, "results");
+				    errors += metaboliteID + " mapped to Wikidata: " + results + "\n ";
+				    errorCount++;
+				}
 			}
 		}
 		Assertions.assertEquals(
