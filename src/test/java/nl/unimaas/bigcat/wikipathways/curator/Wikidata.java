@@ -143,6 +143,10 @@ public class Wikidata {
 		noWarnKEGGCIDs.add("C16239");
 		// things with R groups
 		noWarnKEGGCIDs.add("C16254");
+		noWarnKEGGCIDs.add("C15973");
+		noWarnKEGGCIDs.add("C06250");
+		noWarnKEGGCIDs.add("C16236");
+		noWarnKEGGCIDs.add("C16237");
 	}}
 
 	@Tag("wikidata")
