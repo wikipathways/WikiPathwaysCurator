@@ -52,6 +52,11 @@ public class Wikidata {
 		}
 	}
 
+	private static Set<String> zwitterIonsWithoutWikidata = new HashSet<>();
+	{{
+		zwitterIonsWithoutWikidata.add("CHEBI:33384");
+	}}
+
 	@Tag("wikidata")
 	@Test
 	public void chebiWithoutMapping() throws Exception {
@@ -61,14 +66,19 @@ public class Wikidata {
 		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assertions.assertNotNull(table);
 		String errors = "";
+		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
-				errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
-					    + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
+				String chebiID = table.get(i, "metabolite");
+				if (!zwitterIonsWithoutWikidata.contains(chebiID.substring(29))) {
+				    errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
+					       + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
+				    errorCount++;
+				}
 			}
 		}
 		Assertions.assertEquals(
-			0, table.getRowCount(),
+			0, errorCount,
 			"ChEBI identifiers without Wikidata mappings:\n" + errors
 		);
 	}
