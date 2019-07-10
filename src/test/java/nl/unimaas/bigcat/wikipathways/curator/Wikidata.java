@@ -54,7 +54,14 @@ public class Wikidata {
 
 	private static Set<String> zwitterIonsWithoutWikidata = new HashSet<>();
 	{{
-		zwitterIonsWithoutWikidata.add("CHEBI:33384");
+		zwitterIonsWithoutWikidata.add("CHEBI:33384"); // L-serine zwitterion
+		zwitterIonsWithoutWikidata.add("CHEBI:57427"); // L-leucine zwitterion
+		zwitterIonsWithoutWikidata.add("CHEBI:57972"); // L-alanine zwitterion
+		zwitterIonsWithoutWikidata.add("CHEBI:58045"); // L-isoleucine zwitterion
+		zwitterIonsWithoutWikidata.add("CHEBI:58048"); // L-asparagine zwitterion
+		zwitterIonsWithoutWikidata.add("CHEBI:58315"); // L-tyrosine zwitterion
+		zwitterIonsWithoutWikidata.add("CHEBI:58359"); // L-glutamine zwitterion
+		zwitterIonsWithoutWikidata.add("CHEBI:60039"); // L-proline zwitterion
 	}}
 
 	@Tag("wikidata")
