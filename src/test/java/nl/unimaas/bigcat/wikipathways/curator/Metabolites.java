@@ -60,6 +60,7 @@ public class Metabolites {
 		Set<String> exceptions = new HashSet<String>();
 		exceptions.add("http://identifiers.org/chebi/CHEBI:16991"); // DNA
 		exceptions.add("http://identifiers.org/chebi/CHEBI:39026"); // LDL
+		exceptions.add("http://identifiers.org/wikidata/Q27205"); // fibrin
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
