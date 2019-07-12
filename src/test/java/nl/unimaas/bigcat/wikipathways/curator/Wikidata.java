@@ -62,6 +62,7 @@ public class Wikidata {
 		zwitterIonsWithoutWikidata.add("CHEBI:58315"); // L-tyrosine zwitterion
 		zwitterIonsWithoutWikidata.add("CHEBI:58359"); // L-glutamine zwitterion
 		zwitterIonsWithoutWikidata.add("CHEBI:60039"); // L-proline zwitterion
+		zwitterIonsWithoutWikidata.add("CHEBI:58199"); // L-homocystein zwitterion
 	}}
 
 	@Tag("wikidata")
