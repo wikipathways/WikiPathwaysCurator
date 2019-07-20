@@ -29,7 +29,9 @@ package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
@@ -39,6 +41,7 @@ import org.junit.jupiter.api.Test;
 public class HMDBSecMetabolites {
 
 	private static Map<String,String> oldToNew = new HashMap<String, String>();
+	private static Set<String> nonExisting = new HashSet<String>();
 
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
@@ -58,6 +61,8 @@ public class HMDBSecMetabolites {
 			oldToNew.put(ids[0], ids[1]);
 		}
 		System.out.println("size: " + oldToNew.size());
+
+		nonExisting.add("HMDB0002708"); // "How did you get here? That page doesn't exist. Oh well, it happens."
 	}
 
 	@Test
@@ -86,6 +91,32 @@ public class HMDBSecMetabolites {
 			}
 			Assertions.assertEquals(
 				0, errorCount, "Secondary HMDB identifiers detected:\n" + errors
+			);
+		});
+	}
+
+	@Test
+	public void nonExisting() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("metabolite/allHMDBIdentifiers.rq");
+		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+			String errors = "";
+			int errorCount = 0;
+			Assertions.assertNotSame(0, table.getRowCount(), "I expected more than zero HMDB identifiers.");
+			if (table.getRowCount() > 0) {
+				for (int i=1; i<=table.getRowCount(); i++) {
+					String identifier = table.get(i, "identifier");
+					if (nonExisting.contains(identifier)) {
+						errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+								" has " + identifier + " but it does not exist\n";
+						errorCount++;
+					}
+				}
+			}
+			Assertions.assertEquals(
+				0, errorCount, "Non-existing HMDB identifiers detected:\n" + errors
 			);
 		});
 	}
