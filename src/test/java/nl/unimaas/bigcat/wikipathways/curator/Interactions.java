@@ -94,6 +94,7 @@ public class Interactions {
 			Set<String> allowedProteinSubstrates = new HashSet<String>();
 			allowedProteinSubstrates.add("http://identifiers.org/uniprot/H9ZYJ2"); // theoredoxin, e.g. WP3580
 			allowedProteinSubstrates.add("http://identifiers.org/chebi/CHEBI:39026"); // LDL
+			allowedProteinSubstrates.add("http://identifiers.org/wikidata/Q381899"); // fibrinogen
 			String errors = "";
 			int errorCount = 0;
 			if (table.getRowCount() > 0) {
