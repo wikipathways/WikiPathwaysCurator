@@ -120,4 +120,30 @@ public class HMDBSecMetabolites {
 			);
 		});
 	}
+
+	@Test
+	public void oldFormat() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("metabolite/allHMDBIdentifiers.rq");
+		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+			String errors = "";
+			int errorCount = 0;
+			Assertions.assertNotSame(0, table.getRowCount(), "I expected more than zero HMDB identifiers.");
+			if (table.getRowCount() > 0) {
+				for (int i=1; i<=table.getRowCount(); i++) {
+					String identifier = table.get(i, "identifier");
+					if (identifier.length() < 11) {
+						errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+								" has " + identifier + " but the new format is " + identifier.replace("HMDB", "HMDB00") + "\n";
+						errorCount++;
+					}
+				}
+			}
+			Assertions.assertEquals(
+				0, errorCount, "Old HMDB identifier format detected:\n" + errors
+			);
+		});
+	}
 }
