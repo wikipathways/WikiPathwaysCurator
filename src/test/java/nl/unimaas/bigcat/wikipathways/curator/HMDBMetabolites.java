@@ -47,7 +47,7 @@ public class HMDBMetabolites {
 		}
 	}
 
-	@Tag("curation")
+	@Tag("outdated")
 	@Test
 	public void outdatedIdentifiers() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("metabolite/hmdb/outdatedHMDBidentifiers.rq");
