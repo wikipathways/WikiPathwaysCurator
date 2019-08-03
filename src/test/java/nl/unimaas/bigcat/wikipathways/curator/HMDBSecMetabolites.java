@@ -123,7 +123,7 @@ public class HMDBSecMetabolites {
 
 	@Test
 	public void oldFormat() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/allHMDBIdentifiers.rq");
+		String sparql = ResourceHelper.resourceAsString("metabolite/allHMDBIdentifiersGPML.rq");
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
 			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
