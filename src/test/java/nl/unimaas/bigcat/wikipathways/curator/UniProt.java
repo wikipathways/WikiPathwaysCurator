@@ -28,7 +28,9 @@ package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
@@ -41,6 +43,11 @@ public class UniProt {
 	@SuppressWarnings({ "serial" })
 	private static final Map<String,String> deprecated = new HashMap<String,String>() {{
         put("B3KP27", "P15408");
+	}};
+
+	@SuppressWarnings({ "serial" })
+	private static final Set<String> deleted = new HashSet<String>() {{
+        add("B5MEC1");
 	}};
 
 	@BeforeAll
@@ -81,6 +88,33 @@ public class UniProt {
 			}
 			Assertions.assertEquals(
 				0, errorCount, "Deprecated UniProt identifiers:\n" + errors
+			);
+		});
+	}
+
+	@Test
+	public void deletedIdentifiers() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("genes/allUniProtIdentifiers.rq");
+		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			    ? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		        : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+			Assertions.assertNotNull(table);
+			Assertions.assertNotSame(0, table.getColumnCount());
+			String errors = "";
+			int errorCount = 0;
+			if (table.getRowCount() > 0) {
+				for (int i=1; i<=table.getRowCount(); i++) {
+					String identifier = table.get(i, "identifier");
+					if (deleted.contains(identifier)) {
+						errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " + table.get(i, "identifier") +
+							  " is deleted; \n";
+						errorCount++;
+					}
+				}
+			}
+			Assertions.assertEquals(
+				0, errorCount, "Deleted UniProt identifiers:\n" + errors
 			);
 		});
 	}
