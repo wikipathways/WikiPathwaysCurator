@@ -67,7 +67,7 @@ public class UniProt {
 	@Tag("outdated")
 	@Test
 	public void outdatedIdentifiers() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("genes/allUniProtIdentifiers.rq");
+		String sparql = ResourceHelper.resourceAsString("proteins/allUniProtIdentifiers.rq");
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
 			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 			    ? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
@@ -94,7 +94,7 @@ public class UniProt {
 
 	@Test
 	public void deletedIdentifiers() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("genes/allUniProtIdentifiers.rq");
+		String sparql = ResourceHelper.resourceAsString("proteins/allUniProtIdentifiers.rq");
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
 			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 			    ? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
