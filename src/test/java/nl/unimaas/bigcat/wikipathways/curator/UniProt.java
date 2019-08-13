@@ -73,7 +73,6 @@ public class UniProt {
 			    ? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 		        : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 			Assertions.assertNotNull(table);
-			Assertions.assertNotSame(0, table.getColumnCount());
 			String errors = "";
 			int errorCount = 0;
 			if (table.getRowCount() > 0) {
@@ -100,7 +99,6 @@ public class UniProt {
 			    ? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 		        : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 			Assertions.assertNotNull(table);
-			Assertions.assertNotSame(0, table.getColumnCount());
 			String errors = "";
 			int errorCount = 0;
 			if (table.getRowCount() > 0) {
