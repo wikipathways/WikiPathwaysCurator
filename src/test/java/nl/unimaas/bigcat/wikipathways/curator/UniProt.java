@@ -47,7 +47,7 @@ public class UniProt {
 
 	@SuppressWarnings({ "serial" })
 	private static final Set<String> deleted = new HashSet<String>() {{
-        add("B5MEC1");
+        add("B5MEC1", "P47886");
 	}};
 
 	@BeforeAll
