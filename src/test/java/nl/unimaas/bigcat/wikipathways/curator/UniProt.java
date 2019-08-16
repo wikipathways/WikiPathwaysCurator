@@ -96,6 +96,35 @@ public class UniProt {
 		});
 	}
 
+	
+	@Test
+	public void unreviewedIdentifiers() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("proteins/allUniProtIdentifiers.rq");
+		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			    ? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		        : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+			Assertions.assertNotNull(table);
+			String errors = "";
+			int errorCount = 0;
+			if (table.getRowCount() > 0) {
+				for (int i=1; i<=table.getRowCount(); i++) {
+					String identifier = table.get(i, "identifier");
+					if (deleted.contains(identifier)) {
+						errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " + table.get(i, "identifier") +
+							  " is unreviewed, please visit Uniprot for (potential) reviewed version; \n";
+						errorCount++;
+					}
+				}
+			}
+			Assertions.assertEquals(
+				0, errorCount, "Unreviewed UniProt identifiers:\n" + errors
+			);
+		});
+	}
+	
+	
+	
 	@Test
 	public void deletedIdentifiers() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("proteins/allUniProtIdentifiers.rq");
