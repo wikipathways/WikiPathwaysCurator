@@ -110,7 +110,7 @@ public class UniProt {
 			if (table.getRowCount() > 0) {
 				for (int i=1; i<=table.getRowCount(); i++) {
 					String identifier = table.get(i, "identifier");
-					if (deleted.contains(identifier)) {
+					if (unreviewed.contains(identifier)) {
 						errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " + table.get(i, "identifier") +
 							  " is unreviewed, please visit Uniprot for (potential) reviewed version; \n";
 						errorCount++;
