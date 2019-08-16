@@ -42,7 +42,7 @@ public class UniProt {
 
 	@SuppressWarnings({ "serial" })
 	private static final Map<String,String> deprecated = new HashMap<String,String>() {{
-        put("B3KP27", "P15408");
+        put("B3KP27", "P15408", "O43884");
 	}};
 
 	@SuppressWarnings({ "serial" })
