@@ -41,12 +41,17 @@ import org.junit.jupiter.api.Test;
 public class UniProt {
 
 	@SuppressWarnings({ "serial" })
-	private static final Map<String,String> deprecated = new HashMap<String,String>() {{
+	private static final Map<String,String> deprecated = new HashMap<String,String>() {{ //Secondary IDs
         put("B3KP27", "P15408", "O43884");
+	}};
+	
+	@SuppressWarnings({ "serial" })
+	private static final Map<String,String> unreviewed = new HashMap<String,String>() {{ //Unreviewed IDs
+        put("O60411", "O95220");
 	}};
 
 	@SuppressWarnings({ "serial" })
-	private static final Set<String> deleted = new HashSet<String>() {{
+	private static final Set<String> deleted = new HashSet<String>() {{ //Removed IDs
         add("B5MEC1", "P47886", "P47892", "Q9UDD7", "Q9UDD8");
 	}};
 
