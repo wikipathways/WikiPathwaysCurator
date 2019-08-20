@@ -42,17 +42,25 @@ public class UniProt {
 
 	@SuppressWarnings({ "serial" })
 	private static final Map<String,String> deprecated = new HashMap<String,String>() {{ //Secondary IDs; website contains replacement info
-        put("B3KP27", "P15408", "O43884");
+		// this map shows the deprecated and better UniProt identifier. The syntax below is:
+		// put(deprecated, replacement)
+        put("B3KP27", "P15408");
+        put("O43884","???"); // TODO
 	}};
 	
 	@SuppressWarnings({ "serial" })
 	private static final Set<String> unreviewed = new HashSet<String>() {{ //Unreviewed IDs; website doesn't contains replacement info
-        add("O60411", "O95220");
+        add("O60411");
+        add("O95220");
 	}};
 
 	@SuppressWarnings({ "serial" })
 	private static final Set<String> deleted = new HashSet<String>() {{ //Removed IDs; website doesn't contains replacement info
-        add("B5MEC1", "P47886", "P47892", "Q9UDD7", "Q9UDD8");
+        add("B5MEC1");
+        add("P47886");
+        add("P47892");
+        add("Q9UDD7");
+        add("Q9UDD8");
 	}};
 
 	@BeforeAll
