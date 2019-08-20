@@ -61,7 +61,6 @@ public class OPSWPRDFFiles {
 		String folder = "/tmp/doesntexist/";
 		if (System.getProperty("OPSWPRDF") != null) {
 			folder = System.getProperty("OPSWPRDF");
-			folder = folder.replace(".", "/");
 			folder = folder.replace("_", " ");
 			folder = folder.replace("[", "(");
 			folder = folder.replace("]", ")");
