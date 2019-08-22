@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/BiGCAT-UM/WikiPathwaysCurator.svg?branch=master)](https://travis-ci.org/BiGCAT-UM/WikiPathwaysCurator)
+
 # Unit tests for curating WikiPathways using SPARQL.
 
 This code base runs a number of SPARQL queries wrapped in JUnit files to detect
