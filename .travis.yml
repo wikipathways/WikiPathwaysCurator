@@ -1,4 +1,4 @@
 language: java
-script: mvn install -DSPARQLEP=https://sparql.wikipathways.org/
+script: mvn install -DSPARQLEP=http://sparql.wikipathways.org/
 jdk:
   - openjdk8
