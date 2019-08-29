@@ -104,7 +104,7 @@ public class UniProt {
 		});
 	}
 
-	
+	@Tag("curation")
 	@Test
 	public void unreviewedIdentifiers() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("proteins/allUniProtIdentifiers.rq");
