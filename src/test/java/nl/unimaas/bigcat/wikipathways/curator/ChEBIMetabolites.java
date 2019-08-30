@@ -70,7 +70,7 @@ public class ChEBIMetabolites {
 	}
 
 	@BeforeEach
-	public static void waitForIt() throws InterruptedException { TimeUnit.MICROSECONDS.wait(500); }
+	public void waitForIt() throws InterruptedException { TimeUnit.MICROSECONDS.wait(500); }
 
 	@Test
 	public void secondaryChEBIIdentifiers() throws Exception {

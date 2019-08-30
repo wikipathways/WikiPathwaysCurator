@@ -124,7 +124,7 @@ public class EnsemblGenes {
 	}
 
 	@BeforeEach
-	public static void waitForIt() throws InterruptedException { TimeUnit.MICROSECONDS.wait(500); }
+	public void waitForIt() throws InterruptedException { TimeUnit.MICROSECONDS.wait(500); }
 
 	@Tag("outdated")
 	@Test

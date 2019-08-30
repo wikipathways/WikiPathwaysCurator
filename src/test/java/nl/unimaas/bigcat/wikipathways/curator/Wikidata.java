@@ -55,7 +55,7 @@ public class Wikidata {
 	}
 
 	@BeforeEach
-	public static void waitForIt() throws InterruptedException { TimeUnit.MICROSECONDS.wait(500); }
+	public void waitForIt() throws InterruptedException { TimeUnit.MICROSECONDS.wait(500); }
 
 	private static Set<String> zwitterIonsWithoutWikidata = new HashSet<>();
 	{{
