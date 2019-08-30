@@ -27,10 +27,12 @@
 package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class KEGGMetabolites {
@@ -45,6 +47,9 @@ public class KEGGMetabolites {
 			Assertions.assertTrue(data.size() > 5000);
 		}
 	}
+
+	@BeforeEach
+	public static void waitForIt() throws InterruptedException { TimeUnit.MICROSECONDS.wait(500); }
 
 	@Test
 	public void noCnumber() throws Exception {

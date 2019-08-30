@@ -28,6 +28,7 @@ package nl.unimaas.bigcat.wikipathways.curator;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -50,6 +51,9 @@ public class General {
 			Assertions.assertTrue(data.size() > 5000);
 		}
 	}
+
+	@BeforeEach
+	public static void waitForIt() throws InterruptedException { TimeUnit.MICROSECONDS.wait(500); }
 
 	@Test
 	@Tag("void")

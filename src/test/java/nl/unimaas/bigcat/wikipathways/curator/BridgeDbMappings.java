@@ -27,10 +27,12 @@
 package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class BridgeDbMappings {
@@ -48,7 +50,10 @@ public class BridgeDbMappings {
 			Assertions.assertEquals(0, parseErrors.length(), parseErrors.toString());
 		}
 	}
-	
+
+	@BeforeEach
+	public static void waitForIt() throws InterruptedException { TimeUnit.MICROSECONDS.wait(500); }
+
 	@Test
 	public void hasSomeEntrezGeneMappings() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/hasEntrezGeneMappings.rq");
