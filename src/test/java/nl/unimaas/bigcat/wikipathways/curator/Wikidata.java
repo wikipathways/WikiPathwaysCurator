@@ -54,7 +54,7 @@ public class Wikidata {
 	}
 
 	@BeforeEach
-	public void waitForIt() throws InterruptedException { Thread.sleep(200); }
+	public void waitForIt() throws InterruptedException { Thread.sleep(OPSWPRDFFiles.SLEEP_TIME); }
 
 	private static Set<String> zwitterIonsWithoutWikidata = new HashSet<>();
 	{{

@@ -49,7 +49,7 @@ public class HMDBMetabolites {
 	}
 
 	@BeforeEach
-	public void waitForIt() throws InterruptedException { Thread.sleep(200); }
+	public void waitForIt() throws InterruptedException { Thread.sleep(OPSWPRDFFiles.SLEEP_TIME); }
 
 	@Tag("outdated")
 	@Test

@@ -69,7 +69,7 @@ public class ChEBIMetabolites {
 	}
 
 	@BeforeEach
-	public void waitForIt() throws InterruptedException { Thread.sleep(200); }
+	public void waitForIt() throws InterruptedException { Thread.sleep(OPSWPRDFFiles.SLEEP_TIME); }
 
 	@Test
 	public void secondaryChEBIIdentifiers() throws Exception {

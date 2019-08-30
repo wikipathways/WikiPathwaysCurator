@@ -127,6 +127,8 @@ public class OPSWPRDFFiles {
 		add("WP2582"); // the metabolite tests
 	}};
 
+	public static final long SLEEP_TIME = 300; // in milliseconds
+
 	private static boolean testOrTutorial(String filename) {
 		for (String pathway : pathwaysToIgnore) {
 			if (filename.contains(pathway + "_")) return true;
