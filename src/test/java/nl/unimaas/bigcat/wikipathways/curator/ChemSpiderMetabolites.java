@@ -28,7 +28,6 @@ package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
@@ -58,7 +57,7 @@ public class ChemSpiderMetabolites {
 	}
 
 	@BeforeEach
-	public void waitForIt() throws InterruptedException { TimeUnit.MICROSECONDS.wait(500); }
+	public void waitForIt() throws InterruptedException { Thread.sleep(200); }
 
 	@Test
 	public void outdatedIdentifiers() throws Exception {

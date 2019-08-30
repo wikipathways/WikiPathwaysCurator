@@ -26,18 +26,17 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
-import org.apache.jena.rdf.model.Model;
 
 public class General {
 
@@ -53,7 +52,7 @@ public class General {
 	}
 
 	@BeforeEach
-	public void waitForIt() throws InterruptedException { TimeUnit.MICROSECONDS.wait(500); }
+	public void waitForIt() throws InterruptedException { Thread.sleep(200); }
 
 	@Test
 	@Tag("void")

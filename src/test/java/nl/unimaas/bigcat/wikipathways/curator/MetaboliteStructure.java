@@ -26,11 +26,6 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
-import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
-import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
-
-import java.util.concurrent.TimeUnit;
-
 import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -51,7 +46,7 @@ public class MetaboliteStructure {
 	}
 
 	@BeforeEach
-	public void waitForIt() throws InterruptedException { TimeUnit.MICROSECONDS.wait(500); }
+	public void waitForIt() throws InterruptedException { Thread.sleep(200); }
 	
 	@Test
 	public void nullDataSources() throws Exception {

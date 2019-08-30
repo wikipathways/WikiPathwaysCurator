@@ -26,8 +26,6 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
-import java.util.concurrent.TimeUnit;
-
 import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -48,7 +46,7 @@ public class Genes {
 	}
 
 	@BeforeEach
-	public void waitForIt() throws InterruptedException { TimeUnit.MICROSECONDS.wait(500); }
+	public void waitForIt() throws InterruptedException { Thread.sleep(200); }
 
 	@Test
 	public void entrezGeneIdentifiersNotNumber() throws Exception {

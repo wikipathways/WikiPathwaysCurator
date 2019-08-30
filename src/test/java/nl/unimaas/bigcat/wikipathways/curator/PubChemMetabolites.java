@@ -26,19 +26,17 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.jena.rdf.model.Model;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class PubChemMetabolites {
 
@@ -66,7 +64,7 @@ public class PubChemMetabolites {
 	}
 
 	@BeforeEach
-	public void waitForIt() throws InterruptedException { TimeUnit.MICROSECONDS.wait(500); }
+	public void waitForIt() throws InterruptedException { Thread.sleep(200); }
 
 	@Test
 	public void nonNumericIDs() throws Exception {
