@@ -11,7 +11,7 @@ SELECT DISTINCT ?metabolite (STR(?labelStr) AS ?label) ?homepage WHERE {
     dc:source "ChEBI"^^xsd:string ;
     rdfs:label ?labelStr ;
     dcterms:isPartOf ?pathway .
-  ?pathway foaf:page ?homepage .
+  ?pathway foaf:page ?homepage ;
+           wp:ontologyTag cur:Reactome_Approved .
   MINUS { ?metabolite wp:bdbWikidata ?wikidata }
-  MINUS { ?pathway wp:ontologyTag cur:Reactome_Approved }
 } ORDER BY ASC(?metabolite)

@@ -69,6 +69,32 @@ public class Wikidata {
 		zwitterIonsWithoutWikidata.add("CHEBI:58199"); // L-homocystein zwitterion
 	}}
 
+	@Tag("expertCuration")
+	@Test
+	public void chebiWithoutMapping_Reactome() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteChEBI_Reactome.rq");
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		Assertions.assertNotNull(table);
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String chebiID = table.get(i, "metabolite");
+				if (!zwitterIonsWithoutWikidata.contains(chebiID.substring(29))) {
+				    errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
+					       + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
+				    errorCount++;
+				}
+			}
+		}
+		Assertions.assertEquals(
+			0, errorCount,
+			"ChEBI identifiers without Wikidata mappings:\n" + errors
+		);
+	}
+
 	@Tag("wikidata")
 	@Test
 	public void chebiWithoutMapping() throws Exception {
