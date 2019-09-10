@@ -30,6 +30,7 @@ import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 public class References {
@@ -104,4 +105,24 @@ public class References {
 			0, errorCount, "Found '0's as PubMed IDs:\n" + errors
 		);
 	}
+
+    @Tag("expertCuration")
+    @Test
+    public void atLeastOneReference() throws Exception {
+    	String sparql = ResourceHelper.resourceAsString("missing/atLeastOneReference.rq");
+		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+		String errors = "";
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errors += table.get(i, "homepage") + ", '" +
+  					table.get(i, "title") + "' in " +
+					table.get(i, "species") + " has zero references; \n";
+			}
+		}
+		Assertions.assertEquals(
+			0, table.getRowCount(), "Found " + table.getRowCount() + "pathways with zero references:\n" + errors
+		);
+    }
 }

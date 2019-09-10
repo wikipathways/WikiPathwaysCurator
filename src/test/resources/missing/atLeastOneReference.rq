@@ -1,0 +1,13 @@
+PREFIX cur: <http://vocabularies.wikipathways.org/wp#Curation:>
+
+SELECT DISTINCT ?homepage (str(?titleLit) as ?title) (str(?speciesLit) as ?species)
+WHERE {
+  ?pathway wp:ontologyTag cur:AnalysisCollection ;
+           dc:title ?titleLit ;
+           wp:organismName ?speciesLit ;
+           foaf:page ?homepage .
+  MINUS {
+    ?pubmed a       wp:PublicationReference . 
+      ?pubmed dcterms:isPartOf ?pathway
+  }
+} ORDER BY ?species ?title
