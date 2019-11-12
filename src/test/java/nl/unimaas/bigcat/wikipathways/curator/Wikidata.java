@@ -404,6 +404,14 @@ public class Wikidata {
 		});
 	}
 
+	private static Set<String> acceptableWikidataGenes = new HashSet<>();
+	{{
+		acceptableWikidataGenes.add("Q27205");   // Protein Fibrin
+		acceptableWikidataGenes.add("Q311213");  // Protein HbA1c
+		acceptableWikidataGenes.add("Q381899");  // Protein Fibrinogen
+		acceptableWikidataGenes.add("Q2162109"); // Protein D-dimer
+	}}
+
 	@Tag("wikidata")
 	@Test
 	public void noWikidataForGenes() throws Exception {
@@ -415,9 +423,12 @@ public class Wikidata {
 		String errors = "";
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
-				errors += table.get(i, "homepage") +
-					" has " + table.get(i, "identifier") + " for the " +
-					table.get(i, "wpType") + " " + table.get(i, "label") + "\n";
+				String wdQ = table.get(i, "identifier");
+				if (!acceptableWikidataGenes.contains(wdQ)) {
+					errors += table.get(i, "homepage") +
+							" has " + wdQ + " for the " +
+							table.get(i, "wpType") + " " + table.get(i, "label") + "\n";
+				}
 			}
 		}
 		Assertions.assertEquals(
