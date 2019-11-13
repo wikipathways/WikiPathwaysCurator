@@ -421,6 +421,7 @@ public class Wikidata {
 		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assertions.assertNotNull(table);
 		String errors = "";
+		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String wdQ = table.get(i, "identifier");
@@ -428,11 +429,12 @@ public class Wikidata {
 					errors += table.get(i, "homepage") +
 							" has " + wdQ + " for the " +
 							table.get(i, "wpType") + " " + table.get(i, "label") + "\n";
+					++errorCount;
 				}
 			}
 		}
 		Assertions.assertEquals(
-			0, table.getRowCount(),
+			0, errorCount,
 			"Wikidata identifiers cannot be used for GeneProduct or Protein yet:\n" + errors
 		);
 	}
