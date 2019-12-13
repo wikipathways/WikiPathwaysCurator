@@ -60,13 +60,15 @@ public class Wikidata {
 	{{
 		zwitterIonsWithoutWikidata.add("CHEBI:33384"); // L-serine zwitterion
 		zwitterIonsWithoutWikidata.add("CHEBI:57427"); // L-leucine zwitterion
+		zwitterIonsWithoutWikidata.add("CHEBI:57743"); // Citrulline zwitterion
+		zwitterIonsWithoutWikidata.add("CHEBI:57844"); // L-Methionine zwitterion
 		zwitterIonsWithoutWikidata.add("CHEBI:57972"); // L-alanine zwitterion
 		zwitterIonsWithoutWikidata.add("CHEBI:58045"); // L-isoleucine zwitterion
 		zwitterIonsWithoutWikidata.add("CHEBI:58048"); // L-asparagine zwitterion
+		zwitterIonsWithoutWikidata.add("CHEBI:58199"); // L-homocystein zwitterion
 		zwitterIonsWithoutWikidata.add("CHEBI:58315"); // L-tyrosine zwitterion
 		zwitterIonsWithoutWikidata.add("CHEBI:58359"); // L-glutamine zwitterion
 		zwitterIonsWithoutWikidata.add("CHEBI:60039"); // L-proline zwitterion
-		zwitterIonsWithoutWikidata.add("CHEBI:58199"); // L-homocystein zwitterion
 	}}
 
 	@Tag("expertCuration")
