@@ -59,6 +59,7 @@ public class Wikidata {
 	private static Set<String> zwitterIonsWithoutWikidata = new HashSet<>();
 	{{
 		zwitterIonsWithoutWikidata.add("CHEBI:33384"); // L-serine zwitterion
+		zwitterIonsWithoutWikidata.add("CHEBI:57476"); // L-homoserine zwitterion
 		zwitterIonsWithoutWikidata.add("CHEBI:57427"); // L-leucine zwitterion
 		zwitterIonsWithoutWikidata.add("CHEBI:57743"); // Citrulline zwitterion
 		zwitterIonsWithoutWikidata.add("CHEBI:57844"); // L-Methionine zwitterion
