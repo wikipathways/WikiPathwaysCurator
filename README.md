@@ -25,5 +25,5 @@ If you wish to run the tests agains a SPARQL end point (e.g. http://sparql.wikip
 then you run:
 
 ```shell
-mvn install -DSPARQLEP=http://sparql.wikipathways.org/
+mvn install -DSPARQLEP=http://sparql.wikipathways.org/sparql
 ```
