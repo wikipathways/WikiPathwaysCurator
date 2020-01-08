@@ -1,4 +1,4 @@
 language: java
-script: mvn install -DSPARQLEP=http://sparql.wikipathways.org/ -Dmaven.test.failure.ignore=true
+script: mvn install -DSPARQLEP=http://sparql.wikipathways.org/sparql -Dmaven.test.failure.ignore=true
 jdk:
   - openjdk8
