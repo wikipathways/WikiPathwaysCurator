@@ -54,6 +54,7 @@ public class UniProt {
         add("O60411");
         add("O95220");
 	add("A6NMV7");
+	add("A0A024RB99");
 	}};
 
 	@SuppressWarnings({ "serial" })
