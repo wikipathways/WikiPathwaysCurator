@@ -53,6 +53,7 @@ public class UniProt {
 	private static final Set<String> unreviewed = new HashSet<String>() {{ //Unreviewed IDs; website doesn't contains replacement info
         add("O60411");
         add("O95220");
+	add("A6NMV7");
 	}};
 
 	@SuppressWarnings({ "serial" })
