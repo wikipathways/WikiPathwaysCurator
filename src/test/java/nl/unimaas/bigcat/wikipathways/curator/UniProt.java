@@ -64,6 +64,7 @@ public class UniProt {
         add("P47892");
         add("Q9UDD7");
         add("Q9UDD8");
+	add("B5MEC1");
 	}};
 
 	@BeforeAll
