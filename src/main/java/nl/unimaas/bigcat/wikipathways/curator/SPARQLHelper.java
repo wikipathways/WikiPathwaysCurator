@@ -29,6 +29,7 @@ package nl.unimaas.bigcat.wikipathways.curator;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -36,6 +37,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
@@ -78,7 +80,14 @@ public class SPARQLHelper {
 		StringMatrix table = null;
 
 		// use Apache for doing the SPARQL query
-		try (CloseableHttpClient httpclient = HttpClientBuilder.create().build()) {
+		HttpClientBuilder builder = HttpClientBuilder.create();
+		String proxyString = System.getenv("http_proxy");
+		if (proxyString != null) {
+			URL proxyURL = new URL(proxyString);
+			HttpHost proxy = new HttpHost(proxyURL.getHost(), proxyURL.getPort());
+			builder.setProxy(proxy);
+		}
+		try (CloseableHttpClient httpclient = builder.build()) {
 			List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 			formparams.add(new BasicNameValuePair("query", queryString));
 			UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, "UTF-8");
