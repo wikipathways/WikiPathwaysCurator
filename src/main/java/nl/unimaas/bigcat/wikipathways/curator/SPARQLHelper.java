@@ -27,6 +27,7 @@
 package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -40,9 +41,9 @@ import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
-
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
@@ -77,27 +78,30 @@ public class SPARQLHelper {
 		StringMatrix table = null;
 
 		// use Apache for doing the SPARQL query
-		DefaultHttpClient httpclient = new DefaultHttpClient();
-		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-		formparams.add(new BasicNameValuePair("query", queryString));
-		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, "UTF-8");
-		HttpPost httppost = new HttpPost(endpoint);
-		httppost.setEntity(entity);
-		HttpResponse response = httpclient.execute(httppost);
-		StatusLine status = response.getStatusLine(); 
-		HttpEntity responseEntity = response.getEntity();
-		if (status.getStatusCode() != 200) {
-			ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-			responseEntity.writeTo(buffer);
-			throw new Exception("Invalid SPARQL result: " + status.getReasonPhrase() + ": " + buffer.toString());
+		try (CloseableHttpClient httpclient = HttpClientBuilder.create().build()) {
+			List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+			formparams.add(new BasicNameValuePair("query", queryString));
+			UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formparams, "UTF-8");
+			HttpPost httppost = new HttpPost(endpoint);
+			httppost.setEntity(entity);
+			HttpResponse response = httpclient.execute(httppost);
+			StatusLine status = response.getStatusLine(); 
+			HttpEntity responseEntity = response.getEntity();
+			if (status.getStatusCode() != 200) {
+				ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+				responseEntity.writeTo(buffer);
+				throw new Exception("Invalid SPARQL result: " + status.getReasonPhrase() + ": " + buffer.toString());
+			}
+			InputStream in = responseEntity.getContent();
+
+			// now the Jena part
+			ResultSet results = ResultSetFactory.fromXML(in);
+			table = convertIntoTable(null, results);
+
+			in.close();
+		} catch (IOException exception) {
+			throw exception;
 		}
-		InputStream in = responseEntity.getContent();
-
-		// now the Jena part
-		ResultSet results = ResultSetFactory.fromXML(in);
-		table = convertIntoTable(null, results);
-
-		in.close();
 		return table;
 	}
 
