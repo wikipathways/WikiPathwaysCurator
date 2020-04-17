@@ -27,3 +27,10 @@ then you run:
 ```shell
 mvn install -DSPARQLEP=http://sparql.wikipathways.org/sparql
 ```
+
+If you have the data loaded into a local [Blazegraph](https://github.com/blazegraph/database)
+installation, then the command looks like:
+
+```shell
+mvn install -DSPARQLEP=http://localhost:9999/blazegraph/sparql
+```
