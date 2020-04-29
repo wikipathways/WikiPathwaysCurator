@@ -34,6 +34,7 @@ import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 public class CASMetabolites {
@@ -98,6 +99,7 @@ public class CASMetabolites {
 		});
 	}
 
+	@Tag("noCovid")
 	@Test
 	public void outdatedIdentifiers() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("metabolite/allCASIdentifiers.rq");

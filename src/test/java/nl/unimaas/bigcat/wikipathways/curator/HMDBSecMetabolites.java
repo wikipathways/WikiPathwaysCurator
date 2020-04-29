@@ -70,6 +70,7 @@ public class HMDBSecMetabolites {
 	@BeforeEach
 	public void waitForIt() throws InterruptedException { Thread.sleep(OPSWPRDFFiles.SLEEP_TIME); }
 
+	@Tag("noCovid")
 	@Test
 	public void outdatedIdentifiers() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("metabolite/allHMDBIdentifiers.rq");
@@ -100,6 +101,7 @@ public class HMDBSecMetabolites {
 		});
 	}
 
+	@Tag("noCovid")
 	@Test
 	public void nonExisting() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("metabolite/allHMDBIdentifiers.rq");
@@ -127,6 +129,7 @@ public class HMDBSecMetabolites {
 	}
 
 	@Tag("outdated")
+	@Tag("noCovid")
 	@Test
 	public void oldFormat() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("metabolite/allHMDBIdentifiersGPML.rq");
