@@ -416,6 +416,7 @@ public class Wikidata {
 	}}
 
 	@Tag("wikidata")
+	@Tag("noCovid")
 	@Test
 	public void noWikidataForGenes() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("genes/noWikidataYet.rq");
