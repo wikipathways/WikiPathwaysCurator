@@ -130,14 +130,19 @@ public class Interactions {
 				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 			Assertions.assertNotNull(table);
+			Set<String> allowedProteinSubstrates = new HashSet<String>();
+			allowedProteinSubstrates.add("http://identifiers.org/uniprot/P0DTD1"); // SARS-CoV-2 main protease
 			String errors = "";
 			int errorCount = 0;
 			if (table.getRowCount() > 0) {
 				// OK, but then it must be proteins, e.g. IFN-b
 				for (int i=1; i<=table.getRowCount(); i++) {
-					errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
+					String protein = table.get(i, "gene");
+					if (!allowedProteinSubstrates.contains(protein)) {
+					    errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
 							table.get(i, "protein") + " " + table.get(i, "gene") + " " +
 							table.get(i, "interaction") + " Did you mean wp:TranscriptionTranslation?\n";
+					}
 					errorCount++;
 				}
 			}
