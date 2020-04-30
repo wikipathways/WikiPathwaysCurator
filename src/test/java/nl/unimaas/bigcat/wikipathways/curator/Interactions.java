@@ -137,10 +137,10 @@ public class Interactions {
 			if (table.getRowCount() > 0) {
 				// OK, but then it must be proteins, e.g. IFN-b
 				for (int i=1; i<=table.getRowCount(); i++) {
-					String protein = table.get(i, "gene");
+					String protein = table.get(i, "protein");
 					if (!allowedProteinSubstrates.contains(protein)) {
 					    errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
-							table.get(i, "protein") + " " + table.get(i, "gene") + " " +
+							protein + " " + table.get(i, "gene") + " " +
 							table.get(i, "interaction") + " Did you mean wp:TranscriptionTranslation?\n";
 					}
 					errorCount++;
