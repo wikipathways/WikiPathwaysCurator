@@ -142,8 +142,8 @@ public class Interactions {
 					    errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
 							protein + " " + table.get(i, "gene") + " " +
 							table.get(i, "interaction") + " Did you mean wp:TranscriptionTranslation?\n";
+						errorCount++;
 					}
-					errorCount++;
 				}
 			}
 			Assertions.assertEquals(
@@ -171,8 +171,8 @@ public class Interactions {
 				    errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
 				    		protein1 + " " + table.get(i, "protein2") + " " +
 				        table.get(i, "interaction") + "\n";
+					errorCount++;
 				}
-				errorCount++;
 			}
 		}
 		Assertions.assertEquals(
