@@ -65,8 +65,8 @@ public class References {
 					try {
 						Integer.parseInt(id);
 					} catch (NumberFormatException exception) {
-						errors += table.get(i, "homepage") + ", '" +
-								table.get(i, "id") + "'\n";
+						errors += table.get(i, "homepage") + " '" +
+								id + "' (reason: " + exception.getMessage() + ")\n";
 						errorCount++;
 					}
 				}
