@@ -6,11 +6,11 @@ prefix xsd:     <http://www.w3.org/2001/XMLSchema#>
 prefix foaf:    <http://xmlns.com/foaf/0.1/>
 prefix cur: <http://vocabularies.wikipathways.org/wp#Curation:>
 
-SELECT ?homepage ?node WHERE {
+SELECT ?homepage ?node ?datasource WHERE {
   ?node a gpml:DataNode ;
         dcterms:isPartOf ?gpmlPathway ;
-        gpml:type "Unknown"^^xsd:string ;
-        gpml:xrefDataSource ?datasource .
+        gpml:type "Unknown"^^xsd:string .
+  OPTIONAL { ?node gpml:xrefDataSource ?datasource . }
   ?pathway foaf:page ?homepage ;
            wp:isAbout ?gpmlPathway .
   MINUS { ?pathway wp:ontologyTag cur:Reactome_Approved }
