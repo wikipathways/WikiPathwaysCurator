@@ -70,7 +70,7 @@ public class DataNodes {
 				}
 			}
 			Assertions.assertEquals(
-				0, errorCount, "The following DataNodes have Unknown or no @Type:\n" + errors
+				0, errorCount, "The following DataNodes have Unknown @Type:\n" + errors
 			);
 		});
 	}
@@ -94,7 +94,7 @@ public class DataNodes {
 				}
 			}
 			Assertions.assertEquals(
-				0, errorCount, "The following DataNodes have Unknown or no @Type:\n" + errors
+				0, errorCount, "The following DataNodes have Unknown @Type:\n" + errors
 			);
 		});
 	}
@@ -118,7 +118,7 @@ public class DataNodes {
 				}
 			}
 			Assertions.assertEquals(
-				0, errorCount, "The following DataNodes have Unknown or no @Type:\n" + errors
+				0, errorCount, "The following DataNodes have Unknown @Type:\n" + errors
 			);
 		});
 	}
