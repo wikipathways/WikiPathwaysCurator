@@ -98,4 +98,28 @@ public class DataNodes {
 			);
 		});
 	}
+
+	@Test
+	@Tag("expertCuration")
+	public void unknownTypes_knownDatasource() throws Exception {
+		String sparql = ResourceHelper.resourceAsString("missing/unknownTypeKnownDatasource.rq");
+		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
+			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
+				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
+				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
+			Assertions.assertNotNull(table);
+			String errors = "";
+			int errorCount = 0;
+			if (table.getRowCount() > 0) {
+				for (int i=1; i<=table.getRowCount(); i++) {
+					errors += table.get(i, "homepage") + " " +
+						table.get(i, "node") + "\n";
+					errorCount++;
+				}
+			}
+			Assertions.assertEquals(
+				0, errorCount, "The following DataNodes have Unknown or no @Type:\n" + errors
+			);
+		});
+	}
 }
