@@ -65,7 +65,8 @@ public class DataNodes {
 			if (table.getRowCount() > 0) {
 				for (int i=1; i<=table.getRowCount(); i++) {
 					errors += table.get(i, "homepage") + " " +
-						table.get(i, "node") + "\n";
+						table.get(i, "node") + " (" +
+						table.get(i, "datasource") + ")\n";
 					errorCount++;
 				}
 			}
@@ -89,7 +90,8 @@ public class DataNodes {
 			if (table.getRowCount() > 0) {
 				for (int i=1; i<=table.getRowCount(); i++) {
 					errors += table.get(i, "homepage") + " " +
-						table.get(i, "node") + "\n";
+						table.get(i, "node") + " (" +
+						table.get(i, "datasource") + ")\n";
 					errorCount++;
 				}
 			}
@@ -113,7 +115,8 @@ public class DataNodes {
 			if (table.getRowCount() > 0) {
 				for (int i=1; i<=table.getRowCount(); i++) {
 					errors += table.get(i, "homepage") + " " +
-						table.get(i, "node") + "\n";
+						table.get(i, "node") + " (" +
+						table.get(i, "datasource") + ")\n";
 					errorCount++;
 				}
 			}
