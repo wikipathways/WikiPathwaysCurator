@@ -129,7 +129,8 @@ public class UniProt {
 					String identifier = table.get(i, "identifier");
 					if (unreviewed.contains(identifier)) {
 						errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " + table.get(i, "identifier") +
-							  " is unreviewed, please visit Uniprot for (potential) reviewed version; \n";
+							  " is unreviewed, please visit UniProt (https://www.uniprot.org/uniprot/" +
+						      table.get(i, "identifier") + ") for (potential) reviewed version; \n";
 						errorCount++;
 					}
 				}
