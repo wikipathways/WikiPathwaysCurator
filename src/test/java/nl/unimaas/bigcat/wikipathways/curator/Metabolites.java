@@ -62,6 +62,7 @@ public class Metabolites {
 		exceptions.add("http://identifiers.org/chebi/CHEBI:16991"); // DNA
 		exceptions.add("http://identifiers.org/chebi/CHEBI:39026"); // LDL
 		exceptions.add("http://identifiers.org/wikidata/Q27205"); // fibrin
+		exceptions.add("http://identifiers.org/wikidata/Q381899"); // fibrogen
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
