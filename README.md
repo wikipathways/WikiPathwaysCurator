@@ -19,6 +19,16 @@ options:
 mvn install -DOPSWPRDF=/tmp/doesntexist -DSUBSETPREFIX=wp9
 ```
 
+## Selection subsets of tests
+
+JUnit was used to define groups of tests, which can be included and excluded on
+runtime. For this, the `junit5.excludeGroups` and `junit5.groups` options
+can be used. For example, to only run the VoID header file tests, do:
+
+```shell
+mvn install -DOPSWPRDF=/tmp/doesntexist -DSUBSETPREFIX=wp9 -Djunit5.groups=void
+```
+
 ## SPARQL end point
 
 If you wish to run the tests agains a SPARQL end point (e.g. http://sparql.wikipathways.org/),
