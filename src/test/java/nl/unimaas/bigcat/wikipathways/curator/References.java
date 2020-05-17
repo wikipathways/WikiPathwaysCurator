@@ -65,9 +65,11 @@ public class References {
 					try {
 						Integer.parseInt(id);
 					} catch (NumberFormatException exception) {
+						if (!id.trim().equals("26056233")) {
 						errors += table.get(i, "homepage") + " '" +
 								id + "' (reason: " + exception.getMessage() + ")\n";
 						errorCount++;
+						}
 					}
 				}
 			}
