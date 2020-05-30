@@ -129,6 +129,7 @@ public class Metabolites {
 		allowed.add("CHEBI:33698"); // DNA
 		allowed.add("CHEBI:33699"); // mRNA
 		allowed.add("CHEBI:39026"); // LDL
+		allowed.add("CHEBI:89981"); // LPS
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
