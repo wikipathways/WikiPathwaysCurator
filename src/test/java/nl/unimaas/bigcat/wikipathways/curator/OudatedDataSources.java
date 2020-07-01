@@ -112,7 +112,17 @@ public class OudatedDataSources {
 				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 			Assertions.assertNotNull(table);
-			Assertions.assertEquals(0, table.getRowCount(), "Outdated 'Uniprot-SwissProt' data sources (use 'Uniprot-TrEMBL'):\n" + table);
+			String errors = "";
+			int errorCount = 0;
+			if (table.getRowCount() > 0) {
+				for (int i=1; i<=table.getRowCount(); i++) {
+					errors += table.get(i, "node") + ", " + table.get(i, "homepage") + "\n";
+					errorCount++;
+				}
+			}
+			Assertions.assertEquals(
+			    0, errorCount, "Outdated 'Uniprot-SwissProt' data sources (use 'Uniprot-TrEMBL'):\n" + errors
+			);
 		});
 	}
 
