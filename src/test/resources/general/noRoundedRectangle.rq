@@ -1,3 +1,8 @@
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix xsd:     <http://www.w3.org/2001/XMLSchema#>
+prefix wp:      <http://vocabularies.wikipathways.org/wp#>
+prefix gpml:    <http://vocabularies.wikipathways.org/gpml#>
+
 SELECT DISTINCT ?homepage (STR(?graphidLit) AS ?graphid) (STR(?id) AS ?identifier) WHERE {
   ?node a gpml:DataNode ;
         gpml:xrefDataSource "WikiPathways"^^xsd:string ;
