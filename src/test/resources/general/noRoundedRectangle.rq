@@ -1,0 +1,10 @@
+SELECT DISTINCT ?homepage (STR(?graphidLit) AS ?graphid) (STR(?id) AS ?identifier) WHERE {
+  ?node a gpml:DataNode ;
+        gpml:xrefDataSource "WikiPathways"^^xsd:string ;
+        gpml:xrefId         ?id ;
+        gpml:shapeType      "None"^^xsd:string ;
+        dcterms:isPartOf    ?pw .
+  OPTIONAL { ?node gpml:graphId ?graphidLit }
+  ?pathway wp:isAbout       ?pw ;
+           foaf:page        ?homepage .
+}
