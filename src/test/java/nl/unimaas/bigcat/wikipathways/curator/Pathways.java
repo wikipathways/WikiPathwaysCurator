@@ -52,7 +52,7 @@ public class Pathways {
 	@Test
 	@Tag("expertCuration")
 	public void testRoundedRectangle() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("genes/noRoundedRectangle.rq");
+		String sparql = ResourceHelper.resourceAsString("general/noRoundedRectangle.rq");
 		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
 			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
 		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
