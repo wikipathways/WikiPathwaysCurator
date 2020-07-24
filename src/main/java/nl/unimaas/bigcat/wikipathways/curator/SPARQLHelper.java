@@ -61,6 +61,23 @@ import org.apache.jena.shared.PrefixMapping;
 
 public class SPARQLHelper {
 
+	private Model model = null;
+	private String endpoint = null;
+	
+	public SPARQLHelper(Model model) {
+		this.model = model;
+	}
+
+	public SPARQLHelper(String endpoint) {
+		this.endpoint = endpoint;
+	}
+
+	public StringMatrix sparql(String queryString) throws Exception {
+		if (model != null) return SPARQLHelper.sparql(model, queryString);
+		if (endpoint != null) return SPARQLHelper.sparql(endpoint, queryString);
+		return null;
+	}
+
 	public static StringMatrix sparql(Model model, String queryString)
 			throws Exception {
 		StringMatrix table = null;

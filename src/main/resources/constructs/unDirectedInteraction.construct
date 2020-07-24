@@ -1,0 +1,32 @@
+# This CONSTRUCT query annotates WikiPathways unDirected Interactions. 
+PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dc:      <http://purl.org/dc/elements/1.1/>
+PREFIX dcterms:  <http://purl.org/dc/terms/>
+PREFIX gpml:    <http://vocabularies.wikipathways.org/gpml#>
+PREFIX wp:      <http://vocabularies.wikipathways.org/wp#>
+PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT {
+	?line rdf:type wp:UnDirectedInteraction .
+}
+FROM <http://rdf.wikipathways.org/>
+WHERE {
+	?pathway dc:identifier ?wpIdentifier .
+	?datanode2 dc:identifier ?dn2Identifier .
+	?datanode2 a gpml:DataNode .
+	?datanode2 dcterms:isPartOf ?pathway .
+	?datanode2 gpml:graphid ?dn2GraphId .
+	?line gpml:graphref ?dn2GraphId .
+	FILTER (?datanode2 != ?datanode1) 
+	FILTER (!regex(str(?datanode2), "noIdentifier")) .
+	?datanode1 dc:identifier ?dn1Identifier .
+   	?datanode1 gpml:graphid ?dn1GraphId .
+   	?datanode1 a gpml:DataNode .
+   	?datanode1 dcterms:isPartOf ?pathway .
+   	?line gpml:graphref ?dn1GraphId .
+   	?line a gpml:Interaction .
+   	?line gpml:graphid ?lineGraphId .
+   	?line dcterms:isPartOf ?pathway .
+   	FILTER (!regex(str(?datanode1), "noIdentifier")) .
+   	MINUS {?line gpml:arrowHead ?arrowhead}
+}

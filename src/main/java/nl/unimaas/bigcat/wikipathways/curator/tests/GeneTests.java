@@ -1,4 +1,4 @@
-/* Copyright (C) 2013,2018  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2013,2018-2020  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -24,51 +24,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package nl.unimaas.bigcat.wikipathways.curator;
+package nl.unimaas.bigcat.wikipathways.curator.tests;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.jena.rdf.model.Model;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
+import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
+import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
+import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
-import nl.unimaas.bigcat.wikipathways.curator.tests.GeneTests;
 
-public class Genes extends JUnitTests {
+public class GeneTests {
 
-	@BeforeAll
-	public static void loadData() throws InterruptedException {
-		if (System.getProperty("SPARQLEP").startsWith("http")) {
-			// ok, assume the SPARQL end point is online
-			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
-		} else {
-			Model data = OPSWPRDFFiles.loadData();
-			Assertions.assertTrue(data.size() > 5000);
-		}
-	}
-
-	@BeforeEach
-	public void waitForIt() throws InterruptedException { Thread.sleep(OPSWPRDFFiles.SLEEP_TIME); }
-
-	@Test
-	public void entrezGeneIdentifiersNotNumber() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = GeneTests.entrezGeneIdentifiersNotNumber(helper);
-		performAssertions(assertions);
-	}
-
-	@Test
-	public void affyProbeIdentifiersNotCorrect() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("genes/allAffyProbeIdentifiers.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
+	public static List<IAssertion> entrezGeneIdentifiersNotNumber(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("genes/allEntrezGenesIdentifiers.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -78,11 +52,9 @@ public class Genes extends JUnitTests {
 				if (!pathwayPage.contains("WP2806")) { // this pathway has a number of non-human genes
 					identifier = identifier.trim();
 					if (!identifier.isEmpty()) {
-						if (identifier.contains("CHEBI:")) {
-							errors += table.get(i, "homepage") + " -> " + table.get(i, "label") +
-									", " + table.get(i, "identifier") + "\n ";
-							errorCount++;
-						} else if (identifier.contains("ENS:")) {
+						try {
+							Integer.parseInt(identifier);
+						} catch (NumberFormatException exception) {
 							errors += table.get(i, "homepage") + " -> " + table.get(i, "label") +
 									", " + table.get(i, "identifier") + "\n ";
 							errorCount++;
@@ -91,8 +63,10 @@ public class Genes extends JUnitTests {
 				}
 			}
 		}
-		Assertions.assertEquals(
-			0, errorCount, "Affy Probe identifiers that do not look right:\n" + errors
-		);
+		assertions.add(new AssertEquals(
+			0, errorCount, "Entrez Gene identifiers that are not numbers:\n" + errors
+		));
+		return assertions;
 	}
+	
 }
