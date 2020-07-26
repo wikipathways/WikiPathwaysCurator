@@ -13,12 +13,12 @@
     <junit5.groups></junit5.groups>
   </properties>
 
-  <repositories>
+  <!-- repositories>
     <repository>
       <id>apache-repo-releases</id>
       <url>https://repository.apache.org/content/repositories/snapshots/</url>
     </repository>
-  </repositories>
+  </repositories -->
   
   <dependencies>
     <dependency>
