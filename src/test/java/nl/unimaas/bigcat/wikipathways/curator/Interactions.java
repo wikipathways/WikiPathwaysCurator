@@ -145,7 +145,8 @@ public class Interactions extends JUnitTests {
 		});
 	}
 
-	@Tag("curation")
+	@Tag("exportCuration")
+	@Test
 	public void interactionsWithLabels() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("interactions/interactionsWithLabels.rq");
 		Assertions.assertTimeout(Duration.ofSeconds(50), () -> {
