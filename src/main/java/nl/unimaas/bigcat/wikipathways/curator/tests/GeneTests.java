@@ -38,6 +38,12 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 
 public class GeneTests {
 
+	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		assertions.addAll(entrezGeneIdentifiersNotNumber(helper));
+		return assertions;
+	}
+
 	public static List<IAssertion> entrezGeneIdentifiersNotNumber(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("genes/allEntrezGenesIdentifiers.rq");

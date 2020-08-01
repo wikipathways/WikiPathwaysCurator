@@ -40,6 +40,14 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 
 public class InteractionTests {
 
+	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		assertions.addAll(noMetaboliteToNonMetaboliteConversions(helper));
+		assertions.addAll(noNonMetaboliteToMetaboliteConversions(helper));
+		assertions.addAll(noGeneProteinConversions(helper));
+		return assertions;
+	}
+
 	public static List<IAssertion> noMetaboliteToNonMetaboliteConversions(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/noMetaboliteNonMetaboliteConversions.rq");
