@@ -48,7 +48,7 @@ public class GeneTests {
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("genes/allEntrezGenesIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull(table));
+		assertions.add(new AssertNotNull("GeneTests", "entrezGeneIdentifiersNotNumber", table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -69,7 +69,7 @@ public class GeneTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals(
+		assertions.add(new AssertEquals("GeneTests", "entrezGeneIdentifiersNotNumber", 
 			0, errorCount, "Entrez Gene identifiers that are not numbers:\n" + errors
 		));
 		return assertions;

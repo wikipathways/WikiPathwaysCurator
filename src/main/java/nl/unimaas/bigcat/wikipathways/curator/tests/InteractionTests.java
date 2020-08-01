@@ -52,7 +52,7 @@ public class InteractionTests {
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/noMetaboliteNonMetaboliteConversions.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull(table));
+		assertions.add(new AssertNotNull("InteractionTests", "noMetaboliteToNonMetaboliteConversions", table));
 		Set<String> allowedProteinProducts = new HashSet<String>();
 		allowedProteinProducts.add("http://identifiers.org/uniprot/H9ZYJ2"); // theoredoxin, e.g. WP3580
 		allowedProteinProducts.add("http://identifiers.org/chebi/CHEBI:39026"); // LPL
@@ -71,6 +71,7 @@ public class InteractionTests {
 			}
 		}
 		assertions.add(new AssertEquals(
+			"InteractionTests", "noMetaboliteToNonMetaboliteConversions", 
 			0, errorCount, "Unexpected metabolite to non-metabolite conversions:\n" + errors
 		));
 		return assertions;
@@ -80,7 +81,7 @@ public class InteractionTests {
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/noNonMetaboliteMetaboliteConversions.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull(table));
+		assertions.add(new AssertNotNull("InteractionTests", "noNonMetaboliteToMetaboliteConversions", table));
 		Set<String> allowedProducts = new HashSet<String>();
 		    allowedProducts.add("http://identifiers.org/hmdb/HMDB04246"); // from KNG1, e.g. in WP
 		    allowedProducts.add("http://identifiers.org/hmdb/HMDB0004246"); // from KNG1, e.g. in WP
@@ -107,6 +108,7 @@ public class InteractionTests {
 			}
 		}
 		assertions.add(new AssertEquals(
+			"InteractionTests", "noNonMetaboliteToMetaboliteConversions",
 			0, errorCount, "Unexpected non-metabolite to metabolite conversions:\n" + errors
 		));
 		return assertions;
@@ -116,7 +118,7 @@ public class InteractionTests {
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/noGeneProteinConversions.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull(table));
+		assertions.add(new AssertNotNull("InteractionTests", "noGeneProteinConversions", table));
 		Set<String> allowedProteinSubstrates = new HashSet<String>();
 		allowedProteinSubstrates.add("http://identifiers.org/uniprot/P0DTD1"); // SARS-CoV-2 main protease
 		String errors = "";
@@ -134,6 +136,7 @@ public class InteractionTests {
 			}
 		}
 		assertions.add(new AssertEquals(
+			"InteractionTests", "noGeneProteinConversions",
 			0, errorCount, "Unexpected gene-protein conversions:\n" + errors
 		));
 		return assertions;

@@ -5,8 +5,12 @@ public class AssertEquals implements IAssertion {
 	private Object expectedValue;
 	private Object value;
 	private String message;
+	private String testClass;
+	private String test;
 
-	public AssertEquals(Object expectedValue, Object value, String message) {
+	public AssertEquals(String testClass, String test, Object expectedValue, Object value, String message) {
+		this.testClass = testClass;
+		this.test = test;
 		this.expectedValue = expectedValue;
 		this.value = value;
 		this.message = message;
@@ -22,6 +26,14 @@ public class AssertEquals implements IAssertion {
 
 	public String getMessage() {
 		return this.message;
+	}
+
+	public String getTestClass() {
+		return testClass;
+	}
+
+	public String getTest() {
+		return test;
 	}
 
 }
