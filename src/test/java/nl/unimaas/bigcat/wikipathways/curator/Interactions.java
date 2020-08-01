@@ -1,4 +1,4 @@
-/* Copyright (C) 2016,2018  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2016,2018-2020  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -28,6 +28,7 @@ package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.time.Duration;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.jena.rdf.model.Model;
@@ -37,7 +38,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-public class Interactions {
+import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.tests.InteractionTests;
+
+public class Interactions extends JUnitTests {
 
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
@@ -55,101 +59,34 @@ public class Interactions {
 
 	@Test
 	public void noMetaboliteToNonMetaboliteConversions() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("interactions/noMetaboliteNonMetaboliteConversions.rq");
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Set<String> allowedProteinProducts = new HashSet<String>();
-			allowedProteinProducts.add("http://identifiers.org/uniprot/H9ZYJ2"); // theoredoxin, e.g. WP3580
-			allowedProteinProducts.add("http://identifiers.org/chebi/CHEBI:39026"); // LPL
-			String errors = "";
-			int errorCount = 0;
-			if (table.getRowCount() > 0) {
-				// OK, but then it must be proteins, e.g. IFN-b
-				for (int i=1; i<=table.getRowCount(); i++) {
-					String targetID = table.get(i, "target");
-					if (!allowedProteinProducts.contains(targetID)) {
-						errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
-								table.get(i, "metabolite") + " " + table.get(i, "target") + " " +
-								table.get(i, "interaction") + "\n";
-						errorCount++;
-					} // else, OK, this is allows as conversion target
-				}
-			}
-			Assertions.assertEquals(
-				0, errorCount, "Unexpected metabolite to non-metabolite conversions:\n" + errors
-			);
+			List<IAssertion> assertions = InteractionTests.noMetaboliteToNonMetaboliteConversions(helper);
+			performAssertions(assertions);
 		});
 	}
 
 	@Test
 	public void noNonMetaboliteToMetaboliteConversions() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("interactions/noNonMetaboliteMetaboliteConversions.rq");
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:")) 
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Set<String> allowedProducts = new HashSet<String>();
-			allowedProducts.add("http://identifiers.org/hmdb/HMDB04246"); // from KNG1, e.g. in WP
-			allowedProducts.add("http://identifiers.org/hmdb/HMDB0004246"); // from KNG1, e.g. in WP
-			allowedProducts.add("http://identifiers.org/hmdb/HMDB0061196"); // angiotensin, a peptide hormone
-			allowedProducts.add("http://identifiers.org/chebi/CHEBI:2718"); // angiotensin, a peptide hormone
-			Set<String> allowedProteinSubstrates = new HashSet<String>();
-			allowedProteinSubstrates.add("http://identifiers.org/uniprot/H9ZYJ2"); // theoredoxin, e.g. WP3580
-			allowedProteinSubstrates.add("http://identifiers.org/chebi/CHEBI:39026"); // LDL
-			allowedProteinSubstrates.add("http://identifiers.org/wikidata/Q381899"); // fibrinogen
-			String errors = "";
-			int errorCount = 0;
-			if (table.getRowCount() > 0) {
-				// OK, but then it must be proteins, e.g. IFN-b
-				for (int i=1; i<=table.getRowCount(); i++) {
-					String metabolite = table.get(i, "metabolite");
-					String nonmetabolite = table.get(i, "target");
-					if (!allowedProducts.contains(metabolite) &&
-							!allowedProteinSubstrates.contains(nonmetabolite)) {
-						errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
-								nonmetabolite + " " + metabolite + " " +
-								table.get(i, "interaction") + "\n";
-						errorCount++;
-					}
-				}
-			}
-			Assertions.assertEquals(
-				0, errorCount, "Unexpected non-metabolite to metabolite conversions:\n" + errors
-			);
+			List<IAssertion> assertions = InteractionTests.noNonMetaboliteToMetaboliteConversions(helper);
+			performAssertions(assertions);
 		});
 	}
 
 	@Test
 	public void noGeneProteinConversions() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("interactions/noGeneProteinConversions.rq");
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:")) 
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Set<String> allowedProteinSubstrates = new HashSet<String>();
-			allowedProteinSubstrates.add("http://identifiers.org/uniprot/P0DTD1"); // SARS-CoV-2 main protease
-			String errors = "";
-			int errorCount = 0;
-			if (table.getRowCount() > 0) {
-				// OK, but then it must be proteins, e.g. IFN-b
-				for (int i=1; i<=table.getRowCount(); i++) {
-					String protein = table.get(i, "protein");
-					if (!allowedProteinSubstrates.contains(protein)) {
-					    errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
-							protein + " " + table.get(i, "gene") + " " +
-							table.get(i, "interaction") + " Did you mean wp:TranscriptionTranslation?\n";
-						errorCount++;
-					}
-				}
-			}
-			Assertions.assertEquals(
-				0, errorCount, "Unexpected gene-protein conversions:\n" + errors
-			);
+			List<IAssertion> assertions = InteractionTests.noGeneProteinConversions(helper);
+			performAssertions(assertions);
 		});
 	}
 
