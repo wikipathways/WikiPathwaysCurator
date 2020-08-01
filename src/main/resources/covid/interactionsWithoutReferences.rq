@@ -1,11 +1,12 @@
 PREFIX wp:    <http://vocabularies.wikipathways.org/wp#>
 PREFIX dct:   <http://purl.org/dc/terms/>
+PREFIX foaf:  <http://xmlns.com/foaf/0.1/>
 
 SELECT DISTINCT ?pathway ?interaction
 WHERE {
    ?wpPathway a wp:Pathway ;
               foaf:page ?pathway .
-   ?interaction dcterms:isPartOf ?wpPathway ;
+   ?interaction dct:isPartOf ?wpPathway ;
                 a wp:Interaction .
    MINUS { ?interaction dct:bibliographicCitation [] }
 }
