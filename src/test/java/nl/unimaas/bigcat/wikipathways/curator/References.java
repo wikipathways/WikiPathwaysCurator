@@ -1,4 +1,4 @@
-/* Copyright (C) 2013,2018  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2013,2018-2020  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -26,6 +26,8 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
+import java.util.List;
+
 import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -33,7 +35,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-public class References {
+import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.tests.ReferencesTests;
+
+public class References extends JUnitTests {
 
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
@@ -51,80 +56,29 @@ public class References {
 	
 	@Test
 	public void nonNumericPubMedIDs() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("references/nonNumericPubMedIDs.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		String errors = "";
-		int errorCount = 0;
-		if (table.getRowCount() > 0) {
-			// OK, but then it must be proteins, e.g. IFN-b
-			for (int i=1; i<=table.getRowCount(); i++) {
-				String id = table.get(i, "id");
-				if (id != null && id.length() > 0) {
-					try {
-						Integer.parseInt(id);
-					} catch (NumberFormatException exception) {
-						if (!id.trim().equals("26056233")) {
-						errors += table.get(i, "homepage") + " '" +
-								id + "' (reason: " + exception.getMessage() + ")\n";
-						errorCount++;
-						}
-					}
-				}
-			}
-		}
-		Assertions.assertEquals(
-			0, errorCount, "Found PubMed IDs that are not numbers:\n" + errors
-		);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = ReferencesTests.nonNumericPubMedIDs(helper);
+		performAssertions(assertions);
 	}
 
 	@Test
 	public void zeroPubMedIDs() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("references/nonNumericPubMedIDs.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		String errors = "";
-		int errorCount = 0;
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				String id = table.get(i, "id");
-				if (id != null && id.length() > 0) {
-					try {
-						if (Integer.parseInt(id) == 0) {
-							errors += table.get(i, "homepage") + ", '" +
-									table.get(i, "id") + "'\n";
-							errorCount++;
-						}
-					} catch (NumberFormatException exception) {
-						// already reporting these in nonNumericPubMedIDs()
-					}
-				}
-			}
-		}
-		Assertions.assertEquals(
-			0, errorCount, "Found '0's as PubMed IDs:\n" + errors
-		);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = ReferencesTests.zeroPubMedIDs(helper);
+		performAssertions(assertions);
 	}
 
     @Tag("expertCuration")
     @Test
     public void atLeastOneReference() throws Exception {
-    	String sparql = ResourceHelper.resourceAsString("missing/atLeastOneReference.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		String errors = "";
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				errors += table.get(i, "homepage") + ", '" +
-  					table.get(i, "title") + "' in " +
-					table.get(i, "species") + " has zero references; \n";
-			}
-		}
-		Assertions.assertEquals(
-			0, table.getRowCount(), "Found " + table.getRowCount() + "pathways with zero references:\n" + errors
-		);
+    	SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = ReferencesTests.atLeastOneReference(helper);
+		performAssertions(assertions);
     }
 }
