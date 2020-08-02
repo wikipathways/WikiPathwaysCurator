@@ -41,6 +41,7 @@ public class GeneTests {
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(entrezGeneIdentifiersNotNumber(helper));
+		assertions.addAll(affyProbeIdentifiersNotCorrect(helper));
 		return assertions;
 	}
 
@@ -71,6 +72,39 @@ public class GeneTests {
 		}
 		assertions.add(new AssertEquals("GeneTests", "entrezGeneIdentifiersNotNumber", 
 			0, errorCount, "Entrez Gene identifiers that are not numbers:\n" + errors
+		));
+		return assertions;
+	}
+	
+	public static List<IAssertion> affyProbeIdentifiersNotCorrect(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("genes/allAffyProbeIdentifiers.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("GeneTests", "affyProbeIdentifiersNotCorrect", table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				String pathwayPage = table.get(i, "homepage");
+				if (!pathwayPage.contains("WP2806")) { // this pathway has a number of non-human genes
+					identifier = identifier.trim();
+					if (!identifier.isEmpty()) {
+						if (identifier.contains("CHEBI:")) {
+							errors += table.get(i, "homepage") + " -> " + table.get(i, "label") +
+									", " + table.get(i, "identifier") + "\n ";
+							errorCount++;
+						} else if (identifier.contains("ENS:")) {
+							errors += table.get(i, "homepage") + " -> " + table.get(i, "label") +
+									", " + table.get(i, "identifier") + "\n ";
+							errorCount++;
+						}
+					}
+				}
+			}
+		}
+		assertions.add(new AssertEquals("GeneTests", "affyProbeIdentifiersNotCorrect", 
+			0, errorCount, "Affy Probe identifiers that do not look right:\n" + errors
 		));
 		return assertions;
 	}
