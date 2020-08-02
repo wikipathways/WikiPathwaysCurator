@@ -145,7 +145,7 @@ public class Interactions extends JUnitTests {
 		});
 	}
 
-	@Tag("exportCuration")
+	@Tag("expertCuration")
 	@Test
 	public void interactionsWithLabels() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("interactions/interactionsWithLabels.rq");
