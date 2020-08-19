@@ -41,6 +41,7 @@ public class GeneralTests {
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(titlesShortEnough(helper));
+		assertions.addAll(weirdCharacterTitles(helper));
 		return assertions;
 	}
 
@@ -64,6 +65,42 @@ public class GeneralTests {
 		}
 		assertions.add(new AssertEquals("GeneralTests", "titlesShortEnough",
 			0, errorCount, "Too long pathway titles (>80 chars):\n" + errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> weirdCharacterTitles(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("general/allTitles.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("GeneralTests", "weirdCharacterTitles", table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			// OK, but then it must be proteins, e.g. IFN-b
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String title = table.get(i, "title");
+				if (title != null) {
+					int weirdCharCount = 0;
+					for (char c : title.toCharArray()) {
+						if (Character.isAlphabetic(c)) {}
+						else if (Character.isDigit(c)) {}
+					    else if (Character.isSpaceChar(c)) {}
+					    else if (c == '-') {}
+					    else {
+					    	weirdCharCount++;
+					    }
+					}
+					if (weirdCharCount > 0) {
+					    errors += table.get(i, "page") + " '" +
+						    	title + "' has " + weirdCharCount + " weird characters\n";
+					    errorCount++;
+					}
+				}
+			}
+		}
+		assertions.add(new AssertEquals("GeneralTests", "titlesShortEnough",
+			0, errorCount, "Titles with unexpected characters (only allow alphanumerics and spaces):\n" + errors
 		));
 		return assertions;
 	}
