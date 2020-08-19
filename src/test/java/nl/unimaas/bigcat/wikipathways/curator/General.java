@@ -28,6 +28,7 @@ package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.jena.rdf.model.Model;
@@ -38,7 +39,10 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-public class General {
+import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.tests.GeneralTests;
+
+public class General extends JUnitTests {
 
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
@@ -160,6 +164,15 @@ public class General {
 		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 			Assertions.assertNotNull(table);
 			Assertions.assertEquals(0, table.getRowCount(), "Nodes should not be part of unspecified groups: " + table);
+	}
+
+	@Test
+	public void titlesShortEnough() throws Exception {
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = GeneralTests.titlesShortEnough(helper);
+		performAssertions(assertions);
 	}
 
 }
