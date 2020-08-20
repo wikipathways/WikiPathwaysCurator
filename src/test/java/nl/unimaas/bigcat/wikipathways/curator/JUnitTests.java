@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotSame;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 
 public class JUnitTests {
@@ -20,6 +21,13 @@ public class JUnitTests {
 			if (assertion instanceof AssertEquals) {
 				AssertEquals typedAssertion = (AssertEquals)assertion;
 				Assertions.assertEquals(
+					typedAssertion.getExpectedValue(),
+					typedAssertion.getValue(),
+					typedAssertion.getMessage()
+				);
+			} else if (assertion instanceof AssertNotSame) {
+				AssertNotSame typedAssertion = (AssertNotSame)assertion;
+				Assertions.assertNotSame(
 					typedAssertion.getExpectedValue(),
 					typedAssertion.getValue(),
 					typedAssertion.getMessage()
