@@ -27,7 +27,9 @@
 package nl.unimaas.bigcat.wikipathways.curator.tests;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
 import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
@@ -42,6 +44,7 @@ public class GeneralTests {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(titlesShortEnough(helper));
 		assertions.addAll(weirdCharacterTitles(helper));
+		assertions.addAll(duplicateTitles(helper));
 		return assertions;
 	}
 
@@ -101,6 +104,33 @@ public class GeneralTests {
 		}
 		assertions.add(new AssertEquals("GeneralTests", "titlesShortEnough",
 			0, errorCount, "Titles with unexpected characters (only allow alphanumerics and spaces):\n" + errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> duplicateTitles(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("general/allTitlesBySpecies.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("GeneralTests", "duplicateTitles", table));
+		String errors = "";
+		int errorCount = 0;
+		Map<String,String> allTitles = new HashMap<>();
+		if (table.getRowCount() > 0) {
+			// OK, but then it must be proteins, e.g. IFN-b
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String page  = table.get(i, "page");
+				String title = table.get(i, "title") + " - " + table.get(i, "species");
+				if (allTitles.containsKey(title.toLowerCase())) {
+				    errors += page + " '" + title + "' is duplicate title of " +
+				              allTitles.get(title.toLowerCase()) + "\n";
+				    errorCount++;
+				}
+				allTitles.put(title.toLowerCase(), page);
+			}
+		}
+		assertions.add(new AssertEquals("GeneralTests", "duplicateTitles",
+			0, errorCount, "Duplicate titles:\n" + errors
 		));
 		return assertions;
 	}
