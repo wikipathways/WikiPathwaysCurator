@@ -59,7 +59,7 @@ public class GeneralTests {
 			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String title = table.get(i, "title");
-				if (title != null && title.length() > 80) {
+				if (title != null && title.length() > 100) {
 					errors += table.get(i, "page") + " '" +
 							title + "'\n";
 					errorCount++;
