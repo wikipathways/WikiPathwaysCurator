@@ -50,7 +50,7 @@ public class GeneralTests {
 
 	public static List<IAssertion> titlesShortEnough(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
-		String sparql = ResourceHelper.resourceAsString("general/allTitles.rq");
+		String sparql = ResourceHelper.resourceAsString("general/allTitles_notReactome.rq");
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull("GeneralTests", "titlesShortEnough", table));
 		String errors = "";
