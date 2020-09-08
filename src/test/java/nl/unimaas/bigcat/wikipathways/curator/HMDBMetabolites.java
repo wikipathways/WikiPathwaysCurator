@@ -65,6 +65,7 @@ public class HMDBMetabolites {
 		});
 	}
 
+	@Tag("noCovid")
 	@Test
 	public void correctFormat() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("metabolite/allHMDBIdentifiers.rq");
