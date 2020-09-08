@@ -52,7 +52,6 @@ public class Proteins {
 	@BeforeEach
 	public void waitForIt() throws InterruptedException { Thread.sleep(OPSWPRDFFiles.SLEEP_TIME); }
 
-	@Tag("foo")
 	@Test
 	public void wrongBrendaFormat() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("proteins/allBrendaIdentifiers.rq");
@@ -81,7 +80,6 @@ public class Proteins {
 		);
 	}
 
-	@Tag("foo")
 	@Test
 	public void wrongEnzymeNomenclatureFormat() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("proteins/allECIdentifiers.rq");
