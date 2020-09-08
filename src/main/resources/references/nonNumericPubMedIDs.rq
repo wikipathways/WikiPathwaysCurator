@@ -6,7 +6,7 @@ prefix wp:      <http://vocabularies.wikipathways.org/wp#>
 prefix gpml:  <http://vocabularies.wikipathways.org/gpml#>
 
 select distinct (str(?idLit) as ?id) ?homepage where {
-  ?pub a wp:PublicationReference ;
+  ?pub a gpml:PublicationXref ;
     gpml:id ?idLit ;
     gpml:database "Pubmed"^^xsd:string ;
     dcterms:isPartOf/foaf:page ?homepage .
