@@ -26,18 +26,15 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator.tests;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
-
-import nl.unimaas.bigcat.wikipathways.curator.OPSWPRDFFiles;
 import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
 import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
 import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotSame;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 
 public class HMDBMetabolitesTests {
@@ -67,7 +64,7 @@ public class HMDBMetabolitesTests {
 		assertions.add(new AssertNotNull("HMDBMetabolitesTests", "correctFormat", table));
 		String errors = "";
 		int errorCount = 0;
-		Assertions.assertNotSame(0, table.getRowCount(), "I expected more than zero HMDB identifiers.");
+		assertions.add(new AssertNotSame("HMDBMetabolitesTests", "correctFormat", 0, table.getRowCount(), "I expected more than zero HMDB identifiers."));
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String identifier = table.get(i, "identifier");
