@@ -71,7 +71,7 @@ public class GeneTests {
 			}
 		}
 		assertions.add(new AssertEquals("GeneTests", "entrezGeneIdentifiersNotNumber", 
-			0, errorCount, "Entrez Gene identifiers that are not numbers:\n" + errors
+			0, errorCount, "Entrez Gene identifiers that are not numbers:" + errorCount, errors
 		));
 		return assertions;
 	}
@@ -104,7 +104,7 @@ public class GeneTests {
 			}
 		}
 		assertions.add(new AssertEquals("GeneTests", "affyProbeIdentifiersNotCorrect", 
-			0, errorCount, "Affy Probe identifiers that do not look right:\n" + errors
+			0, errorCount, "Affy Probe identifiers that do not look right:" + errorCount, errors
 		));
 		return assertions;
 	}

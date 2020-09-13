@@ -138,7 +138,7 @@ public class EnsemblTests {
 			}
 		}
 		assertions.add(new AssertEquals("EnsemblTests", "outdatedIdentifiers", 
-			0, errorCount, "Deprecated Ensembl identifiers:\n" + errors
+			0, errorCount, "Deprecated Ensembl identifiers:" + errorCount, errors
 		));
 		return assertions;
 	}

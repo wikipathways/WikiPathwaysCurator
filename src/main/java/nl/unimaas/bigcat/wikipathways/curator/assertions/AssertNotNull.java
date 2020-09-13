@@ -28,4 +28,8 @@ public class AssertNotNull implements IAssertion {
 		return test;
 	}
 
+	public String getDetails() {
+		return "";
+	}
+
 }

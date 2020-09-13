@@ -67,7 +67,7 @@ public class GeneralTests {
 			}
 		}
 		assertions.add(new AssertEquals("GeneralTests", "titlesShortEnough",
-			0, errorCount, "Too long pathway titles (>80 chars):\n" + errors
+			0, errorCount, "Too long pathway titles (>80 chars):" + errorCount, errors
 		));
 		return assertions;
 	}
@@ -105,7 +105,7 @@ public class GeneralTests {
 			}
 		}
 		assertions.add(new AssertEquals("GeneralTests", "titlesShortEnough",
-			0, errorCount, "Titles with unexpected characters (only allow alphanumerics and spaces):\n" + errors
+			0, errorCount, "Titles with unexpected characters (only allow alphanumerics and spaces):" + errorCount, errors
 		));
 		return assertions;
 	}

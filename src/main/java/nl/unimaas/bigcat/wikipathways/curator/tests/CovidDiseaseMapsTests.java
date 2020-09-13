@@ -60,7 +60,7 @@ public class CovidDiseaseMapsTests {
 		}
 		assertions.add(new AssertEquals(
 			"CovidDiseaseMapsTests", "interactionsWithoutReferences", 
-			0, errorCount, "Interactions without literature references:\n" + errors
+			0, errorCount, "Interactions without literature references:" + errorCount, errors
 		));
 		return assertions;
 	}

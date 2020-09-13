@@ -192,7 +192,7 @@ public class InteractionTests {
 		}
 		assertions.add(new AssertEquals(
 			"InteractionTests", "interactionsWithLabels",
-			0, errors.length(), "Interactions found that involve Labels:\n" + errors
+			0, errors.length(), "Interactions found that involve Labels: " + errors.length(), errors
 		));
 		return assertions;
 	}
