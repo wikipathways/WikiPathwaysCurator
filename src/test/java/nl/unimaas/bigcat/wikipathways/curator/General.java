@@ -195,4 +195,22 @@ public class General extends JUnitTests {
 		performAssertions(assertions);
 	}
 
+	@Test
+	public void curationAndHypothetical() throws Exception {
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = GeneralTests.curationAndHypothetical(helper);
+		performAssertions(assertions);
+	}
+
+	@Test
+	public void curationAndNeedsWork() throws Exception {
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = GeneralTests.curationAndNeedsWork(helper);
+		performAssertions(assertions);
+	}
+
 }

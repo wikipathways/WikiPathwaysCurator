@@ -1,0 +1,11 @@
+prefix dc:      <http://purl.org/dc/elements/1.1/>
+prefix wp:      <http://vocabularies.wikipathways.org/wp#>
+prefix foaf:    <http://xmlns.com/foaf/0.1/>
+prefix cur:     <http://vocabularies.wikipathways.org/wp#Curation:>
+
+SELECT ?title ?page WHERE {
+  ?pw a wp:Pathway ; dc:title ?title ;
+      foaf:page ?page .
+  ?pw wp:ontologyTag cur:Reactome_Approved ,
+                     cur:Hypothetical .
+}
