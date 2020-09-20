@@ -6,6 +6,6 @@ prefix cur:     <http://vocabularies.wikipathways.org/wp#Curation:>
 SELECT ?title ?page WHERE {
   ?pw a wp:Pathway ; dc:title ?title ;
       foaf:page ?page .
-  ?pw wp:ontologyTag cur:Reactome_Approved ,
+  ?pw wp:ontologyTag cur:AnalysisCollection ,
                      cur:NeedsWork .
 }
