@@ -196,6 +196,7 @@ public class General extends JUnitTests {
 	}
 
 	@Test
+	@Tag("expertCuration")
 	public void curationAndNeedsWork() throws Exception {
 		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
 			? new SPARQLHelper(System.getProperty("SPARQLEP"))
