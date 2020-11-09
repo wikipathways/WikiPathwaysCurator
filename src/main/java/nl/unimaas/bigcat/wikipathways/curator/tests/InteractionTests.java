@@ -176,6 +176,7 @@ public class InteractionTests {
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull("InteractionTests", "interactionsWithLabels", table));
 		String errors = "";
+		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String id = table.get(i, "id");
@@ -186,13 +187,14 @@ public class InteractionTests {
 						errors += table.get(i, "homepage") + " \"" +
 								table.get(i, "label") + "\" with graphId " +
 							table.get(i, "id") + "\n";
+						errorCount++;
 					}
 				}
 			}
 		}
 		assertions.add(new AssertEquals(
 			"InteractionTests", "interactionsWithLabels",
-			0, errors.length(), "Interactions found that involve Labels: " + errors.length(), errors
+			0, errors.length(), "Interactions found that involve Labels: " + errorCount, errors
 		));
 		return assertions;
 	}
