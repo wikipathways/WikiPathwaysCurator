@@ -1,4 +1,4 @@
-/* Copyright (C) 2013,2018  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2013-2020  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -27,6 +27,7 @@
 package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.time.Duration;
+import java.util.List;
 
 import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
@@ -34,7 +35,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class BridgeDbMappings {
+import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.tests.BridgeDbMappingsTests;
+
+public class BridgeDbMappings extends JUnitTests {
 
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
@@ -55,66 +59,46 @@ public class BridgeDbMappings {
 
 	@Test
 	public void hasSomeEntrezGeneMappings() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("general/hasEntrezGeneMappings.rq");
-		Assertions.assertNotNull(sparql);
-		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertNotSame(0, table.getRowCount(), () -> "Expected some mapped Entrez Genes.");
-		});
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = BridgeDbMappingsTests.hasSomeEntrezGeneMappings(helper);
+		performAssertions(assertions);
 	}
 
 	@Test
 	public void hasSomeHMDBMappings() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("general/hasHMDBMappings.rq");
-		Assertions.assertNotNull(sparql);
-		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertNotSame(0, table.getRowCount(), () -> "Expected some mapped HMDB identifiers.");
-		});
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			   : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = BridgeDbMappingsTests.hasSomeHMDBMappings(helper);
+		performAssertions(assertions);
 	}
 
 	@Test
 	public void hasSomeChemSpiderMappings() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("general/hasChemSpiderMappings.rq");
-		Assertions.assertNotNull(sparql);
-		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertNotSame(0, table.getRowCount(), () -> "Expected some mapped ChemSpider identifiers.");
-		});
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = BridgeDbMappingsTests.hasSomeChemSpiderMappings(helper);
+		performAssertions(assertions);
 	}
 
 	@Test
 	public void hasSomeEnsemblMappings() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("general/hasEnsemblMappings.rq");
-		Assertions.assertNotNull(sparql);
-		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertNotSame(0, table.getRowCount(), () -> "Expected some mapped Ensembl identifiers.");
-		});
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = BridgeDbMappingsTests.hasSomeChemSpiderMappings(helper);
+		performAssertions(assertions);
 	}
 
 	@Test
 	public void hasSomeUniprotMappings() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("general/hasUniprotMappings.rq");
-		Assertions.assertNotNull(sparql);
-		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertNotSame(0, table.getRowCount(), () -> "Expected some mapped Uniprot identifiers.");
-		});
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = BridgeDbMappingsTests.hasSomeUniprotMappings(helper);
+		performAssertions(assertions);
 	}
 }
