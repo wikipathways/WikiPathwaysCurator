@@ -53,7 +53,6 @@ public class HMDBSecMetabolitesTests {
 			String[] ids = lines[i].split(",");
 			oldToNew.put(ids[0], ids[1]);
 		}
-		System.out.println("size: " + oldToNew.size());
 
 		nonExisting.add("HMDB0002708"); // "How did you get here? That page doesn't exist. Oh well, it happens."
 	}
