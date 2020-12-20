@@ -74,7 +74,7 @@ public class MetabolitesTests {
 			}
 		}
 		assertions.add(new AssertEquals("MetabolitesTests", "metaboliteAlsoOtherType", 
-			0, table.getRowCount(), "Metabolite is also found to be another type: " + errorCount, errors
+			0, errorCount, "Metabolite is also found to be another type: " + errorCount, errors
 		));
 		return assertions;
 	}
