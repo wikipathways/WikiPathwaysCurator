@@ -27,8 +27,7 @@
 package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
@@ -37,18 +36,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-public class CASMetabolites {
+import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.tests.CASMetabolitesTests;
 
-	// the content comes from the resource metabolite/cas/deprecated.csv (see below in the loadData() method)
-	private static Map<String,String> oldToNew = new HashMap<String, String>();
-
-	@SuppressWarnings({ "serial" })
-	private static final Map<String,String> deprecated = new HashMap<String,String>() {{
-		put("2646-71-1", "53-57-6"); // the first is a salt of the second
-		put("142-10-9", "591-57-1"); // the first is a stereo-aspecific version of the second
-		put("9029-62-3", "something that is not for an enzyme"); // the first is a stereo-aspecific version of the second
-		put("102029-88-9", "73495-12-2"); // the first is a salt of the second
-	}};
+public class CASMetabolites extends JUnitTests {
 
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
@@ -59,14 +50,6 @@ public class CASMetabolites {
 			Model data = OPSWPRDFFiles.loadData();
 			Assertions.assertTrue(data.size() > 5000);
 		}
-
-		// now load the deprecation data
-		String deprecatedData = ResourceHelper.resourceAsString("metabolite/cas/deprecated.csv");
-		String lines[] = deprecatedData.split("\\r?\\n");
-		for (int i=0; i<lines.length; i++) {
-			String[] ids = lines[i].split(",");
-			oldToNew.put(ids[0], ids[1]);
-		}
 	}
 
 	@BeforeEach
@@ -74,57 +57,24 @@ public class CASMetabolites {
 
 	@Test
 	public void deletedCASIdentifiers() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/allCASIdentifiers.rq");
-		Assertions.assertNotEquals(0, oldToNew.size(), "Error while loading the deleted CAS numbers");
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			String errors = "";
-			int errorCount = 0;
-			if (table.getRowCount() > 0) {
-				// OK, but then it must be proteins, e.g. IFN-b
-				for (int i=1; i<=table.getRowCount(); i++) {
-					String identifier = table.get(i, "identifier");
-					if (oldToNew.containsKey(identifier)) {
-						errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
-							" has " + identifier + " but has new identifier " +
-							oldToNew.get(identifier) + "\n";
-						errorCount++;
-					}
-				}
-			}
-			Assertions.assertEquals(
-				0, errorCount, "Deleted CAS registry numbers detected:\n" + errors
-			);
+			List<IAssertion> assertions = CASMetabolitesTests.deletedCASIdentifiers(helper);
+			performAssertions(assertions);
 		});
 	}
 
 	@Tag("noCovid")
 	@Test
 	public void outdatedIdentifiers() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/allCASIdentifiers.rq");
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertNotSame(0, table.getColumnCount());
-			String errors = "";
-			int errorCount = 0;
-			if (table.getRowCount() > 0) {
-				for (int i=1; i<=table.getRowCount(); i++) {
-					String identifier = table.get(i, "identifier");
-					if (deprecated.containsKey(identifier)) {
-						errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " + table.get(i, "identifier") +
-							" should be " + deprecated.get(identifier) + "; ";
-						errorCount++;
-					}
-				}
-			}
-			Assertions.assertEquals(
-				0, errorCount, "Deprecated CAS Registry numbers for non-metabolites:\n" + errors
-			);
+			List<IAssertion> assertions = CASMetabolitesTests.outdatedIdentifiers(helper);
+			performAssertions(assertions);
 		});
 	}
 
