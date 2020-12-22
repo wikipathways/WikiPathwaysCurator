@@ -16,6 +16,6 @@ WHERE {
       wp:bdbWikidata ?sourceQ .
    ?target a wp:DataNode ;
       rdfs:label ?targetLabel ;
-      wp:bdbWikidata ?dataQ .
+      wp:bdbWikidata ?targetQ .
    FILTER (?sourceQ = ?targetQ)
 }
