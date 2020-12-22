@@ -140,4 +140,16 @@ public class Interactions extends JUnitTests {
 			performAssertions(assertions);
 		});
 	}
+
+	@Tag("expertCuration")
+	@Test
+	public void possibleTranslocations() throws Exception {
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
+			List<IAssertion> assertions = InteractionTests.possibleTranslocations(helper);
+			performAssertions(assertions);
+		});
+	}
 }

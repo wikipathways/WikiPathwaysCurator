@@ -198,4 +198,35 @@ public class InteractionTests {
 		));
 		return assertions;
 	}
+
+	public static List<IAssertion> possibleTranslocations(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("interactions/possibleTranslocations.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("InteractionTests", "possibleTranslocations", table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String id = table.get(i, "id");
+				if (id != null && id.length() > 0) {
+					try {
+						Integer.parseInt(id);
+					} catch (NumberFormatException exception) {
+						errors += table.get(i, "homepage") + " \"" +
+								table.get(i, "sourceLabel") + "\" (" + " \"" +
+							    table.get(i, "source") + ") and \n" +
+							    table.get(i, "targetLabel") + "\" (" + " \"" +
+							    table.get(i, "target") + ")\n";
+						errorCount++;
+					}
+				}
+			}
+		}
+		assertions.add(new AssertEquals(
+			"InteractionTests", "possibleTranslocations",
+			0, errors.length(), "Interactions between identical metabolites: " + errorCount, errors
+		));
+		return assertions;
+	}
 }
