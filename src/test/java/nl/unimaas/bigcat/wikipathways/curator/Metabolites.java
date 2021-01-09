@@ -37,6 +37,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.tests.LIPIDMAPSTests;
 import nl.unimaas.bigcat.wikipathways.curator.tests.MetabolitesTests;
 
 public class Metabolites extends JUnitTests {
@@ -269,5 +270,14 @@ public class Metabolites extends JUnitTests {
 		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assertions.assertNotNull(table);
 		Assertions.assertEquals(0, table.getRowCount(), "Unexpected metabolites with an Ensemble identifier:\n" + table);
+	}
+
+	@Test
+	public void retiredIdentifiers() throws Exception {
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = LIPIDMAPSTests.retiredIdentifiers(helper);
+		performAssertions(assertions);
 	}
 }
