@@ -4,6 +4,7 @@ prefix xsd:     <http://www.w3.org/2001/XMLSchema#>
 prefix foaf:    <http://xmlns.com/foaf/0.1/>
 prefix gpml:  <http://vocabularies.wikipathways.org/gpml#>
 prefix wp: <http://vocabularies.wikipathways.org/wp#>
+prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
 
 select distinct ?homepage ?label ?identifier
 where {
