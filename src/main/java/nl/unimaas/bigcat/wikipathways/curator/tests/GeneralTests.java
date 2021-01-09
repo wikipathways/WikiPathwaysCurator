@@ -67,7 +67,7 @@ public class GeneralTests {
 			}
 		}
 		assertions.add(new AssertEquals("GeneralTests", "titlesShortEnough",
-			0, errorCount, "Too long pathway titles (>80 chars):\n" + errors
+			0, errorCount, "Too long pathway titles (>80 chars):" + errorCount, errors
 		));
 		return assertions;
 	}
@@ -105,7 +105,7 @@ public class GeneralTests {
 			}
 		}
 		assertions.add(new AssertEquals("GeneralTests", "titlesShortEnough",
-			0, errorCount, "Titles with unexpected characters (only allow alphanumerics and spaces):\n" + errors
+			0, errorCount, "Titles with unexpected characters (only allow alphanumerics and spaces):" + errorCount, errors
 		));
 		return assertions;
 	}
@@ -133,6 +133,50 @@ public class GeneralTests {
 		}
 		assertions.add(new AssertEquals("GeneralTests", "duplicateTitles",
 			0, errorCount, "Duplicate titles:\n" + errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> curationAndHypothetical(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("general/allCurationAndHypothetical.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("GeneralTests", "curationAndHypothetical", table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			// OK, but then it must be proteins, e.g. IFN-b
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String page  = table.get(i, "page");
+				String title = table.get(i, "title");
+				errors += page + " '" + title + "' \n";
+				errorCount++;
+			}
+		}
+		assertions.add(new AssertEquals("GeneralTests", "curationAndHypothetical",
+			0, errorCount, "Pathways tagged as Curation and Hypothetical:\n" + errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> curationAndNeedsWork(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("general/allCurationAndNeedsWork.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("GeneralTests", "curationAndNeedsWork", table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			// OK, but then it must be proteins, e.g. IFN-b
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String page  = table.get(i, "page");
+				String title = table.get(i, "title");
+				errors += page + " '" + title + "' \n";
+				errorCount++;
+			}
+		}
+		assertions.add(new AssertEquals("GeneralTests", "curationAndNeedsWork",
+			0, errorCount, "Pathways tagged as Curation and NeedsWork:\n" + errors
 		));
 		return assertions;
 	}

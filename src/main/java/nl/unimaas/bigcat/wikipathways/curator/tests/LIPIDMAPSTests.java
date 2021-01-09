@@ -1,4 +1,4 @@
-/* Copyright (C) 2020  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2021  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -27,7 +27,9 @@
 package nl.unimaas.bigcat.wikipathways.curator.tests;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
 import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
@@ -36,33 +38,49 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 
-public class CovidDiseaseMapsTests {
+public class LIPIDMAPSTests {
+	
+	private static Set<String> retired = new HashSet<String>();
+	
+	static {
+		// now load the deprecation data
+		retired.add("LMGP01030007");
+		retired.add("LMFA07050077");
+	}
 
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
-		assertions.addAll(interactionsWithoutReferences(helper));
+		assertions.addAll(retiredIdentifiers(helper));
 		return assertions;
 	}
 
-	public static List<IAssertion> interactionsWithoutReferences(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> retiredIdentifiers(SPARQLHelper helper) throws Exception {
+		// Getting the data
 		List<IAssertion> assertions = new ArrayList<>();
-		String sparql = ResourceHelper.resourceAsString("covid/interactionsWithoutReferences.rq");
+		String sparql = ResourceHelper.resourceAsString("outdated/lipidmaps.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("CovidDiseaseMapsTests", "interactionsWithoutReferences", table));
+		assertions.add(new AssertNotNull("LIPIDMAPSTests", "retiredIdentifiers", table));
 		String errors = "";
 		int errorCount = 0;
+
+		// Testing
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
-  			    errors += table.get(i, "pathway") + " -> " +
-		                  table.get(i, "interaction") + "\n";
-				errorCount++;
+				String identifier = table.get(i, "identifier");
+				if (retired.contains(identifier)) {
+					errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+						" has " + identifier + " but it has beeb retired, see " +
+					    "https://www.lipidmaps.org/data/LMSDRecord.php?LMID=" + identifier + "\n";
+					errorCount++;
+				}
 			}
 		}
+
+		// Reporting
 		assertions.add(new AssertEquals(
-			"CovidDiseaseMapsTests", "interactionsWithoutReferences", 
-			0, errorCount, "Interactions without literature references:" + errorCount, errors
+			"LIPIDMAPSTests", "retiredIdentifiers", 
+			0, errorCount, "Retired LIPID MAPS identifiers detected: " + errorCount, errors
 		));
 		return assertions;
 	}
-	
 }

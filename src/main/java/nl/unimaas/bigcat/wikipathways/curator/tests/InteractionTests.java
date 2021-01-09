@@ -45,6 +45,8 @@ public class InteractionTests {
 		assertions.addAll(noMetaboliteToNonMetaboliteConversions(helper));
 		assertions.addAll(noNonMetaboliteToMetaboliteConversions(helper));
 		assertions.addAll(noGeneProteinConversions(helper));
+		assertions.addAll(nonNumericIDs(helper));
+		assertions.addAll(interactionsWithLabels(helper));
 		return assertions;
 	}
 
@@ -142,4 +144,82 @@ public class InteractionTests {
 		return assertions;
 	}
 
+	public static List<IAssertion> nonNumericIDs(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("interactions/nonNumericRhea.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("InteractionTests", "nonNumericIDs", table));
+		String errors = "";
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String id = table.get(i, "id");
+				if (id != null && id.length() > 0) {
+					try {
+						Integer.parseInt(id);
+					} catch (NumberFormatException exception) {
+						errors += table.get(i, "homepage") + " " +
+								table.get(i, "id") + "\n";
+					}
+				}
+			}
+		}
+		assertions.add(new AssertEquals(
+			"InteractionTests", "nonNumericIDs",
+			0, errors.length(), "Found Rhea IDs that are not numbers (they should not include a 'Rhea:' prefix):\n" + errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> interactionsWithLabels(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("interactions/interactionsWithLabels.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("InteractionTests", "interactionsWithLabels", table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String id = table.get(i, "id");
+				if (id != null && id.length() > 0) {
+					try {
+						Integer.parseInt(id);
+					} catch (NumberFormatException exception) {
+						errors += table.get(i, "homepage") + " \"" +
+								table.get(i, "label") + "\" with graphId " +
+							table.get(i, "id") + "\n";
+						errorCount++;
+					}
+				}
+			}
+		}
+		assertions.add(new AssertEquals(
+			"InteractionTests", "interactionsWithLabels",
+			0, errors.length(), "Interactions found that involve Labels: " + errorCount, errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> possibleTranslocations(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("interactions/possibleTranslocations.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("InteractionTests", "possibleTranslocations", table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errors += table.get(i, "homepage") + " \"" +
+						table.get(i, "sourceLabel") + "\" (" +
+						table.get(i, "source") + ") and \n" +
+						table.get(i, "targetLabel") + "\" (" +
+						table.get(i, "target") + ")\n";
+				errorCount++;
+			}
+		}
+		assertions.add(new AssertEquals(
+			"InteractionTests", "possibleTranslocations",
+			0, errorCount, "Interactions between identical metabolites: " + errorCount, errors
+		));
+		return assertions;
+	}
 }

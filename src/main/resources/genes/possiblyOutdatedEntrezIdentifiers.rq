@@ -1,0 +1,16 @@
+prefix wp:      <http://vocabularies.wikipathways.org/wp#>
+prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+prefix dcterms:  <http://purl.org/dc/terms/>
+prefix dc:      <http://purl.org/dc/elements/1.1/>
+prefix xsd:     <http://www.w3.org/2001/XMLSchema#>
+prefix foaf:    <http://xmlns.com/foaf/0.1/>
+
+select distinct ?identifier ?homepage
+where {
+  ?mb dc:source "Entrez Gene"^^xsd:string ;
+    dc:identifier ?identifier ;
+    dcterms:isPartOf ?pathway .
+  ?pathway foaf:page ?homepage .
+  OPTIONAL { ?mb  wp:bdbEntrezGene ?bridgedb . }
+  FILTER (!BOUND(?bridgedb))
+}

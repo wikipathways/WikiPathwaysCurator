@@ -1,4 +1,4 @@
-/* Copyright (C) 2020  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2013,2018-2020  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -34,35 +34,62 @@ import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
 import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotSame;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 
-public class CovidDiseaseMapsTests {
+public class HMDBMetabolitesTests {
 
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
-		assertions.addAll(interactionsWithoutReferences(helper));
+		assertions.addAll(outdatedIdentifiers(helper));
+		assertions.addAll(correctFormat(helper));
 		return assertions;
 	}
 
-	public static List<IAssertion> interactionsWithoutReferences(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> outdatedIdentifiers(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
-		String sparql = ResourceHelper.resourceAsString("covid/interactionsWithoutReferences.rq");
+		String sparql = ResourceHelper.resourceAsString("metabolite/hmdb/outdatedHMDBidentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("CovidDiseaseMapsTests", "interactionsWithoutReferences", table));
-		String errors = "";
-		int errorCount = 0;
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-  			    errors += table.get(i, "pathway") + " -> " +
-		                  table.get(i, "interaction") + "\n";
-				errorCount++;
-			}
-		}
-		assertions.add(new AssertEquals(
-			"CovidDiseaseMapsTests", "interactionsWithoutReferences", 
-			0, errorCount, "Interactions without literature references:" + errorCount, errors
+		assertions.add(new AssertNotNull("HMDBMetabolitesTests", "outdatedIdentifiers", table));
+		assertions.add(new AssertEquals("HMDBMetabolitesTests", "outdatedIdentifiers", 
+			0, table.getRowCount(), "Outdated HMDB identifiers", table.toString()
 		));
 		return assertions;
 	}
 	
+	public static List<IAssertion> correctFormat(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/allHMDBIdentifiers.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("HMDBMetabolitesTests", "correctFormat", table));
+		String errors = "";
+		int errorCount = 0;
+		assertions.add(new AssertNotSame("HMDBMetabolitesTests", "correctFormat", 0, table.getRowCount(), "I expected more than zero HMDB identifiers."));
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				boolean correctFormat = false;
+				if (identifier.startsWith("HMDB")) {
+					try {
+						String uniquePart = identifier.substring(4);
+						Integer.parseInt(uniquePart);
+						correctFormat = true;
+					} catch (Exception e) {
+						// not a number
+					}
+				}
+				if (!correctFormat) {
+					errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+							" has " + identifier + " which is not a correct format\n";
+					errorCount++;
+				}
+			}
+		}
+		assertions.add(new AssertEquals(
+			"HMDBMetabolitesTests", "correctFormat",
+			0, errorCount, "HMDB identifiers detected with incorrect format: " + errorCount, errors
+		));
+		return assertions;
+	}
+
 }

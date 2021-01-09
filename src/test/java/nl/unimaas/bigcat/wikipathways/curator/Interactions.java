@@ -120,57 +120,36 @@ public class Interactions extends JUnitTests {
 
 	@Test
 	public void nonNumericIDs() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("interactions/nonNumericRhea.rq");
-		Assertions.assertTimeout(Duration.ofSeconds(50), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			String errors = "";
-			if (table.getRowCount() > 0) {
-				for (int i=1; i<=table.getRowCount(); i++) {
-					String id = table.get(i, "id");
-					if (id != null && id.length() > 0) {
-						try {
-							Integer.parseInt(id);
-						} catch (NumberFormatException exception) {
-							errors += table.get(i, "homepage") + " " +
-									table.get(i, "id") + "\n";
-						}
-					}
-				}
-			}
-			Assertions.assertEquals(
-				0, errors.length(), "Found Rhea IDs that are not numbers (they should not include a 'Rhea:' prefix):\n" + errors
-			);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:")) 
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
+			List<IAssertion> assertions = InteractionTests.nonNumericIDs(helper);
+			performAssertions(assertions);
 		});
 	}
 
 	@Tag("expertCuration")
 	@Test
 	public void interactionsWithLabels() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("interactions/interactionsWithLabels.rq");
-		Assertions.assertTimeout(Duration.ofSeconds(50), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			String errors = "";
-			if (table.getRowCount() > 0) {
-				for (int i=1; i<=table.getRowCount(); i++) {
-					String id = table.get(i, "id");
-					if (id != null && id.length() > 0) {
-						try {
-							Integer.parseInt(id);
-						} catch (NumberFormatException exception) {
-							errors += table.get(i, "homepage") + " \"" +
-									table.get(i, "label") + "\" with graphId " +
-								table.get(i, "id") + "\n";
-						}
-					}
-				}
-			}
-			Assertions.assertEquals(
-				0, errors.length(), "Interactions found that involve Labels:\n" + errors
-			);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:")) 
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
+			List<IAssertion> assertions = InteractionTests.interactionsWithLabels(helper);
+			performAssertions(assertions);
+		});
+	}
+
+	@Tag("expertCuration")
+	@Test
+	public void possibleTranslocations() throws Exception {
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
+			List<IAssertion> assertions = InteractionTests.possibleTranslocations(helper);
+			performAssertions(assertions);
 		});
 	}
 }

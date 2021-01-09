@@ -23,14 +23,14 @@ public class JUnitTests {
 				Assertions.assertEquals(
 					typedAssertion.getExpectedValue(),
 					typedAssertion.getValue(),
-					typedAssertion.getMessage()
+					typedAssertion.getMessage() + ":\n" + typedAssertion.getDetails()
 				);
 			} else if (assertion instanceof AssertNotSame) {
 				AssertNotSame typedAssertion = (AssertNotSame)assertion;
 				Assertions.assertNotSame(
 					typedAssertion.getExpectedValue(),
 					typedAssertion.getValue(),
-					typedAssertion.getMessage()
+					typedAssertion.getMessage() + ":\n" + typedAssertion.getDetails()
 				);
 			} else if (assertion instanceof AssertNotNull) {
 				AssertNotNull typedAssertion = (AssertNotNull)assertion;

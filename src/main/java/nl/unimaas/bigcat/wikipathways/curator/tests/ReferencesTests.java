@@ -71,7 +71,7 @@ public class ReferencesTests {
 			}
 		}
 		assertions.add(new AssertEquals("ReferencesTests", "nonNumericPubMedIDs",
-			0, errorCount, "Found PubMed IDs that are not numbers:\n" + errors
+			0, errorCount, "Found PubMed IDs that are not numbers:" + errorCount, errors
 		));
 		return assertions;
 	}
@@ -100,7 +100,7 @@ public class ReferencesTests {
 			}
 		}
 		assertions.add(new AssertEquals("ReferencesTests", "zeroPubMedIDs",
-			0, errorCount, "Found '0's as PubMed IDs:\n" + errors
+			0, errorCount, "Found '0's as PubMed IDs:" + errorCount, errors
 		));
 		return assertions;
 	}
@@ -119,7 +119,7 @@ public class ReferencesTests {
 			}
 		}
 		assertions.add(new AssertEquals("ReferencesTests", "atLeastOneReference",
-			0, table.getRowCount(), "Found " + table.getRowCount() + "pathways with zero references:\n" + errors
+			0, table.getRowCount(), "Found " + table.getRowCount() + "pathways with zero references", errors
 		));
 		return assertions;
     }

@@ -26,7 +26,7 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
-import java.time.Duration;
+import java.util.List;
 
 import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
@@ -35,7 +35,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-public class HMDBMetabolites {
+import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.tests.HMDBMetabolitesTests;
+
+public class HMDBMetabolites extends JUnitTests {
 
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
@@ -54,52 +57,21 @@ public class HMDBMetabolites {
 	@Tag("outdated")
 	@Test
 	public void outdatedIdentifiers() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/hmdb/outdatedHMDBidentifiers.rq");
-		Assertions.assertNotNull(sparql);
-		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertEquals(0, table.getRowCount(), "Outdated HMDB identifiers:\n" + table);
-		});
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = HMDBMetabolitesTests.outdatedIdentifiers(helper);
+		performAssertions(assertions);
 	}
 
 	@Tag("noCovid")
 	@Test
 	public void correctFormat() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/allHMDBIdentifiers.rq");
-		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			String errors = "";
-			int errorCount = 0;
-			Assertions.assertNotSame(0, table.getRowCount(), "I expected more than zero HMDB identifiers.");
-			if (table.getRowCount() > 0) {
-				for (int i=1; i<=table.getRowCount(); i++) {
-					String identifier = table.get(i, "identifier");
-					boolean correctFormat = false;
-					if (identifier.startsWith("HMDB")) {
-						try {
-							String uniquePart = identifier.substring(4);
-							Integer.parseInt(uniquePart);
-							correctFormat = true;
-						} catch (Exception e) {
-							// not a number
-						}
-					}
-					if (!correctFormat) {
-						errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
-								" has " + identifier + " which is not a correct format\n";
-						errorCount++;
-					}
-				}
-			}
-			Assertions.assertEquals(
-				0, errorCount, "HMDB identifiers detected with incorrect format:\n" + errors
-			);
-		});
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			   : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = HMDBMetabolitesTests.correctFormat(helper);
+		performAssertions(assertions);
 	}
 
 }

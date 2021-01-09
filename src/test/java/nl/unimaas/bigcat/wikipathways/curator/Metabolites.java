@@ -27,6 +27,7 @@
 package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.jena.rdf.model.Model;
@@ -35,7 +36,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class Metabolites {
+import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.tests.LIPIDMAPSTests;
+import nl.unimaas.bigcat.wikipathways.curator.tests.MetabolitesTests;
+
+public class Metabolites extends JUnitTests {
 
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
@@ -53,67 +58,29 @@ public class Metabolites {
 
 	@Test
 	public void metaboliteAlsoOtherType() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/badType.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		Set<String> exceptions = new HashSet<String>();
-		exceptions.add("http://identifiers.org/chebi/CHEBI:16991"); // DNA
-		exceptions.add("http://identifiers.org/chebi/CHEBI:39026"); // LDL
-		exceptions.add("http://identifiers.org/wikidata/Q27205"); // fibrin
-		exceptions.add("http://identifiers.org/wikidata/Q381899"); // fibrogen
-		exceptions.add("http://identifiers.org/wikidata/Q2162109"); // fibrin degradation product
-		String errors = "";
-		int errorCount = 0;
-		if (table.getRowCount() > 0) {
-			// OK, but then it must be proteins, e.g. IFN-b
-			for (int i=1; i<=table.getRowCount(); i++) {
-				String metabolite = table.get(i, "metabolite");
-				if (!exceptions.contains(metabolite)) {
-  				    errors += metabolite + " is also found to be " + table.get(i, "type") + "\n";
-				    errorCount++;
-				}
-			}
-		}
-		Assertions.assertEquals(
-		    0, errorCount, "Metabolite is also found to be another type:\n" + errors
-		);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = MetabolitesTests.metaboliteAlsoOtherType(helper);
+		performAssertions(assertions);
 	}
 
 	@Test
 	public void casNumbersNotMarkedAsMetabolite() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/casNumberNotMarkedAsMetabolite.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		Set<String> allowedProteins = new HashSet<String>();
-		allowedProteins.add("IFN-b");
-		String errors = "";
-		int errorCount = 0;
-		if (table.getRowCount() > 0) {
-			// OK, but then it must be proteins, e.g. IFN-b
-			for (int i=1; i<=table.getRowCount(); i++) {
-				if (!allowedProteins.contains(table.get(i, "label").trim())) {
-					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " -> " + table.get(i, "identifier") + "\n";
-					errorCount++;
-				}
-			}
-		}
-		Assertions.assertEquals(
-			0, errorCount, "Unexpected CAS identifiers for non-metabolites:\n" + errors
-		);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = MetabolitesTests.casNumbersNotMarkedAsMetabolite(helper);
+		performAssertions(assertions);
 	}
 
 	@Test
 	public void chemspiderIDsNotMarkedAsMetabolite() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/chemspiderNumberNotMarkedAsMetabolite.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		Assertions.assertEquals(0, table.getRowCount(), "Unexpected ChemSpider identifiers for non-metabolites:\n" + table);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = MetabolitesTests.chemspiderIDsNotMarkedAsMetabolite(helper);
+		performAssertions(assertions);
 	}
 
 	@Test
@@ -150,22 +117,20 @@ public class Metabolites {
 
 	@Test
 	public void HMDBIDsNotMarkedAsMetabolite() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/hmdbNumberNotMarkedAsMetabolite.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		Assertions.assertEquals(0, table.getRowCount(), "Unexpected HMDB identifiers for non-metabolites:\n" + table);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = MetabolitesTests.HMDBIDsNotMarkedAsMetabolite(helper);
+		performAssertions(assertions);
 	}
 
 	@Test
 	public void KEGGIDsNotMarkedAsMetabolite() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/keggNumberNotMarkedAsMetabolite.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		Assertions.assertEquals(0, table.getRowCount(), "Unexpected KEGG identifiers for non-metabolites:\n" + table);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = MetabolitesTests.KEGGIDsNotMarkedAsMetabolite(helper);
+		performAssertions(assertions);
 	}
 
 	@Test
@@ -305,5 +270,14 @@ public class Metabolites {
 		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
 		Assertions.assertNotNull(table);
 		Assertions.assertEquals(0, table.getRowCount(), "Unexpected metabolites with an Ensemble identifier:\n" + table);
+	}
+
+	@Test
+	public void retiredIdentifiers() throws Exception {
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = LIPIDMAPSTests.retiredIdentifiers(helper);
+		performAssertions(assertions);
 	}
 }

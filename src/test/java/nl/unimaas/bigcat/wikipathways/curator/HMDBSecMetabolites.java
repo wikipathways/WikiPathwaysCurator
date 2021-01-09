@@ -27,11 +27,7 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
-import java.time.Duration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.List;
 
 import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
@@ -40,10 +36,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-public class HMDBSecMetabolites {
+import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.tests.HMDBSecMetabolitesTests;
 
-	private static Map<String,String> oldToNew = new HashMap<String, String>();
-	private static Set<String> nonExisting = new HashSet<String>();
+public class HMDBSecMetabolites extends JUnitTests {
 
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
@@ -54,17 +50,6 @@ public class HMDBSecMetabolites {
 			Model data = OPSWPRDFFiles.loadData();
 			Assertions.assertTrue(data.size() > 5000);
 		}
-
-		// now load the deprecation data
-		String deprecatedData = ResourceHelper.resourceAsString("metabolite/hmdb/HMDBDataSecondaryAll_Final.csv");
-		String lines[] = deprecatedData.split("\\r?\\n");
-		for (int i=0; i<lines.length; i++) {
-			String[] ids = lines[i].split(",");
-			oldToNew.put(ids[0], ids[1]);
-		}
-		System.out.println("size: " + oldToNew.size());
-
-		nonExisting.add("HMDB0002708"); // "How did you get here? That page doesn't exist. Oh well, it happens."
 	}
 
 	@BeforeEach
@@ -73,86 +58,31 @@ public class HMDBSecMetabolites {
 	@Tag("noCovid")
 	@Test
 	public void outdatedIdentifiers() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/allHMDBIdentifiers.rq");
-		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			String errors = "";
-			int errorCount = 0;
-			Assertions.assertNotSame(0, table.getRowCount(), "I expected more than zero HMDB identifiers.");
-			if (table.getRowCount() > 0) {
-				for (int i=1; i<=table.getRowCount(); i++) {
-					String identifier = table.get(i, "identifier");
-					if (identifier.length() == 11) identifier.replace("HMDB00", "HMDB");
-					if (oldToNew.containsKey(identifier)) {
-						String primID = oldToNew.get(identifier);
-						if (!primID.equals(identifier.replace("HMDB", "HMDB00"))) { // ignore longer format
-							errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
-									" has " + identifier + " but has primary identifier " + primID + "\n";
-							errorCount++;
-						}
-					}
-				}
-			}
-			Assertions.assertEquals(
-				0, errorCount, "Secondary HMDB identifiers detected:\n" + errors
-			);
-		});
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = HMDBSecMetabolitesTests.outdatedIdentifiers(helper);
+		performAssertions(assertions);
 	}
 
 	@Tag("noCovid")
 	@Test
 	public void nonExisting() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/allHMDBIdentifiers.rq");
-		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			String errors = "";
-			int errorCount = 0;
-			Assertions.assertNotSame(0, table.getRowCount(), "I expected more than zero HMDB identifiers.");
-			if (table.getRowCount() > 0) {
-				for (int i=1; i<=table.getRowCount(); i++) {
-					String identifier = table.get(i, "identifier");
-					if (nonExisting.contains(identifier)) {
-						errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
-								" has " + identifier + " but it does not exist\n";
-						errorCount++;
-					}
-				}
-			}
-			Assertions.assertEquals(
-				0, errorCount, "Non-existing HMDB identifiers detected:\n" + errors
-			);
-		});
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = HMDBSecMetabolitesTests.nonExisting(helper);
+		performAssertions(assertions);
 	}
 
 	@Tag("outdated")
 	@Tag("noCovid")
 	@Test
 	public void oldFormat() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/allHMDBIdentifiersGPML.rq");
-		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			String errors = "";
-			int errorCount = 0;
-			Assertions.assertNotSame(0, table.getRowCount(), "I expected more than zero HMDB identifiers.");
-			if (table.getRowCount() > 0) {
-				for (int i=1; i<=table.getRowCount(); i++) {
-					String identifier = table.get(i, "identifier");
-					if (identifier.length() < 11) {
-						errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
-								" has " + identifier + " but the new format is " + identifier.replace("HMDB", "HMDB00") + "\n";
-						errorCount++;
-					}
-				}
-			}
-			Assertions.assertEquals(
-				0, errorCount, "Old HMDB identifier format detected:\n" + errors
-			);
-		});
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = HMDBSecMetabolitesTests.oldFormat(helper);
+		performAssertions(assertions);
 	}
 }
