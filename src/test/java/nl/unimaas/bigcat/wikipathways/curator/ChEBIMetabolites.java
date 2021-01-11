@@ -1,4 +1,4 @@
-/* Copyright (C) 2018  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2018-2021  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -38,7 +38,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ChEBIMetabolites {
+import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.tests.CASMetabolitesTests;
+
+public class ChEBIMetabolites extends JUnitTests {
 
 	private static Map<String,String> oldToNew = new HashMap<String, String>();
 
@@ -73,31 +76,14 @@ public class ChEBIMetabolites {
 
 	@Test
 	public void secondaryChEBIIdentifiers() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/allChEBIIdentifiers.rq");
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			String errors = "";
-			int errorCount = 0;
-			if (table.getRowCount() > 0) {
-				// OK, but then it must be proteins, e.g. IFN-b
-				for (int i=1; i<=table.getRowCount(); i++) {
-					String identifier = table.get(i, "identifier");
-					if (identifier.startsWith("CHEBI:")) {
-						identifier = identifier.substring(6);
-					}
-					if (oldToNew.containsKey(identifier)) {
-						errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
-							" has " + identifier + " but has primary identifier CHEBI:" +
-							oldToNew.get(identifier) + "\n";
-						errorCount++;
-					}
-				}
-			}
-			Assertions.assertEquals(
-				0, errorCount, "Secondary ChEBI identifiers detected:\n" + errors
-			);
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
+				List<IAssertion> assertions = CASMetabolitesTests.deletedCASIdentifiers(helper);
+				performAssertions(assertions);
+			});
 		});
 	}
 
