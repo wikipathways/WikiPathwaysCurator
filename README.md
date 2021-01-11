@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/BiGCAT-UM/WikiPathwaysCurator.svg?branch=master)](https://travis-ci.org/BiGCAT-UM/WikiPathwaysCurator)
+![Java CI with Maven](https://github.com/BiGCAT-UM/WikiPathwaysCurator/workflows/Java%20CI%20with%20Maven/badge.svg)
 
 # Unit tests for curating WikiPathways using SPARQL.
 
