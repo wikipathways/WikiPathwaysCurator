@@ -31,6 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.Assertions;
+
 import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
 import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
 import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
@@ -62,6 +64,7 @@ public class ChEBIMetabolitesTests {
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(secondaryChEBIIdentifiers(helper));
+		assertions.addAll(faultyChEBIIdentifiers(helper));
 		return assertions;
 	}
 
@@ -90,6 +93,35 @@ public class ChEBIMetabolitesTests {
 		assertions.add(new AssertEquals(
 			"ChEBIMetabolitesTests", "secondaryChEBIIdentifiers",
 			0, errorCount, "Secondary ChEBI identifiers detected: " + errorCount, errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> faultyChEBIIdentifiers(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/allChEBIIdentifiers.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("ChEBIMetabolitesTests", "faultyChEBIIdentifiers", table));
+	    String errors = "";
+	    int errorCount = 0;
+	    if (table.getRowCount() > 0) {
+	    	// OK, but then it must be proteins, e.g. IFN-b
+	    	for (int i=1; i<=table.getRowCount(); i++) {
+	    		String identifier = table.get(i, "identifier");
+	    		if (identifier.startsWith("CHEBI:")) {
+	    			identifier = identifier.substring(6);
+	    		}
+	    		if (nonexisting.contains(identifier)) {
+	    			errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+					    " has a non-existing identifier CHEBI:" +
+					    identifier + "\n";
+	    			errorCount++;
+	    		}
+	    	}
+	    }
+		assertions.add(new AssertEquals(
+			"ChEBIMetabolitesTests", "faultyChEBIIdentifiers",
+			0, errorCount, "Non-existing ChEBI identifiers detected: " + errorCount, errors
 		));
 		return assertions;
 	}
