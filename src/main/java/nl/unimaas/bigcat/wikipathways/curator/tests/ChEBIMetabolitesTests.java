@@ -31,8 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.jupiter.api.Assertions;
-
 import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
 import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
 import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
@@ -65,6 +63,7 @@ public class ChEBIMetabolitesTests {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(secondaryChEBIIdentifiers(helper));
 		assertions.addAll(faultyChEBIIdentifiers(helper));
+		assertions.addAll(chebiDataTypo(helper));
 		return assertions;
 	}
 
@@ -122,6 +121,18 @@ public class ChEBIMetabolitesTests {
 		assertions.add(new AssertEquals(
 			"ChEBIMetabolitesTests", "faultyChEBIIdentifiers",
 			0, errorCount, "Non-existing ChEBI identifiers detected: " + errorCount, errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> chebiDataTypo(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("outdated/chebi.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertEquals(
+			"ChEBIMetabolitesTests", "faultyChEBIIdentifiers",
+			0, table.getRowCount(), "Typo 'CHEBI' data sources (use 'ChEBI'): " + table.getRowCount(),
+			"" +table
 		));
 		return assertions;
 	}

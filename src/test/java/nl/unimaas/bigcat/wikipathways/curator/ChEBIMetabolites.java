@@ -39,7 +39,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
-import nl.unimaas.bigcat.wikipathways.curator.tests.CASMetabolitesTests;
 import nl.unimaas.bigcat.wikipathways.curator.tests.ChEBIMetabolitesTests;
 
 public class ChEBIMetabolites extends JUnitTests {
@@ -130,14 +129,12 @@ public class ChEBIMetabolites extends JUnitTests {
 
 	@Test
 	public void chebiDataTypo() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("outdated/chebi.rq");
-		Assertions.assertNotNull(sparql);
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertTrue(table.getRowCount() < 1, "Typo 'CHEBI' data sources (use 'ChEBI'):\n" + table);
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+				: new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = ChEBIMetabolitesTests.chebiDataTypo(helper);
+			performAssertions(assertions);
 		});
 	}
 }
