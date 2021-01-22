@@ -31,9 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.jupiter.api.Assertions;
-
-import nl.unimaas.bigcat.wikipathways.curator.OPSWPRDFFiles;
 import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
 import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
 import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
@@ -117,6 +114,7 @@ public class EnsemblTests {
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(outdatedIdentifiers(helper));
+		assertions.addAll(wrongEnsemblIDForHumanSpecies(helper));
 		return assertions;
 	}
 
