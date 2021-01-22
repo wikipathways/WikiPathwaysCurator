@@ -70,36 +70,12 @@ public class EnsemblGenes extends JUnitTests {
 
 	@Test
 	public void wrongEnsemblIDForHumanSpecies() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Human.rq");
-		Assertions.assertNotNull(sparql);
-		System.out.println("Wrong Ensembl gene for human for: " + System.getProperty("SUBSETPREFIX"));
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
 		Assertions.assertTimeout(Duration.ofSeconds(50), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			    ? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		        : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			String errors = "";
-			int errorCount = 0;
-			if (table.getRowCount() > 0) {
-				for (int i=1; i<=table.getRowCount(); i++) {
-					String identifier = table.get(i, "identifier");
-					if (!identifier.contains("LRG_482")) { // in pathway WP3658
-						identifier = identifier.trim();
-						if (!identifier.isEmpty()) {
-							try {
-								Integer.parseInt(identifier);
-							} catch (NumberFormatException exception) {
-								errors += table.get(i, "homepage") + " -> " + table.get(i, "label") +
-										", " + table.get(i, "identifier") + "\n ";
-								errorCount++;
-							}
-						}
-					}
-				}
-			}
-			Assertions.assertEquals(
-				0, errorCount, "Ensembl identifiers for wrong species for a human pathway:\n" + errors
-			);
+			List<IAssertion> assertions = EnsemblTests.outdatedIdentifiers(helper);
+			performAssertions(assertions);
 		});
 	}
 

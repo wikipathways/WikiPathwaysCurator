@@ -31,6 +31,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.Assertions;
+
+import nl.unimaas.bigcat.wikipathways.curator.OPSWPRDFFiles;
 import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
 import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
 import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
@@ -139,6 +142,36 @@ public class EnsemblTests {
 		}
 		assertions.add(new AssertEquals("EnsemblTests", "outdatedIdentifiers", 
 			0, errorCount, "Deprecated Ensembl identifiers:" + errorCount, errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> wrongEnsemblIDForHumanSpecies(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Human.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("EnsemblTests", "wrongEnsemblIDForHumanSpecies", table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				if (!identifier.contains("LRG_482")) { // in pathway WP3658
+					identifier = identifier.trim();
+					if (!identifier.isEmpty()) {
+						try {
+							Integer.parseInt(identifier);
+						} catch (NumberFormatException exception) {
+							errors += table.get(i, "homepage") + " -> " + table.get(i, "label") +
+									", " + table.get(i, "identifier") + "\n ";
+							errorCount++;
+						}
+					}
+				}
+			}
+		}
+		assertions.add(new AssertEquals("EnsemblTests", "wrongEnsemblIDForHumanSpecies", 
+			0, errorCount, "Ensembl identifiers for wrong species for a human pathway: " + errorCount, errors
 		));
 		return assertions;
 	}
