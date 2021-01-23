@@ -74,78 +74,41 @@ public class EnsemblGenes extends JUnitTests {
 			? new SPARQLHelper(System.getProperty("SPARQLEP"))
 		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
 		Assertions.assertTimeout(Duration.ofSeconds(50), () -> {
-			List<IAssertion> assertions = EnsemblTests.outdatedIdentifiers(helper);
+			List<IAssertion> assertions = EnsemblTests.wrongEnsemblIDForHumanSpecies(helper);
 			performAssertions(assertions);
 		});
 	}
 
 	@Test
 	public void wrongEnsemblIDForRatSpecies() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Rat.rq");
-		Assertions.assertNotNull(sparql);
-		System.out.println("Wrong Ensembl gene for rat for: " + System.getProperty("SUBSETPREFIX"));
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
 		Assertions.assertTimeout(Duration.ofSeconds(50), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertEquals(
-				0, table.getRowCount(), "Ensembl identifiers for wrong species for a rat pathway:\n" + table
-			);
+			List<IAssertion> assertions = EnsemblTests.wrongEnsemblIDForRatSpecies(helper);
+			performAssertions(assertions);
 		});
 	}
 
 	@Test
 	public void wrongEnsemblIDForMouseSpecies() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Mouse.rq");
-		Assertions.assertNotNull(sparql);
-		System.out.println("Wrong Ensembl gene for mouse for: " + System.getProperty("SUBSETPREFIX"));
-		Assertions.assertTimeout(Duration.ofSeconds(50), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			String errors = "";
-			int errorCount = 0;
-			if (table.getRowCount() > 0) {
-				for (int i=1; i<=table.getRowCount(); i++) {
-					String identifier = table.get(i, "identifier");
-					String pathwayPage = table.get(i, "homepage");
-					if (!pathwayPage.contains("WP2080") && // this pathway has a few of human mirs
-							!pathwayPage.contains("WP2087") && // this pathway has a few of human mirs
-							!pathwayPage.contains("WP3632")) { // this pathway has a few human genes (pinged Freddie)
-						identifier = identifier.trim();
-						if (!identifier.isEmpty()) {
-							try {
-								Integer.parseInt(identifier);
-							} catch (NumberFormatException exception) {
-								errors += table.get(i, "homepage") + " -> " + table.get(i, "label") +
-										", " + table.get(i, "identifier") + "\n ";
-								errorCount++;
-							}
-						}
-					}
-				}
-			}
-			Assertions.assertEquals(
-				0, errorCount, "Ensembl identifiers for wrong species for a mouse pathway:\n" + errors
-			);
-		});
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			Assertions.assertTimeout(Duration.ofSeconds(50), () -> {
+				List<IAssertion> assertions = EnsemblTests.wrongEnsemblIDForMouseSpecies(helper);
+				performAssertions(assertions);
+			});
 	}
 
 	@Test
 	public void wrongEnsemblIDForCowSpecies() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Cow.rq");
-		Assertions.assertNotNull(sparql);
-		System.out.println("Wrong Ensembl gene for cow for: " + System.getProperty("SUBSETPREFIX"));
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
 		Assertions.assertTimeout(Duration.ofSeconds(50), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertEquals(
-				0, table.getRowCount(), "Ensembl identifiers for wrong species for a cow pathway:\n" + table
-			);
+			List<IAssertion> assertions = EnsemblTests.wrongEnsemblIDForCowSpecies(helper);
+			performAssertions(assertions);
 		});
 	}
 

@@ -115,6 +115,9 @@ public class EnsemblTests {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(outdatedIdentifiers(helper));
 		assertions.addAll(wrongEnsemblIDForHumanSpecies(helper));
+		assertions.addAll(wrongEnsemblIDForRatSpecies(helper));
+		assertions.addAll(wrongEnsemblIDForCowSpecies(helper));
+		assertions.addAll(wrongEnsemblIDForMouseSpecies(helper));
 		return assertions;
 	}
 
@@ -170,6 +173,61 @@ public class EnsemblTests {
 		}
 		assertions.add(new AssertEquals("EnsemblTests", "wrongEnsemblIDForHumanSpecies", 
 			0, errorCount, "Ensembl identifiers for wrong species for a human pathway: " + errorCount, errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> wrongEnsemblIDForRatSpecies(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Rat.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("EnsemblTests", "wrongEnsemblIDForRatSpecies", table));
+		assertions.add(new AssertEquals("EnsemblTests", "wrongEnsemblIDForRatSpecies", 
+			0, table.getRowCount(), "Ensembl identifiers for wrong species for a rat pathway: " + table.getRowCount()
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> wrongEnsemblIDForCowSpecies(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Cow.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("EnsemblTests", "wrongEnsemblIDForCowSpecies", table));
+		assertions.add(new AssertEquals("EnsemblTests", "wrongEnsemblIDForCowSpecies", 
+			0, table.getRowCount(), "Ensembl identifiers for wrong species for a cow pathway: " + table.getRowCount()
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> wrongEnsemblIDForMouseSpecies(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Mouse.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("EnsemblTests", "wrongEnsemblIDForMouseSpecies", table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				String pathwayPage = table.get(i, "homepage");
+				if (!pathwayPage.contains("WP2080") && // this pathway has a few of human mirs
+						!pathwayPage.contains("WP2087") && // this pathway has a few of human mirs
+						!pathwayPage.contains("WP3632")) { // this pathway has a few human genes (pinged Freddie)
+					identifier = identifier.trim();
+					if (!identifier.isEmpty()) {
+						try {
+							Integer.parseInt(identifier);
+						} catch (NumberFormatException exception) {
+							errors += table.get(i, "homepage") + " -> " + table.get(i, "label") +
+									", " + table.get(i, "identifier") + "\n ";
+							errorCount++;
+						}
+					}
+				}
+			}
+		}
+		assertions.add(new AssertEquals("EnsemblTests", "wrongEnsemblIDForMouseSpecies", 
+			0, errorCount, "Ensembl identifiers for wrong species for a mouse pathway: " + errorCount, errors
 		));
 		return assertions;
 	}
