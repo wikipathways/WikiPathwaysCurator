@@ -100,7 +100,7 @@ public class ReferencesTests {
 			}
 		}
 		assertions.add(new AssertEquals("ReferencesTests", "zeroPubMedIDs",
-			0, errorCount, "Found '0's as PubMed IDs:" + errorCount, errors
+			0, errorCount, "Found '0's as PubMed IDs: " + errorCount, errors
 		));
 		return assertions;
 	}
