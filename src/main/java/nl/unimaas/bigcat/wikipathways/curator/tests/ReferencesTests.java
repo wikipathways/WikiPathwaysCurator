@@ -71,7 +71,7 @@ public class ReferencesTests {
 			}
 		}
 		assertions.add(new AssertEquals("ReferencesTests", "nonNumericPubMedIDs",
-			0, errorCount, "Found PubMed IDs that are not numbers:" + errorCount, errors
+			0, errorCount, "Found PubMed IDs that are not numbers: " + errorCount, errors
 		));
 		return assertions;
 	}
