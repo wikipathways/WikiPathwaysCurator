@@ -40,6 +40,11 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 
 public class MetabolitesTests {
 
+	private static void addIdentifiersOrg(Set<String> setToAddTo, String identifier) {
+		setToAddTo.add("https://" + identifier);
+		setToAddTo.add("http://" + identifier);
+	}
+
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(metaboliteAlsoOtherType(helper));
@@ -56,11 +61,11 @@ public class MetabolitesTests {
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull("MetabolitesTests", "metaboliteAlsoOtherType", table));
 		Set<String> exceptions = new HashSet<String>();
-		exceptions.add("http://identifiers.org/chebi/CHEBI:16991"); // DNA
-		exceptions.add("http://identifiers.org/chebi/CHEBI:39026"); // LDL
-		exceptions.add("http://identifiers.org/wikidata/Q27205"); // fibrin
-		exceptions.add("http://identifiers.org/wikidata/Q381899"); // fibrogen
-		exceptions.add("http://identifiers.org/wikidata/Q2162109"); // fibrin degradation product
+		    MetabolitesTests.addIdentifiersOrg(exceptions, "identifiers.org/chebi/CHEBI:16991"); // DNA
+		    MetabolitesTests.addIdentifiersOrg(exceptions, "identifiers.org/chebi/CHEBI:39026"); // LDL
+		    MetabolitesTests.addIdentifiersOrg(exceptions, "identifiers.org/wikidata/Q27205"); // fibrin
+		    MetabolitesTests.addIdentifiersOrg(exceptions, "identifiers.org/wikidata/Q381899"); // fibrogen
+		    MetabolitesTests.addIdentifiersOrg(exceptions, "identifiers.org/wikidata/Q2162109"); // fibrin degradation product
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
