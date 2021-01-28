@@ -205,4 +205,14 @@ public class General extends JUnitTests {
 		performAssertions(assertions);
 	}
 
+	@Test
+	@Tag("expertCuration")
+	public void noTags() throws Exception {
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = GeneralTests.noTags(helper);
+		performAssertions(assertions);
+	}
+
 }

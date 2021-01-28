@@ -45,6 +45,7 @@ public class GeneralTests {
 		assertions.addAll(titlesShortEnough(helper));
 		assertions.addAll(weirdCharacterTitles(helper));
 		assertions.addAll(duplicateTitles(helper));
+		assertions.addAll(noTags(helper));
 		return assertions;
 	}
 
@@ -177,6 +178,28 @@ public class GeneralTests {
 		}
 		assertions.add(new AssertEquals("GeneralTests", "curationAndNeedsWork",
 			0, errorCount, "Pathways tagged as Curation and NeedsWork:\n" + errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> noTags(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("general/noTags.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("GeneralTests", "noTags", table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			// OK, but then it must be proteins, e.g. IFN-b
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String page  = table.get(i, "page");
+				String title = table.get(i, "title");
+				errors += page + " '" + title + "' \n";
+				errorCount++;
+			}
+		}
+		assertions.add(new AssertEquals("GeneralTests", "noTags",
+			0, errorCount, "Pathways without any tag: " + errorCount, errors
 		));
 		return assertions;
 	}
