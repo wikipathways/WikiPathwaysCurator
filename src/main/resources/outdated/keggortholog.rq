@@ -8,7 +8,5 @@ prefix wp: <http://vocabularies.wikipathways.org/wp#>
 select distinct ?homepage
 where {
   ?node gpml:xrefDataSource "Kegg ortholog"^^xsd:string ;
-        dcterms:isPartOf ?gpmlpw .
-  ?wppw wp:isAbout ?gpmlpw ;
-        foaf:page ?homepage .
+        dcterms:isPartOf/^wp:isAbout/foaf:page ?homepage .
 }
