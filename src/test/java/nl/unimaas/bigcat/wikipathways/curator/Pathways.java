@@ -1,4 +1,4 @@
-/* Copyright (C) 2020  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2020-2021  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -26,6 +26,8 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
+import java.util.List;
+
 import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -33,7 +35,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-public class Pathways {
+import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.tests.PathwayTests;
+
+public class Pathways extends JUnitTests {
 
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
@@ -78,6 +83,16 @@ public class Pathways {
 		Assertions.assertEquals(
 			0, errorCount, "Pathways DataNodes with WikiPathways ID that can be converted to have a RoundedRectangle StyleType so that they become clickable:\n" + errors
 		);
+	}
+
+	@Test
+	@Tag("foo")
+	public void deletedPathways() throws Exception {
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = PathwayTests.deletedPathways(helper);
+		performAssertions(assertions);
 	}
 
 }
