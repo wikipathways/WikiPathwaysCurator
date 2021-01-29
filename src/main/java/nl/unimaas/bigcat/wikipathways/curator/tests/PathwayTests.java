@@ -50,7 +50,9 @@ public class PathwayTests {
 		List<IAssertion> assertions = new ArrayList<>();
 		String tiwidData = ResourceHelper.resourceAsString("tiwid/wikipathways.csv");
 		BufferedReader reader = new BufferedReader(new StringReader(tiwidData));
-		String sparql = "SELECT ?pathway WHERE {\n  VALUES ?wpid { \n";
+		String sparql = "PREFIX dcterms: <http://purl.org/dc/terms/>\n" + 
+				"prefix xsd:     <http://www.w3.org/2001/XMLSchema#>\n\n"
+				+ "SELECT ?pathway WHERE {\n  VALUES ?wpid { \n";
 		String line;
 		while ((line = reader.readLine()) != null) {
 			if (line.startsWith("#")) continue;
@@ -59,7 +61,6 @@ public class PathwayTests {
 		}
 		sparql += "  }\n"
 				+ "  ?pathway dcterms:identifier ?wpid .\n}";
-		System.out.println("SPARQL: " + sparql);
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull("PathwayTests", "deletedPathways", table));
 		String errors = "";
