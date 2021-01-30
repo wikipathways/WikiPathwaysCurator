@@ -120,7 +120,9 @@ public class PathwayTests {
 			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String pathway = table.get(i, "homepage");
-				errors += pathway + " links to a deleted pathway: " + table.get(i, "wpid") + "\n";
+				String replacement = deprecated.get(table.get(i, "wpid"));
+				errors += pathway + " links to a deleted pathway: " + table.get(i, "wpid") +
+						(replacement != null ? " (check " + replacement + " as replacement)" : "") + "\n";
 			}
 		}
 		assertions.add(new AssertEquals("PathwayTests", "deletedPathways",
