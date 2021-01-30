@@ -43,6 +43,7 @@ public class PathwayTests {
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(deletedPathways(helper));
+		assertions.addAll(linksToDeletedPathways(helper));
 		return assertions;
 	}
 
@@ -60,7 +61,8 @@ public class PathwayTests {
 			sparql += "    \"" + fields[0] + "\"^^xsd:string\n";
 		}
 		sparql += "  }\n"
-				+ "  ?pathway dcterms:identifier ?wpid .\n}";
+				+ "  ?pathway dcterms:identifier ?wpid .\n"
+				+ "  MINUS { ?pathway a wp:DataNode } \n}";
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull("PathwayTests", "deletedPathways", table));
 		String errors = "";
