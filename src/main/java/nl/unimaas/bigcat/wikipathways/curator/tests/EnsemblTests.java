@@ -26,6 +26,9 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator.tests;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,74 +45,23 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 public class EnsemblTests {
 
 	@SuppressWarnings({ "serial" })
-	private static final Map<String,String> deprecated = new HashMap<String,String>() {{
-        put("ENSG00000011177", "ENSG00000011177.5");
-        put("ENSG00000079782", "ENSG00000079782.8");
-        put("ENSG00000096087", "ENSG00000096087.5");
-        put("ENSG00000105663.1", "ENSG00000272333");
-        put("ENSG00000105663", "ENSG00000272333");
-        put("ENSG00000132142.1", "ENSG00000278540"); 
-        put("ENSG00000132142", "ENSG00000278540");
-        put("ENSG00000172070.5", "ENSG00000271303");
-        put("ENSG00000172070", "ENSG00000271303");
-        put("ENSG00000175818", "ENSG00000175818.6");
-        put("ENSG00000184674", "ENSG00000184674.8");
-        put("ENSG00000187919", "ENSG00000187919.5");
-        put("ENSG00000197592", "ENSG00000197592.3");
-        put("ENSG00000198339.3", "ENSG00000276180");
-        put("ENSG00000198339", "ENSG00000276180");
-        put("ENSG00000198981.2", "ENSG00000284032");
-        put("ENSG00000198981", "ENSG00000284032");
-        put("ENSG00000199004", "ENSG00000284190"); // old MIR21 identifier
-        put("ENSG00000199066.1", "ENSG00000284544");
-        put("ENSG00000199066", "ENSG00000284544");
-        put("ENSG00000199097", "ENSG00000284231");
-        put("ENSG00000207603.1", "ENSG00000284179");
-        put("ENSG00000207603", "ENSG00000284179");
-        put("ENSG00000207694", "ENSG00000284453");
-        put("ENSG00000207700", "ENSG00000276365");
-        put("ENSG00000207718", "ENSG00000283785");
-        put("ENSG00000207745", "ENSG00000284536");
-        put("ENSG00000207748", "ENSG00000283797");
-        put("ENSG00000207764", "ENSG00000284508");
-        put("ENSG00000207795", "ENSG00000283904");
-        put("ENSG00000207865", "ENSG00000284357");
-        put("ENSG00000207875", "ENSG00000284520");
-        put("ENSG00000207929", "ENSG00000284112");
-        put("ENSG00000207936", "ENSG00000283733");
-        put("ENSG00000207939", "ENSG00000284567");
-        put("ENSG00000207949", "ENSG00000283844");
-        put("ENSG00000207966", "ENSG00000207966.1");
-        put("ENSG00000207968", "ENSG00000207968.2");
-        put("ENSG00000208034", "ENSG00000284538");
-        put("ENSG00000208035", "ENSG00000284182");
-        put("ENSG00000209707", "ENSG00000209707.1");
-        put("ENSG00000211589", "ENSG00000211589.1");
-        put("ENSG00000213052", "ENSG00000213052.1");
-        put("ENSG00000214699", "ENSG00000214699.1");
-        put("ENSG00000221035", "ENSG00000221035.1");
-        put("ENSG00000255604", "ENSG00000109072");
-        put("ENSG00000262852", "ENSG00000170276");
-        put("ENSG00000266658", "ENSG00000266658.2");
-        put("ENSG00000273895", "ENSG00000284027");
-        put("ENSG00000274160", "ENSG00000274160.1");
-        put("ENSG00000274250", "ENSG00000283797");
-        put("ENSG00000274784", "ENSG00000284231");
-        put("ENSG00000275042", "ENSG00000284536");
-        put("ENSG00000275534", "ENSG00000283762");
-        put("ENSG00000275668", "ENSG00000284214");
-        put("ENSG00000275739", "ENSG00000284112");
-        put("ENSG00000275802", "ENSG00000284375");
-        put("ENSG00000276018", "ENSG00000283705");
-        put("ENSG00000276752", "ENSG00000284203");
-        put("ENSG00000276792", "ENSG00000283927");
-        put("ENSG00000277328", "ENSG00000283844");
-        put("ENSG00000277934", "ENSG00000284033");
-        put("ENSG00000282827", "ENSG00000164053 ");
-        put("ENSG00000283147", "ENSG00000283147.1");
-        put("", "");
-	}};
+	private static final Map<String,String> deprecated = new HashMap<String,String>();
 
+	static {
+		// See BridgeDb Tiwid: https://github.com/bridgedb/tiwid, doi:10.5281/zenodo.4479409
+		String tiwidData = ResourceHelper.resourceAsString("tiwid/ensembl.csv");
+		BufferedReader reader = new BufferedReader(new StringReader(tiwidData));
+		String line;
+		try {
+			while ((line = reader.readLine()) != null) {
+				if (line.startsWith("#")) continue;
+				String fields[] = line.split(",");
+				deprecated.put(fields[0], fields[2]);
+			}
+		} catch (IOException e) {
+			// blah
+		}
+	}
 	
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
