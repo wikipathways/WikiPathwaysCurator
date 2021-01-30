@@ -79,4 +79,39 @@ public class PathwayTests {
 		return assertions;
 	}
 
+	public static List<IAssertion> linksToDeletedPathways(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String tiwidData = ResourceHelper.resourceAsString("tiwid/wikipathways.csv");
+		BufferedReader reader = new BufferedReader(new StringReader(tiwidData));
+		String sparql = "PREFIX dcterms: <http://purl.org/dc/terms/>\n" + 
+				"prefix xsd:     <http://www.w3.org/2001/XMLSchema#>\n\n"
+				+ "SELECT ?homepage ?wpid WHERE {\n  VALUES ?wpid { \n";
+		String line;
+		while ((line = reader.readLine()) != null) {
+			if (line.startsWith("#")) continue;
+			String fields[] = line.split(",");
+			sparql += "    \"" + fields[0] + "\"^^xsd:string\n";
+		}
+		sparql += "  }\n"
+				+ "  ?pathwayNode a wp:DataNode ;\n" + 
+				  "    dcterms:identifier ?wpid ;\n" + 
+				  "    dcterms:isPartOf ?pathway .\n" + 
+				  "  ?pathway foaf:page ?homepage . \n}";
+		System.out.println(sparql);
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("PathwayTests", "linksToDeletedPathways", table));
+		String errors = "";
+		if (table.getRowCount() > 0) {
+			// OK, but then it must be proteins, e.g. IFN-b
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String pathway = table.get(i, "homepage");
+				errors += pathway + " links to a deleted pathway: " + table.get(i, "wpid") + "\n";
+			}
+		}
+		assertions.add(new AssertEquals("PathwayTests", "deletedPathways",
+			0, table.getRowCount(), "Found " + table.getRowCount() + " pathways that link to deleted pathways", errors
+		));
+		return assertions;
+	}
+
 }

@@ -95,4 +95,14 @@ public class Pathways extends JUnitTests {
 		performAssertions(assertions);
 	}
 
+	@Test
+	@Tag("expertCuration")
+	public void linksToDeletedPathways() throws Exception {
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = PathwayTests.linksToDeletedPathways(helper);
+		performAssertions(assertions);
+	}
+
 }
