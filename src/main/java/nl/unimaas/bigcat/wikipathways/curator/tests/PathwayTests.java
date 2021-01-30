@@ -27,9 +27,12 @@
 package nl.unimaas.bigcat.wikipathways.curator.tests;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
 import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
@@ -40,6 +43,29 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 
 public class PathwayTests {
 
+	@SuppressWarnings({ "serial" })
+	private static final Map<String,String> deprecated = new HashMap<String,String>();
+
+	static {
+		try {
+			// See BridgeDb Tiwid: https://github.com/bridgedb/tiwid, doi:10.5281/zenodo.4479409
+			String tiwidData = ResourceHelper.resourceAsString("tiwid/wikipathways.csv");
+			BufferedReader reader = new BufferedReader(new StringReader(tiwidData));
+			String line;
+			while ((line = reader.readLine()) != null) {
+				if (line.startsWith("#")) continue;
+				String fields[] = line.split(",");
+				if (fields.length >= 2) {
+					deprecated.put(fields[0], fields[2]);
+				} else {
+					deprecated.put(fields[0], null);
+				}
+			}
+		} catch (IOException e) {
+			// blah
+		}
+	}
+
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(deletedPathways(helper));
@@ -49,16 +75,11 @@ public class PathwayTests {
 
 	public static List<IAssertion> deletedPathways(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
-		String tiwidData = ResourceHelper.resourceAsString("tiwid/wikipathways.csv");
-		BufferedReader reader = new BufferedReader(new StringReader(tiwidData));
 		String sparql = "PREFIX dcterms: <http://purl.org/dc/terms/>\n" + 
 				"prefix xsd:     <http://www.w3.org/2001/XMLSchema#>\n\n"
 				+ "SELECT ?pathway WHERE {\n  VALUES ?wpid { \n";
-		String line;
-		while ((line = reader.readLine()) != null) {
-			if (line.startsWith("#")) continue;
-			String fields[] = line.split(",");
-			sparql += "    \"" + fields[0] + "\"^^xsd:string\n";
+		for (String deprecatedPW : deprecated.keySet()) {
+			sparql += "    \"" + deprecatedPW + "\"^^xsd:string\n";
 		}
 		sparql += "  }\n"
 				+ "  ?pathway dcterms:identifier ?wpid .\n"
@@ -81,23 +102,17 @@ public class PathwayTests {
 
 	public static List<IAssertion> linksToDeletedPathways(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
-		String tiwidData = ResourceHelper.resourceAsString("tiwid/wikipathways.csv");
-		BufferedReader reader = new BufferedReader(new StringReader(tiwidData));
 		String sparql = "PREFIX dcterms: <http://purl.org/dc/terms/>\n" + 
 				"prefix xsd:     <http://www.w3.org/2001/XMLSchema#>\n\n"
 				+ "SELECT ?homepage ?wpid WHERE {\n  VALUES ?wpid { \n";
-		String line;
-		while ((line = reader.readLine()) != null) {
-			if (line.startsWith("#")) continue;
-			String fields[] = line.split(",");
-			sparql += "    \"" + fields[0] + "\"^^xsd:string\n";
+		for (String deprecatedPW : deprecated.keySet()) {
+			sparql += "    \"" + deprecatedPW + "\"^^xsd:string\n";
 		}
 		sparql += "  }\n"
 				+ "  ?pathwayNode a wp:DataNode ;\n" + 
 				  "    dcterms:identifier ?wpid ;\n" + 
 				  "    dcterms:isPartOf ?pathway .\n" + 
 				  "  ?pathway foaf:page ?homepage . \n}";
-		System.out.println(sparql);
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull("PathwayTests", "linksToDeletedPathways", table));
 		String errors = "";
