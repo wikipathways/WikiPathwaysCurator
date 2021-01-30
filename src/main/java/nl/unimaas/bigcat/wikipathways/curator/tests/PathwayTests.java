@@ -103,7 +103,9 @@ public class PathwayTests {
 	public static List<IAssertion> linksToDeletedPathways(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = "PREFIX dcterms: <http://purl.org/dc/terms/>\n" + 
-				"prefix xsd:     <http://www.w3.org/2001/XMLSchema#>\n\n"
+				"prefix xsd:     <http://www.w3.org/2001/XMLSchema#>\n" +
+				"prefix foaf:    <http://xmlns.com/foaf/0.1/>\n" +
+				"prefix wp:      <http://vocabularies.wikipathways.org/wp#>\n\n"
 				+ "SELECT ?homepage ?wpid WHERE {\n  VALUES ?wpid { \n";
 		for (String deprecatedPW : deprecated.keySet()) {
 			sparql += "    \"" + deprecatedPW + "\"^^xsd:string\n";
