@@ -26,11 +26,7 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.jena.rdf.model.Model;
@@ -42,27 +38,7 @@ import org.junit.jupiter.api.Test;
 public class ChemSpiderMetabolites {
 
 	@SuppressWarnings({ "serial" })
-	private static final Map<String,String> deprecated = new HashMap<String,String>();
-
-	static {
-		// See BridgeDb Tiwid: https://github.com/bridgedb/tiwid, doi:10.5281/zenodo.4479409
-		String tiwidData = ResourceHelper.resourceAsString("tiwid/chemspider.csv");
-		BufferedReader reader = new BufferedReader(new StringReader(tiwidData));
-		String line;
-		try {
-			while ((line = reader.readLine()) != null) {
-				if (line.startsWith("#")) continue;
-				String fields[] = line.split(",");
-				if (fields.length >= 2) {
-					deprecated.put(fields[0], fields[2]);
-				} else {
-					deprecated.put(fields[0], null);
-				}
-			}
-		} catch (IOException e) {
-			// blah
-		}
-	}
+	private static final Map<String,String> deprecated = BridgeDbTiwidReader.parseCSV("tiwid/chemspider.csv");
 
 	@BeforeAll
 	public static void loadData() throws InterruptedException {

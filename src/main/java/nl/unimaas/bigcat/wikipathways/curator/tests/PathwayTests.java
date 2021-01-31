@@ -26,15 +26,11 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator.tests;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
+import nl.unimaas.bigcat.wikipathways.curator.BridgeDbTiwidReader;
 import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
 import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
@@ -44,27 +40,7 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 public class PathwayTests {
 
 	@SuppressWarnings({ "serial" })
-	private static final Map<String,String> deprecated = new HashMap<String,String>();
-
-	static {
-		try {
-			// See BridgeDb Tiwid: https://github.com/bridgedb/tiwid, doi:10.5281/zenodo.4479409
-			String tiwidData = ResourceHelper.resourceAsString("tiwid/wikipathways.csv");
-			BufferedReader reader = new BufferedReader(new StringReader(tiwidData));
-			String line;
-			while ((line = reader.readLine()) != null) {
-				if (line.startsWith("#")) continue;
-				String fields[] = line.split(",");
-				if (fields.length >= 2) {
-					deprecated.put(fields[0], fields[2]);
-				} else {
-					deprecated.put(fields[0], null);
-				}
-			}
-		} catch (IOException e) {
-			// blah
-		}
-	}
+	private static final Map<String,String> deprecated = BridgeDbTiwidReader.parseCSV("tiwid/wikipathways.csv");
 
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
