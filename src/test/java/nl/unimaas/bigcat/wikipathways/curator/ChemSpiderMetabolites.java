@@ -26,8 +26,12 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
 import java.time.Duration;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
@@ -37,13 +41,28 @@ import org.junit.jupiter.api.Test;
 
 public class ChemSpiderMetabolites {
 
-	@SuppressWarnings("serial")
-	private static final ArrayList<Integer> deprecated = new ArrayList<Integer>() {{
-		add(Integer.valueOf(358));
-		add(Integer.valueOf(20016012));
-		add(Integer.valueOf(20476395));
-		add(Integer.valueOf(20477287));
-	}};
+	@SuppressWarnings({ "serial" })
+	private static final Map<String,String> deprecated = new HashMap<String,String>();
+
+	static {
+		// See BridgeDb Tiwid: https://github.com/bridgedb/tiwid, doi:10.5281/zenodo.4479409
+		String tiwidData = ResourceHelper.resourceAsString("tiwid/chemspider.csv");
+		BufferedReader reader = new BufferedReader(new StringReader(tiwidData));
+		String line;
+		try {
+			while ((line = reader.readLine()) != null) {
+				if (line.startsWith("#")) continue;
+				String fields[] = line.split(",");
+				if (fields.length >= 2) {
+					deprecated.put(fields[0], fields[2]);
+				} else {
+					deprecated.put(fields[0], null);
+				}
+			}
+		} catch (IOException e) {
+			// blah
+		}
+	}
 
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
@@ -74,7 +93,7 @@ public class ChemSpiderMetabolites {
 					String identifier = table.get(i, "identifier");
 					try {
 						Integer csid = Integer.valueOf(identifier);
-						if (deprecated.contains(csid)) {
+						if (deprecated.containsKey("" + csid)) {
 							errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " +table.get(i, "identifier");
 							errorCount++;
 						}
