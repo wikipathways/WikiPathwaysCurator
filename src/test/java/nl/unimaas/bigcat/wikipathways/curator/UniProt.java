@@ -42,12 +42,7 @@ import org.junit.jupiter.api.Test;
 public class UniProt {
 
 	@SuppressWarnings({ "serial" })
-	private static final Map<String,String> deprecated = new HashMap<String,String>() {{ //Secondary IDs; website contains replacement info
-		// this map shows the deprecated and better UniProt identifier. The syntax below is:
-		// put(deprecated, replacement)
-        put("B3KP27", "P15408");
-        put("O43884","???"); // TODO
-	}};
+	private static final Map<String,String> deprecated = BridgeDbTiwidReader.parseCSV("tiwid/uniprot.csv");
 	
 	@SuppressWarnings({ "serial" })
 	private static final Set<String> unreviewed = new HashSet<String>() {{ //Unreviewed IDs; website doesn't contains replacement info
@@ -56,17 +51,6 @@ public class UniProt {
 	add("A6NMV7");
 	add("A0A024RB99");
 	add("C9JNK1");
-	}};
-
-	@SuppressWarnings({ "serial" })
-	private static final Set<String> deleted = new HashSet<String>() {{ //Removed IDs; website doesn't contains replacement info
-        add("B5MEC1");
-        add("P47886");
-        add("P47892");
-        add("Q9UDD7");
-        add("Q9UDD8");
-	add("B5MEC1");
-	add("C9JP65");
 	}};
 
 	@BeforeAll
@@ -100,7 +84,7 @@ public class UniProt {
 			if (table.getRowCount() > 0) {
 				for (int i=1; i<=table.getRowCount(); i++) {
 					String identifier = table.get(i, "identifier");
-					if (deprecated.containsKey(identifier)) {
+					if (deprecated.containsKey(identifier) && deprecated.get(identifier) != null) {
 						errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " + table.get(i, "identifier") +
 							  " is deprecated and possibly replaced by " + deprecated.get(identifier) + "; \n";
 						errorCount++;
@@ -156,7 +140,7 @@ public class UniProt {
 			if (table.getRowCount() > 0) {
 				for (int i=1; i<=table.getRowCount(); i++) {
 					String identifier = table.get(i, "identifier");
-					if (deleted.contains(identifier)) {
+					if (deprecated.containsKey(identifier) && deprecated.get(identifier) == null) {
 						errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " + table.get(i, "identifier") +
 							  " is deleted; \n";
 						errorCount++;
