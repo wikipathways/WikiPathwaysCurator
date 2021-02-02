@@ -27,9 +27,8 @@
 package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.jena.rdf.model.Model;
@@ -39,11 +38,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-public class UniProt {
+import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.tests.UniProtTests;
 
-	@SuppressWarnings({ "serial" })
-	private static final Map<String,String> deprecated = BridgeDbTiwidReader.parseCSV("tiwid/uniprot.csv");
-	
+public class UniProt extends JUnitTests {
+
 	@SuppressWarnings({ "serial" })
 	private static final Set<String> unreviewed = new HashSet<String>() {{ //Unreviewed IDs; website doesn't contains replacement info
         add("O60411");
@@ -73,27 +72,12 @@ public class UniProt {
 	@Tag("outdated")
 	@Test
 	public void outdatedIdentifiers() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("proteins/allUniProtIdentifiers.rq");
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			    ? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		        : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			String errors = "";
-			int errorCount = 0;
-			if (table.getRowCount() > 0) {
-				for (int i=1; i<=table.getRowCount(); i++) {
-					String identifier = table.get(i, "identifier");
-					if (deprecated.containsKey(identifier) && deprecated.get(identifier) != null) {
-						errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " + table.get(i, "identifier") +
-							  " is deprecated and possibly replaced by " + deprecated.get(identifier) + "; \n";
-						errorCount++;
-					}
-				}
-			}
-			Assertions.assertEquals(
-				0, errorCount, "Deprecated UniProt identifiers:\n" + errors
-			);
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = UniProtTests.outdatedIdentifiers(helper);
+			performAssertions(assertions);
 		});
 	}
 
@@ -124,32 +108,15 @@ public class UniProt {
 			);
 		});
 	}
-	
-	
-	
+
 	@Test
 	public void deletedIdentifiers() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("proteins/allUniProtIdentifiers.rq");
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			    ? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		        : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			String errors = "";
-			int errorCount = 0;
-			if (table.getRowCount() > 0) {
-				for (int i=1; i<=table.getRowCount(); i++) {
-					String identifier = table.get(i, "identifier");
-					if (deprecated.containsKey(identifier) && deprecated.get(identifier) == null) {
-						errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " + table.get(i, "identifier") +
-							  " is deleted; \n";
-						errorCount++;
-					}
-				}
-			}
-			Assertions.assertEquals(
-				0, errorCount, "Deleted UniProt identifiers:\n" + errors
-			);
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = UniProtTests.deletedIdentifiers(helper);
+			performAssertions(assertions);
 		});
 	}
 }
