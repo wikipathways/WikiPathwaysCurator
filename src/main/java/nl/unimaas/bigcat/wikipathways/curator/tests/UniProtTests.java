@@ -27,8 +27,10 @@
 package nl.unimaas.bigcat.wikipathways.curator.tests;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import nl.unimaas.bigcat.wikipathways.curator.BridgeDbTiwidReader;
 import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
@@ -42,6 +44,23 @@ public class UniProtTests {
 
 	@SuppressWarnings({ "serial" })
 	private static final Map<String,String> deprecated = BridgeDbTiwidReader.parseCSV("tiwid/uniprot.csv");
+
+	@SuppressWarnings({ "serial" })
+	private static final Set<String> unreviewed = new HashSet<String>() {{ //Unreviewed IDs; website doesn't contains replacement info
+        add("O60411");
+        add("O95220");
+	add("A6NMV7");
+	add("A0A024RB99");
+	add("C9JNK1");
+	}};
+
+	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		assertions.addAll(outdatedIdentifiers(helper));
+		assertions.addAll(deletedIdentifiers(helper));
+		assertions.addAll(unreviewedIdentifiers(helper));
+		return assertions;
+	}
 
 	public static List<IAssertion> outdatedIdentifiers(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
@@ -89,4 +108,27 @@ public class UniProtTests {
 		return assertions;
 	}
 
+	public static List<IAssertion> unreviewedIdentifiers(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("proteins/allUniProtIdentifiers.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("UniProtTests", "unreviewedIdentifiers", table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				if (unreviewed.contains(identifier)) {
+					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " + table.get(i, "identifier") +
+						  " is unreviewed, please visit UniProt (https://www.uniprot.org/uniprot/" +
+					      table.get(i, "identifier") + ") for (potential) reviewed version; \n";
+					errorCount++;
+				}
+			}
+		}
+		assertions.add(new AssertEquals("UniProtTests", "unreviewedIdentifiers",
+			0, errorCount, "Unreviewed UniProt identifiers: " + errorCount, errors
+		));
+		return assertions;
+	}
 }

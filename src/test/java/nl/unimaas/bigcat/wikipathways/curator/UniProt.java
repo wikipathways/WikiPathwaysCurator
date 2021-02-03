@@ -27,9 +27,7 @@
 package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.time.Duration;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
@@ -42,15 +40,6 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 import nl.unimaas.bigcat.wikipathways.curator.tests.UniProtTests;
 
 public class UniProt extends JUnitTests {
-
-	@SuppressWarnings({ "serial" })
-	private static final Set<String> unreviewed = new HashSet<String>() {{ //Unreviewed IDs; website doesn't contains replacement info
-        add("O60411");
-        add("O95220");
-	add("A6NMV7");
-	add("A0A024RB99");
-	add("C9JNK1");
-	}};
 
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
@@ -84,28 +73,12 @@ public class UniProt extends JUnitTests {
 	@Tag("expertCuration")
 	@Test
 	public void unreviewedIdentifiers() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("proteins/allUniProtIdentifiers.rq");
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			    ? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		        : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			String errors = "";
-			int errorCount = 0;
-			if (table.getRowCount() > 0) {
-				for (int i=1; i<=table.getRowCount(); i++) {
-					String identifier = table.get(i, "identifier");
-					if (unreviewed.contains(identifier)) {
-						errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " + table.get(i, "identifier") +
-							  " is unreviewed, please visit UniProt (https://www.uniprot.org/uniprot/" +
-						      table.get(i, "identifier") + ") for (potential) reviewed version; \n";
-						errorCount++;
-					}
-				}
-			}
-			Assertions.assertEquals(
-				0, errorCount, "Unreviewed UniProt identifiers:\n" + errors
-			);
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = UniProtTests.unreviewedIdentifiers(helper);
+			performAssertions(assertions);
 		});
 	}
 
