@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import nl.unimaas.bigcat.wikipathways.curator.BridgeDbTiwidReader;
 import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
 import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
 import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
@@ -42,11 +43,7 @@ public class ChEBIMetabolitesTests {
 
 	private static Map<String,String> oldToNew = new HashMap<String, String>();
 
-	private static List<String> nonexisting = new ArrayList<String>();
-	static {{
-		  nonexisting.add("443041");
-		  nonexisting.add("594834");
-	}}
+	private static Map<String,String> nonexisting = BridgeDbTiwidReader.parseCSV("tiwid/chebi.csv");
 
 	static {
 		// now load the deprecation data
@@ -110,7 +107,7 @@ public class ChEBIMetabolitesTests {
 	    		if (identifier.startsWith("CHEBI:")) {
 	    			identifier = identifier.substring(6);
 	    		}
-	    		if (nonexisting.contains(identifier)) {
+	    		if (nonexisting.containsKey(identifier) && nonexisting.get(identifier) == null) {
 	    			errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
 					    " has a non-existing identifier CHEBI:" +
 					    identifier + "\n";
