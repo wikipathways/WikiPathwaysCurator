@@ -230,4 +230,33 @@ public class InteractionTests {
 		));
 		return assertions;
 	}
+
+	public static List<IAssertion> noProteinProteinConversions(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("interactions/noProteinProteinConversions.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("InteractionTests", "noProteinProteinConversions", table));
+		Set<String> allowedProteinSubstrates = new HashSet<String>();
+		allowedProteinSubstrates.add("http://identifiers.org/uniprot/P0DTD1"); // SARS-CoV-2 main protease
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			// OK, but then it must be proteins, e.g. IFN-b
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String protein1 = table.get(i, "protein1");
+				if (!allowedProteinSubstrates.contains(protein1)) {
+				    errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
+				    		protein1 + " " + table.get(i, "protein2") + " " +
+				        table.get(i, "interaction") + "\n";
+					errorCount++;
+				}
+			}
+		}
+		assertions.add(new AssertEquals(
+			"InteractionTests", "noProteinProteinConversions",
+			0, errorCount, "Unexpected protein-protein conversions: " + errorCount, errors
+		));
+		return assertions;
+	}
+
 }
