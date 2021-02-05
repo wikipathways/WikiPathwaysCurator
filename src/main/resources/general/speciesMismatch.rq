@@ -1,0 +1,24 @@
+PREFIX dcterms: <http://purl.org/dc/terms/>
+prefix xsd:     <http://www.w3.org/2001/XMLSchema#>
+prefix foaf:    <http://xmlns.com/foaf/0.1/>
+prefix wp:      <http://vocabularies.wikipathways.org/wp#>
+
+SELECT
+  ?linkingHomepage (STR(?linkingOrganismLit) AS ?linkingOrganism)
+  (STR(?linkedIDLit) AS ?linkedID) (STR(?linkedOrganismLit) AS ?linkedOrganism)
+WHERE {
+  ?pathwayNode a wp:DataNode ;
+    dcterms:identifier ?linkedIDLit ;
+    dcterms:isPartOf ?linkingPathway .
+
+  ?linkingPathway a wp:Pathway ;
+    foaf:page ?linkingHomepage ;
+    dcterms:identifier ?linkingIDLit ;
+    wp:organismName ?linkingOrganismLit .
+  ?linkedPathway a wp:Pathway ;
+    foaf:page ?linkedHomepage ;
+    dcterms:identifier ?linkedIDLit ;
+    wp:organismName ?linkedOrganismLit .
+
+  FILTER (?linkingOrganismLit != ?linkedOrganismLit)
+}

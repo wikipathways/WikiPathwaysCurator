@@ -104,4 +104,14 @@ public class Pathways extends JUnitTests {
 		performAssertions(assertions);
 	}
 
+	@Test
+	@Tag("expertCuration")
+	public void speciesMismatch() throws Exception {
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = PathwayTests.speciesMismatch(helper);
+		performAssertions(assertions);
+	}
+
 }

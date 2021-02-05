@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import nl.unimaas.bigcat.wikipathways.curator.BridgeDbTiwidReader;
+import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
 import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
 import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
@@ -46,6 +47,7 @@ public class PathwayTests {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(deletedPathways(helper));
 		assertions.addAll(linksToDeletedPathways(helper));
+		assertions.addAll(speciesMismatch(helper));
 		return assertions;
 	}
 
@@ -106,6 +108,27 @@ public class PathwayTests {
 		}
 		assertions.add(new AssertEquals("PathwayTests", "deletedPathways",
 			0, table.getRowCount(), "Found " + table.getRowCount() + " pathways that link to deleted pathways", errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> speciesMismatch(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("general/speciesMismatch.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("PathwayTests", "linksToDeletedPathways", table));
+		String errors = "";
+		int errorCount = table.getRowCount();
+		for (int i=1; i<=table.getRowCount(); i++) {
+			String pathwayPage = table.get(i, "linkingHomepage");
+			String species = table.get(i, "linkingOrganism");
+			String identifier = table.get(i, "linkedID");
+			String linkedSpecies = table.get(i, "linkedOrganism");
+			errors += pathwayPage + " is " + species + " but links to pathway " + identifier +
+				" which is " + linkedSpecies + "\n ";
+		}
+		assertions.add(new AssertEquals("PathwayTests", "deletedPathways",
+			0, errorCount, "Found " + errorCount + " pathways that link to pathways of a different species", errors
 		));
 		return assertions;
 	}
