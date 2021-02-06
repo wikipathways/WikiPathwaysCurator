@@ -76,9 +76,6 @@ public class OPSWPRDFFiles {
 		List<File> files = findAllFiles(folder, subsetPrefix);
 		System.out.println("Testing these files: " + files);
 		StringBuffer parseFailReport = new StringBuffer();
-		String directory = "target/UnitTest" ;
-		File tbdFolder = new File(directory);
-		tbdFolder.mkdir();
 		loadedData = ModelFactory.createDefaultModel();
 		for (File file : files) {
 			try {
