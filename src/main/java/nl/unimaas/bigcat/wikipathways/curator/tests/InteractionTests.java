@@ -237,7 +237,7 @@ public class InteractionTests {
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull("InteractionTests", "noProteinProteinConversions", table));
 		Set<String> allowedProteinSubstrates = new HashSet<String>();
-		allowedProteinSubstrates.add("http://identifiers.org/uniprot/P0DTD1"); // SARS-CoV-2 main protease
+		allowedProteinSubstrates.add("https://identifiers.org/uniprot/P0DTD1"); // SARS-CoV-2 main protease
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
