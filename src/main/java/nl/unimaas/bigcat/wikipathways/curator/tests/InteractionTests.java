@@ -61,8 +61,8 @@ public class InteractionTests {
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull("InteractionTests", "noMetaboliteToNonMetaboliteConversions", table));
 		Set<String> allowedProteinProducts = new HashSet<String>();
-		allowedProteinProducts.add("http://identifiers.org/uniprot/H9ZYJ2"); // theoredoxin, e.g. WP3580
-		allowedProteinProducts.add("http://identifiers.org/chebi/CHEBI:39026"); // LPL
+            InteractionTests.addIdentifiersOrg(allowedProteinProducts, "identifiers.org/uniprot/H9ZYJ2"); // theoredoxin, e.g. WP3580
+            InteractionTests.addIdentifiersOrg(allowedProteinProducts, "identifiers.org/chebi/CHEBI:39026"); // LPL
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
