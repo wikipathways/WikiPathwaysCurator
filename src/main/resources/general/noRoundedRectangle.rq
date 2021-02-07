@@ -13,4 +13,4 @@ SELECT DISTINCT ?homepage (STR(?graphidLit) AS ?graphid) (STR(?id) AS ?identifie
   OPTIONAL { ?node gpml:graphId ?graphidLit }
   ?pathway wp:isAbout       ?pw ;
            foaf:page        ?homepage .
-}
+} ORDER BY ASC(?homepage)
