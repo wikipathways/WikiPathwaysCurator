@@ -57,32 +57,11 @@ public class Pathways extends JUnitTests {
 	@Test
 	@Tag("expertCuration")
 	public void testRoundedRectangle() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("general/noRoundedRectangle.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		String errors = "";
-		int errorCount = 0;
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				String identifier = table.get(i, "identifier");
-				String pathwayPage = table.get(i, "homepage");
-				identifier = identifier.trim();
-				if (!identifier.isEmpty()) {
-					try {
-						Integer.parseInt(identifier);
-					} catch (NumberFormatException exception) {
-						errors += pathwayPage + " -> " + table.get(i, "graphid") +
-								", " + identifier + "\n ";
-						errorCount++;
-					}
-				}
-			}
-		}
-		Assertions.assertEquals(
-			0, errorCount, "Pathways DataNodes with WikiPathways ID that can be converted to have a RoundedRectangle StyleType so that they become clickable:\n" + errors
-		);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = PathwayTests.testRoundedRectangle(helper);
+		performAssertions(assertions);
 	}
 
 	@Test

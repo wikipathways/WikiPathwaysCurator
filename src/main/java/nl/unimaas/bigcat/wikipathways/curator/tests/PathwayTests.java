@@ -48,6 +48,7 @@ public class PathwayTests {
 		assertions.addAll(deletedPathways(helper));
 		assertions.addAll(linksToDeletedPathways(helper));
 		assertions.addAll(speciesMismatch(helper));
+		assertions.addAll(testRoundedRectangle(helper));
 		return assertions;
 	}
 
@@ -129,6 +130,35 @@ public class PathwayTests {
 		}
 		assertions.add(new AssertEquals("PathwayTests", "deletedPathways",
 			0, errorCount, "Found " + errorCount + " pathways that link to pathways of a different species", errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> testRoundedRectangle(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("general/noRoundedRectangle.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("PathwayTests", "testRoundedRectangle", table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				String pathwayPage = table.get(i, "homepage");
+				identifier = identifier.trim();
+				if (!identifier.isEmpty()) {
+					try {
+						Integer.parseInt(identifier);
+					} catch (NumberFormatException exception) {
+						errors += pathwayPage + " -> " + table.get(i, "graphid") +
+								", " + identifier + "\n ";
+						errorCount++;
+					}
+				}
+			}
+		}
+		assertions.add(new AssertEquals("PathwayTests", "testRoundedRectangle",
+			0, errorCount, "Pathways DataNodes with WikiPathways ID that can be converted to have a RoundedRectangle StyleType so that they become clickable: " + errorCount, errors
 		));
 		return assertions;
 	}
