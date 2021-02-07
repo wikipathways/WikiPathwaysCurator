@@ -182,6 +182,28 @@ public class GeneralTests {
 		return assertions;
 	}
 
+	public static List<IAssertion> curationAndReactome(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("general/allCurationAndReactome.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("GeneralTests", "curationAndReactome", table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			// OK, but then it must be proteins, e.g. IFN-b
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String page  = table.get(i, "page");
+				String title = table.get(i, "title");
+				errors += page + " '" + title + "' \n";
+				errorCount++;
+			}
+		}
+		assertions.add(new AssertEquals("GeneralTests", "curationAndReactome",
+			0, errorCount, "Pathways tagged as Curation and Reactome:\n" + errors
+		));
+		return assertions;
+	}
+
 	public static List<IAssertion> noTags(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/noTags.rq");

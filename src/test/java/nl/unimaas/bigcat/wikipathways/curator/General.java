@@ -206,6 +206,15 @@ public class General extends JUnitTests {
 	}
 
 	@Test
+	public void curationAndReactome() throws Exception {
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = GeneralTests.curationAndReactome(helper);
+		performAssertions(assertions);
+	}
+
+	@Test
 	@Tag("expertCuration")
 	public void noTags() throws Exception {
 		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
