@@ -59,6 +59,7 @@ public class UniProtTests {
 		assertions.addAll(outdatedIdentifiers(helper));
 		assertions.addAll(deletedIdentifiers(helper));
 		assertions.addAll(unreviewedIdentifiers(helper));
+		assertions.addAll(incorrectIdentifiers(helper));
 		return assertions;
 	}
 
@@ -128,6 +129,29 @@ public class UniProtTests {
 		}
 		assertions.add(new AssertEquals("UniProtTests", "unreviewedIdentifiers",
 			0, errorCount, "Unreviewed UniProt identifiers: " + errorCount, errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> incorrectIdentifiers(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("proteins/allUniProtIdentifiers.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("UniProtTests", "incorrectIdentifiers", table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				if (identifier.contains(" ") || identifier.contains(";")) {
+					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " + table.get(i, "identifier") +
+						  " is incorrect; \n";
+					errorCount++;
+				}
+			}
+		}
+		assertions.add(new AssertEquals("UniProtTests", "incorrectIdentifiers",
+			0, errorCount, "Incorrect UniProt identifiers: " + errorCount, errors
 		));
 		return assertions;
 	}

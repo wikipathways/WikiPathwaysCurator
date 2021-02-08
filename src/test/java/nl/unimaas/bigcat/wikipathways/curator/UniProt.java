@@ -92,4 +92,15 @@ public class UniProt extends JUnitTests {
 			performAssertions(assertions);
 		});
 	}
+
+	@Test
+	public void incorrectIdentifiers() throws Exception {
+		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = UniProtTests.incorrectIdentifiers(helper);
+			performAssertions(assertions);
+		});
+	}
 }
