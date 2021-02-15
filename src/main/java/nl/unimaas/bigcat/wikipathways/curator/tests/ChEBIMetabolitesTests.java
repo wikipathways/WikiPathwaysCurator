@@ -127,7 +127,7 @@ public class ChEBIMetabolitesTests {
 		String sparql = ResourceHelper.resourceAsString("outdated/chebi.rq");
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertEquals(
-			"ChEBIMetabolitesTests", "faultyChEBIIdentifiers",
+			"ChEBIMetabolitesTests", "chebiDataTypo",
 			0, table.getRowCount(), "Typo 'CHEBI' data sources (use 'ChEBI'): " + table.getRowCount(),
 			"" +table
 		));
