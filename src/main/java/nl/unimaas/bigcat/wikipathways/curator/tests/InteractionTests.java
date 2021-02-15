@@ -52,6 +52,8 @@ public class InteractionTests {
 		assertions.addAll(noGeneProteinConversions(helper));
 		assertions.addAll(nonNumericIDs(helper));
 		assertions.addAll(interactionsWithLabels(helper));
+		assertions.addAll(possibleTranslocations(helper));
+		assertions.addAll(noProteinProteinConversions(helper));
 		return assertions;
 	}
 
