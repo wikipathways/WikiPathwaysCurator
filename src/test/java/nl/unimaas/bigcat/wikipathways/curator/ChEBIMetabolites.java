@@ -80,10 +80,8 @@ public class ChEBIMetabolites extends JUnitTests {
 			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
 				? new SPARQLHelper(System.getProperty("SPARQLEP"))
 			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-				List<IAssertion> assertions = ChEBIMetabolitesTests.secondaryChEBIIdentifiers(helper);
-				performAssertions(assertions);
-			});
+			List<IAssertion> assertions = ChEBIMetabolitesTests.secondaryChEBIIdentifiers(helper);
+			performAssertions(assertions);
 		});
 	}
 
@@ -93,10 +91,8 @@ public class ChEBIMetabolites extends JUnitTests {
 			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
 				? new SPARQLHelper(System.getProperty("SPARQLEP"))
 			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-				List<IAssertion> assertions = ChEBIMetabolitesTests.faultyChEBIIdentifiers(helper);
-				performAssertions(assertions);
-			});
+			List<IAssertion> assertions = ChEBIMetabolitesTests.faultyChEBIIdentifiers(helper);
+			performAssertions(assertions);
 		});
 	}
 
