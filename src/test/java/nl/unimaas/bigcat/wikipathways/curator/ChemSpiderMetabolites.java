@@ -27,7 +27,7 @@
 package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.time.Duration;
-import java.util.Map;
+import java.util.List;
 
 import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
@@ -35,10 +35,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ChemSpiderMetabolites {
+import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.tests.ChemSpiderTests;
 
-	@SuppressWarnings({ "serial" })
-	private static final Map<String,String> deprecated = BridgeDbTiwidReader.parseCSV("tiwid/chemspider.csv");
+public class ChemSpiderMetabolites extends JUnitTests {
 
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
@@ -56,58 +56,23 @@ public class ChemSpiderMetabolites {
 
 	@Test
 	public void outdatedIdentifiers() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/allChemSpiderIdentifiers.rq");
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			String errors = "";
-			int errorCount = 0;
-			if (table.getRowCount() > 0) {
-				for (int i=1; i<=table.getRowCount(); i++) {
-					String identifier = table.get(i, "identifier");
-					try {
-						Integer csid = Integer.valueOf(identifier);
-						if (deprecated.containsKey("" + csid)) {
-							errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " +table.get(i, "identifier");
-							errorCount++;
-						}
-					} catch (NumberFormatException exception) {
-						// ignore, we got chemSpiderIDsNotNumbers() for this
-					}
-				}
-			}
-			Assertions.assertEquals(
-				0, errorCount, "Deprecated ChemSpider identifiers for non-metabolites:\n" + errors
-			);
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = ChemSpiderTests.outdatedIdentifiers(helper);
+			performAssertions(assertions);
 		});
 	}
 
 	@Test
 	public void chemSpiderIDsNotNumbers() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/allChemSpiderIdentifiers.rq");
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			String errors = "";
-			int errorCount = 0;
-			if (table.getRowCount() > 0) {
-				for (int i=1; i<=table.getRowCount(); i++) {
-					String identifier = table.get(i, "identifier");
-					try {
-						Integer.parseInt(identifier);
-					} catch (NumberFormatException exception) {
-						errors += table.get(i, "homepage") + table.get(i, "label") + table.get(i, "identifier");
-						errorCount++;
-					}
-				}
-			}
-			Assertions.assertEquals(
-				0, errorCount, "ChemSpider identifiers that are not integers:\n" + errors
-			);
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = ChemSpiderTests.outdatedIdentifiers(helper);
+			performAssertions(assertions);
 		});
 	}
 }
