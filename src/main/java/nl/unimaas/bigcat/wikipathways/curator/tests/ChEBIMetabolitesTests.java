@@ -61,6 +61,7 @@ public class ChEBIMetabolitesTests {
 		assertions.addAll(secondaryChEBIIdentifiers(helper));
 		assertions.addAll(faultyChEBIIdentifiers(helper));
 		assertions.addAll(chebiDataTypo(helper));
+		assertions.addAll(faultyChEBIChEBIIdentifiers(helper));
 		return assertions;
 	}
 
@@ -130,6 +131,30 @@ public class ChEBIMetabolitesTests {
 			"ChEBIMetabolitesTests", "chebiDataTypo",
 			0, table.getRowCount(), "Typo 'CHEBI' data sources (use 'ChEBI'): " + table.getRowCount(),
 			"" +table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> faultyChEBIChEBIIdentifiers(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/allChEBIIdentifiers.rq");
+		StringMatrix table = helper.sparql(sparql);
+	    String errors = "";
+	    int errorCount = 0;
+	    if (table.getRowCount() > 0) {
+	    	for (int i=1; i<=table.getRowCount(); i++) {
+	    		String identifier = table.get(i, "identifier");
+	    		if (identifier.startsWith("ChEBI:")) {
+	    			errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+					    " has a faulty identifier " +
+					    identifier + " (it should be a number or start with \"CHEBI:\")\n";
+	    			errorCount++;
+	    		}
+	    	}
+	    }
+		assertions.add(new AssertEquals(
+			"ChEBIMetabolitesTests", "faultyChEBIChEBIIdentifiers",
+			0, errorCount, "Faulty ChEBI identifiers detected: " + errorCount, errors
 		));
 		return assertions;
 	}

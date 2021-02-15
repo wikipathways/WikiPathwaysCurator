@@ -102,28 +102,12 @@ public class ChEBIMetabolites extends JUnitTests {
 
 	@Test
 	public void faultyChEBIChEBIIdentifiers() throws Exception {
-		Assertions.assertNotSame(0, nonexisting.size(), "Unepxected empty list of unexpected identifiers");
-		String sparql = ResourceHelper.resourceAsString("metabolite/allChEBIIdentifiers.rq");
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		    String errors = "";
-		    int errorCount = 0;
-		    if (table.getRowCount() > 0) {
-		    	for (int i=1; i<=table.getRowCount(); i++) {
-		    		String identifier = table.get(i, "identifier");
-		    		if (identifier.startsWith("ChEBI:")) {
-		    			errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
-						    " has a faulty identifier " +
-						    identifier + " (it should be a number or start with \"CHEBI:\")\n";
-		    			errorCount++;
-		    		}
-		    	}
-		    }
-		    Assertions.assertEquals(
-		    	0, errorCount, "Faulty ChEBI identifiers detected:\n" + errors
-		    );
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = ChEBIMetabolitesTests.faultyChEBIChEBIIdentifiers(helper);
+			performAssertions(assertions);
 		});
 	}
 
