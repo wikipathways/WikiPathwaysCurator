@@ -28,6 +28,7 @@ package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.time.Duration;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.jena.rdf.model.Model;
@@ -37,7 +38,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-public class Wikidata {
+import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.tests.WikidataTests;
+
+public class Wikidata extends JUnitTests {
 
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
@@ -166,85 +170,24 @@ public class Wikidata {
 		);
 	}
 
-	private static Set<String> noWarnKEGGCIDs = new HashSet<>();
-	{{  // ACPs (acyl-carrier proteins)
-		noWarnKEGGCIDs.add("C04688");
-		noWarnKEGGCIDs.add("C05729");
-		noWarnKEGGCIDs.add("C05746");
-		noWarnKEGGCIDs.add("C05747");
-		noWarnKEGGCIDs.add("C05748");
-		noWarnKEGGCIDs.add("C05749");
-		noWarnKEGGCIDs.add("C05750");
-		noWarnKEGGCIDs.add("C05751");
-		noWarnKEGGCIDs.add("C05752");
-		noWarnKEGGCIDs.add("C05753");
-		noWarnKEGGCIDs.add("C05754");
-		noWarnKEGGCIDs.add("C05755");
-		noWarnKEGGCIDs.add("C05757");
-		noWarnKEGGCIDs.add("C05758");
-		noWarnKEGGCIDs.add("C05759");
-		noWarnKEGGCIDs.add("C05759");
-		noWarnKEGGCIDs.add("C05761");
-		noWarnKEGGCIDs.add("C05761");
-		noWarnKEGGCIDs.add("C05762");
-		noWarnKEGGCIDs.add("C05763");
-		noWarnKEGGCIDs.add("C05764");
-		noWarnKEGGCIDs.add("C16255");
-		noWarnKEGGCIDs.add("C00173");
-		noWarnKEGGCIDs.add("C16239");
-		// things with R groups
-		noWarnKEGGCIDs.add("C16254");
-		noWarnKEGGCIDs.add("C15973");
-		noWarnKEGGCIDs.add("C06250");
-		noWarnKEGGCIDs.add("C16236");
-		noWarnKEGGCIDs.add("C16237");
-	}}
-
 	@Tag("wikidata")
 	@Test
 	public void keggWithoutMapping() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteKEGG.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		String errors = "";
-		int errorCount = 0;
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				String keggID = table.get(i, "metabolite");
-				if (!noWarnKEGGCIDs.contains(keggID.substring(37))) {
-					errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
-						   + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
-					errorCount++;
-				}
-			}
-		}
-		Assertions.assertEquals(
-			0, errorCount,
-			"KEGG Compound identifiers without Wikidata mappings:\n" + errors
-		);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = WikidataTests.keggWithoutMapping(helper);
+		performAssertions(assertions);
 	}
 
 	@Tag("wikidata")
 	@Test
 	public void pubchemCIDWithoutMapping() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metabolitePubChemCID.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		String errors = "";
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
-					    + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
-			}
-		}
-		Assertions.assertEquals(
-			0, table.getRowCount(),
-			"PubChem-compound identifiers without Wikidata mappings:\n" + errors
-		);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = WikidataTests.pubchemCIDWithoutMapping(helper);
+			performAssertions(assertions);
 	}
 
 	@Tag("wikidata")
