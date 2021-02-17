@@ -42,7 +42,6 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 
 public class UniProtTests {
 
-	@SuppressWarnings({ "serial" })
 	private static final Map<String,String> deprecated = BridgeDbTiwidReader.parseCSV("tiwid/uniprot.csv");
 
 	@SuppressWarnings({ "serial" })

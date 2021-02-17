@@ -40,7 +40,6 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 
 public class PathwayTests {
 
-	@SuppressWarnings({ "serial" })
 	private static final Map<String,String> deprecated = BridgeDbTiwidReader.parseCSV("tiwid/wikipathways.csv");
 
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {

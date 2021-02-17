@@ -26,7 +26,6 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator.tests;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
