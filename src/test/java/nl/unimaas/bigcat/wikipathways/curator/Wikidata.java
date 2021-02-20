@@ -131,43 +131,21 @@ public class Wikidata extends JUnitTests {
 	@Tag("wikidata")
 	@Test
 	public void casWithoutMapping() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteCAS.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		String errors = "";
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
-					    + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
-			}
-		}
-		Assertions.assertEquals(
-			0, table.getRowCount(),
-			"CAS identifiers without Wikidata mappings:\n" + errors
-		);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = WikidataTests.casWithoutMapping(helper);
+		performAssertions(assertions);
 	}
 
 	@Tag("wikidata")
 	@Test
 	public void hmdbWithoutMapping() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteHMDB.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		String errors = "";
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
-					    + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
-			}
-		}
-		Assertions.assertEquals(
-			0, table.getRowCount(),
-			"HMDB identifiers without Wikidata mappings:\n" + errors
-		);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = WikidataTests.hmdbWithoutMapping(helper);
+		performAssertions(assertions);
 	}
 
 	@Tag("wikidata")
@@ -184,10 +162,10 @@ public class Wikidata extends JUnitTests {
 	@Test
 	public void pubchemCIDWithoutMapping() throws Exception {
 		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = WikidataTests.pubchemCIDWithoutMapping(helper);
-			performAssertions(assertions);
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = WikidataTests.pubchemCIDWithoutMapping(helper);
+		performAssertions(assertions);
 	}
 
 	@Tag("wikidata")
@@ -315,38 +293,21 @@ public class Wikidata extends JUnitTests {
 	@Tag("wikidata")
 	@Test
 	public void duplicateWikidataMappings() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/duplicateWikidata.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		String errors = "";
-		int errorCount = 0;
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				String metaboliteID = table.get(i, "metaboliteID").trim();
-				if (!metaboliteID.contains(metaboliteID.substring(27))) {
-				    String results = table.get(i, "results");
-				    errors += metaboliteID + " mapped to Wikidata: " + results + "\n ";
-				    errorCount++;
-				}
-			}
-		}
-		Assertions.assertEquals(
-			0, errorCount, "More than one Wikidata identifier for:\n" + errors
-		);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = WikidataTests.duplicateWikidataMappings(helper);
+		performAssertions(assertions);
 	}
 
 	@Test
 	public void wikDataTypo() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("outdated/wikidata.rq");
-		Assertions.assertNotNull(sparql);
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertTrue(table.getRowCount() < 1, "Typo 'Wikdata' data sources (use 'Wikidata'):\n" + table);
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = WikidataTests.wikDataTypo(helper);
+			performAssertions(assertions);
 		});
 	}
 

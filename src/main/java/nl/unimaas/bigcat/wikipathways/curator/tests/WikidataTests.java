@@ -31,6 +31,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.junit.jupiter.api.Assertions;
+
 import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
 import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
 import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
@@ -78,6 +80,10 @@ public class WikidataTests {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(keggWithoutMapping(helper));
 		assertions.addAll(pubchemCIDWithoutMapping(helper));
+		assertions.addAll(hmdbWithoutMapping(helper));
+		assertions.addAll(casWithoutMapping(helper));
+		assertions.addAll(wikDataTypo(helper));
+		assertions.addAll(duplicateWikidataMappings(helper));
 		return assertions;
 	}
 
@@ -121,4 +127,75 @@ public class WikidataTests {
 		));
 		return assertions;
 	}
+
+	public static List<IAssertion> hmdbWithoutMapping(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteHMDB.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("WikidataTests", "hmdbWithoutMapping", table));
+		String errors = "";
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
+					    + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
+			}
+		}
+		assertions.add(new AssertEquals("WikidataTests", "hmdbWithoutMapping",
+			0, table.getRowCount(), "HMDB identifiers without Wikidata mappings: " + table.getRowCount(), errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> casWithoutMapping(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteCAS.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("WikidataTests", "casWithoutMapping", table));
+		String errors = "";
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
+					    + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
+			}
+		}
+		assertions.add(new AssertEquals("WikidataTests", "casWithoutMapping",
+			0, table.getRowCount(), "CAS identifiers without Wikidata mappings: " + table.getRowCount(), errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> wikDataTypo(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("outdated/wikidata.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("WikidataTests", "wikDataTypo", table));
+		assertions.add(new AssertEquals("WikidataTests", "wikDataTypo",
+			0, table.getRowCount(), "Typo 'Wikdata' data sources (use 'Wikidata'): " + table.getRowCount(), "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> duplicateWikidataMappings(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/duplicateWikidata.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("WikidataTests", "duplicateWikidataMappings", table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String metaboliteID = table.get(i, "metaboliteID").trim();
+				if (!metaboliteID.contains(metaboliteID.substring(27))) {
+				    String results = table.get(i, "results");
+				    errors += metaboliteID + " mapped to Wikidata: " + results + "\n ";
+				    errorCount++;
+				}
+			}
+		}
+		assertions.add(new AssertEquals("WikidataTests", "duplicateWikidataMappings",
+			0, errorCount, "More than one Wikidata identifier for: " + errorCount, errors
+		));
+		return assertions;
+	}
+
 }
