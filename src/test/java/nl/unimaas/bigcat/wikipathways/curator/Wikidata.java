@@ -311,39 +311,14 @@ public class Wikidata extends JUnitTests {
 		});
 	}
 
-	private static Set<String> acceptableWikidataGenes = new HashSet<>();
-	{{
-		acceptableWikidataGenes.add("Q27205");   // Protein Fibrin
-		acceptableWikidataGenes.add("Q311213");  // Protein HbA1c
-		acceptableWikidataGenes.add("Q381899");  // Protein Fibrinogen
-		acceptableWikidataGenes.add("Q2162109"); // Protein D-dimer
-	}}
-
 	@Tag("wikidata")
 	@Tag("noCovid")
 	@Test
 	public void noWikidataForGenes() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("genes/noWikidataYet.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		String errors = "";
-		int errorCount = 0;
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				String wdQ = table.get(i, "identifier");
-				if (!acceptableWikidataGenes.contains(wdQ)) {
-					errors += table.get(i, "homepage") +
-							" has " + wdQ + " for the " +
-							table.get(i, "wpType") + " " + table.get(i, "label") + "\n";
-					++errorCount;
-				}
-			}
-		}
-		Assertions.assertEquals(
-			0, errorCount,
-			"Wikidata identifiers cannot be used for GeneProduct or Protein yet:\n" + errors
-		);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = WikidataTests.noWikidataForGenes(helper);
+		performAssertions(assertions);
 	}
 }

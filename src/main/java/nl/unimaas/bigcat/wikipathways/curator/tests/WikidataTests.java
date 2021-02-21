@@ -82,6 +82,7 @@ public class WikidataTests {
 		assertions.addAll(casWithoutMapping(helper));
 		assertions.addAll(wikDataTypo(helper));
 		assertions.addAll(duplicateWikidataMappings(helper));
+		assertions.addAll(noWikidataForGenes(helper));
 		return assertions;
 	}
 
@@ -192,6 +193,38 @@ public class WikidataTests {
 		}
 		assertions.add(new AssertEquals("WikidataTests", "duplicateWikidataMappings",
 			0, errorCount, "More than one Wikidata identifier for: " + errorCount, errors
+		));
+		return assertions;
+	}
+
+	private static Set<String> acceptableWikidataGenes = new HashSet<>();
+	{{
+		acceptableWikidataGenes.add("Q27205");   // Protein Fibrin
+		acceptableWikidataGenes.add("Q311213");  // Protein HbA1c
+		acceptableWikidataGenes.add("Q381899");  // Protein Fibrinogen
+		acceptableWikidataGenes.add("Q2162109"); // Protein D-dimer
+	}}
+
+	public static List<IAssertion> noWikidataForGenes(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/duplicateWikidata.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("WikidataTests", "noWikidataForGenes", table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String wdQ = table.get(i, "identifier");
+				if (!acceptableWikidataGenes.contains(wdQ)) {
+					errors += table.get(i, "homepage") +
+							" has " + wdQ + " for the " +
+							table.get(i, "wpType") + " " + table.get(i, "label") + "\n";
+					++errorCount;
+				}
+			}
+		}
+		assertions.add(new AssertEquals("WikidataTests", "noWikidataForGenes",
+			0, errorCount, "Wikidata identifiers cannot be used for GeneProduct or Protein yet: " + errorCount, errors
 		));
 		return assertions;
 	}
