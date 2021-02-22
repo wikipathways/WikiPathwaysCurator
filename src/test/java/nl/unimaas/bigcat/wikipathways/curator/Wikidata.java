@@ -171,22 +171,11 @@ public class Wikidata extends JUnitTests {
 	@Tag("wikidata")
 	@Test
 	public void chemspiderCIDWithoutMapping() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteChemspider.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		String errors = "";
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
-					    + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
-			}
-		}
-		Assertions.assertEquals(
-			0, table.getRowCount(),
-			"Chemspider identifiers without Wikidata mappings:\n" + errors
-		);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = WikidataTests.chemspiderCIDWithoutMapping(helper);
+		performAssertions(assertions);
 	}
 
 	@Tag("wikidata")
@@ -254,35 +243,11 @@ public class Wikidata extends JUnitTests {
 
 	@Test
 	public void wikidataIdentifiersWrong() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("general/allWikidataIdentifiers.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		String errors = "";
-		int errorCount = 0;
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				String identifier = table.get(i, "identifier").trim();
-				String pathwayPage = table.get(i, "homepage");
-				if (identifier.isEmpty() || !identifier.startsWith("Q")) {
-					errors += pathwayPage + " -> " + table.get(i, "label") +
-							", '" + table.get(i, "identifier") + "'\n ";
-					errorCount++;
-				} else if (!identifier.isEmpty() && identifier.startsWith("Q")) {
-					try {
-						Integer.parseInt(identifier.substring(1));
-					} catch (NumberFormatException exception) {
-						errors += pathwayPage + " -> " + table.get(i, "label") +
-								", " + table.get(i, "identifier") + "\n ";
-						errorCount++;
-					}
-				}
-			}
-		}
-		Assertions.assertEquals(
-			0, errorCount, "Wikidata identifiers that do not start with a 'Q' followed by a number:\n" + errors
-		);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = WikidataTests.wikidataIdentifiersWrong(helper);
+		performAssertions(assertions);
 	}
 
 	private static Set<String> allowedDuplicates = new HashSet<>();

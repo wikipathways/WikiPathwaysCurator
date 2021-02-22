@@ -83,6 +83,8 @@ public class WikidataTests {
 		assertions.addAll(wikDataTypo(helper));
 		assertions.addAll(duplicateWikidataMappings(helper));
 		assertions.addAll(noWikidataForGenes(helper));
+		assertions.addAll(wikidataIdentifiersWrong(helper));
+		assertions.addAll(chemspiderCIDWithoutMapping(helper));
 		return assertions;
 	}
 
@@ -225,6 +227,56 @@ public class WikidataTests {
 		}
 		assertions.add(new AssertEquals("WikidataTests", "noWikidataForGenes",
 			0, errorCount, "Wikidata identifiers cannot be used for GeneProduct or Protein yet: " + errorCount, errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> wikidataIdentifiersWrong(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("general/allWikidataIdentifiers.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("WikidataTests", "wikidataIdentifiersWrong", table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier").trim();
+				String pathwayPage = table.get(i, "homepage");
+				if (identifier.isEmpty() || !identifier.startsWith("Q")) {
+					errors += pathwayPage + " -> " + table.get(i, "label") +
+							", '" + table.get(i, "identifier") + "'\n ";
+					errorCount++;
+				} else if (!identifier.isEmpty() && identifier.startsWith("Q")) {
+					try {
+						Integer.parseInt(identifier.substring(1));
+					} catch (NumberFormatException exception) {
+						errors += pathwayPage + " -> " + table.get(i, "label") +
+								", " + table.get(i, "identifier") + "\n ";
+						errorCount++;
+					}
+				}
+			}
+		}
+		assertions.add(new AssertEquals("WikidataTests", "wikidataIdentifiersWrong",
+			0, errorCount, "Wikidata identifiers that do not start with a 'Q' followed by a number: " + errorCount, errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> chemspiderCIDWithoutMapping(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteChemspider.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("WikidataTests", "chemspiderCIDWithoutMapping", table));
+		String errors = "";
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
+					    + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
+			}
+		}
+		assertions.add(new AssertEquals("WikidataTests", "chemspiderCIDWithoutMapping",
+			0, table.getRowCount(), "Chemspider identifiers without Wikidata mappings: " + table.getRowCount(), errors
 		));
 		return assertions;
 	}
