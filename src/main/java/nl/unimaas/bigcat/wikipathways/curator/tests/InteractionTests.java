@@ -218,7 +218,8 @@ public class InteractionTests {
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
-				errors += table.get(i, "homepage") + " \"" +
+				errors += table.get(i, "homepage") + " " +
+						table.get(i, "interaction") + " (" +
 						table.get(i, "sourceLabel") + "\" (" +
 						table.get(i, "source") + ") and \n" +
 						table.get(i, "targetLabel") + "\" (" +
