@@ -209,7 +209,7 @@ public class WikidataTests {
 
 	public static List<IAssertion> noWikidataForGenes(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
-		String sparql = ResourceHelper.resourceAsString("metabolite/duplicateWikidata.rq");
+		String sparql = ResourceHelper.resourceAsString("genes/noWikidataYet.rq");
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull("WikidataTests", "noWikidataForGenes", table));
 		String errors = "";
