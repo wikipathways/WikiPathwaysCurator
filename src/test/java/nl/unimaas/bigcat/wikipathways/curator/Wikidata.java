@@ -181,64 +181,31 @@ public class Wikidata extends JUnitTests {
 	@Tag("wikidata")
 	@Test
 	public void lipidMapsWithoutMapping() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteLipidMaps.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		String errors = "";
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
-					    + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
-			}
-		}
-		Assertions.assertEquals(
-			0, table.getRowCount(),
-			"LIPID MAPS identifiers without Wikidata mappings:\n" + errors
-		);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = WikidataTests.lipidMapsWithoutMapping(helper);
+		performAssertions(assertions);
 	}
 
 	@Tag("wikidata")
 	@Test
 	public void kNApSAcKWithoutMapping() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteKNApSAcK.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		String errors = "";
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
-					    + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
-			}
-		}
-		Assertions.assertEquals(
-			0, table.getRowCount(),
-			"KNApSAcK identifiers without Wikidata mappings:\n" + errors
-		);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = WikidataTests.kNApSAcKWithoutMapping(helper);
+		performAssertions(assertions);
 	}
 
 	@Tag("wikidata")
 	@Test
 	public void replaceWikipedia() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("outdated/wikipedia.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		String errors = "";
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				errors += table.get(i, "node") +
-					" can be replaced by the matching Wikidata identifier; \n";
-			}
-		}
-		Assertions.assertEquals(
-			0, table.getRowCount(),
-			"Wikipedia identifies that can be replaced by Wikidata identifiers:\n" + errors
-		);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = WikidataTests.replaceWikipedia(helper);
+		performAssertions(assertions);
 	}
 
 	@Test

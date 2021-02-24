@@ -85,6 +85,9 @@ public class WikidataTests {
 		assertions.addAll(noWikidataForGenes(helper));
 		assertions.addAll(wikidataIdentifiersWrong(helper));
 		assertions.addAll(chemspiderCIDWithoutMapping(helper));
+		assertions.addAll(lipidMapsWithoutMapping(helper));
+		assertions.addAll(kNApSAcKWithoutMapping(helper));
+		assertions.addAll(replaceWikipedia(helper));
 		return assertions;
 	}
 
@@ -277,6 +280,60 @@ public class WikidataTests {
 		}
 		assertions.add(new AssertEquals("WikidataTests", "chemspiderCIDWithoutMapping",
 			0, table.getRowCount(), "Chemspider identifiers without Wikidata mappings: " + table.getRowCount(), errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> lipidMapsWithoutMapping(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteLipidMaps.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("WikidataTests", "lipidMapsWithoutMapping", table));
+		String errors = "";
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
+					    + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
+			}
+		}
+		assertions.add(new AssertEquals("WikidataTests", "lipidMapsWithoutMapping",
+			0, errors, "LIPID MAPS identifiers without Wikidata mappings: " + errors, errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> kNApSAcKWithoutMapping(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteKNApSAcK.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("WikidataTests", "kNApSAcKWithoutMapping", table));
+		String errors = "";
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
+					    + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
+			}
+		}
+		assertions.add(new AssertEquals("WikidataTests", "kNApSAcKWithoutMapping",
+			0, table.getRowCount(), "KNApSAcK identifiers without Wikidata mappings: " + table.getRowCount(), errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> replaceWikipedia(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("outdated/wikipedia.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("WikidataTests", "replaceWikipedia", table));
+		String errors = "";
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errors += table.get(i, "node") +
+					" can be replaced by the matching Wikidata identifier; \n";
+			}
+		}
+		assertions.add(new AssertEquals("WikidataTests", "replaceWikipedia",
+			0, table.getRowCount(), "Wikipedia identifies that can be replaced by Wikidata identifiers: " + table.getRowCount(), errors
 		));
 		return assertions;
 	}
