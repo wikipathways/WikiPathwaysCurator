@@ -74,6 +74,22 @@ public class WikidataTests {
 		noWarnKEGGCIDs.add("C16237");
 	}}
 
+	private static Set<String> zwitterIonsWithoutWikidata = new HashSet<>();
+	{{
+		zwitterIonsWithoutWikidata.add("CHEBI:33384"); // L-serine zwitterion
+		zwitterIonsWithoutWikidata.add("CHEBI:57476"); // L-homoserine zwitterion
+		zwitterIonsWithoutWikidata.add("CHEBI:57427"); // L-leucine zwitterion
+		zwitterIonsWithoutWikidata.add("CHEBI:57743"); // Citrulline zwitterion
+		zwitterIonsWithoutWikidata.add("CHEBI:57844"); // L-Methionine zwitterion
+		zwitterIonsWithoutWikidata.add("CHEBI:57972"); // L-alanine zwitterion
+		zwitterIonsWithoutWikidata.add("CHEBI:58045"); // L-isoleucine zwitterion
+		zwitterIonsWithoutWikidata.add("CHEBI:58048"); // L-asparagine zwitterion
+		zwitterIonsWithoutWikidata.add("CHEBI:58199"); // L-homocystein zwitterion
+		zwitterIonsWithoutWikidata.add("CHEBI:58315"); // L-tyrosine zwitterion
+		zwitterIonsWithoutWikidata.add("CHEBI:58359"); // L-glutamine zwitterion
+		zwitterIonsWithoutWikidata.add("CHEBI:60039"); // L-proline zwitterion
+	}}
+
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(keggWithoutMapping(helper));
@@ -88,6 +104,54 @@ public class WikidataTests {
 		assertions.addAll(lipidMapsWithoutMapping(helper));
 		assertions.addAll(kNApSAcKWithoutMapping(helper));
 		assertions.addAll(replaceWikipedia(helper));
+		assertions.addAll(chebiWithoutMapping_Reactome(helper));
+		assertions.addAll(chebiWithoutMapping(helper));
+		return assertions;
+	}
+
+	public static List<IAssertion> chebiWithoutMapping_Reactome(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteChEBI_Reactome.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("WikidataTests", "chebiWithoutMapping_Reactome", table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String chebiID = table.get(i, "metabolite");
+				if (!zwitterIonsWithoutWikidata.contains(chebiID.substring(29))) {
+				    errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
+					       + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
+				    errorCount++;
+				}
+			}
+		}
+		assertions.add(new AssertEquals("WikidataTests", "chebiWithoutMapping_Reactome",
+			0, errorCount, "ChEBI identifiers without Wikidata mappings: " + errorCount, errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> chebiWithoutMapping(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteChEBI.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("WikidataTests", "chebiWithoutMapping", table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String chebiID = table.get(i, "metabolite");
+				if (!zwitterIonsWithoutWikidata.contains(chebiID.substring(29))) {
+				    errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
+					       + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
+				    errorCount++;
+				}
+			}
+		}
+		assertions.add(new AssertEquals("WikidataTests", "chebiWithoutMapping",
+			0, errorCount, "ChEBI identifiers without Wikidata mappings: " + errorCount, errors
+		));
 		return assertions;
 	}
 

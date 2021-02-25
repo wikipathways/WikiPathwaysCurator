@@ -60,72 +60,24 @@ public class Wikidata extends JUnitTests {
 	@BeforeEach
 	public void waitForIt() throws InterruptedException { Thread.sleep(OPSWPRDFFiles.SLEEP_TIME); }
 
-	private static Set<String> zwitterIonsWithoutWikidata = new HashSet<>();
-	{{
-		zwitterIonsWithoutWikidata.add("CHEBI:33384"); // L-serine zwitterion
-		zwitterIonsWithoutWikidata.add("CHEBI:57476"); // L-homoserine zwitterion
-		zwitterIonsWithoutWikidata.add("CHEBI:57427"); // L-leucine zwitterion
-		zwitterIonsWithoutWikidata.add("CHEBI:57743"); // Citrulline zwitterion
-		zwitterIonsWithoutWikidata.add("CHEBI:57844"); // L-Methionine zwitterion
-		zwitterIonsWithoutWikidata.add("CHEBI:57972"); // L-alanine zwitterion
-		zwitterIonsWithoutWikidata.add("CHEBI:58045"); // L-isoleucine zwitterion
-		zwitterIonsWithoutWikidata.add("CHEBI:58048"); // L-asparagine zwitterion
-		zwitterIonsWithoutWikidata.add("CHEBI:58199"); // L-homocystein zwitterion
-		zwitterIonsWithoutWikidata.add("CHEBI:58315"); // L-tyrosine zwitterion
-		zwitterIonsWithoutWikidata.add("CHEBI:58359"); // L-glutamine zwitterion
-		zwitterIonsWithoutWikidata.add("CHEBI:60039"); // L-proline zwitterion
-	}}
-
 	@Tag("expertCuration")
 	@Test
 	public void chebiWithoutMapping_Reactome() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteChEBI_Reactome.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		String errors = "";
-		int errorCount = 0;
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				String chebiID = table.get(i, "metabolite");
-				if (!zwitterIonsWithoutWikidata.contains(chebiID.substring(29))) {
-				    errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
-					       + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
-				    errorCount++;
-				}
-			}
-		}
-		Assertions.assertEquals(
-			0, errorCount,
-			"ChEBI identifiers without Wikidata mappings:\n" + errors
-		);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = WikidataTests.chebiWithoutMapping_Reactome(helper);
+		performAssertions(assertions);
 	}
 
 	@Tag("wikidata")
 	@Test
 	public void chebiWithoutMapping() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteChEBI.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		String errors = "";
-		int errorCount = 0;
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				String chebiID = table.get(i, "metabolite");
-				if (!zwitterIonsWithoutWikidata.contains(chebiID.substring(29))) {
-				    errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
-					       + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
-				    errorCount++;
-				}
-			}
-		}
-		Assertions.assertEquals(
-			0, errorCount,
-			"ChEBI identifiers without Wikidata mappings:\n" + errors
-		);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = WikidataTests.chebiWithoutMapping(helper);
+		performAssertions(assertions);
 	}
 
 	@Tag("wikidata")
