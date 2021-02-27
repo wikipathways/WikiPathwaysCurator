@@ -53,7 +53,6 @@ public class ChEBIMetabolitesTests {
 			String[] ids = lines[i].split(",");
 			oldToNew.put(ids[0], ids[1]);
 		}
-		System.out.println("size: " + oldToNew.size());
 	}
 
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
