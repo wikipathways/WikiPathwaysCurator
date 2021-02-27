@@ -27,122 +27,51 @@
 package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-public class PubChemMetabolites {
+import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.tests.PubChemMetabolitesTests;
 
-	private static List<String> nonexisting = new ArrayList<String>();
-	static {{
-	    nonexisting.add("329970432");
-	    nonexisting.add("329970434");
-	    nonexisting.add("329970435");
-	}}
-
-	private static Map<String,String> nonLive = new HashMap<String,String>();
-	static {{
-		nonLive.put("25203785", "6409687");
-	}}
-
-	@BeforeAll
-	public static void loadData() throws InterruptedException {
-		if (System.getProperty("SPARQLEP").startsWith("http")) {
-			// ok, assume the SPARQL end point is online
-			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
-		} else {
-			Model data = OPSWPRDFFiles.loadData();
-			Assertions.assertTrue(data.size() > 5000);
-		}
-	}
+public class PubChemMetabolites extends JUnitTests {
 
 	@BeforeEach
 	public void waitForIt() throws InterruptedException { Thread.sleep(OPSWPRDFFiles.SLEEP_TIME); }
 
 	@Test
 	public void nonNumericIDs() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/badformat/nonNumericPubChem.rq");
 		Assertions.assertTimeout(Duration.ofSeconds(50), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			String errors = "";
-			if (table.getRowCount() > 0) {
-				for (int i=1; i<=table.getRowCount(); i++) {
-					String id = table.get(i, "id");
-					if (id != null && id.length() > 0) {
-						try {
-							Integer.parseInt(id);
-						} catch (NumberFormatException exception) {
-							errors += table.get(i, "homepage") + ", " +
-									table.get(i, "id") + "\n";
-						}
-					}
-				}
-			}
-			Assertions.assertEquals(
-				0, errors.length(), "Found PubChem-compound IDs that are not numbers:\n" + errors
-			);
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		        : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = PubChemMetabolitesTests.nonNumericIDs(helper);
+			performAssertions(assertions);
 		});
 	}
 
 	@Test
 	public void nonLive2LiveIdentifiers() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/allPubChemIdentifiers.rq");
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			String errors = "";
-			int errorCount = 0;
-			if (table.getRowCount() > 0) {
-				// OK, but then it must be proteins, e.g. IFN-b
-				for (int i=1; i<=table.getRowCount(); i++) {
-					String identifier = table.get(i, "identifier");
-					if (nonLive.containsKey(identifier)) {
-						errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
-							" has " + identifier + " but has a better PubChem CID: " +
-							nonLive.get(identifier) + "\n";
-						errorCount++;
-					}
-				}
-			}
-			Assertions.assertEquals(
-				0, errorCount, "Non-live PubChem CIDs detected:\n" + errors
-			);
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		        : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = PubChemMetabolitesTests.nonLive2LiveIdentifiers(helper);
+			performAssertions(assertions);
 		});
 	}
 
 	@Test
 	public void nonExistingIdentifiers() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/allPubChemIdentifiers.rq");
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			String errors = "";
-			int errorCount = 0;
-			if (table.getRowCount() > 0) {
-				// OK, but then it must be proteins, e.g. IFN-b
-				for (int i=1; i<=table.getRowCount(); i++) {
-					String identifier = table.get(i, "identifier");
-					if (nonexisting.contains(identifier)) {
-						errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
-							" has PubChem CID " + identifier + " but does not exist.\n";
-						errorCount++;
-					}
-				}
-			}
-			Assertions.assertEquals(
-				0, errorCount, "Non-existing PubChem CIDs detected:\n" + errors
-			);
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		        : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = PubChemMetabolitesTests.nonExistingIdentifiers(helper);
+			performAssertions(assertions);
 		});
 	}
 
