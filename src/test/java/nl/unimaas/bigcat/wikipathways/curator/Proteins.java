@@ -1,4 +1,4 @@
-/* Copyright (C) 2020  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2020-2021  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -26,86 +26,35 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
-import org.apache.jena.rdf.model.Model;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-public class Proteins {
+import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.tests.ProteinsTests;
 
-	@BeforeAll
-	public static void loadData() throws InterruptedException {
-		if (System.getProperty("SPARQLEP").startsWith("http")) {
-			// ok, assume the SPARQL end point is online
-			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
-		} else {
-			Model data = OPSWPRDFFiles.loadData();
-			Assertions.assertTrue(data.size() > 5000);
-			String parseErrors = OPSWPRDFFiles.getParseErrors();
-			Assertions.assertNotNull(parseErrors);
-			Assertions.assertEquals(0, parseErrors.length(), parseErrors.toString());
-		}
-	}
+public class Proteins extends JUnitTests {
 
 	@BeforeEach
 	public void waitForIt() throws InterruptedException { Thread.sleep(OPSWPRDFFiles.SLEEP_TIME); }
 
 	@Test
 	public void wrongBrendaFormat() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("proteins/allBrendaIdentifiers.rq");
-		Assertions.assertNotNull(sparql);
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-			: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		String errors = "";
-		int errorCount = 0;
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				String identifier = table.get(i, "identifier");
-				identifier = identifier.trim();
-				if (!identifier.isEmpty()) {
-					if (!Character.isDigit(identifier.charAt(0))) {
-						errors += table.get(i, "homepage") + " -> " + table.get(i, "label") +
-								", " + table.get(i, "identifier") + "\n ";
-						errorCount++;
-					}
-				}
-			}
-		}
-		Assertions.assertEquals(
-			0, errorCount, "BRENDA identifiers with the wrong format:\n" + errors
-		);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+	        : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = ProteinsTests.wrongBrendaFormat(helper);
+		performAssertions(assertions);
 	}
 
 	@Test
 	public void wrongEnzymeNomenclatureFormat() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("proteins/allECIdentifiers.rq");
-		Assertions.assertNotNull(sparql);
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-			: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		String errors = "";
-		int errorCount = 0;
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				String identifier = table.get(i, "identifier");
-				identifier = identifier.trim();
-				if (!identifier.isEmpty()) {
-					if (!Character.isDigit(identifier.charAt(0))) {
-						errors += table.get(i, "homepage") + " -> " + table.get(i, "label") +
-								", " + table.get(i, "identifier") + "\n ";
-						errorCount++;
-					}
-				}
-			}
-		}
-		Assertions.assertEquals(
-			0, errorCount, "Enzyme Nomenclature identifiers with the wrong format:\n" + errors
-		);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+	        : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = ProteinsTests.wrongEnzymeNomenclatureFormat(helper);
+		performAssertions(assertions);
 	}
 
 }
