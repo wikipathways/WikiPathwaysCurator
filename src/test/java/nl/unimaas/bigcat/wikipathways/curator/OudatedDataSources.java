@@ -1,4 +1,4 @@
-/* Copyright (C) 2014,2018  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2014,2018,2021  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -27,6 +27,7 @@
 package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.time.Duration;
+import java.util.List;
 
 import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
@@ -35,7 +36,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-public class OudatedDataSources {
+import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.tests.OudatedDataSourcesTests;
+
+public class OudatedDataSources extends JUnitTests {
 
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
@@ -53,15 +57,11 @@ public class OudatedDataSources {
 
 	@Test
 	public void outdatedUniprot() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("outdated/uniprot.rq");
-		Assertions.assertNotNull(sparql);
-		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertEquals(0, table.getRowCount(), "Outdated 'Uniprot' data sources (use 'Uniprot-TrEMBL'):\n" + table);
-		});
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+	        : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = OudatedDataSourcesTests.outdatedUniprot(helper);
+		performAssertions(assertions);
 	}
 
 	@Test
