@@ -154,32 +154,6 @@ public class OudatedDataSources {
 	}
 
 	@Test
-	public void noInChIKeyDataSourceYet() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("outdated/inchikey.rq");
-		Assertions.assertNotNull(sparql);
-		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			String errors = "";
-			if (table.getRowCount() > 0) {
-				for (int i=1; i<=table.getRowCount(); i++) {
-					String pubchem = table.get(i, "pubchem");
-					if (pubchem != null && pubchem.length() > 37) {
-						pubchem = pubchem.replace("http://rdf.ncbi.nlm.nih.gov/pubchem/compound/CID", "");
-						errors += table.get(i, "node") + " in " + table.get(i, "homepage") + " can be replaced with "
-								+ "PubChem-compound " + pubchem + "\n";
-					} else {
-						errors += table.get(i, "node") + " in " + table.get(i, "homepage") + "\n";
-					}
-				}
-			}
-			Assertions.assertEquals(0, table.getRowCount(), "Don't use 'InChIKey' data sources yet, but found:\n" + errors);
-		});
-	}
-
-	@Test
 	public void outdatedKeggCompoundDataSource() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/keggcompound.rq");
 		Assertions.assertNotNull(sparql);
