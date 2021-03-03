@@ -361,7 +361,7 @@ public class WikidataTests {
 			}
 		}
 		assertions.add(new AssertEquals("WikidataTests", "lipidMapsWithoutMapping",
-			0, errors, "LIPID MAPS identifiers without Wikidata mappings: " + errors, errors
+			0, table.getRowCount(), "LIPID MAPS identifiers without Wikidata mappings: " + table.getRowCount(), errors
 		));
 		return assertions;
 	}
