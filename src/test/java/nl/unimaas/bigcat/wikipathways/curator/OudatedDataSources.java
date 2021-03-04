@@ -84,38 +84,20 @@ public class OudatedDataSources extends JUnitTests {
 
 	@Test
 	public void outdatedUniprot4() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("outdated/uniprot4.rq");
-		Assertions.assertNotNull(sparql);
-		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertEquals(0, table.getRowCount(), "Outdated 'UniProt' data sources (use 'Uniprot-TrEMBL'):\n" + table);
-		});
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = OudatedDataSourcesTests.outdatedUniprot4(helper);
+		performAssertions(assertions);
 	}
 
 	@Test
 	public void oldUniprotSwissProt() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("outdated/swissprot.rq");
-		Assertions.assertNotNull(sparql);
-		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			String errors = "";
-			int errorCount = 0;
-			if (table.getRowCount() > 0) {
-				for (int i=1; i<=table.getRowCount(); i++) {
-					errors += table.get(i, "node") + ", " + table.get(i, "homepage") + "\n";
-					errorCount++;
-				}
-			}
-			Assertions.assertEquals(
-			    0, errorCount, "Outdated 'Uniprot-SwissProt' data sources (use 'Uniprot-TrEMBL'):\n" + errors
-			);
-		});
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = OudatedDataSourcesTests.oldUniprotSwissProt(helper);
+		performAssertions(assertions);
 	}
 
 	@Test

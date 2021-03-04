@@ -43,6 +43,8 @@ public class OudatedDataSourcesTests {
 		assertions.addAll(outdatedUniprot(helper));
 		assertions.addAll(outdatedUniprot2(helper));
 		assertions.addAll(outdatedUniprot3(helper));
+		assertions.addAll(outdatedUniprot4(helper));
+		assertions.addAll(oldUniprotSwissProt(helper));
 		return assertions;
 	}
 
@@ -75,6 +77,36 @@ public class OudatedDataSourcesTests {
 		assertions.add(new AssertNotNull("OudatedDataSourcesTests", "outdatedUniprot3", table));
 		assertions.add(new AssertEquals("OudatedDataSourcesTests", "outdatedUniprot3",
 			0, table.getRowCount(), "Outdated 'Uniprot/TrEMBL' data sources (use 'Uniprot-TrEMBL')"
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> outdatedUniprot4(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("outdated/uniprot4.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("OudatedDataSourcesTests", "outdatedUniprot4", table));
+		assertions.add(new AssertEquals("OudatedDataSourcesTests", "outdatedUniprot4",
+			0, table.getRowCount(), "Outdated 'UniProt' data sources (use 'Uniprot-TrEMBL')"
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> oldUniprotSwissProt(SPARQLHelper helper) throws Exception {
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("outdated/swissprot.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull("OudatedDataSourcesTests", "oldUniprotSwissProt", table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errors += table.get(i, "node") + ", " + table.get(i, "homepage") + "\n";
+				errorCount++;
+			}
+		}
+		assertions.add(new AssertEquals("OudatedDataSourcesTests", "oldUniprotSwissProt",
+			0, errorCount, "Outdated 'Uniprot-SwissProt' data sources (use 'Uniprot-TrEMBL'): " + errorCount, errors
 		));
 		return assertions;
 	}
