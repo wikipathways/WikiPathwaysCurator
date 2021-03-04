@@ -1,16 +1,19 @@
 # Deleted pathways
 
-This test checks if a pathway links to another pathway with an xref using a WikiPathways identifier
-still exists and has not been deleted.
+This test checks if a pathway [PW] linking to another pathway (with an xref using a WikiPathways [WP] identifier)
+still exists, and if the linked PW on WPs has not been deleted.
 
 ## Why does this fail show up?
 
-The reason for a linked pathway is deleted could be that the pathway was merged with another
-pathway. Of course, a typo in the identifier is also possible.
+There are several reasons why a linked pathway does not exist anymore:
+1. The linked PW is deleted
+2. The linked PW could be merged with another pathway. 
+3. A typo in the identifier is also possible.
+4. The original PW has been homology converted to a different species, and the linked PW points to the original species.
 
 ## Curation action
 
-If the test fails, it reports pathways that link to deteled pathways. The solution is to
+If the test fails, it reports pathway DataNodes that link to deteled pathways. The solution is to
 check if there is another pathway replacing the deleted pathway. Sometimes the test provides
 this information. Actions:
 
