@@ -113,13 +113,13 @@ public class ReferencesTests {
 		String errors = "";
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
-				errors += table.get(i, "homepage") + ", '" +
+				errors += table.get(i, "homepage") + " '" +
   					table.get(i, "title") + "' in " +
 					table.get(i, "species") + " has zero references; \n";
 			}
 		}
 		assertions.add(new AssertEquals("ReferencesTests", "atLeastOneReference",
-			0, table.getRowCount(), "Found " + table.getRowCount() + "pathways with zero references", errors
+			0, table.getRowCount(), "Found " + table.getRowCount() + " pathways with zero references", errors
 		));
 		return assertions;
     }
