@@ -9,7 +9,6 @@ There are several reasons why a linked pathway does not exist anymore:
 1. The linked PW is deleted
 2. The linked PW could be merged with another pathway. 
 3. A typo in the identifier is also possible.
-4. The original PW has been homology converted to a different species, and the linked PW points to the original species.
 
 ## Curation action
 
