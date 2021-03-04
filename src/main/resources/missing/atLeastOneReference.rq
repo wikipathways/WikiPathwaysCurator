@@ -11,7 +11,7 @@ WHERE {
       ?pathway wp:ontologyTag cur:AnalysisCollection .
       OPTIONAL {
         ?pubmed a                wp:PublicationReference ;
-                dcterms:isPartOf ?pathway
+                dcterms:isPartOf+ ?pathway
       }
     } GROUP BY ?pathway
   }
