@@ -6,12 +6,17 @@ PREFIX dcterms: <http://purl.org/dc/terms/>
 
 SELECT DISTINCT ?homepage (str(?titleLit) as ?title) (str(?speciesLit) as ?species)
 WHERE {
-  ?pathway wp:ontologyTag cur:AnalysisCollection ;
-           dc:title ?titleLit ;
+  {
+    SELECT DISTINCT ?pathway (COUNT(?pubmed) AS ?count) WHERE {
+      ?pathway wp:ontologyTag cur:AnalysisCollection .
+      OPTIONAL {
+        ?pubmed a                wp:PublicationReference ;
+                dcterms:isPartOf ?pathway
+      }
+    } GROUP BY ?pathway
+  }
+  ?pathway dc:title ?titleLit ;
            wp:organismName ?speciesLit ;
            foaf:page ?homepage .
-  MINUS {
-    ?pubmed a       wp:PublicationReference . 
-      ?pubmed dcterms:isPartOf ?pathway
-  }
+  FILTER (?count = 0)
 } ORDER BY ?species ?title
