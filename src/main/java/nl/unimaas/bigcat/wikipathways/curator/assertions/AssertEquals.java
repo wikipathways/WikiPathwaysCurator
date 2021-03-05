@@ -26,27 +26,28 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator.assertions;
 
-public class AssertEquals implements IAssertion {
+public class AssertEquals extends AbstractAssertion implements IAssertion {
 
 	private Object expectedValue;
 	private Object value;
-	private String message;
 	private String details;
-	private String testClass;
-	private String test;
 
-	public AssertEquals(String testClass, String test, Object expectedValue, Object value, String message) {
-		this.testClass = testClass;
-		this.test = test;
+	public AssertEquals(Test test, boolean linkToDocs, Object expectedValue,
+			            Object value, String message, String details) {
+		super(test, linkToDocs, message);
 		this.expectedValue = expectedValue;
 		this.value = value;
-		this.message = message;
-		this.details = "";
+		this.details = details;
 	}
 
+	@Deprecated
+	public AssertEquals(String testClass, String test, Object expectedValue, Object value, String message) {
+		this(new Test(testClass, test), false, expectedValue, value, message, "");
+	}
+
+	@Deprecated
 	public AssertEquals(String testClass, String test, Object expectedValue, Object value, String message, String details) {
-		this(testClass, test, expectedValue, value, message);
-		this.details = details;
+		this(new Test(testClass, test), false, expectedValue, value, message, details);
 	}
 
 	public Object getExpectedValue() {
@@ -55,18 +56,6 @@ public class AssertEquals implements IAssertion {
 
 	public Object getValue() {
 		return this.value;
-	}
-
-	public String getMessage() {
-		return this.message;
-	}
-
-	public String getTestClass() {
-		return testClass;
-	}
-
-	public String getTest() {
-		return test;
 	}
 
 	public String getDetails() {

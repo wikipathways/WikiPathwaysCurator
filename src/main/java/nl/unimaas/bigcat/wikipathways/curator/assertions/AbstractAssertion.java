@@ -1,4 +1,4 @@
-/* Copyright (C) 2020-2021  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2021  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -26,30 +26,40 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator.assertions;
 
-public class AssertNotNull extends AbstractAssertion implements IAssertion {
+abstract class AbstractAssertion implements IAssertion {
 
-	private Object value;
+	private Test test;
+	private boolean linkToDocs;
+	private String message;
 
-	public AssertNotNull(Test test, boolean linkToDocs, Object value) {
-		super(test, linkToDocs, "Value was unexpectedly null");
-		this.value = value;
+	protected AbstractAssertion(Test test, boolean linkToDocs, String message) {
+		this.test = test;
+		this.linkToDocs = linkToDocs;
+		this.message = message;
 	}
 
-	public AssertNotNull(Test test, Object value) {
-		this(test, false, value);
+	protected AbstractAssertion(Test test, boolean linkToDocs) {
+		this(test, linkToDocs, "");
 	}
 
-	@Deprecated
-	public AssertNotNull(String testClass, String test, Object value) {
-		this(new Test(testClass, test), value);
+	protected AbstractAssertion(String testClass, String test) {
+		this(new Test(testClass, test), false);
 	}
 
-	public Object getValue() {
-		return this.value;
+	public String getTestClass() {
+		return this.test.getClassName();
 	}
 
-	public String getDetails() {
-		return "";
+	public String getTest() {
+		return this.test.getTestName();
+	}
+
+	public String getMessage() {
+		if (linkToDocs) {
+			return message + " See " + test.getDocumentationURL() + " for more info an curation hints";
+		} else {
+			return message;
+		}
 	}
 
 }

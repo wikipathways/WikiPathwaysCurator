@@ -37,6 +37,7 @@ import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class PathwayTests {
 
@@ -52,6 +53,7 @@ public class PathwayTests {
 	}
 
 	public static List<IAssertion> deletedPathways(SPARQLHelper helper) throws Exception {
+		Test test = new Test("PathwayTests", "deletedPathways");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = "PREFIX dcterms: <http://purl.org/dc/terms/>\n" + 
 				"PREFIX wp:      <http://vocabularies.wikipathways.org/wp#>\n" +
@@ -64,7 +66,7 @@ public class PathwayTests {
 				+ "  ?pathway dcterms:identifier ?wpid .\n"
 				+ "  MINUS { ?pathway a wp:DataNode } \n}";
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("PathwayTests", "deletedPathways", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		if (table.getRowCount() > 0) {
 			// OK, but then it must be proteins, e.g. IFN-b
@@ -73,8 +75,8 @@ public class PathwayTests {
 				errors += pathway + " \n";
 			}
 		}
-		assertions.add(new AssertEquals("PathwayTests", "deletedPathways",
-			0, table.getRowCount(), "Found " + table.getRowCount() + " deleted pathways", errors
+		assertions.add(new AssertEquals(test, true,
+			0, table.getRowCount(), "Found " + table.getRowCount() + " deleted pathways.", errors
 		));
 		return assertions;
 	}

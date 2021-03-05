@@ -35,6 +35,7 @@ import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class CovidDiseaseMapsTests {
 
@@ -45,10 +46,11 @@ public class CovidDiseaseMapsTests {
 	}
 
 	public static List<IAssertion> interactionsWithoutReferences(SPARQLHelper helper) throws Exception {
+		Test test = new Test("CovidDiseaseMapsTests", "interactionsWithoutReferences");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("covid/interactionsWithoutReferences.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("CovidDiseaseMapsTests", "interactionsWithoutReferences", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -58,8 +60,7 @@ public class CovidDiseaseMapsTests {
 				errorCount++;
 			}
 		}
-		assertions.add(new AssertEquals(
-			"CovidDiseaseMapsTests", "interactionsWithoutReferences", 
+		assertions.add(new AssertEquals(test, true, 
 			0, errorCount, "Interactions without literature references: " + errorCount, errors
 		));
 		return assertions;

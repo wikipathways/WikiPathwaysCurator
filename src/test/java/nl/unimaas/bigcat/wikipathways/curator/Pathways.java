@@ -65,6 +65,7 @@ public class Pathways extends JUnitTests {
 	}
 
 	@Test
+	@Tag("foo")
 	public void deletedPathways() throws Exception {
 		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
 			? new SPARQLHelper(System.getProperty("SPARQLEP"))

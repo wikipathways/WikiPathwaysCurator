@@ -1,4 +1,4 @@
-/* Copyright (C) 2020-2021  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2021  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -26,30 +26,25 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator.assertions;
 
-public class AssertNotNull extends AbstractAssertion implements IAssertion {
+public class Test {
 
-	private Object value;
+	private String testClass;
+	private String test;
 
-	public AssertNotNull(Test test, boolean linkToDocs, Object value) {
-		super(test, linkToDocs, "Value was unexpectedly null");
-		this.value = value;
+	public Test(String testClass, String test) {
+		this.testClass = testClass;
+		this.test = test;
 	}
 
-	public AssertNotNull(Test test, Object value) {
-		this(test, false, value);
+	public String getClassName() {
+		return this.testClass;
 	}
 
-	@Deprecated
-	public AssertNotNull(String testClass, String test, Object value) {
-		this(new Test(testClass, test), value);
+	public String getTestName() {
+		return this.test;
 	}
 
-	public Object getValue() {
-		return this.value;
+	public String getDocumentationURL() {
+		return "https://wikipathways.github.io/WikiPathwaysCurator/" + this.testClass + "/" + this.test; 
 	}
-
-	public String getDetails() {
-		return "";
-	}
-
 }
