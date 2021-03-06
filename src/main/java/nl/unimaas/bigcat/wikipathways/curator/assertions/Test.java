@@ -50,7 +50,7 @@ public class Test {
 
 	public URL getDefaultLinkToDocs() {
 		try {
-			if (defaultLinkToDocs == null) new URL("https://wikipathways.github.io/WikiPathwaysCurator/" + this.testClass + "/" + this.test);
+			if (defaultLinkToDocs == null) defaultLinkToDocs = new URL("https://wikipathways.github.io/WikiPathwaysCurator/" + this.testClass + "/" + this.test);
 			return defaultLinkToDocs;
 		} catch (MalformedURLException e) {
 			throw new RuntimeException("Error while creating the default URL: " + e.getMessage());
