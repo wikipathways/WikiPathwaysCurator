@@ -26,10 +26,14 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator.assertions;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 public class Test {
 
 	private String testClass;
 	private String test;
+	private URL defaultLinkToDocs = null;
 
 	public Test(String testClass, String test) {
 		this.testClass = testClass;
@@ -44,7 +48,12 @@ public class Test {
 		return this.test;
 	}
 
-	public String getDocumentationURL() {
-		return "https://wikipathways.github.io/WikiPathwaysCurator/" + this.testClass + "/" + this.test; 
+	public URL getDefaultLinkToDocs() {
+		try {
+			if (defaultLinkToDocs == null) new URL("https://wikipathways.github.io/WikiPathwaysCurator/" + this.testClass + "/" + this.test);
+			return defaultLinkToDocs;
+		} catch (MalformedURLException e) {
+			throw new RuntimeException("Error while creating the default URL: " + e.getMessage());
+		} 
 	}
 }

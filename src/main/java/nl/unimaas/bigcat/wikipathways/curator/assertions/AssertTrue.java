@@ -26,41 +26,32 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator.assertions;
 
-public class AssertTrue implements IAssertion {
+public class AssertTrue extends AbstractAssertion implements IAssertion {
 
 	private boolean isTrue;
-	private String message;
 	private String details;
-	private String testClass;
-	private String test;
 
-	public AssertTrue(String testClass, String test, boolean isTrue, String message) {
-		this.isTrue = isTrue;
-		this.testClass = testClass;
-		this.test = test;
-		this.message = message;
-		this.details = "";
+	public AssertTrue(Test test, boolean linkToDocs, boolean isTrue, String message, String details) {
+		super(test, linkToDocs, message);
+		this.details = details;
 	}
 
+	public AssertTrue(Test test, boolean linkToDocs, boolean isTrue, String message) {
+		this(test, linkToDocs, isTrue, message, "");
+	}
+
+	@Deprecated
 	public AssertTrue(String testClass, String test, boolean isTrue, String message, String details) {
-		this(testClass, test, isTrue, message);
-		this.details = details;
+		this(new Test(testClass, test), false, isTrue, message, details);
+	}
+
+	@Deprecated
+	public AssertTrue(String testClass, String test, boolean isTrue, String message) {
+		this(testClass, test, isTrue, message, "");
 	}
 
 	public Object getValue() {
 		return isTrue;
-	}
-
-	public String getMessage() {
-		return this.message;
-	}
-
-	public String getTestClass() {
-		return testClass;
-	}
-
-	public String getTest() {
-		return test;
 	}
 
 	public String getDetails() {

@@ -26,12 +26,16 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator.assertions;
 
+import java.net.URL;
+
 public interface IAssertion {
 
 	public String getTestClass();
 	public String getTest();
 	public String getMessage();
 	public String getDetails();
+	public boolean hasLinkToDocs();
+	public URL getLinkToDocs();
 
 	public Object getValue();
 
