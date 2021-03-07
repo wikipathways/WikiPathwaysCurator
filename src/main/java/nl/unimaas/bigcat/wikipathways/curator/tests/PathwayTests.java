@@ -65,6 +65,7 @@ public class PathwayTests {
 		sparql += "  }\n"
 				+ "  ?pathway dcterms:identifier ?wpid .\n"
 				+ "  MINUS { ?pathway a wp:DataNode } \n}";
+		System.out.println(sparql);
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
