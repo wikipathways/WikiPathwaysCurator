@@ -33,6 +33,7 @@ public class AssertTrue extends AbstractAssertion implements IAssertion {
 
 	public AssertTrue(Test test, boolean linkToDocs, boolean isTrue, String message, String details) {
 		super(test, linkToDocs, message);
+		this.isTrue = isTrue;
 		this.details = details;
 	}
 
