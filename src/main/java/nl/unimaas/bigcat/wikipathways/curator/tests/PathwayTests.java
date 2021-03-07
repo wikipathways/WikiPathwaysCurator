@@ -75,7 +75,7 @@ public class PathwayTests {
 				errors += pathway + " \n";
 			}
 		}
-		assertions.add(new AssertEquals(test, true,
+		assertions.add(new AssertEquals(test, Test.HAS_LINK_TO_DOCS,
 			0, table.getRowCount(), "Found " + table.getRowCount() + " deleted pathways.", errors
 		));
 		return assertions;

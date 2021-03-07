@@ -31,6 +31,8 @@ import java.net.URL;
 
 public class Test {
 
+	public final static boolean HAS_LINK_TO_DOCS = true;
+
 	private String testClass;
 	private String test;
 	private URL defaultLinkToDocs = null;
