@@ -29,8 +29,6 @@ package nl.unimaas.bigcat.wikipathways.curator.tests;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
-
 import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
 import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
 import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
