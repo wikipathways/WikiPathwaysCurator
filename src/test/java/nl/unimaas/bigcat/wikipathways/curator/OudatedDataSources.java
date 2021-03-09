@@ -102,16 +102,11 @@ public class OudatedDataSources extends JUnitTests {
 
 	@Test
 	public void wrongPubChem() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("outdated/pubchem.rq");
-		Assertions.assertNotNull(sparql);
-		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			// the metabolite test pathway has one outdated PubChem deliberately (WP2582)
-			Assertions.assertTrue(table.getRowCount() <= 1, "Outdated 'PubChem' data sources (use 'PubChem-compound' or 'PubChem-substance'):\n" + table);
-		});
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = OudatedDataSourcesTests.wrongPubChem(helper);
+		performAssertions(assertions);
 	}
 
 	@Test

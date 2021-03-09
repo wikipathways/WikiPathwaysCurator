@@ -29,12 +29,16 @@ package nl.unimaas.bigcat.wikipathways.curator.tests;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.Assertions;
+
 import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
 import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
 import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertTrue;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class OudatedDataSourcesTests {
 
@@ -45,6 +49,7 @@ public class OudatedDataSourcesTests {
 		assertions.addAll(outdatedUniprot3(helper));
 		assertions.addAll(outdatedUniprot4(helper));
 		assertions.addAll(oldUniprotSwissProt(helper));
+		assertions.addAll(wrongPubChem(helper));
 		return assertions;
 	}
 
@@ -107,6 +112,19 @@ public class OudatedDataSourcesTests {
 		}
 		assertions.add(new AssertEquals("OudatedDataSourcesTests", "oldUniprotSwissProt",
 			0, errorCount, "Outdated 'Uniprot-SwissProt' data sources (use 'Uniprot-TrEMBL'): " + errorCount, errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> wrongPubChem(SPARQLHelper helper) throws Exception {
+		Test test = new Test("OudatedDataSourcesTests", "wrongPubChem");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("outdated/pubchem.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		// the metabolite test pathway has one outdated PubChem deliberately (WP2582)
+		assertions.add(new AssertTrue(test,
+			(table.getRowCount() <= 1), "Outdated 'PubChem' data sources (use 'PubChem-compound' or 'PubChem-substance')", "" + table
 		));
 		return assertions;
 	}
