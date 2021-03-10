@@ -54,54 +54,59 @@ public class OudatedDataSourcesTests {
 	}
 
 	public static List<IAssertion> outdatedUniprot(SPARQLHelper helper) throws Exception {
+		Test test = new Test("OudatedDataSourcesTests", "outdatedUniprot");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/uniprot.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("OudatedDataSourcesTests", "outdatedUniprot", table));
-		assertions.add(new AssertEquals("OudatedDataSourcesTests", "outdatedUniprot",
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Outdated 'Uniprot' data sources (use 'Uniprot-TrEMBL')"
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> outdatedUniprot2(SPARQLHelper helper) throws Exception {
+		Test test = new Test("OudatedDataSourcesTests", "outdatedUniprot2");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/uniprot2.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("OudatedDataSourcesTests", "outdatedUniprot2", table));
-		assertions.add(new AssertEquals("OudatedDataSourcesTests", "outdatedUniprot2",
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Outdated 'UniProt/TrEMBL' data sources (use 'Uniprot-TrEMBL')"
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> outdatedUniprot3(SPARQLHelper helper) throws Exception {
+		Test test = new Test("OudatedDataSourcesTests", "outdatedUniprot3");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/uniprot3.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("OudatedDataSourcesTests", "outdatedUniprot3", table));
-		assertions.add(new AssertEquals("OudatedDataSourcesTests", "outdatedUniprot3",
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Outdated 'Uniprot/TrEMBL' data sources (use 'Uniprot-TrEMBL')"
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> outdatedUniprot4(SPARQLHelper helper) throws Exception {
+		Test test = new Test("OudatedDataSourcesTests", "outdatedUniprot4");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/uniprot4.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("OudatedDataSourcesTests", "outdatedUniprot4", table));
-		assertions.add(new AssertEquals("OudatedDataSourcesTests", "outdatedUniprot4",
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Outdated 'UniProt' data sources (use 'Uniprot-TrEMBL')"
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> oldUniprotSwissProt(SPARQLHelper helper) throws Exception {
+		Test test = new Test("OudatedDataSourcesTests", "oldUniprotSwissProt");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/swissprot.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("OudatedDataSourcesTests", "oldUniprotSwissProt", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -110,7 +115,7 @@ public class OudatedDataSourcesTests {
 				errorCount++;
 			}
 		}
-		assertions.add(new AssertEquals("OudatedDataSourcesTests", "oldUniprotSwissProt",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Outdated 'Uniprot-SwissProt' data sources (use 'Uniprot-TrEMBL'): " + errorCount, errors
 		));
 		return assertions;

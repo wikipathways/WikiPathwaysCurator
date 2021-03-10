@@ -35,6 +35,7 @@ import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotSame;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class BridgeDbMappingsTests {
 
@@ -49,65 +50,65 @@ public class BridgeDbMappingsTests {
 	}
 
 	public static List<IAssertion> hasSomeEntrezGeneMappings(SPARQLHelper helper) throws Exception {
+		Test test = new Test("BridgeDbMappingsTests", "hasSomeEntrezGeneMappings");
 		// Getting the data
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/hasEntrezGeneMappings.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("BridgeDbMappingsTests", "hasSomeEntrezGeneMappings", table));
-		assertions.add(new AssertNotSame(
-			"BridgeDbMappingsTests", "hasSomeEntrezGeneMappings", 
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertNotSame(test, 
 			0, table.getRowCount(), "Expected some mapped Entrez Genes identifiers"
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> hasSomeHMDBMappings(SPARQLHelper helper) throws Exception {
+		Test test = new Test("BridgeDbMappingsTests", "hasSomeHMDBMappings");
 		// Getting the data
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/hasHMDBMappings.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("BridgeDbMappingsTests", "hasSomeHMDBMappings", table));
-		assertions.add(new AssertNotSame(
-			"BridgeDbMappingsTests", "hasSomeHMDBMappings", 
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertNotSame(test, 
 			0, table.getRowCount(), "Expected some mapped HMDB identifiers"
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> hasSomeChemSpiderMappings(SPARQLHelper helper) throws Exception {
+		Test test = new Test("BridgeDbMappingsTests", "hasSomeChemSpiderMappings");
 		// Getting the data
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/hasChemSpiderMappings.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("BridgeDbMappingsTests", "hasSomeChemSpiderMappings", table));
-		assertions.add(new AssertNotSame(
-			"BridgeDbMappingsTests", "hasSomeChemSpiderMappings", 
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertNotSame(test, 
 			0, table.getRowCount(), "Expected some mapped ChemSpider identifiers"
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> hasSomeEnsemblMappings(SPARQLHelper helper) throws Exception {
+		Test test = new Test("BridgeDbMappingsTests", "hasSomeEnsemblMappings");
 		// Getting the data
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/hasEnsemblMappings.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("BridgeDbMappingsTests", "hasSomeEnsemblMappings", table));
-		assertions.add(new AssertNotSame(
-			"BridgeDbMappingsTests", "hasSomeEnsemblMappings", 
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertNotSame(test, 
 			0, table.getRowCount(), "Expected some mapped Ensembl identifiers"
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> hasSomeUniprotMappings(SPARQLHelper helper) throws Exception {
+		Test test = new Test("BridgeDbMappingsTests", "hasSomeUniprotMappings");
 		// Getting the data
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/hasUniprotMappings.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("BridgeDbMappingsTests", "hasSomeUniprotMappings", table));
-		assertions.add(new AssertNotSame(
-			"BridgeDbMappingsTests", "hasSomeUniprotMappings", 
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertNotSame(test, 
 			0, table.getRowCount(), "Expected some mapped UniProt identifiers"
 		));
 		return assertions;

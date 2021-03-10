@@ -38,6 +38,10 @@ public class AssertNotSame extends AbstractAssertion implements IAssertion {
 		this.value = value;
 	}
 	
+	public AssertNotSame(Test test, Object expectedValue, Object value, String message) {
+		this(test, false, expectedValue, value, message);
+	}
+	
 	@Deprecated
 	public AssertNotSame(String testClass, String test, Object expectedValue, Object value, String message, String details) {
 		this(new Test(testClass, test), false, expectedValue, value, message);
