@@ -111,29 +111,20 @@ public class OudatedDataSources extends JUnitTests {
 
 	@Test
 	public void noInChIDataSourceYet() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("outdated/inchi.rq");
-		Assertions.assertNotNull(sparql);
-		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertEquals(0, table.getRowCount(), "Don't use 'InChI' data sources yet, but found:\n" + table);
-		});
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = OudatedDataSourcesTests.noInChIDataSourceYet(helper);
+		performAssertions(assertions);
 	}
 
 	@Test
 	public void outdatedKeggCompoundDataSource() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("outdated/keggcompound.rq");
-		Assertions.assertNotNull(sparql);
-		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			// the metabolite test pathway has one outdated Kegg Compound deliberately (WP2582)
-			Assertions.assertTrue(table.getRowCount() <= 1, "Outdated 'Kegg Compound' data sources (use 'KEGG Compound'):\n" + table);
-		});
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = OudatedDataSourcesTests.outdatedKeggCompoundDataSource(helper);
+		performAssertions(assertions);
 	}
 
 	@Test

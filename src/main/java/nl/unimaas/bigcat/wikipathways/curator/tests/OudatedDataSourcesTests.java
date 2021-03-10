@@ -48,6 +48,8 @@ public class OudatedDataSourcesTests {
 		assertions.addAll(outdatedUniprot4(helper));
 		assertions.addAll(oldUniprotSwissProt(helper));
 		assertions.addAll(wrongPubChem(helper));
+		assertions.addAll(noInChIDataSourceYet(helper));
+		assertions.addAll(outdatedKeggCompoundDataSource(helper));
 		return assertions;
 	}
 
@@ -123,6 +125,31 @@ public class OudatedDataSourcesTests {
 		// the metabolite test pathway has one outdated PubChem deliberately (WP2582)
 		assertions.add(new AssertTrue(test,
 			(table.getRowCount() <= 1), "Outdated 'PubChem' data sources (use 'PubChem-compound' or 'PubChem-substance')", "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> noInChIDataSourceYet(SPARQLHelper helper) throws Exception {
+		Test test = new Test("OudatedDataSourcesTests", "noInChIDataSourceYet");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("outdated/inchi.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test,
+			0, table.getRowCount(), "Don't use 'InChI' data sources yet, but found:", "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> outdatedKeggCompoundDataSource(SPARQLHelper helper) throws Exception {
+		Test test = new Test("OudatedDataSourcesTests", "outdatedKeggCompoundDataSource");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("outdated/keggcompound.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		// the metabolite test pathway has one outdated Kegg Compound deliberately (WP2582)
+		assertions.add(new AssertTrue(test,
+			(table.getRowCount() <= 1), "Outdated 'Kegg Compound' data sources (use 'KEGG Compound')", "" + table
 		));
 		return assertions;
 	}
