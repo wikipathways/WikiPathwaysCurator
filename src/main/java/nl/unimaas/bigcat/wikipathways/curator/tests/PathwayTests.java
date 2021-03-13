@@ -114,20 +114,28 @@ public class PathwayTests {
 		return assertions;
 	}
 
+	@SuppressWarnings("serial")
+	static List<String> noSpeciesMatch = new ArrayList<String>() {{
+		add("WP3396"); // in WP3632, reason in GPML: "mouse pathway not yet available"
+	}};
+
 	public static List<IAssertion> speciesMismatch(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/speciesMismatch.rq");
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull("PathwayTests", "linksToDeletedPathways", table));
 		String errors = "";
-		int errorCount = table.getRowCount();
+		int errorCount = 0;
 		for (int i=1; i<=table.getRowCount(); i++) {
 			String pathwayPage = table.get(i, "linkingHomepage");
 			String species = table.get(i, "linkingOrganism");
 			String identifier = table.get(i, "linkedID");
-			String linkedSpecies = table.get(i, "linkedOrganism");
-			errors += pathwayPage + " is " + species + " but links to pathway " + identifier +
-				" which is " + linkedSpecies + "\n ";
+			if (!noSpeciesMatch.contains(identifier)) {
+				String linkedSpecies = table.get(i, "linkedOrganism");
+				errors += pathwayPage + " is " + species + " but links to pathway " + identifier +
+						" which is " + linkedSpecies + "\n ";
+				errorCount++;
+			}
 		}
 		assertions.add(new AssertEquals("PathwayTests", "deletedPathways",
 			0, errorCount, "Found " + errorCount + " pathways that link to pathways of a different species", errors
