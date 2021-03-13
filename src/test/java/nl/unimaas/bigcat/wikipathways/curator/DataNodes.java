@@ -1,4 +1,4 @@
-/* Copyright (C) 2020  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2020-2021  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -27,6 +27,7 @@
 package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.time.Duration;
+import java.util.List;
 
 import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
@@ -35,7 +36,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-public class DataNodes {
+import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.tests.DataNodesTests;
+
+public class DataNodes extends JUnitTests {
 
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
@@ -129,25 +133,12 @@ public class DataNodes {
 	@Test
 	@Tag("covid")
 	public void dataNodesWithoutIdentifier() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("missing/dataNodesWithoutIdentifier.rq");
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			String errors = "";
-			int errorCount = 0;
-			if (table.getRowCount() > 0) {
-				for (int i=1; i<=table.getRowCount(); i++) {
-					errors += table.get(i, "homepage") + " " +
-						table.get(i, "node") + " (" +
-						table.get(i, "label") + ")\n";
-					errorCount++;
-				}
-			}
-			Assertions.assertEquals(
-				0, errorCount, "The following DataNodes have no identifier:\n" + errors
-			);
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = DataNodesTests.dataNodesWithoutIdentifier(helper);
+			performAssertions(assertions);
 		});
 	}
 }
