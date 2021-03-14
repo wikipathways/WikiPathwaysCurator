@@ -92,6 +92,10 @@ public class SPARQLHelper {
 		return table;
 	}
 
+	public long size() {
+		return this.model.size();
+	}
+	
 	public static StringMatrix sparql(String endpoint, String queryString)
 			throws Exception {
 		StringMatrix table = null;
