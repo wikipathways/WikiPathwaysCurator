@@ -49,6 +49,7 @@ public class PathwayTests {
 		assertions.addAll(linksToDeletedPathways(helper));
 		assertions.addAll(speciesMismatch(helper));
 		assertions.addAll(testRoundedRectangle(helper));
+		assertions.addAll(youMustCite(helper));
 		return assertions;
 	}
 
@@ -168,6 +169,19 @@ public class PathwayTests {
 		}
 		assertions.add(new AssertEquals("PathwayTests", "testRoundedRectangle",
 			0, errorCount, "Pathways DataNodes with WikiPathways ID that can be converted to have a RoundedRectangle StyleType so that they become clickable: " + errorCount, errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> youMustCite(SPARQLHelper helper) throws Exception {
+		Test test = new Test("PathwayTests", "youMustCite");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("general/youMustCite.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test, 0, table.getRowCount(),
+			"Pathway description that contain 'you must cite': " + table.getRowCount(),
+			"" + table
 		));
 		return assertions;
 	}

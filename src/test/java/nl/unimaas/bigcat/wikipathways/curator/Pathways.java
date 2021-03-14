@@ -91,4 +91,14 @@ public class Pathways extends JUnitTests {
 		performAssertions(assertions);
 	}
 
+	@Test
+	@Tag("foo")
+	public void youMustCite() throws Exception {
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = PathwayTests.youMustCite(helper);
+		performAssertions(assertions);
+	}
+
 }
