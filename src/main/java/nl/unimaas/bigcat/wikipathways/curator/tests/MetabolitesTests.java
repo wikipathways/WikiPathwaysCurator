@@ -90,7 +90,7 @@ public class MetabolitesTests {
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull("MetabolitesTests", "chemspiderIDsNotMarkedAsMetabolite", table));
 		assertions.add(new AssertEquals("MetabolitesTests", "chemspiderIDsNotMarkedAsMetabolite", 
-			0, table.getRowCount(), "Unexpected ChemSpider identifiers for non-metabolites", table.toString()
+			0, table.getRowCount(), "Unexpected ChemSpider identifiers for non-metabolites: " + table.getRowCount(), table.toString()
 		));
 		return assertions;
 	}
@@ -101,7 +101,7 @@ public class MetabolitesTests {
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull("MetabolitesTests", "HMDBIDsNotMarkedAsMetabolite", table));
 		assertions.add(new AssertEquals("MetabolitesTests", "HMDBIDsNotMarkedAsMetabolite", 
-			0, table.getRowCount(), "Unexpected HMDB identifiers for non-metabolites", table.toString()
+			0, table.getRowCount(), "Unexpected HMDB identifiers for non-metabolites: " + table.getRowCount(), table.toString()
 		));
 		return assertions;
 	}
@@ -112,7 +112,7 @@ public class MetabolitesTests {
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull("MetabolitesTests", "KEGGIDsNotMarkedAsMetabolite", table));
 		assertions.add(new AssertEquals("MetabolitesTests", "KEGGIDsNotMarkedAsMetabolite", 
-			0, table.getRowCount(), "Unexpected KEGG identifiers for non-metabolites", table.toString()
+			0, table.getRowCount(), "Unexpected KEGG identifiers for non-metabolites: " + table.getRowCount(), table.toString()
 		));
 		return assertions;
 	}

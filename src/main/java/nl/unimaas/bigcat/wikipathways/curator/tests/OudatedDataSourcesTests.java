@@ -141,7 +141,7 @@ public class OudatedDataSourcesTests {
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test,
-			0, table.getRowCount(), "Don't use 'InChI' data sources yet, but found:", "" + table
+			0, table.getRowCount(), "Don't use 'InChI' data sources yet, but found: " + table.getRowCount(), "" + table
 		));
 		return assertions;
 	}

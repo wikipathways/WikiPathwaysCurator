@@ -68,7 +68,7 @@ public class GeneralTests {
 			}
 		}
 		assertions.add(new AssertEquals("GeneralTests", "titlesShortEnough",
-			0, errorCount, "Too long pathway titles (>80 chars):" + errorCount, errors
+			0, errorCount, "Too long pathway titles (>80 chars): " + errorCount, errors
 		));
 		return assertions;
 	}
@@ -133,7 +133,7 @@ public class GeneralTests {
 			}
 		}
 		assertions.add(new AssertEquals("GeneralTests", "duplicateTitles",
-			0, errorCount, "Duplicate titles:\n" + errors
+			0, errorCount, "Duplicate titles: " + errorCount, errors
 		));
 		return assertions;
 	}
@@ -155,7 +155,7 @@ public class GeneralTests {
 			}
 		}
 		assertions.add(new AssertEquals("GeneralTests", "curationAndHypothetical",
-			0, errorCount, "Pathways tagged as Curation and Hypothetical:\n" + errors
+			0, errorCount, "Pathways tagged as Curation and Hypothetical: " + errorCount, errors
 		));
 		return assertions;
 	}
@@ -177,7 +177,7 @@ public class GeneralTests {
 			}
 		}
 		assertions.add(new AssertEquals("GeneralTests", "curationAndNeedsWork",
-			0, errorCount, "Pathways tagged as Curation and NeedsWork:\n" + errors
+			0, errorCount, "Pathways tagged as Curation and NeedsWork: " + errorCount, errors
 		));
 		return assertions;
 	}
@@ -199,7 +199,7 @@ public class GeneralTests {
 			}
 		}
 		assertions.add(new AssertEquals("GeneralTests", "curationAndReactome",
-			0, errorCount, "Pathways tagged as Curation and Reactome:\n" + errors
+			0, errorCount, "Pathways tagged as Curation and Reactome: " + errorCount, errors
 		));
 		return assertions;
 	}

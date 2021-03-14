@@ -109,7 +109,7 @@ public class ChEBIMetabolitesTests {
 	    		}
 	    		if (nonexisting.containsKey(identifier) && nonexisting.get(identifier) == null) {
 	    			errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
-					    " has a non-existing identifier CHEBI:" +
+					    " has a non-existing identifier CHEBI: " +
 					    identifier + "\n";
 	    			errorCount++;
 	    		}
