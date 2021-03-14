@@ -93,6 +93,7 @@ public class SPARQLHelper {
 	}
 
 	public long size() {
+		if (endpoint != null) return 1000000; // TODO: return the actual triple count?
 		return this.model.size();
 	}
 	
