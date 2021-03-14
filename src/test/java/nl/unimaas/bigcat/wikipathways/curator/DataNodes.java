@@ -58,75 +58,36 @@ public class DataNodes extends JUnitTests {
 	@Test
 	@Tag("expertCuration")
 	public void unknownTypes() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("missing/unknownType.rq");
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			String errors = "";
-			int errorCount = 0;
-			if (table.getRowCount() > 0) {
-				for (int i=1; i<=table.getRowCount(); i++) {
-					String datasource = table.hasColumn("datasource") ? table.get(i, "datasource") : "null";
-					errors += table.get(i, "homepage") + " " +
-						table.get(i, "node") + " (" + datasource + ")\n";
-					errorCount++;
-				}
-			}
-			Assertions.assertEquals(
-				0, errorCount, "The following DataNodes have Unknown @Type:\n" + errors
-			);
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = DataNodesTests.unknownTypes(helper);
+			performAssertions(assertions);
 		});
 	}
 
 	@Test
 	@Tag("expertCuration")
 	public void unknownTypes_Reactome() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("missing/unknownType_Reactome.rq");
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			String errors = "";
-			int errorCount = 0;
-			if (table.getRowCount() > 0) {
-				for (int i=1; i<=table.getRowCount(); i++) {
-					errors += table.get(i, "homepage") + " " +
-						table.get(i, "node") + " (" +
-						table.get(i, "datasource") + ")\n";
-					errorCount++;
-				}
-			}
-			Assertions.assertEquals(
-				0, errorCount, "The following DataNodes have Unknown @Type:\n" + errors
-			);
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = DataNodesTests.unknownTypes_Reactome(helper);
+			performAssertions(assertions);
 		});
 	}
 
 	@Test
 	@Tag("expertCuration")
 	public void unknownTypes_knownDatasource() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("missing/unknownTypeKnownDatasource.rq");
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			String errors = "";
-			int errorCount = 0;
-			if (table.getRowCount() > 0) {
-				for (int i=1; i<=table.getRowCount(); i++) {
-					errors += table.get(i, "homepage") + " " +
-						table.get(i, "node") + " (" +
-						table.get(i, "datasource") + ")\n";
-					errorCount++;
-				}
-			}
-			Assertions.assertEquals(
-				0, errorCount, "The following DataNodes have Unknown @Type:\n" + errors
-			);
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = DataNodesTests.unknownTypes_knownDatasource(helper);
+			performAssertions(assertions);
 		});
 	}
 
