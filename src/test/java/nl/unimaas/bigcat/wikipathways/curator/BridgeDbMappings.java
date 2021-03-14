@@ -26,32 +26,26 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
-import java.time.Duration;
-import java.util.List;
-
-import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 import nl.unimaas.bigcat.wikipathways.curator.tests.BridgeDbMappingsTests;
 
 public class BridgeDbMappings extends JUnitTests {
 
+	private static SPARQLHelper helper = null;
+
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
-		if (System.getProperty("SPARQLEP").startsWith("http")) {
-			// ok, assume the SPARQL end point is online
-			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
-		} else {
-			Model data = OPSWPRDFFiles.loadData();
-			Assertions.assertTrue(data.size() > 5000);
-			String parseErrors = OPSWPRDFFiles.getParseErrors();
-			Assertions.assertNotNull(parseErrors);
-			Assertions.assertEquals(0, parseErrors.length(), parseErrors.toString());
-		}
+		helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		Assertions.assertTrue(helper.size() > 5000);
+		String parseErrors = OPSWPRDFFiles.getParseErrors();
+		Assertions.assertNotNull(parseErrors);
+		Assertions.assertEquals(0, parseErrors.length(), parseErrors.toString());
 	}
 
 	@BeforeEach
@@ -59,46 +53,26 @@ public class BridgeDbMappings extends JUnitTests {
 
 	@Test
 	public void hasSomeEntrezGeneMappings() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = BridgeDbMappingsTests.hasSomeEntrezGeneMappings(helper);
-		performAssertions(assertions);
+		performAssertions(BridgeDbMappingsTests.hasSomeEntrezGeneMappings(helper));
 	}
 
 	@Test
 	public void hasSomeHMDBMappings() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			   : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = BridgeDbMappingsTests.hasSomeHMDBMappings(helper);
-		performAssertions(assertions);
+		performAssertions(BridgeDbMappingsTests.hasSomeHMDBMappings(helper));
 	}
 
 	@Test
 	public void hasSomeChemSpiderMappings() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = BridgeDbMappingsTests.hasSomeChemSpiderMappings(helper);
-		performAssertions(assertions);
+		performAssertions(BridgeDbMappingsTests.hasSomeChemSpiderMappings(helper));
 	}
 
 	@Test
 	public void hasSomeEnsemblMappings() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = BridgeDbMappingsTests.hasSomeChemSpiderMappings(helper);
-		performAssertions(assertions);
+		performAssertions(BridgeDbMappingsTests.hasSomeChemSpiderMappings(helper));
 	}
 
 	@Test
 	public void hasSomeUniprotMappings() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = BridgeDbMappingsTests.hasSomeUniprotMappings(helper);
-		performAssertions(assertions);
+		performAssertions(BridgeDbMappingsTests.hasSomeUniprotMappings(helper));
 	}
 }

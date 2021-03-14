@@ -46,6 +46,9 @@ public class DataNodes extends JUnitTests {
 			? new SPARQLHelper(System.getProperty("SPARQLEP"))
 			: new SPARQLHelper(OPSWPRDFFiles.loadData());
 		Assertions.assertTrue(helper.size() > 5000);
+		String parseErrors = OPSWPRDFFiles.getParseErrors();
+		Assertions.assertNotNull(parseErrors);
+		Assertions.assertEquals(0, parseErrors.length(), parseErrors.toString());
 	}
 
 	@BeforeEach

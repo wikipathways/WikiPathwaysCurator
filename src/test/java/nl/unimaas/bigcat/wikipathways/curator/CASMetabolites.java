@@ -27,29 +27,28 @@
 package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.time.Duration;
-import java.util.List;
 
-import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 import nl.unimaas.bigcat.wikipathways.curator.tests.CASMetabolitesTests;
 
 public class CASMetabolites extends JUnitTests {
 
+	private static SPARQLHelper helper = null;
+
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
-		if (System.getProperty("SPARQLEP").startsWith("http")) {
-			// ok, assume the SPARQL end point is online
-			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
-		} else {
-			Model data = OPSWPRDFFiles.loadData();
-			Assertions.assertTrue(data.size() > 5000);
-		}
+		helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		Assertions.assertTrue(helper.size() > 5000);
+		String parseErrors = OPSWPRDFFiles.getParseErrors();
+		Assertions.assertNotNull(parseErrors);
+		Assertions.assertEquals(0, parseErrors.length(), parseErrors.toString());
 	}
 
 	@BeforeEach
@@ -57,24 +56,16 @@ public class CASMetabolites extends JUnitTests {
 
 	@Test
 	public void deletedCASIdentifiers() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			List<IAssertion> assertions = CASMetabolitesTests.deletedCASIdentifiers(helper);
-			performAssertions(assertions);
+			performAssertions(CASMetabolitesTests.deletedCASIdentifiers(helper));
 		});
 	}
 
 	@Tag("noCovid")
 	@Test
 	public void outdatedIdentifiers() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			List<IAssertion> assertions = CASMetabolitesTests.outdatedIdentifiers(helper);
-			performAssertions(assertions);
+			performAssertions(CASMetabolitesTests.outdatedIdentifiers(helper));
 		});
 	}
 

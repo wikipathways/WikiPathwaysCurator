@@ -32,13 +32,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 import nl.unimaas.bigcat.wikipathways.curator.tests.ChEBIMetabolitesTests;
 
 public class ChEBIMetabolites extends JUnitTests {
@@ -51,15 +49,17 @@ public class ChEBIMetabolites extends JUnitTests {
 		  nonexisting.add("594834");
 	}}
 
+	private static SPARQLHelper helper = null;
+
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
-		if (System.getProperty("SPARQLEP").startsWith("http")) {
-			// ok, assume the SPARQL end point is online
-			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
-		} else {
-			Model data = OPSWPRDFFiles.loadData();
-			Assertions.assertTrue(data.size() > 5000);
-		}
+		helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		Assertions.assertTrue(helper.size() > 5000);
+		String parseErrors = OPSWPRDFFiles.getParseErrors();
+		Assertions.assertNotNull(parseErrors);
+		Assertions.assertEquals(0, parseErrors.length(), parseErrors.toString());
 
 		// now load the deprecation data
 		String deprecatedData = ResourceHelper.resourceAsString("metabolite/chebi/deprecated.csv");
@@ -68,7 +68,6 @@ public class ChEBIMetabolites extends JUnitTests {
 			String[] ids = lines[i].split(",");
 			oldToNew.put(ids[0], ids[1]);
 		}
-		System.out.println("size: " + oldToNew.size());
 	}
 
 	@BeforeEach
@@ -77,44 +76,28 @@ public class ChEBIMetabolites extends JUnitTests {
 	@Test
 	public void secondaryChEBIIdentifiers() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = ChEBIMetabolitesTests.secondaryChEBIIdentifiers(helper);
-			performAssertions(assertions);
+			performAssertions(ChEBIMetabolitesTests.secondaryChEBIIdentifiers(helper));
 		});
 	}
 
 	@Test
 	public void faultyChEBIIdentifiers() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = ChEBIMetabolitesTests.faultyChEBIIdentifiers(helper);
-			performAssertions(assertions);
+			performAssertions(ChEBIMetabolitesTests.faultyChEBIIdentifiers(helper));
 		});
 	}
 
 	@Test
 	public void faultyChEBIChEBIIdentifiers() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = ChEBIMetabolitesTests.faultyChEBIChEBIIdentifiers(helper);
-			performAssertions(assertions);
+			performAssertions(ChEBIMetabolitesTests.faultyChEBIChEBIIdentifiers(helper));
 		});
 	}
 
 	@Test
 	public void chebiDataTypo() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-				: new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = ChEBIMetabolitesTests.chebiDataTypo(helper);
-			performAssertions(assertions);
+			performAssertions(ChEBIMetabolitesTests.chebiDataTypo(helper));
 		});
 	}
 }
