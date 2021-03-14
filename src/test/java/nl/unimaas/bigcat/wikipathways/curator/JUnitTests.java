@@ -26,7 +26,7 @@ public class JUnitTests {
 					typedAssertion.getValue(),
 					typedAssertion.getMessage() +
 					(typedAssertion.hasLinkToDocs() ? (" (See " + typedAssertion.getLinkToDocs() + "). ") : "") +
-					"Details:\n" + typedAssertion.getDetails()
+					". Details:\n" + typedAssertion.getDetails()
 				);
 			} else if (assertion instanceof AssertNotSame) {
 				AssertNotSame typedAssertion = (AssertNotSame)assertion;
@@ -35,7 +35,7 @@ public class JUnitTests {
 					typedAssertion.getValue(),
 					typedAssertion.getMessage() +
 					(typedAssertion.hasLinkToDocs() ? (" (See " + typedAssertion.getLinkToDocs() + "). ") : "") +
-					"Details:\n" + typedAssertion.getDetails()
+					". Details:\n" + typedAssertion.getDetails()
 				);
 			} else if (assertion instanceof AssertNotNull) {
 				AssertNotNull typedAssertion = (AssertNotNull)assertion;
@@ -43,7 +43,7 @@ public class JUnitTests {
 					typedAssertion.getValue(),
 					typedAssertion.getMessage() +
 					(typedAssertion.hasLinkToDocs() ? (" (See " + typedAssertion.getLinkToDocs() + "). ") : "") +
-					"Details:\n" + typedAssertion.getDetails()
+					". Details:\n" + typedAssertion.getDetails()
 				);
 			} else if (assertion instanceof AssertTrue) {
 				AssertTrue typedAssertion = (AssertTrue)assertion;
@@ -51,7 +51,7 @@ public class JUnitTests {
 					(boolean)typedAssertion.getValue(),
 					typedAssertion.getMessage() +
 					(typedAssertion.hasLinkToDocs() ? (" (See " + typedAssertion.getLinkToDocs() + "). ") : "") +
-					"Details:\n" + typedAssertion.getDetails()
+					". Details:\n" + typedAssertion.getDetails()
 				);
 			} else {
 				Assertions.assertTrue(false, "Unrecognized assertion type: " + assertion.getClass().getName());
