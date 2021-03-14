@@ -38,6 +38,7 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotSame;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class EnsemblTests {
 
@@ -54,12 +55,13 @@ public class EnsemblTests {
 	}
 
 	public static List<IAssertion> outdatedIdentifiers(SPARQLHelper helper) throws Exception {
+		Test test = new Test("EnsemblTests", "outdatedIdentifiers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("genes/allEnsemblIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("EnsemblTests", "outdatedIdentifiers", table));
-		assertions.add(new AssertNotSame(
-			"EnsemblTests", "outdatedIdentifiers", 0, table.getColumnCount(), "Expected more than 0 Ensembl identifiers"
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertNotSame(test,
+			0, table.getColumnCount(), "Expected more than 0 Ensembl identifiers"
 		));
 		String errors = "";
 		int errorCount = 0;
@@ -73,17 +75,18 @@ public class EnsemblTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("EnsemblTests", "outdatedIdentifiers", 
+		assertions.add(new AssertEquals(test, 
 			0, errorCount, "Deprecated Ensembl identifiers: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> wrongEnsemblIDForHumanSpecies(SPARQLHelper helper) throws Exception {
+		Test test = new Test("EnsemblTests", "wrongEnsemblIDForHumanSpecies");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Human.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("EnsemblTests", "wrongEnsemblIDForHumanSpecies", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -103,39 +106,42 @@ public class EnsemblTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("EnsemblTests", "wrongEnsemblIDForHumanSpecies", 
+		assertions.add(new AssertEquals(test, 
 			0, errorCount, "Ensembl identifiers for wrong species for a human pathway: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> wrongEnsemblIDForRatSpecies(SPARQLHelper helper) throws Exception {
+		Test test = new Test("EnsemblTests", "wrongEnsemblIDForRatSpecies");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Rat.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("EnsemblTests", "wrongEnsemblIDForRatSpecies", table));
-		assertions.add(new AssertEquals("EnsemblTests", "wrongEnsemblIDForRatSpecies", 
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test, 
 			0, table.getRowCount(), "Ensembl identifiers for wrong species for a rat pathway: " + table.getRowCount()
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> wrongEnsemblIDForCowSpecies(SPARQLHelper helper) throws Exception {
+		Test test = new Test("EnsemblTests", "wrongEnsemblIDForCowSpecies");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Cow.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("EnsemblTests", "wrongEnsemblIDForCowSpecies", table));
-		assertions.add(new AssertEquals("EnsemblTests", "wrongEnsemblIDForCowSpecies", 
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test, 
 			0, table.getRowCount(), "Ensembl identifiers for wrong species for a cow pathway: " + table.getRowCount()
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> wrongEnsemblIDForMouseSpecies(SPARQLHelper helper) throws Exception {
+		Test test = new Test("EnsemblTests", "wrongEnsemblIDForMouseSpecies");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Mouse.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("EnsemblTests", "wrongEnsemblIDForMouseSpecies", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -158,7 +164,7 @@ public class EnsemblTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("EnsemblTests", "wrongEnsemblIDForMouseSpecies", 
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Ensembl identifiers for wrong species for a mouse pathway: " + errorCount, errors
 		));
 		return assertions;

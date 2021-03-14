@@ -38,6 +38,7 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotSame;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class CASMetabolitesTests {
 
@@ -70,12 +71,12 @@ public class CASMetabolitesTests {
 	}
 
 	public static List<IAssertion> deletedCASIdentifiers(SPARQLHelper helper) throws Exception {
+		Test test = new Test("CASMetabolitesTests", "deletedCASIdentifiers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/allCASIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("CASMetabolitesTests", "deletedCASIdentifiers", table));
-		assertions.add(new AssertNotSame(
-			"CASMetabolitesTests", "deletedCASIdentifiers", 0, oldToNew.size(),
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertNotSame(test, 0, oldToNew.size(),
 			"Error while loading the deleted CAS numbers"
 		));
 		String errors = "";
@@ -92,20 +93,19 @@ public class CASMetabolitesTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals(
-			"CASMetabolitesTests", "deletedCASIdentifiers",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Deleted CAS registry numbers detected: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> outdatedIdentifiers(SPARQLHelper helper) throws Exception {
+		Test test = new Test("CASMetabolitesTests", "outdatedIdentifiers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/allCASIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("CASMetabolitesTests", "outdatedIdentifiers", table));
-		assertions.add(new AssertNotSame(
-			"CASMetabolitesTests", "outdatedIdentifiers", 0, oldToNew.size(),
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertNotSame(test, 0, oldToNew.size(),
 			"Error while loading the deleted CAS numbers"
 		));
 		String errors = "";
@@ -120,8 +120,7 @@ public class CASMetabolitesTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals(
-			"CASMetabolitesTests", "outdatedIdentifiers",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Deprecated CAS Registry numbers for non-metabolites: " + errorCount, errors
 		));
 		return assertions;

@@ -38,6 +38,7 @@ import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class ChEBIMetabolitesTests {
 
@@ -65,10 +66,11 @@ public class ChEBIMetabolitesTests {
 	}
 
 	public static List<IAssertion> secondaryChEBIIdentifiers(SPARQLHelper helper) throws Exception {
+		Test test = new Test("ChEBIMetabolitesTests", "secondaryChEBIIdentifiers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/allChEBIIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("ChEBIMetabolitesTests", "secondaryChEBIIdentifiers", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -86,18 +88,18 @@ public class ChEBIMetabolitesTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals(
-			"ChEBIMetabolitesTests", "secondaryChEBIIdentifiers",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Secondary ChEBI identifiers detected: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> faultyChEBIIdentifiers(SPARQLHelper helper) throws Exception {
+		Test test = new Test("ChEBIMetabolitesTests", "faultyChEBIIdentifiers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/allChEBIIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("ChEBIMetabolitesTests", "faultyChEBIIdentifiers", table));
+		assertions.add(new AssertNotNull(test, table));
 	    String errors = "";
 	    int errorCount = 0;
 	    if (table.getRowCount() > 0) {
@@ -115,19 +117,18 @@ public class ChEBIMetabolitesTests {
 	    		}
 	    	}
 	    }
-		assertions.add(new AssertEquals(
-			"ChEBIMetabolitesTests", "faultyChEBIIdentifiers",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Non-existing ChEBI identifiers detected: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> chebiDataTypo(SPARQLHelper helper) throws Exception {
+		Test test = new Test("ChEBIMetabolitesTests", "chebiDataTypo");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/chebi.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertEquals(
-			"ChEBIMetabolitesTests", "chebiDataTypo",
+		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Typo 'CHEBI' data sources (use 'ChEBI'): " + table.getRowCount(),
 			"" +table
 		));
@@ -135,6 +136,7 @@ public class ChEBIMetabolitesTests {
 	}
 
 	public static List<IAssertion> faultyChEBIChEBIIdentifiers(SPARQLHelper helper) throws Exception {
+		Test test = new Test("ChEBIMetabolitesTests", "faultyChEBIChEBIIdentifiers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/allChEBIIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
@@ -151,8 +153,7 @@ public class ChEBIMetabolitesTests {
 	    		}
 	    	}
 	    }
-		assertions.add(new AssertEquals(
-			"ChEBIMetabolitesTests", "faultyChEBIChEBIIdentifiers",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Faulty ChEBI identifiers detected: " + errorCount, errors
 		));
 		return assertions;

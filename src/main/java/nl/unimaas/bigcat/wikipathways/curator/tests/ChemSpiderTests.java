@@ -37,6 +37,7 @@ import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class ChemSpiderTests {
 
@@ -50,10 +51,11 @@ public class ChemSpiderTests {
 	}
 
 	public static List<IAssertion> outdatedIdentifiers(SPARQLHelper helper) throws Exception {
+		Test test = new Test("ChemSpiderTests", "outdatedIdentifiers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/allChemSpiderIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("ChemSpiderTests", "outdatedIdentifiers", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -70,18 +72,18 @@ public class ChemSpiderTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals(
-			"ChemSpiderTests", "outdatedIdentifiers",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Deprecated ChemSpider identifiers for non-metabolites: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> chemSpiderIDsNotNumbers(SPARQLHelper helper) throws Exception {
+		Test test = new Test("ChemSpiderTests", "chemSpiderIDsNotNumbers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/allChemSpiderIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("ChemSpiderTests", "chemSpiderIDsNotNumbers", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -95,8 +97,7 @@ public class ChemSpiderTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals(
-			"ChemSpiderTests", "chemSpiderIDsNotNumbers",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "ChemSpider identifiers that are not integers: " + errorCount, errors
 		));
 		return assertions;
