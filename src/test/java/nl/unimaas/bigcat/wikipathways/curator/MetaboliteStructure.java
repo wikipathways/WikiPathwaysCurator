@@ -1,4 +1,4 @@
-/* Copyright (C) 2013,2018  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2013,2018,2021  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -26,29 +26,27 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
-import java.util.List;
-
-import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 import nl.unimaas.bigcat.wikipathways.curator.tests.MetaboliteStructureTests;
 
 public class MetaboliteStructure extends JUnitTests {
 
+	private static SPARQLHelper helper = null;
+
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
-		if (System.getProperty("SPARQLEP").startsWith("http")) {
-			// ok, assume the SPARQL end point is online
-			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
-		} else {
-			Model data = OPSWPRDFFiles.loadData();
-			Assertions.assertTrue(data.size() > 5000);
-		}
+		helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		Assertions.assertTrue(helper.size() > 5000);
+		String parseErrors = OPSWPRDFFiles.getParseErrors();
+		Assertions.assertNotNull(parseErrors);
+		Assertions.assertEquals(0, parseErrors.length(), parseErrors.toString());
 	}
 
 	@BeforeEach
@@ -57,20 +55,12 @@ public class MetaboliteStructure extends JUnitTests {
 	@Tag("noCovid")
 	@Test
 	public void nullDataSources() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			: new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = MetaboliteStructureTests.nullDataSources(helper);
-		performAssertions(assertions);
+		performAssertions(MetaboliteStructureTests.nullDataSources(helper));
 	}
 
 	@Test
 	public void isPartOfAPathway() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			: new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = MetaboliteStructureTests.isPartOfAPathway(helper);
-		performAssertions(assertions);
+		performAssertions(MetaboliteStructureTests.isPartOfAPathway(helper));
 	}
 
 }

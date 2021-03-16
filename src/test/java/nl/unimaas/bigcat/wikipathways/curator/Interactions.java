@@ -1,4 +1,4 @@
-/* Copyright (C) 2016,2018-2020  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2016,2018-2021  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -27,31 +27,28 @@
 package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.time.Duration;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
-import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 import nl.unimaas.bigcat.wikipathways.curator.tests.InteractionTests;
 
 public class Interactions extends JUnitTests {
 
+	private static SPARQLHelper helper = null;
+
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
-		if (System.getProperty("SPARQLEP").startsWith("http")) {
-			// ok, assume the SPARQL end point is online
-			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
-		} else {
-			Model data = OPSWPRDFFiles.loadData();
-			Assertions.assertTrue(data.size() > 5000);
-		}
+		helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		Assertions.assertTrue(helper.size() > 5000);
+		String parseErrors = OPSWPRDFFiles.getParseErrors();
+		Assertions.assertNotNull(parseErrors);
+		Assertions.assertEquals(0, parseErrors.length(), parseErrors.toString());
 	}
 
 	@BeforeEach
@@ -59,80 +56,52 @@ public class Interactions extends JUnitTests {
 
 	@Test
 	public void noMetaboliteToNonMetaboliteConversions() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			List<IAssertion> assertions = InteractionTests.noMetaboliteToNonMetaboliteConversions(helper);
-			performAssertions(assertions);
+			performAssertions(InteractionTests.noMetaboliteToNonMetaboliteConversions(helper));
 		});
 	}
 
 	@Test
 	public void noNonMetaboliteToMetaboliteConversions() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:")) 
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			List<IAssertion> assertions = InteractionTests.noNonMetaboliteToMetaboliteConversions(helper);
-			performAssertions(assertions);
+			performAssertions(InteractionTests.noNonMetaboliteToMetaboliteConversions(helper));
 		});
 	}
 
 	@Test
 	public void noGeneProteinConversions() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:")) 
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			List<IAssertion> assertions = InteractionTests.noGeneProteinConversions(helper);
-			performAssertions(assertions);
+			performAssertions(InteractionTests.noGeneProteinConversions(helper));
 		});
 	}
 
 	@Test
 	public void noProteinProteinConversions() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:")) 
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			List<IAssertion> assertions = InteractionTests.noProteinProteinConversions(helper);
-			performAssertions(assertions);
+			performAssertions(InteractionTests.noProteinProteinConversions(helper));
 		});
 	}
 
 	@Test
 	public void nonNumericIDs() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:")) 
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			List<IAssertion> assertions = InteractionTests.nonNumericIDs(helper);
-			performAssertions(assertions);
+			performAssertions(InteractionTests.nonNumericIDs(helper));
 		});
 	}
 
 	@Tag("expertCuration")
 	@Test
 	public void interactionsWithLabels() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:")) 
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			List<IAssertion> assertions = InteractionTests.interactionsWithLabels(helper);
-			performAssertions(assertions);
+			performAssertions(InteractionTests.interactionsWithLabels(helper));
 		});
 	}
 
 	@Tag("expertCuration")
 	@Test
 	public void possibleTranslocations() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			List<IAssertion> assertions = InteractionTests.possibleTranslocations(helper);
-			performAssertions(assertions);
+			performAssertions(InteractionTests.possibleTranslocations(helper));
 		});
 	}
 }
