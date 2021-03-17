@@ -26,35 +26,39 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
-import java.util.List;
-
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 import nl.unimaas.bigcat.wikipathways.curator.tests.ProteinsTests;
 
 public class Proteins extends JUnitTests {
+
+	private static SPARQLHelper helper = null;
+
+	@BeforeAll
+	public static void loadData() throws InterruptedException {
+		helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		Assertions.assertTrue(helper.size() > 5000);
+		String parseErrors = OPSWPRDFFiles.getParseErrors();
+		Assertions.assertNotNull(parseErrors);
+		Assertions.assertEquals(0, parseErrors.length(), parseErrors.toString());
+	}
 
 	@BeforeEach
 	public void waitForIt() throws InterruptedException { Thread.sleep(OPSWPRDFFiles.SLEEP_TIME); }
 
 	@Test
 	public void wrongBrendaFormat() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-	        : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = ProteinsTests.wrongBrendaFormat(helper);
-		performAssertions(assertions);
+		performAssertions(ProteinsTests.wrongBrendaFormat(helper));
 	}
 
 	@Test
 	public void wrongEnzymeNomenclatureFormat() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-	        : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = ProteinsTests.wrongEnzymeNomenclatureFormat(helper);
-		performAssertions(assertions);
+		performAssertions(ProteinsTests.wrongEnzymeNomenclatureFormat(helper));
 	}
 
 }
