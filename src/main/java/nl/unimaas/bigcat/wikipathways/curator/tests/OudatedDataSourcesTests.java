@@ -52,6 +52,8 @@ public class OudatedDataSourcesTests {
 		assertions.addAll(outdatedKeggCompoundDataSource(helper));
 		assertions.addAll(outdatedKeggCompoundDataSource2(helper));
 		assertions.addAll(outdatedKeggOrthologDataSource(helper));
+		assertions.addAll(outdatedKeggEnzymeDataSource(helper));
+		assertions.addAll(outdatedEnsemblMouseDataSource(helper));
 		return assertions;
 	}
 
@@ -183,6 +185,31 @@ public class OudatedDataSourcesTests {
 		// the metabolite test pathway has one outdated Kegg Compound deliberately (WP2582)
 		assertions.add(new AssertTrue(test,
 			(table.getRowCount() <= 1), "Outdated 'Kegg ortholog' data sources", "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> outdatedKeggEnzymeDataSource(SPARQLHelper helper) throws Exception {
+		Test test = new Test("OudatedDataSourcesTests", "outdatedKeggEnzymeDataSource");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("outdated/keggenzyme.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		// the metabolite test pathway has one outdated Kegg enzyme deliberately (WP2582)
+		assertions.add(new AssertTrue(test,
+			(table.getRowCount() <= 1), "Outdated 'Kegg enzyme' data sources", "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> outdatedEnsemblMouseDataSource(SPARQLHelper helper) throws Exception {
+		Test test = new Test("OudatedDataSourcesTests", "outdatedEnsemblMouseDataSource");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("outdated/ensembl.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertTrue(test,
+			(table.getRowCount() <= 1), "Outdated 'Ensembl Mouse' data sources (use 'Ensembl')", "" + table
 		));
 		return assertions;
 	}

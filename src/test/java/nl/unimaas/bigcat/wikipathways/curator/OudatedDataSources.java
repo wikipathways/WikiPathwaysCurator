@@ -152,31 +152,28 @@ public class OudatedDataSources extends JUnitTests {
 
 	@Test
 	public void outdatedKeggEnzymeDataSource() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("outdated/keggenzyme.rq");
-		Assertions.assertNotNull(sparql);
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			// the metabolite test pathway has one outdated Kegg enzyme deliberately (WP2582)
-			Assertions.assertTrue(table.getRowCount() <= 1, "Outdated 'Kegg enzyme' data sources:\n" + table);
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = OudatedDataSourcesTests.outdatedKeggEnzymeDataSource(helper);
+			performAssertions(assertions);
 		});
 	}
 
+	@Tag("foo")
 	@Test
 	public void outdatedEnsemblMouseDataSource() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("outdated/ensembl.rq");
-		Assertions.assertNotNull(sparql);
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertTrue(table.getRowCount() < 1, "Outdated 'Ensembl Mouse' data sources (use 'Ensembl'):\n" + table);
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = OudatedDataSourcesTests.outdatedEnsemblMouseDataSource(helper);
+			performAssertions(assertions);
 		});
 	}
 
+	@Tag("foo")
 	@Test
 	public void outdatedEnsemblCapsSource() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("outdated/ensemblCaps.rq");
