@@ -1,4 +1,4 @@
-/* Copyright (C) 2018  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2018,2021  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -28,33 +28,29 @@ package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.time.Duration;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 import nl.unimaas.bigcat.wikipathways.curator.tests.WikidataTests;
 
 public class Wikidata extends JUnitTests {
 
+	private static SPARQLHelper helper = null;
+
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
-		if (System.getProperty("SPARQLEP").startsWith("http")) {
-			// ok, assume the SPARQL end point is online
-			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
-		} else {
-			Model data = OPSWPRDFFiles.loadData();
-			Assertions.assertTrue(data.size() > 5000);
-			String parseErrors = OPSWPRDFFiles.getParseErrors();
-			Assertions.assertNotNull(parseErrors);
-			Assertions.assertEquals(0, parseErrors.length(), parseErrors.toString());
-		}
+		helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		Assertions.assertTrue(helper.size() > 5000);
+		String parseErrors = OPSWPRDFFiles.getParseErrors();
+		Assertions.assertNotNull(parseErrors);
+		Assertions.assertEquals(0, parseErrors.length(), parseErrors.toString());
 	}
 
 	@BeforeEach
@@ -63,110 +59,66 @@ public class Wikidata extends JUnitTests {
 	@Tag("expertCuration")
 	@Test
 	public void chebiWithoutMapping_Reactome() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = WikidataTests.chebiWithoutMapping_Reactome(helper);
-		performAssertions(assertions);
+		performAssertions(WikidataTests.chebiWithoutMapping_Reactome(helper));
 	}
 
 	@Tag("wikidata")
 	@Test
 	public void chebiWithoutMapping() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = WikidataTests.chebiWithoutMapping(helper);
-		performAssertions(assertions);
+		performAssertions(WikidataTests.chebiWithoutMapping(helper));
 	}
 
 	@Tag("wikidata")
 	@Test
 	public void casWithoutMapping() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = WikidataTests.casWithoutMapping(helper);
-		performAssertions(assertions);
+		performAssertions(WikidataTests.casWithoutMapping(helper));
 	}
 
 	@Tag("wikidata")
 	@Test
 	public void hmdbWithoutMapping() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = WikidataTests.hmdbWithoutMapping(helper);
-		performAssertions(assertions);
+		performAssertions(WikidataTests.hmdbWithoutMapping(helper));
 	}
 
 	@Tag("wikidata")
 	@Test
 	public void keggWithoutMapping() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = WikidataTests.keggWithoutMapping(helper);
-		performAssertions(assertions);
+		performAssertions(WikidataTests.keggWithoutMapping(helper));
 	}
 
 	@Tag("wikidata")
 	@Test
 	public void pubchemCIDWithoutMapping() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = WikidataTests.pubchemCIDWithoutMapping(helper);
-		performAssertions(assertions);
+		performAssertions(WikidataTests.pubchemCIDWithoutMapping(helper));
 	}
 
 	@Tag("wikidata")
 	@Test
 	public void chemspiderCIDWithoutMapping() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = WikidataTests.chemspiderCIDWithoutMapping(helper);
-		performAssertions(assertions);
+		performAssertions(WikidataTests.chemspiderCIDWithoutMapping(helper));
 	}
 
 	@Tag("wikidata")
 	@Test
 	public void lipidMapsWithoutMapping() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = WikidataTests.lipidMapsWithoutMapping(helper);
-		performAssertions(assertions);
+		performAssertions(WikidataTests.lipidMapsWithoutMapping(helper));
 	}
 
 	@Tag("wikidata")
 	@Test
 	public void kNApSAcKWithoutMapping() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = WikidataTests.kNApSAcKWithoutMapping(helper);
-		performAssertions(assertions);
+		performAssertions(WikidataTests.kNApSAcKWithoutMapping(helper));
 	}
 
 	@Tag("wikidata")
 	@Test
 	public void replaceWikipedia() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = WikidataTests.replaceWikipedia(helper);
-		performAssertions(assertions);
+		performAssertions(WikidataTests.replaceWikipedia(helper));
 	}
 
 	@Test
 	public void wikidataIdentifiersWrong() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = WikidataTests.wikidataIdentifiersWrong(helper);
-		performAssertions(assertions);
+		performAssertions(WikidataTests.wikidataIdentifiersWrong(helper));
 	}
 
 	private static Set<String> allowedDuplicates = new HashSet<>();
@@ -177,21 +129,13 @@ public class Wikidata extends JUnitTests {
 	@Tag("wikidata")
 	@Test
 	public void duplicateWikidataMappings() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = WikidataTests.duplicateWikidataMappings(helper);
-		performAssertions(assertions);
+		performAssertions(WikidataTests.duplicateWikidataMappings(helper));
 	}
 
 	@Test
 	public void wikDataTypo() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = WikidataTests.wikDataTypo(helper);
-			performAssertions(assertions);
+			performAssertions(WikidataTests.wikDataTypo(helper));
 		});
 	}
 
@@ -199,10 +143,6 @@ public class Wikidata extends JUnitTests {
 	@Tag("noCovid")
 	@Test
 	public void noWikidataForGenes() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = WikidataTests.noWikidataForGenes(helper);
-		performAssertions(assertions);
+		performAssertions(WikidataTests.noWikidataForGenes(helper));
 	}
 }
