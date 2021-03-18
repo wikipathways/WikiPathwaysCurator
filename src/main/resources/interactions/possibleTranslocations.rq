@@ -18,4 +18,5 @@ WHERE {
       rdfs:label ?targetLabel ;
       wp:bdbWikidata ?targetQ .
    FILTER (?sourceQ = ?targetQ)
+   MINUS { ?interaction a wp:Translocation }
 }
