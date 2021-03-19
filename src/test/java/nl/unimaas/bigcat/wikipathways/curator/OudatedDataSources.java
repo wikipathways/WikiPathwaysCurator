@@ -161,7 +161,6 @@ public class OudatedDataSources extends JUnitTests {
 		});
 	}
 
-	@Tag("foo")
 	@Test
 	public void outdatedEnsemblMouseDataSource() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
@@ -173,56 +172,47 @@ public class OudatedDataSources extends JUnitTests {
 		});
 	}
 
-	@Tag("foo")
 	@Test
 	public void outdatedEnsemblCapsSource() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("outdated/ensemblCaps.rq");
-		Assertions.assertNotNull(sparql);
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertTrue(table.getRowCount() < 1, "Outdated 'ENSEMBL' data sources (use 'Ensembl'):\n" + table);
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+				   : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = OudatedDataSourcesTests.outdatedEnsemblCapsSource(helper);
+			performAssertions(assertions);
 		});
 	}
 
 	@Test
 	public void outdatedEnsemblHumanDataSource() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("outdated/ensembl2.rq");
-		Assertions.assertNotNull(sparql);
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertTrue(table.getRowCount() < 1, "Outdated 'Ensembl Human' data sources (use 'Ensembl'):\n" + table);
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = OudatedDataSourcesTests.outdatedEnsemblHumanDataSource(helper);
+			performAssertions(assertions);
 		});
 	}
 
 	@Test
 	public void outdatedEnsemblMouseDataSourceFromGPML() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("outdated/ensembl_gpml.rq");
-		Assertions.assertNotNull(sparql);
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertTrue(table.getRowCount() < 1, "Outdated 'Ensembl Mouse' data sources (use 'Ensembl'):\n" + table);
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = OudatedDataSourcesTests.outdatedEnsemblMouseDataSourceFromGPML(helper);
+			performAssertions(assertions);
 		});
 	}
 
 	@Test
 	public void outdatedEnsemblHumanDataSourceFromGPML() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("outdated/ensembl2_gpml.rq");
-		Assertions.assertNotNull(sparql);
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertTrue(table.getRowCount() < 1, "Outdated 'Ensembl Human' data sources (use 'Ensembl'):\n" + table);
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = OudatedDataSourcesTests.outdatedEnsemblHumanDataSourceFromGPML(helper);
+			performAssertions(assertions);
 		});
 	}
 

@@ -54,6 +54,10 @@ public class OudatedDataSourcesTests {
 		assertions.addAll(outdatedKeggOrthologDataSource(helper));
 		assertions.addAll(outdatedKeggEnzymeDataSource(helper));
 		assertions.addAll(outdatedEnsemblMouseDataSource(helper));
+		assertions.addAll(outdatedEnsemblCapsSource(helper));
+		assertions.addAll(outdatedEnsemblHumanDataSource(helper));
+		assertions.addAll(outdatedEnsemblMouseDataSourceFromGPML(helper));
+		assertions.addAll(outdatedEnsemblHumanDataSourceFromGPML(helper));
 		return assertions;
 	}
 
@@ -210,6 +214,54 @@ public class OudatedDataSourcesTests {
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertTrue(test,
 			(table.getRowCount() <= 1), "Outdated 'Ensembl Mouse' data sources (use 'Ensembl')", "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> outdatedEnsemblCapsSource(SPARQLHelper helper) throws Exception {
+		Test test = new Test("OudatedDataSourcesTests", "outdatedEnsemblCapsSource");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("outdated/ensemblCaps.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertTrue(test,
+			(table.getRowCount() < 1), "Outdated 'ENSEMBL' data sources (use 'Ensembl')", "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> outdatedEnsemblHumanDataSource(SPARQLHelper helper) throws Exception {
+		Test test = new Test("OudatedDataSourcesTests", "outdatedEnsemblHumanDataSource");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("outdated/ensembl2.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertTrue(test,
+			(table.getRowCount() < 1), "Outdated 'Ensembl Human' data sources (use 'Ensembl')", "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> outdatedEnsemblMouseDataSourceFromGPML(SPARQLHelper helper) throws Exception {
+		Test test = new Test("OudatedDataSourcesTests", "outdatedEnsemblMouseDataSourceFromGPML");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("outdated/ensembl_gpml.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertTrue(test,
+			(table.getRowCount() < 1), "Outdated 'Ensembl Mouse' data sources (use 'Ensembl')", "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> outdatedEnsemblHumanDataSourceFromGPML(SPARQLHelper helper) throws Exception {
+		Test test = new Test("OudatedDataSourcesTests", "outdatedEnsemblHumanDataSourceFromGPML");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("outdated/ensembl2_gpml.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertTrue(test,
+			(table.getRowCount() < 1), "Outdated 'Ensembl Human' data sources (use 'Ensembl')", "" + table
 		));
 		return assertions;
 	}
