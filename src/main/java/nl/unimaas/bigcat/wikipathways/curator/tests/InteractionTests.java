@@ -241,6 +241,7 @@ public class InteractionTests {
 		assertions.add(new AssertNotNull("InteractionTests", "noProteinProteinConversions", table));
 		Set<String> allowedProteinSubstrates = new HashSet<String>();
 		allowedProteinSubstrates.add("https://identifiers.org/uniprot/P0DTD1"); // SARS-CoV-2 main protease
+		allowedProteinSubstrates.add("https://identifiers.org/uniprot/P0DTC2"); // SARS-CoV-2 spike protein (resulting in S1, S2, S2'
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
