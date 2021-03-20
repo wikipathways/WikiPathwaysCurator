@@ -58,6 +58,7 @@ public class OudatedDataSourcesTests {
 		assertions.addAll(outdatedEnsemblHumanDataSource(helper));
 		assertions.addAll(outdatedEnsemblMouseDataSourceFromGPML(helper));
 		assertions.addAll(outdatedEnsemblHumanDataSourceFromGPML(helper));
+		assertions.addAll(outdatedEnsemblYeastDataSource(helper));
 		return assertions;
 	}
 
@@ -262,6 +263,18 @@ public class OudatedDataSourcesTests {
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertTrue(test,
 			(table.getRowCount() < 1), "Outdated 'Ensembl Human' data sources (use 'Ensembl')", "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> outdatedEnsemblYeastDataSource(SPARQLHelper helper) throws Exception {
+		Test test = new Test("OudatedDataSourcesTests", "outdatedEnsemblYeastDataSource");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("outdated/ensembl3.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertTrue(test,
+			(table.getRowCount() < 1), "Outdated 'Ensembl Yeast' data sources (use 'Ensembl')", "" + table
 		));
 		return assertions;
 	}
