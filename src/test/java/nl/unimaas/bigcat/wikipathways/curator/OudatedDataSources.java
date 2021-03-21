@@ -222,7 +222,7 @@ public class OudatedDataSources extends JUnitTests {
 			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
 				? new SPARQLHelper(System.getProperty("SPARQLEP"))
 			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = OudatedDataSourcesTests.outdatedEnsemblHumanDataSourceFromGPML(helper);
+			List<IAssertion> assertions = OudatedDataSourcesTests.outdatedEnsemblYeastDataSource(helper);
 			performAssertions(assertions);
 		});
 	}
