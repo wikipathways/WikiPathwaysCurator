@@ -229,14 +229,12 @@ public class OudatedDataSources extends JUnitTests {
 
 	@Test
 	public void outdatedEnsemblCowDataSource() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("outdated/ensembl4.rq");
-		Assertions.assertNotNull(sparql);
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertTrue(table.getRowCount() < 1, "Outdated 'Ensembl Cow' data sources (use 'Ensembl'):\n" + table);
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = OudatedDataSourcesTests.outdatedEnsemblCowDataSource(helper);
+			performAssertions(assertions);
 		});
 	}
 

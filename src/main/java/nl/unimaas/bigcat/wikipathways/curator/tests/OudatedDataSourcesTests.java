@@ -59,6 +59,7 @@ public class OudatedDataSourcesTests {
 		assertions.addAll(outdatedEnsemblMouseDataSourceFromGPML(helper));
 		assertions.addAll(outdatedEnsemblHumanDataSourceFromGPML(helper));
 		assertions.addAll(outdatedEnsemblYeastDataSource(helper));
+		assertions.addAll(outdatedEnsemblCowDataSource(helper));
 		return assertions;
 	}
 
@@ -271,6 +272,18 @@ public class OudatedDataSourcesTests {
 		Test test = new Test("OudatedDataSourcesTests", "outdatedEnsemblYeastDataSource");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/ensembl3.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertTrue(test,
+			(table.getRowCount() < 1), "Outdated 'Ensembl Yeast' data sources (use 'Ensembl')", "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> outdatedEnsemblCowDataSource(SPARQLHelper helper) throws Exception {
+		Test test = new Test("OudatedDataSourcesTests", "outdatedEnsemblCowDataSource");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("outdated/ensembl4.rq");
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertTrue(test,
