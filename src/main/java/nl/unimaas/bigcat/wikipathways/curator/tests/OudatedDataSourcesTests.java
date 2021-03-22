@@ -60,6 +60,9 @@ public class OudatedDataSourcesTests {
 		assertions.addAll(outdatedEnsemblHumanDataSourceFromGPML(helper));
 		assertions.addAll(outdatedEnsemblYeastDataSource(helper));
 		assertions.addAll(outdatedEnsemblCowDataSource(helper));
+		assertions.addAll(outdatedEnsemblChickenDataSource(helper));
+		assertions.addAll(outdatedECNumberDataSource(helper));
+		assertions.addAll(outdatedChemSpiderDataSource(helper));
 		return assertions;
 	}
 
@@ -287,7 +290,43 @@ public class OudatedDataSourcesTests {
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertTrue(test,
-			(table.getRowCount() < 1), "Outdated 'Ensembl Yeast' data sources (use 'Ensembl')", "" + table
+			(table.getRowCount() < 1), "Outdated 'Ensembl Cow' data sources (use 'Ensembl')", "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> outdatedEnsemblChickenDataSource(SPARQLHelper helper) throws Exception {
+		Test test = new Test("OudatedDataSourcesTests", "outdatedEnsemblChickenDataSource");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("outdated/ensembl_chicken.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertTrue(test,
+			(table.getRowCount() < 1), "Outdated 'Ensembl Chicken' data sources (use 'Ensembl')", "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> outdatedECNumberDataSource(SPARQLHelper helper) throws Exception {
+		Test test = new Test("OudatedDataSourcesTests", "outdatedECNumberDataSource");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("outdated/ecNumber.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertTrue(test,
+			(table.getRowCount() < 1), "Outdated 'EC Number' data sources (use 'Enzyme Nomenclature')", "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> outdatedChemSpiderDataSource(SPARQLHelper helper) throws Exception {
+		Test test = new Test("OudatedDataSourcesTests", "outdatedChemSpiderDataSource");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("outdated/chemspider.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertTrue(test,
+			(table.getRowCount() < 1), "Outdated 'ChemSpider' data sources (use 'Chemspider')", "" + table
 		));
 		return assertions;
 	}

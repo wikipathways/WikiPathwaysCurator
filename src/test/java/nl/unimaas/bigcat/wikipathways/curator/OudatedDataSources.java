@@ -240,40 +240,34 @@ public class OudatedDataSources extends JUnitTests {
 
 	@Test
 	public void outdatedEnsemblChickenDataSource() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("outdated/ensembl_chicken.rq");
-		Assertions.assertNotNull(sparql);
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertTrue(table.getRowCount() < 1, "Outdated 'Ensembl Chicken' data sources (use 'Ensembl'):\n" + table);
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = OudatedDataSourcesTests.outdatedEnsemblChickenDataSource(helper);
+			performAssertions(assertions);
 		});
 	}
 
 	@Test
 	public void outdatedECNumberDataSource() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("outdated/ecNumber.rq");
-		Assertions.assertNotNull(sparql);
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertTrue(table.getRowCount() < 1, "Outdated 'EC Number' data sources (use 'Enzyme Nomenclature'):\n" + table);
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = OudatedDataSourcesTests.outdatedECNumberDataSource(helper);
+			performAssertions(assertions);
 		});
 	}
 
 	@Test
 	public void outdatedChemSpiderDataSource() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("outdated/chemspider.rq");
-		Assertions.assertNotNull(sparql);
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-				: SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertTrue(table.getRowCount() < 1, "Outdated 'ChemSpider' data sources (use 'Chemspider'):\n" + table);
+			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+				? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+			List<IAssertion> assertions = OudatedDataSourcesTests.outdatedChemSpiderDataSource(helper);
+			performAssertions(assertions);
 		});
 	}
 }
