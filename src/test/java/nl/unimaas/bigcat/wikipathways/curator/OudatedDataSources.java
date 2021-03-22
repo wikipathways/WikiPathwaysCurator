@@ -27,29 +27,28 @@
 package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.time.Duration;
-import java.util.List;
 
-import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 import nl.unimaas.bigcat.wikipathways.curator.tests.OudatedDataSourcesTests;
 
 public class OudatedDataSources extends JUnitTests {
 
+	private static SPARQLHelper helper = null;
+
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
-		if (System.getProperty("SPARQLEP").startsWith("http")) {
-			// ok, assume the SPARQL end point is online
-			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
-		} else {
-			Model data = OPSWPRDFFiles.loadData();
-			Assertions.assertTrue(data.size() > 5000);
-		}
+		helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		Assertions.assertTrue(helper.size() > 5000);
+		String parseErrors = OPSWPRDFFiles.getParseErrors();
+		Assertions.assertNotNull(parseErrors);
+		Assertions.assertEquals(0, parseErrors.length(), parseErrors.toString());
 	}
 
 	@BeforeEach
@@ -57,84 +56,48 @@ public class OudatedDataSources extends JUnitTests {
 
 	@Test
 	public void outdatedUniprot() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-	        : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = OudatedDataSourcesTests.outdatedUniprot(helper);
-		performAssertions(assertions);
+		performAssertions(OudatedDataSourcesTests.outdatedUniprot(helper));
 	}
 
 	@Test
 	public void outdatedUniprot2() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-	        : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = OudatedDataSourcesTests.outdatedUniprot2(helper);
-		performAssertions(assertions);
+		performAssertions(OudatedDataSourcesTests.outdatedUniprot2(helper));
 	}
 
 	@Test
 	public void outdatedUniprot3() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-	        : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = OudatedDataSourcesTests.outdatedUniprot3(helper);
-		performAssertions(assertions);
+		performAssertions(OudatedDataSourcesTests.outdatedUniprot3(helper));
 	}
 
 	@Test
 	public void outdatedUniprot4() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = OudatedDataSourcesTests.outdatedUniprot4(helper);
-		performAssertions(assertions);
+		performAssertions(OudatedDataSourcesTests.outdatedUniprot4(helper));
 	}
 
 	@Test
 	public void oldUniprotSwissProt() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = OudatedDataSourcesTests.oldUniprotSwissProt(helper);
-		performAssertions(assertions);
+		performAssertions(OudatedDataSourcesTests.oldUniprotSwissProt(helper));
 	}
 
 	@Test
 	public void wrongPubChem() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = OudatedDataSourcesTests.wrongPubChem(helper);
-		performAssertions(assertions);
+		performAssertions(OudatedDataSourcesTests.wrongPubChem(helper));
 	}
 
 	@Test
 	public void noInChIDataSourceYet() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = OudatedDataSourcesTests.noInChIDataSourceYet(helper);
-		performAssertions(assertions);
+		performAssertions(OudatedDataSourcesTests.noInChIDataSourceYet(helper));
 	}
 
 	@Test
 	public void outdatedKeggCompoundDataSource() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = OudatedDataSourcesTests.outdatedKeggCompoundDataSource(helper);
-		performAssertions(assertions);
+		performAssertions(OudatedDataSourcesTests.outdatedKeggCompoundDataSource(helper));
 	}
 
 	@Test
 	public void outdatedKeggCompoundDataSource2() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = OudatedDataSourcesTests.outdatedKeggCompoundDataSource2(helper);
-			performAssertions(assertions);
+			performAssertions(OudatedDataSourcesTests.outdatedKeggCompoundDataSource2(helper));
 		});
 	}
 
@@ -142,132 +105,84 @@ public class OudatedDataSources extends JUnitTests {
 	@Test
 	public void outdatedKeggOrthologDataSource() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = OudatedDataSourcesTests.outdatedKeggOrthologDataSource(helper);
-			performAssertions(assertions);
+			performAssertions(OudatedDataSourcesTests.outdatedKeggOrthologDataSource(helper));
 		});
 	}
 
 	@Test
 	public void outdatedKeggEnzymeDataSource() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = OudatedDataSourcesTests.outdatedKeggEnzymeDataSource(helper);
-			performAssertions(assertions);
+			performAssertions(OudatedDataSourcesTests.outdatedKeggEnzymeDataSource(helper));
 		});
 	}
 
 	@Test
 	public void outdatedEnsemblMouseDataSource() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = OudatedDataSourcesTests.outdatedEnsemblMouseDataSource(helper);
-			performAssertions(assertions);
+			performAssertions(OudatedDataSourcesTests.outdatedEnsemblMouseDataSource(helper));
 		});
 	}
 
 	@Test
 	public void outdatedEnsemblCapsSource() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-				   : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = OudatedDataSourcesTests.outdatedEnsemblCapsSource(helper);
-			performAssertions(assertions);
+			performAssertions(OudatedDataSourcesTests.outdatedEnsemblCapsSource(helper));
 		});
 	}
 
 	@Test
 	public void outdatedEnsemblHumanDataSource() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = OudatedDataSourcesTests.outdatedEnsemblHumanDataSource(helper);
-			performAssertions(assertions);
+			performAssertions(OudatedDataSourcesTests.outdatedEnsemblHumanDataSource(helper));
 		});
 	}
 
 	@Test
 	public void outdatedEnsemblMouseDataSourceFromGPML() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = OudatedDataSourcesTests.outdatedEnsemblMouseDataSourceFromGPML(helper);
-			performAssertions(assertions);
+			performAssertions(OudatedDataSourcesTests.outdatedEnsemblMouseDataSourceFromGPML(helper));
 		});
 	}
 
 	@Test
 	public void outdatedEnsemblHumanDataSourceFromGPML() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = OudatedDataSourcesTests.outdatedEnsemblHumanDataSourceFromGPML(helper);
-			performAssertions(assertions);
+			performAssertions(OudatedDataSourcesTests.outdatedEnsemblHumanDataSourceFromGPML(helper));
 		});
 	}
 
 	@Test
 	public void outdatedEnsemblYeastDataSource() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = OudatedDataSourcesTests.outdatedEnsemblYeastDataSource(helper);
-			performAssertions(assertions);
+			performAssertions(OudatedDataSourcesTests.outdatedEnsemblYeastDataSource(helper));
 		});
 	}
 
 	@Test
 	public void outdatedEnsemblCowDataSource() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = OudatedDataSourcesTests.outdatedEnsemblCowDataSource(helper);
-			performAssertions(assertions);
+			performAssertions(OudatedDataSourcesTests.outdatedEnsemblCowDataSource(helper));
 		});
 	}
 
 	@Test
 	public void outdatedEnsemblChickenDataSource() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = OudatedDataSourcesTests.outdatedEnsemblChickenDataSource(helper);
-			performAssertions(assertions);
+			performAssertions(OudatedDataSourcesTests.outdatedEnsemblChickenDataSource(helper));
 		});
 	}
 
 	@Test
 	public void outdatedECNumberDataSource() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = OudatedDataSourcesTests.outdatedECNumberDataSource(helper);
-			performAssertions(assertions);
+			performAssertions(OudatedDataSourcesTests.outdatedECNumberDataSource(helper));
 		});
 	}
 
 	@Test
 	public void outdatedChemSpiderDataSource() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = OudatedDataSourcesTests.outdatedChemSpiderDataSource(helper);
-			performAssertions(assertions);
+			performAssertions(OudatedDataSourcesTests.outdatedChemSpiderDataSource(helper));
 		});
 	}
 }
