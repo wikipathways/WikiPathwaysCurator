@@ -37,6 +37,7 @@ import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class WikidataTests {
 
@@ -110,10 +111,11 @@ public class WikidataTests {
 	}
 
 	public static List<IAssertion> chebiWithoutMapping_Reactome(SPARQLHelper helper) throws Exception {
+		Test test = new Test("WikidataTests", "chebiWithoutMapping_Reactome");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteChEBI_Reactome.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("WikidataTests", "chebiWithoutMapping_Reactome", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -126,17 +128,18 @@ public class WikidataTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("WikidataTests", "chebiWithoutMapping_Reactome",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "ChEBI identifiers without Wikidata mappings: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> chebiWithoutMapping(SPARQLHelper helper) throws Exception {
+		Test test = new Test("WikidataTests", "chebiWithoutMapping");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteChEBI.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("WikidataTests", "chebiWithoutMapping", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -149,17 +152,18 @@ public class WikidataTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("WikidataTests", "chebiWithoutMapping",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "ChEBI identifiers without Wikidata mappings: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> keggWithoutMapping(SPARQLHelper helper) throws Exception {
+		Test test = new Test("WikidataTests", "keggWithoutMapping");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteKEGG.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("WikidataTests", "keggWithoutMapping", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -172,17 +176,18 @@ public class WikidataTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("WikidataTests", "keggWithoutMapping",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "KEGG Compound identifiers without Wikidata mappings: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> pubchemCIDWithoutMapping(SPARQLHelper helper) throws Exception {
+		Test test = new Test("WikidataTests", "pubchemCIDWithoutMapping");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metabolitePubChemCID.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("WikidataTests", "pubchemCIDWithoutMapping", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
@@ -190,17 +195,18 @@ public class WikidataTests {
 					    + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
 			}
 		}
-		assertions.add(new AssertEquals("WikidataTests", "pubchemCIDWithoutMapping",
+		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "PubChem-compound identifiers without Wikidata mappings: " + table.getRowCount(), errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> hmdbWithoutMapping(SPARQLHelper helper) throws Exception {
+		Test test = new Test("WikidataTests", "hmdbWithoutMapping");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteHMDB.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("WikidataTests", "hmdbWithoutMapping", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
@@ -208,17 +214,18 @@ public class WikidataTests {
 					    + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
 			}
 		}
-		assertions.add(new AssertEquals("WikidataTests", "hmdbWithoutMapping",
+		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "HMDB identifiers without Wikidata mappings: " + table.getRowCount(), errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> casWithoutMapping(SPARQLHelper helper) throws Exception {
+		Test test = new Test("WikidataTests", "casWithoutMapping");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteCAS.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("WikidataTests", "casWithoutMapping", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
@@ -226,28 +233,30 @@ public class WikidataTests {
 					    + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
 			}
 		}
-		assertions.add(new AssertEquals("WikidataTests", "casWithoutMapping",
+		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "CAS identifiers without Wikidata mappings: " + table.getRowCount(), errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> wikDataTypo(SPARQLHelper helper) throws Exception {
+		Test test = new Test("WikidataTests", "wikDataTypo");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/wikidata.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("WikidataTests", "wikDataTypo", table));
-		assertions.add(new AssertEquals("WikidataTests", "wikDataTypo",
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Typo 'Wikdata' data sources (use 'Wikidata'): " + table.getRowCount(), "" + table
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> duplicateWikidataMappings(SPARQLHelper helper) throws Exception {
+		Test test = new Test("WikidataTests", "duplicateWikidataMappings");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/duplicateWikidata.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("WikidataTests", "duplicateWikidataMappings", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -260,7 +269,7 @@ public class WikidataTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("WikidataTests", "duplicateWikidataMappings",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "More than one Wikidata identifier for: " + errorCount, errors
 		));
 		return assertions;
@@ -275,10 +284,11 @@ public class WikidataTests {
 	}}
 
 	public static List<IAssertion> noWikidataForGenes(SPARQLHelper helper) throws Exception {
+		Test test = new Test("WikidataTests", "noWikidataForGenes");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("genes/noWikidataYet.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("WikidataTests", "noWikidataForGenes", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -292,17 +302,18 @@ public class WikidataTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("WikidataTests", "noWikidataForGenes",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Wikidata identifiers cannot be used for GeneProduct or Protein yet: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> wikidataIdentifiersWrong(SPARQLHelper helper) throws Exception {
+		Test test = new Test("WikidataTests", "wikidataIdentifiersWrong");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/allWikidataIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("WikidataTests", "wikidataIdentifiersWrong", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -324,17 +335,18 @@ public class WikidataTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("WikidataTests", "wikidataIdentifiersWrong",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Wikidata identifiers that do not start with a 'Q' followed by a number: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> chemspiderCIDWithoutMapping(SPARQLHelper helper) throws Exception {
+		Test test = new Test("WikidataTests", "chemspiderCIDWithoutMapping");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteChemspider.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("WikidataTests", "chemspiderCIDWithoutMapping", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
@@ -342,17 +354,18 @@ public class WikidataTests {
 					    + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
 			}
 		}
-		assertions.add(new AssertEquals("WikidataTests", "chemspiderCIDWithoutMapping",
+		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Chemspider identifiers without Wikidata mappings: " + table.getRowCount(), errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> lipidMapsWithoutMapping(SPARQLHelper helper) throws Exception {
+		Test test = new Test("WikidataTests", "lipidMapsWithoutMapping");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteLipidMaps.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("WikidataTests", "lipidMapsWithoutMapping", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
@@ -360,17 +373,18 @@ public class WikidataTests {
 					    + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
 			}
 		}
-		assertions.add(new AssertEquals("WikidataTests", "lipidMapsWithoutMapping",
+		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "LIPID MAPS identifiers without Wikidata mappings: " + table.getRowCount(), errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> kNApSAcKWithoutMapping(SPARQLHelper helper) throws Exception {
+		Test test = new Test("WikidataTests", "kNApSAcKWithoutMapping");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteKNApSAcK.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("WikidataTests", "kNApSAcKWithoutMapping", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
@@ -378,17 +392,18 @@ public class WikidataTests {
 					    + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
 			}
 		}
-		assertions.add(new AssertEquals("WikidataTests", "kNApSAcKWithoutMapping",
+		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "KNApSAcK identifiers without Wikidata mappings: " + table.getRowCount(), errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> replaceWikipedia(SPARQLHelper helper) throws Exception {
+		Test test = new Test("WikidataTests", "replaceWikipedia");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/wikipedia.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("WikidataTests", "replaceWikipedia", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
@@ -396,7 +411,7 @@ public class WikidataTests {
 					" can be replaced by the matching Wikidata identifier; \n";
 			}
 		}
-		assertions.add(new AssertEquals("WikidataTests", "replaceWikipedia",
+		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Wikipedia identifies that can be replaced by Wikidata identifiers: " + table.getRowCount(), errors
 		));
 		return assertions;

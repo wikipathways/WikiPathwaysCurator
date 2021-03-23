@@ -37,6 +37,7 @@ import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class MetabolitesTests {
 
@@ -56,10 +57,11 @@ public class MetabolitesTests {
 	}
 
 	public static List<IAssertion> metaboliteAlsoOtherType(SPARQLHelper helper) throws Exception {
+		Test test = new Test("MetabolitesTests", "metaboliteAlsoOtherType");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/badType.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("MetabolitesTests", "metaboliteAlsoOtherType", table));
+		assertions.add(new AssertNotNull(test, table));
 		Set<String> exceptions = new HashSet<String>();
 		    MetabolitesTests.addIdentifiersOrg(exceptions, "identifiers.org/chebi/CHEBI:16991"); // DNA
 		    MetabolitesTests.addIdentifiersOrg(exceptions, "identifiers.org/chebi/CHEBI:39026"); // LDL
@@ -78,50 +80,54 @@ public class MetabolitesTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("MetabolitesTests", "metaboliteAlsoOtherType", 
+		assertions.add(new AssertEquals(test, 
 			0, errorCount, "Metabolite is also found to be another type: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> chemspiderIDsNotMarkedAsMetabolite(SPARQLHelper helper) throws Exception {
+		Test test = new Test("MetabolitesTests", "chemspiderIDsNotMarkedAsMetabolite");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/chemspiderNumberNotMarkedAsMetabolite.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("MetabolitesTests", "chemspiderIDsNotMarkedAsMetabolite", table));
-		assertions.add(new AssertEquals("MetabolitesTests", "chemspiderIDsNotMarkedAsMetabolite", 
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test, 
 			0, table.getRowCount(), "Unexpected ChemSpider identifiers for non-metabolites: " + table.getRowCount(), table.toString()
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> HMDBIDsNotMarkedAsMetabolite(SPARQLHelper helper) throws Exception {
+		Test test = new Test("MetabolitesTests", "HMDBIDsNotMarkedAsMetabolite");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/hmdbNumberNotMarkedAsMetabolite.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("MetabolitesTests", "HMDBIDsNotMarkedAsMetabolite", table));
-		assertions.add(new AssertEquals("MetabolitesTests", "HMDBIDsNotMarkedAsMetabolite", 
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test, 
 			0, table.getRowCount(), "Unexpected HMDB identifiers for non-metabolites: " + table.getRowCount(), table.toString()
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> KEGGIDsNotMarkedAsMetabolite(SPARQLHelper helper) throws Exception {
+		Test test = new Test("MetabolitesTests", "KEGGIDsNotMarkedAsMetabolite");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/keggNumberNotMarkedAsMetabolite.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("MetabolitesTests", "KEGGIDsNotMarkedAsMetabolite", table));
-		assertions.add(new AssertEquals("MetabolitesTests", "KEGGIDsNotMarkedAsMetabolite", 
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test, 
 			0, table.getRowCount(), "Unexpected KEGG identifiers for non-metabolites: " + table.getRowCount(), table.toString()
 		));
 		return assertions;
 	}
 	
 	public static List<IAssertion> casNumbersNotMarkedAsMetabolite(SPARQLHelper helper) throws Exception {
+		Test test = new Test("MetabolitesTests", "casNumbersNotMarkedAsMetabolite");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/casNumberNotMarkedAsMetabolite.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("MetabolitesTests", "casNumbersNotMarkedAsMetabolite", table));
+		assertions.add(new AssertNotNull(test, table));
 		Set<String> allowedProteins = new HashSet<String>();
 		allowedProteins.add("IFN-b");
 		String errors = "";
@@ -135,8 +141,7 @@ public class MetabolitesTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals(
-			"MetabolitesTests", "casNumbersNotMarkedAsMetabolite",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Unexpected CAS identifiers for non-metabolites: " + errorCount, errors
 		));
 		return assertions;
