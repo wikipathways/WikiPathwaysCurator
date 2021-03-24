@@ -53,6 +53,7 @@ public class MetabolitesTests {
 		assertions.addAll(chemspiderIDsNotMarkedAsMetabolite(helper));
 		assertions.addAll(HMDBIDsNotMarkedAsMetabolite(helper));
 		assertions.addAll(KEGGIDsNotMarkedAsMetabolite(helper));
+		assertions.addAll(metabolitesWithAnEnsembleID(helper));
 		return assertions;
 	}
 
@@ -143,6 +144,18 @@ public class MetabolitesTests {
 		}
 		assertions.add(new AssertEquals(test,
 			0, errorCount, "Unexpected CAS identifiers for non-metabolites: " + errorCount, errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> metabolitesWithAnEnsembleID(SPARQLHelper helper) throws Exception {
+		Test test = new Test("MetabolitesTests", "metabolitesWithAnEnsembleID");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/metabolitesWithAnEnsembleID.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test,
+			0, table.getRowCount(), "Unexpected metabolites with an Ensemble identifier: " + table.getRowCount(), "" + table
 		));
 		return assertions;
 	}
