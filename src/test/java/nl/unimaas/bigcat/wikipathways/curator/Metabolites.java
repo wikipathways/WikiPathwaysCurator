@@ -234,32 +234,29 @@ public class Metabolites extends JUnitTests {
 
 	@Test
 	public void metabolitesWithIdentifierButNoDb() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/metabolitesWithIdentifierButNoDatabase.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		Assertions.assertEquals(0, table.getRowCount(), "Unexpected metabolites with identifier but no database source:\n" + table);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = MetabolitesTests.metabolitesWithIdentifierButNoDb(helper);
+		performAssertions(assertions);
 	}
 
 	@Test
 	public void metabolitesWithDbButNoIdentifier() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/metabolitesWithDatabaseButNoIdentifier.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		Assertions.assertEquals(0, table.getRowCount(), "Unexpected metabolites with identifier but no database source:\n" + table);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = MetabolitesTests.metabolitesWithDbButNoIdentifier(helper);
+		performAssertions(assertions);
 	}
 
 	@Test
 	public void metabolitesWithAnEntrezGeneID() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/metabolitesWithAnEntrezGeneID.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		Assertions.assertEquals(0, table.getRowCount(), "Unexpected metabolites with an Entrez Gene identifier:\n" + table);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = MetabolitesTests.metabolitesWithAnEntrezGeneID(helper);
+		performAssertions(assertions);
 	}
 
 	@Test

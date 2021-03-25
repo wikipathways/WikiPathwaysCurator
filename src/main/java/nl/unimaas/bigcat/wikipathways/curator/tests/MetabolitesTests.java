@@ -54,6 +54,9 @@ public class MetabolitesTests {
 		assertions.addAll(HMDBIDsNotMarkedAsMetabolite(helper));
 		assertions.addAll(KEGGIDsNotMarkedAsMetabolite(helper));
 		assertions.addAll(metabolitesWithAnEnsembleID(helper));
+		assertions.addAll(metabolitesWithAnEntrezGeneID(helper));
+		assertions.addAll(metabolitesWithDbButNoIdentifier(helper));
+		assertions.addAll(metabolitesWithIdentifierButNoDb(helper));
 		return assertions;
 	}
 
@@ -156,6 +159,42 @@ public class MetabolitesTests {
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Unexpected metabolites with an Ensemble identifier: " + table.getRowCount(), "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> metabolitesWithAnEntrezGeneID(SPARQLHelper helper) throws Exception {
+		Test test = new Test("MetabolitesTests", "metabolitesWithAnEntrezGeneID");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/metabolitesWithAnEntrezGeneID.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test,
+			0, table.getRowCount(), "Unexpected metabolites with an Entrez Gene identifier:: " + table.getRowCount(), "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> metabolitesWithDbButNoIdentifier(SPARQLHelper helper) throws Exception {
+		Test test = new Test("MetabolitesTests", "metabolitesWithDbButNoIdentifier");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/metabolitesWithDatabaseButNoIdentifier.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test,
+			0, table.getRowCount(), "Unexpected metabolites with identifier but no database source: " + table.getRowCount(), "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> metabolitesWithIdentifierButNoDb(SPARQLHelper helper) throws Exception {
+		Test test = new Test("MetabolitesTests", "metabolitesWithIdentifierButNoDb");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/metabolitesWithIdentifierButNoDatabase.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test,
+			0, table.getRowCount(), "Unexpected metabolites with identifier but no database source: " + table.getRowCount(), "" + table
 		));
 		return assertions;
 	}
