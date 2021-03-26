@@ -1,4 +1,4 @@
-/* Copyright (C) 2015,2018  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2015,2018,2021  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -28,23 +28,24 @@ package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.time.Duration;
 
-import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class KEGGMetabolites {
+public class KEGGMetabolites extends JUnitTests {
+
+	private static SPARQLHelper helper = null;
 
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
-		if (System.getProperty("SPARQLEP").startsWith("http")) {
-			// ok, assume the SPARQL end point is online
-			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
-		} else {
-			Model data = OPSWPRDFFiles.loadData();
-			Assertions.assertTrue(data.size() > 5000);
-		}
+		helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		Assertions.assertTrue(helper.size() > 5000);
+		String parseErrors = OPSWPRDFFiles.getParseErrors();
+		Assertions.assertNotNull(parseErrors);
+		Assertions.assertEquals(0, parseErrors.length(), parseErrors.toString());
 	}
 
 	@BeforeEach
@@ -52,27 +53,15 @@ public class KEGGMetabolites {
 
 	@Test
 	public void noCnumber() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/badformat/badKEGG.rq");
-		Assertions.assertNotNull(sparql);
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertEquals(0, table.getRowCount(), "KEGG Compound identifiers that are not C\\d+:\n" + table);
+			performAssertions(KEGGMetaboliteTests.noCnumber(helper));
 		});
 	}
 
 	@Test
 	public void hasCPDprefix() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/badformat/badKEGG2.rq");
-		Assertions.assertNotNull(sparql);
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-				? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-			    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertEquals(0, table.getRowCount(), "KEGG Compound identifiers should not have a 'cpd:' prefix:\n" + table);
+			performAssertions(KEGGMetaboliteTests.hasCPDprefix(helper));
 		});
 	}
 

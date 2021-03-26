@@ -57,6 +57,8 @@ public class MetabolitesTests {
 		assertions.addAll(metabolitesWithAnEntrezGeneID(helper));
 		assertions.addAll(metabolitesWithDbButNoIdentifier(helper));
 		assertions.addAll(metabolitesWithIdentifierButNoDb(helper));
+		assertions.addAll(ChEBIIDsNotMarkedAsMetabolite(helper));
+		assertions.addAll(PubChemIDsNotMarkedAsMetabolite(helper));
 		return assertions;
 	}
 
@@ -195,6 +197,63 @@ public class MetabolitesTests {
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Unexpected metabolites with identifier but no database source: " + table.getRowCount(), "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> ChEBIIDsNotMarkedAsMetabolite(SPARQLHelper helper) throws Exception {
+		Test test = new Test("MetabolitesTests", "ChEBIIDsNotMarkedAsMetabolite");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/chebiNumberNotMarkedAsMetabolite.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		Set<String> allowed = new HashSet<String>();
+		allowed.add("CHEBI:15986"); // polynucleotide
+		allowed.add("CHEBI:9160");  // single stranded DNA
+		allowed.add("CHEBI:16991"); // double stranded DNA
+		allowed.add("CHEBI:33697"); // ribonucleic acid (RNA)
+		allowed.add("CHEBI:33698"); // DNA
+		allowed.add("CHEBI:33699"); // mRNA
+		allowed.add("CHEBI:39026"); // LDL
+		allowed.add("CHEBI:89981"); // LPS
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			// OK, but then it must be proteins, e.g. IFN-b
+			for (int i=1; i<=table.getRowCount(); i++) {
+				if (!allowed.contains(table.get(i, "identifier").trim())) {
+					errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+					    " -> " + table.get(i, "identifier") + "\n";
+					errorCount++;
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Unexpected ChEBI identifiers for non-metabolites: " + errorCount, errors
+		));
+	}
+
+	public static List<IAssertion> PubChemIDsNotMarkedAsMetabolite(SPARQLHelper helper) throws Exception {
+		Test test = new Test("MetabolitesTests", "PubChemIDsNotMarkedAsMetabolite");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/pubchemNumberNotMarkedAsMetabolite.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		Set<String> allowedProteins = new HashSet<String>();
+		allowedProteins.add("Fibrin");
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			// OK, but then it must be proteins, e.g. IFN-b
+			for (int i=1; i<=table.getRowCount(); i++) {
+				if (!allowedProteins.contains(table.get(i, "label").trim())) {
+					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " -> " + table.get(i, "identifier") + "\n";
+					errorCount++;
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Unexpected PubChem identifiers for non-metabolites: " + errorCount, "" + table
 		));
 		return assertions;
 	}
