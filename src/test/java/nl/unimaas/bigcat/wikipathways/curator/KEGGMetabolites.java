@@ -33,6 +33,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import nl.unimaas.bigcat.wikipathways.curator.tests.KEGGMetaboliteTests;
+
 public class KEGGMetabolites extends JUnitTests {
 
 	private static SPARQLHelper helper = null;

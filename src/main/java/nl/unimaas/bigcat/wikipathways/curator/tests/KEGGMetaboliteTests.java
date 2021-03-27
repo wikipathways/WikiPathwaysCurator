@@ -24,11 +24,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package nl.unimaas.bigcat.wikipathways.curator;
+package nl.unimaas.bigcat.wikipathways.curator.tests;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.unimaas.bigcat.wikipathways.curator.JUnitTests;
+import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
+import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
+import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
