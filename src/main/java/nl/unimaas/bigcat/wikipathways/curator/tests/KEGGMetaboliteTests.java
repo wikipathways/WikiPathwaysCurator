@@ -29,7 +29,6 @@ package nl.unimaas.bigcat.wikipathways.curator.tests;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.unimaas.bigcat.wikipathways.curator.JUnitTests;
 import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
 import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
 import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
@@ -38,8 +37,7 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
-public class KEGGMetaboliteTests extends JUnitTests {
-
+public class KEGGMetaboliteTests {
 
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
