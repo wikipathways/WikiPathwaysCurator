@@ -59,6 +59,7 @@ public class MetabolitesTests {
 		assertions.addAll(metabolitesWithIdentifierButNoDb(helper));
 		assertions.addAll(ChEBIIDsNotMarkedAsMetabolite(helper));
 		assertions.addAll(PubChemIDsNotMarkedAsMetabolite(helper));
+		assertions.addAll(PubChemSubstanceIDsNotMarkedAsMetabolite(helper));
 		return assertions;
 	}
 
@@ -255,6 +256,30 @@ public class MetabolitesTests {
 		}
 		assertions.add(new AssertEquals(test,
 			0, errorCount, "Unexpected PubChem identifiers for non-metabolites: " + errorCount, errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> PubChemSubstanceIDsNotMarkedAsMetabolite(SPARQLHelper helper) throws Exception {
+		Test test = new Test("MetabolitesTests", "PubChemSubstanceIDsNotMarkedAsMetabolite");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/pubchemSubstanceNumberNotMarkedAsMetabolite.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		Set<String> allowedProteins = new HashSet<String>();
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			// OK, but then it must be proteins, e.g. IFN-b
+			for (int i=1; i<=table.getRowCount(); i++) {
+				if (!allowedProteins.contains(table.get(i, "label").trim())) {
+					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " -> " + table.get(i, "identifier") + "\n";
+					errorCount++;
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Unexpected PubChem Substance identifiers for non-metabolites: " + errorCount, errors
 		));
 		return assertions;
 	}

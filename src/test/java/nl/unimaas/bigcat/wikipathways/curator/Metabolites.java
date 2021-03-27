@@ -121,26 +121,11 @@ public class Metabolites extends JUnitTests {
 
 	@Test
 	public void PubChemSubstanceIDsNotMarkedAsMetabolite() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/pubchemSubstanceNumberNotMarkedAsMetabolite.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		Set<String> allowedProteins = new HashSet<String>();
-		String errors = "";
-		int errorCount = 0;
-		if (table.getRowCount() > 0) {
-			// OK, but then it must be proteins, e.g. IFN-b
-			for (int i=1; i<=table.getRowCount(); i++) {
-				if (!allowedProteins.contains(table.get(i, "label").trim())) {
-					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " -> " + table.get(i, "identifier") + "\n";
-					errorCount++;
-				}
-			}
-		}
-		Assertions.assertEquals(
-			0, errorCount, "Unexpected PubChem Substance identifiers for non-metabolites:\n" + errors
-		);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = MetabolitesTests.PubChemSubstanceIDsNotMarkedAsMetabolite(helper);
+		performAssertions(assertions);
 	}
 
 	@Test
