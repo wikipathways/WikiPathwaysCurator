@@ -83,6 +83,7 @@ public class PathwayTests {
 	}
 
 	public static List<IAssertion> linksToDeletedPathways(SPARQLHelper helper) throws Exception {
+		Test test = new Test("PathwayTests", "linksToDeletedPathways");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = "PREFIX dcterms: <http://purl.org/dc/terms/>\n" + 
 				"prefix xsd:     <http://www.w3.org/2001/XMLSchema#>\n" +
@@ -98,7 +99,7 @@ public class PathwayTests {
 				  "    dcterms:isPartOf ?pathway .\n" + 
 				  "  ?pathway foaf:page ?homepage . \n}";
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("PathwayTests", "linksToDeletedPathways", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		if (table.getRowCount() > 0) {
 			// OK, but then it must be proteins, e.g. IFN-b
@@ -109,7 +110,7 @@ public class PathwayTests {
 						(replacement != null ? " (check " + replacement + " as replacement)" : "") + "\n";
 			}
 		}
-		assertions.add(new AssertEquals("PathwayTests", "deletedPathways",
+		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Found " + table.getRowCount() + " pathways that link to deleted pathways", errors
 		));
 		return assertions;
@@ -121,10 +122,11 @@ public class PathwayTests {
 	}};
 
 	public static List<IAssertion> speciesMismatch(SPARQLHelper helper) throws Exception {
+		Test test = new Test("PathwayTests", "speciesMismatch");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/speciesMismatch.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("PathwayTests", "linksToDeletedPathways", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		for (int i=1; i<=table.getRowCount(); i++) {
@@ -138,17 +140,18 @@ public class PathwayTests {
 				errorCount++;
 			}
 		}
-		assertions.add(new AssertEquals("PathwayTests", "deletedPathways",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Found " + errorCount + " pathways that link to pathways of a different species", errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> testRoundedRectangle(SPARQLHelper helper) throws Exception {
+		Test test = new Test("PathwayTests", "testRoundedRectangle");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/noRoundedRectangle.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("PathwayTests", "testRoundedRectangle", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -167,7 +170,7 @@ public class PathwayTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("PathwayTests", "testRoundedRectangle",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Pathways DataNodes with WikiPathways ID that can be converted to have a RoundedRectangle StyleType so that they become clickable: " + errorCount, errors
 		));
 		return assertions;
