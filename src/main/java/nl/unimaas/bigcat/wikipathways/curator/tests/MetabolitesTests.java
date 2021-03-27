@@ -231,6 +231,7 @@ public class MetabolitesTests {
 		assertions.add(new AssertEquals(test,
 			0, errorCount, "Unexpected ChEBI identifiers for non-metabolites: " + errorCount, errors
 		));
+		return assertions;
 	}
 
 	public static List<IAssertion> PubChemIDsNotMarkedAsMetabolite(SPARQLHelper helper) throws Exception {
@@ -253,7 +254,7 @@ public class MetabolitesTests {
 			}
 		}
 		assertions.add(new AssertEquals(test,
-			0, errorCount, "Unexpected PubChem identifiers for non-metabolites: " + errorCount, "" + table
+			0, errorCount, "Unexpected PubChem identifiers for non-metabolites: " + errorCount, errors
 		));
 		return assertions;
 	}
