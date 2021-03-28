@@ -60,6 +60,8 @@ public class MetabolitesTests {
 		assertions.addAll(ChEBIIDsNotMarkedAsMetabolite(helper));
 		assertions.addAll(PubChemIDsNotMarkedAsMetabolite(helper));
 		assertions.addAll(PubChemSubstanceIDsNotMarkedAsMetabolite(helper));
+		assertions.addAll(PubChemIDsNotNumbers(helper));
+		assertions.addAll(PubChemSubstanceIDsNotNumbers(helper));
 		return assertions;
 	}
 
@@ -274,6 +276,56 @@ public class MetabolitesTests {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				if (!allowedProteins.contains(table.get(i, "label").trim())) {
 					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " -> " + table.get(i, "identifier") + "\n";
+					errorCount++;
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Unexpected PubChem Substance identifiers for non-metabolites: " + errorCount, errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> PubChemIDsNotNumbers(SPARQLHelper helper) throws Exception {
+		Test test = new Test("MetabolitesTests", "PubChemIDsNotNumbers");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/allPubChemIdentifiers.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				try {
+					Integer.parseInt(identifier);
+				} catch (NumberFormatException exception) {
+					errors += table.get(i, "homepage") + table.get(i, "label") + table.get(i, "identifier");
+					errorCount++;
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Unexpected PubChem Compound identifiers for non-metabolites: " + errorCount, errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> PubChemSubstanceIDsNotNumbers(SPARQLHelper helper) throws Exception {
+		Test test = new Test("MetabolitesTests", "PubChemSubstanceIDsNotNumbers");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/allPubChemSubstanceIdentifiers.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				try {
+					Integer.parseInt(identifier);
+				} catch (NumberFormatException exception) {
+					errors += table.get(i, "homepage") + table.get(i, "label") + table.get(i, "identifier");
 					errorCount++;
 				}
 			}

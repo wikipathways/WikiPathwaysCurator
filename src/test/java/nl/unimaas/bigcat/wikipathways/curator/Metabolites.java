@@ -130,52 +130,20 @@ public class Metabolites extends JUnitTests {
 
 	@Test
 	public void PubChemIDsNotNumbers() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/allPubChemIdentifiers.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		String errors = "";
-		int errorCount = 0;
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				String identifier = table.get(i, "identifier");
-				try {
-					Integer.parseInt(identifier);
-				} catch (NumberFormatException exception) {
-					errors += table.get(i, "homepage") + table.get(i, "label") + table.get(i, "identifier");
-					errorCount++;
-				}
-			}
-		}
-		Assertions.assertEquals(
-			0, errorCount, "Unexpected PubChem Compound identifiers for non-metabolites:\n" + errors
-		);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = MetabolitesTests.PubChemIDsNotNumbers(helper);
+		performAssertions(assertions);
 	}
 
 	@Test
 	public void PubChemSubstanceIDsNotNumbers() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("metabolite/allPubChemSubstanceIdentifiers.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		String errors = "";
-		int errorCount = 0;
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				String identifier = table.get(i, "identifier");
-				try {
-					Integer.parseInt(identifier);
-				} catch (NumberFormatException exception) {
-					errors += table.get(i, "homepage") + table.get(i, "label") + table.get(i, "identifier");
-					errorCount++;
-				}
-			}
-		}
-		Assertions.assertEquals(
-			0, errorCount, "Unexpected PubChem Substance identifiers for non-metabolites:\n" + errors
-		);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		List<IAssertion> assertions = MetabolitesTests.PubChemSubstanceIDsNotNumbers(helper);
+		performAssertions(assertions);
 	}
 
 	@Test
