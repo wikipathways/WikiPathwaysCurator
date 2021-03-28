@@ -26,31 +26,27 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 import nl.unimaas.bigcat.wikipathways.curator.tests.LIPIDMAPSTests;
 import nl.unimaas.bigcat.wikipathways.curator.tests.MetabolitesTests;
 
 public class Metabolites extends JUnitTests {
 
+	private static SPARQLHelper helper = null;
+
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
-		if (System.getProperty("SPARQLEP").startsWith("http")) {
-			// ok, assume the SPARQL end point is online
-			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
-		} else {
-			Model data = OPSWPRDFFiles.loadData();
-			Assertions.assertTrue(data.size() > 5000);
-		}
+		helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		Assertions.assertTrue(helper.size() > 5000);
+		String parseErrors = OPSWPRDFFiles.getParseErrors();
+		Assertions.assertNotNull(parseErrors);
+		Assertions.assertEquals(0, parseErrors.length(), parseErrors.toString());
 	}
 
 	@BeforeEach
@@ -58,136 +54,76 @@ public class Metabolites extends JUnitTests {
 
 	@Test
 	public void metaboliteAlsoOtherType() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			: new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = MetabolitesTests.metaboliteAlsoOtherType(helper);
-		performAssertions(assertions);
+		performAssertions(MetabolitesTests.metaboliteAlsoOtherType(helper));
 	}
 
 	@Test
 	public void casNumbersNotMarkedAsMetabolite() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			: new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = MetabolitesTests.casNumbersNotMarkedAsMetabolite(helper);
-		performAssertions(assertions);
+		performAssertions(MetabolitesTests.casNumbersNotMarkedAsMetabolite(helper));
 	}
 
 	@Test
 	public void chemspiderIDsNotMarkedAsMetabolite() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			: new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = MetabolitesTests.chemspiderIDsNotMarkedAsMetabolite(helper);
-		performAssertions(assertions);
+		performAssertions(MetabolitesTests.chemspiderIDsNotMarkedAsMetabolite(helper));
 	}
 
 	@Test
 	public void ChEBIIDsNotMarkedAsMetabolite() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			: new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = MetabolitesTests.ChEBIIDsNotMarkedAsMetabolite(helper);
-		performAssertions(assertions);
+		performAssertions(MetabolitesTests.ChEBIIDsNotMarkedAsMetabolite(helper));
 	}
 
 	@Test
 	public void HMDBIDsNotMarkedAsMetabolite() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			: new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = MetabolitesTests.HMDBIDsNotMarkedAsMetabolite(helper);
-		performAssertions(assertions);
+		performAssertions(MetabolitesTests.HMDBIDsNotMarkedAsMetabolite(helper));
 	}
 
 	@Test
 	public void KEGGIDsNotMarkedAsMetabolite() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			: new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = MetabolitesTests.KEGGIDsNotMarkedAsMetabolite(helper);
-		performAssertions(assertions);
+		performAssertions(MetabolitesTests.KEGGIDsNotMarkedAsMetabolite(helper));
 	}
 
 	@Test
 	public void PubChemIDsNotMarkedAsMetabolite() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			: new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = MetabolitesTests.PubChemIDsNotMarkedAsMetabolite(helper);
-		performAssertions(assertions);
+		performAssertions(MetabolitesTests.PubChemIDsNotMarkedAsMetabolite(helper));
 	}
 
 	@Test
 	public void PubChemSubstanceIDsNotMarkedAsMetabolite() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			: new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = MetabolitesTests.PubChemSubstanceIDsNotMarkedAsMetabolite(helper);
-		performAssertions(assertions);
+		performAssertions(MetabolitesTests.PubChemSubstanceIDsNotMarkedAsMetabolite(helper));
 	}
 
 	@Test
 	public void PubChemIDsNotNumbers() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			: new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = MetabolitesTests.PubChemIDsNotNumbers(helper);
-		performAssertions(assertions);
+		performAssertions(MetabolitesTests.PubChemIDsNotNumbers(helper));
 	}
 
 	@Test
 	public void PubChemSubstanceIDsNotNumbers() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			: new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = MetabolitesTests.PubChemSubstanceIDsNotNumbers(helper);
-		performAssertions(assertions);
+		performAssertions(MetabolitesTests.PubChemSubstanceIDsNotNumbers(helper));
 	}
 
 	@Test
 	public void metabolitesWithIdentifierButNoDb() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			: new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = MetabolitesTests.metabolitesWithIdentifierButNoDb(helper);
-		performAssertions(assertions);
+		performAssertions(MetabolitesTests.metabolitesWithIdentifierButNoDb(helper));
 	}
 
 	@Test
 	public void metabolitesWithDbButNoIdentifier() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			: new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = MetabolitesTests.metabolitesWithDbButNoIdentifier(helper);
-		performAssertions(assertions);
+		performAssertions(MetabolitesTests.metabolitesWithDbButNoIdentifier(helper));
 	}
 
 	@Test
 	public void metabolitesWithAnEntrezGeneID() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			: new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = MetabolitesTests.metabolitesWithAnEntrezGeneID(helper);
-		performAssertions(assertions);
+		performAssertions(MetabolitesTests.metabolitesWithAnEntrezGeneID(helper));
 	}
 
 	@Test
 	public void metabolitesWithAnEnsembleID() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			: new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = MetabolitesTests.metabolitesWithAnEnsembleID(helper);
-		performAssertions(assertions);
+		performAssertions(MetabolitesTests.metabolitesWithAnEnsembleID(helper));
 	}
 
 	@Test
 	public void retiredIdentifiers() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			: new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = LIPIDMAPSTests.retiredIdentifiers(helper);
-		performAssertions(assertions);
+		performAssertions(LIPIDMAPSTests.retiredIdentifiers(helper));
 	}
 }

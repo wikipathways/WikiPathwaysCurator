@@ -36,6 +36,7 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertTrue;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class MetaboliteStructureTests {
 
@@ -47,22 +48,24 @@ public class MetaboliteStructureTests {
 	}
 
 	public static List<IAssertion> nullDataSources(SPARQLHelper helper) throws Exception {
+		Test test = new Test("MetaboliteStructureTests", "nullDataSources");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("structure/metaboliteClass.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("MetaboliteStructureTests", "nullDataSources", table));
-		assertions.add(new AssertTrue("MetaboliteStructureTests", "nullDataSources", 
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertTrue(test,
 			table.getRowCount() > 15, "Unexpectedly low metabolite count: " + table.getRowCount(), "" + table
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> isPartOfAPathway(SPARQLHelper helper) throws Exception {
+		Test test = new Test("MetaboliteStructureTests", "isPartOfAPathway");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("structure/isPartOfAPathway.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("MetaboliteStructureTests", "isPartOfAPathway", table));
-		assertions.add(new AssertEquals("MetaboliteStructureTests", "isPartOfAPathway", 
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Found metabolites that are not part of a pathway: " + table.getRowCount(), "" + table
 		));
 		return assertions;
