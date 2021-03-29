@@ -26,10 +26,7 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
@@ -61,19 +58,10 @@ public class General extends JUnitTests {
 	@Test
 	@Tag("void")
 	public void recentness() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("general/rdfDate.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		System.out.println("table: " + table);
-		Assertions.assertNotNull(table);
-		Assertions.assertEquals(1, table.getRowCount(), "Expected only one PAV createdData but got:\n" + table);
-		Date pavDate = new SimpleDateFormat("yyyy-MM-dd").parse(table.get(1, "date").substring(0,10));  
-		Date now = new Date();
-		long diffInMillies = now.getTime() - pavDate.getTime();
-	    long dayDiff =  TimeUnit.DAYS.convert(diffInMillies,TimeUnit.MILLISECONDS);
-	    System.out.println("day diff:" + dayDiff);
-	    Assertions.assertTrue(dayDiff <= 40, "The data release is " + dayDiff + " days old: " + table.get(1, "date"));
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		performAssertions(GeneralTests.recentness(helper));
 	}
 
 	@Test
