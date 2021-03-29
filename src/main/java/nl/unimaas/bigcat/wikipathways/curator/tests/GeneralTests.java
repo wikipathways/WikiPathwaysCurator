@@ -37,6 +37,7 @@ import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class GeneralTests {
 
@@ -50,10 +51,11 @@ public class GeneralTests {
 	}
 
 	public static List<IAssertion> titlesShortEnough(SPARQLHelper helper) throws Exception {
+		Test test = new Test("GeneralTests", "titlesShortEnough");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/allTitles_notReactome.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("GeneralTests", "titlesShortEnough", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -67,17 +69,18 @@ public class GeneralTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("GeneralTests", "titlesShortEnough",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Too long pathway titles (>80 chars): " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> weirdCharacterTitles(SPARQLHelper helper) throws Exception {
+		Test test = new Test("GeneralTests", "weirdCharacterTitles");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/allTitles.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("GeneralTests", "weirdCharacterTitles", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -105,17 +108,18 @@ public class GeneralTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("GeneralTests", "titlesShortEnough",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Titles with unexpected characters (only allow alphanumerics and spaces):" + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> duplicateTitles(SPARQLHelper helper) throws Exception {
+		Test test = new Test("GeneralTests", "duplicateTitles");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/allTitlesBySpecies.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("GeneralTests", "duplicateTitles", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		Map<String,String> allTitles = new HashMap<>();
@@ -132,17 +136,18 @@ public class GeneralTests {
 				allTitles.put(title.toLowerCase(), page);
 			}
 		}
-		assertions.add(new AssertEquals("GeneralTests", "duplicateTitles",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Duplicate titles: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> curationAndHypothetical(SPARQLHelper helper) throws Exception {
+		Test test = new Test("GeneralTests", "curationAndHypothetical");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/allCurationAndHypothetical.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("GeneralTests", "curationAndHypothetical", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -154,17 +159,18 @@ public class GeneralTests {
 				errorCount++;
 			}
 		}
-		assertions.add(new AssertEquals("GeneralTests", "curationAndHypothetical",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Pathways tagged as Curation and Hypothetical: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> curationAndNeedsWork(SPARQLHelper helper) throws Exception {
+		Test test = new Test("GeneralTests", "curationAndNeedsWork");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/allCurationAndNeedsWork.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("GeneralTests", "curationAndNeedsWork", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -176,17 +182,18 @@ public class GeneralTests {
 				errorCount++;
 			}
 		}
-		assertions.add(new AssertEquals("GeneralTests", "curationAndNeedsWork",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Pathways tagged as Curation and NeedsWork: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> curationAndReactome(SPARQLHelper helper) throws Exception {
+		Test test = new Test("GeneralTests", "curationAndReactome");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/allCurationAndReactome.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("GeneralTests", "curationAndReactome", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -198,17 +205,18 @@ public class GeneralTests {
 				errorCount++;
 			}
 		}
-		assertions.add(new AssertEquals("GeneralTests", "curationAndReactome",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Pathways tagged as Curation and Reactome: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> noTags(SPARQLHelper helper) throws Exception {
+		Test test = new Test("GeneralTests", "noTags");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/noTags.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("GeneralTests", "noTags", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -220,7 +228,7 @@ public class GeneralTests {
 				errorCount++;
 			}
 		}
-		assertions.add(new AssertEquals("GeneralTests", "noTags",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Pathways without any tag: " + errorCount, errors
 		));
 		return assertions;
