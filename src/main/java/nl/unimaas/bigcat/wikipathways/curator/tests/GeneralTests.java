@@ -53,6 +53,8 @@ public class GeneralTests {
 		assertions.addAll(weirdCharacterTitles(helper));
 		assertions.addAll(duplicateTitles(helper));
 		assertions.addAll(noTags(helper));
+		assertions.addAll(recentness(helper));
+		assertions.addAll(nullDataSources(helper));
 		return assertions;
 	}
 
@@ -253,6 +255,18 @@ public class GeneralTests {
 	    long dayDiff =  TimeUnit.DAYS.convert(diffInMillies,TimeUnit.MILLISECONDS);
 		assertions.add(new AssertTrue(test,
 			(dayDiff <= 40), "The data release is " + dayDiff + " days old: " + table.get(1, "date")
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> nullDataSources(SPARQLHelper helper) throws Exception {
+		Test test = new Test("GeneralTests", "nullDataSources");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("general/nullDataSource.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test,
+			0, table.getRowCount(), "Data nodes with a 'null' data source: " + table.getRowCount(), "" + table
 		));
 		return assertions;
 	}

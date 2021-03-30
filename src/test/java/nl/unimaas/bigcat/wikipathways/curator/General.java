@@ -66,12 +66,10 @@ public class General extends JUnitTests {
 
 	@Test
 	public void nullDataSources() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("general/nullDataSource.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		Assertions.assertEquals(0, table.getRowCount(), "Data nodes with a 'null' data source:\n" + table);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		performAssertions(GeneralTests.nullDataSources(helper));
 	}
 
 	@Test
