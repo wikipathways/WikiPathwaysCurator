@@ -74,22 +74,18 @@ public class General extends JUnitTests {
 
 	@Test
 	public void undefinedDataSources() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("general/undefinedDataSource.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		Assertions.assertEquals(0, table.getRowCount(), "Data nodes with an 'undefined' data source:\n" + table);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		performAssertions(GeneralTests.undefinedDataSources(helper));
 	}
 
 	@Test
 	public void undefinedIdentifier() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("general/allUndefinedIdentifiers.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-		Assertions.assertNotNull(table);
-		Assertions.assertEquals(0, table.getRowCount(), "Data nodes with an 'undefined' identifier:\n" + table);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		performAssertions(GeneralTests.undefinedIdentifier(helper));
 	}
 
 	@Disabled("This test was predominantly for the WPRDF generation, but in the new generation RDF this no longer causes problems")

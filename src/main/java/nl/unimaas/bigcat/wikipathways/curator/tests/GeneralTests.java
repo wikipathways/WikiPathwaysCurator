@@ -53,6 +53,8 @@ public class GeneralTests {
 		assertions.addAll(noTags(helper));
 		assertions.addAll(recentness(helper));
 		assertions.addAll(nullDataSources(helper));
+		assertions.addAll(undefinedDataSources(helper));
+		assertions.addAll(undefinedIdentifier(helper));
 		return assertions;
 	}
 
@@ -267,6 +269,30 @@ public class GeneralTests {
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Data nodes with a 'null' data source: " + table.getRowCount(), "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> undefinedDataSources(SPARQLHelper helper) throws Exception {
+		Test test = new Test("GeneralTests", "undefinedDataSources");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("general/undefinedDataSource.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test,
+			0, table.getRowCount(), "Data nodes with an 'undefined' data source: " + table.getRowCount(), "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> undefinedIdentifier(SPARQLHelper helper) throws Exception {
+		Test test = new Test("GeneralTests", "undefinedIdentifier");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("general/allUndefinedIdentifiers.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test,
+			0, table.getRowCount(), "Data nodes with an 'undefined' identifier: " + table.getRowCount(), "" + table
 		));
 		return assertions;
 	}
