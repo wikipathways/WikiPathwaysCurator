@@ -34,8 +34,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.jupiter.api.Assertions;
-
 import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
 import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
 import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
@@ -248,7 +246,9 @@ public class GeneralTests {
 		String sparql = ResourceHelper.resourceAsString("general/rdfDate.rq");
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
-		Assertions.assertEquals(1, table.getRowCount(), "Expected only one PAV createdData but got:\n" + table);
+		assertions.add(new AssertEquals(test,
+			1, table.getRowCount(), "Expected only one PAV createdData but got: " + table.getRowCount(), "" + table)
+		);
 		Date pavDate = new SimpleDateFormat("yyyy-MM-dd").parse(table.get(1, "date").substring(0,10));
 		Date now = new Date();
 		long diffInMillies = now.getTime() - pavDate.getTime();
