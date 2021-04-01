@@ -297,4 +297,16 @@ public class GeneralTests {
 		return assertions;
 	}
 
+	public static List<IAssertion> emptyLabelOfNodeWithIdentifier(SPARQLHelper helper) throws Exception {
+		Test test = new Test("GeneralTests", "emptyLabelOfNodeWithIdentifier");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("general/emptyLabelsWithIdentifiers.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test,
+			0, table.getRowCount(), "Data nodes with an identifier but empty label: " + table.getRowCount(), "" + table
+		));
+		return assertions;
+	}
+
 }

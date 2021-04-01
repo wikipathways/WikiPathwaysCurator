@@ -90,12 +90,10 @@ public class General extends JUnitTests {
 
 	@Test
 	public void emptyLabelOfNodeWithIdentifier() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("general/emptyLabelsWithIdentifiers.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertEquals(0, table.getRowCount(), "Data nodes with an identifier but empty label:\n" + table);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		performAssertions(GeneralTests.emptyLabelOfNodeWithIdentifier(helper));
 	}
 
 	@Test
