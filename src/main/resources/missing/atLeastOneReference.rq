@@ -3,15 +3,15 @@ PREFIX wp:      <http://vocabularies.wikipathways.org/wp#>
 PREFIX dc:      <http://purl.org/dc/elements/1.1/>
 PREFIX foaf:    <http://xmlns.com/foaf/0.1/>
 PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX cito: <http://purl.org/spar/cito/>
 
 SELECT DISTINCT ?homepage (str(?titleLit) as ?title) (str(?speciesLit) as ?species)
 WHERE {
   {
     SELECT DISTINCT ?pathway (COUNT(?pubmed) AS ?count) WHERE {
-      ?pathway wp:ontologyTag cur:AnalysisCollection .
+      ?pathway a wp:Pathway .
       OPTIONAL {
-        ?pubmed a                wp:PublicationReference ;
-                dcterms:isPartOf+ ?pathway
+        ?pathway cito:cites ?pubmed .
       }
     } GROUP BY ?pathway
   }
