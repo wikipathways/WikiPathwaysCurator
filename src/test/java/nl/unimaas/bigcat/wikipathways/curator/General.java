@@ -88,16 +88,6 @@ public class General extends JUnitTests {
 		performAssertions(GeneralTests.undefinedIdentifier(helper));
 	}
 
-	@Disabled("This test was predominantly for the WPRDF generation, but in the new generation RDF this no longer causes problems")
-	public void noIdentifierURIs() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("general/noIdentifierURIs.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertEquals(0, table.getRowCount(), "Data nodes with a 'noIdentifier' URI:\n" + table);
-	}
-
 	@Test
 	public void emptyLabelOfNodeWithIdentifier() throws Exception {
 		String sparql = ResourceHelper.resourceAsString("general/emptyLabelsWithIdentifiers.rq");
