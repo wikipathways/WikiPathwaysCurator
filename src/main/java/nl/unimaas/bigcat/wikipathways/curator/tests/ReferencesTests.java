@@ -1,4 +1,4 @@
-/* Copyright (C) 2013,2018-2020  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2013,2018-2021  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -35,6 +35,7 @@ import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class ReferencesTests {
 
@@ -47,10 +48,11 @@ public class ReferencesTests {
 	}
 
 	public static List<IAssertion> nonNumericPubMedIDs(SPARQLHelper helper) throws Exception {
+		Test test = new Test("ReferencesTests", "nonNumericPubMedIDs");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("references/nonNumericPubMedIDs.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("ReferencesTests", "nonNumericPubMedIDs", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -70,17 +72,18 @@ public class ReferencesTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("ReferencesTests", "nonNumericPubMedIDs",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Found PubMed IDs that are not numbers: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> zeroPubMedIDs(SPARQLHelper helper) throws Exception {
+		Test test = new Test("ReferencesTests", "zeroPubMedIDs");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("references/nonNumericPubMedIDs.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("ReferencesTests", "zeroPubMedIDs", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -99,17 +102,18 @@ public class ReferencesTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("ReferencesTests", "zeroPubMedIDs",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Found '0's as PubMed IDs: " + errorCount, errors
 		));
 		return assertions;
 	}
 
     public static List<IAssertion> atLeastOneReference(SPARQLHelper helper) throws Exception {
+		Test test = new Test("ReferencesTests", "atLeastOneReference");
     	List<IAssertion> assertions = new ArrayList<>();
     	String sparql = ResourceHelper.resourceAsString("missing/atLeastOneReference.rq");
     	StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("ReferencesTests", "atLeastOneReference", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
@@ -118,7 +122,7 @@ public class ReferencesTests {
 					table.get(i, "species") + " has zero references; \n";
 			}
 		}
-		assertions.add(new AssertEquals("ReferencesTests", "atLeastOneReference",
+		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Found " + table.getRowCount() + " pathways with zero references", errors
 		));
 		return assertions;
