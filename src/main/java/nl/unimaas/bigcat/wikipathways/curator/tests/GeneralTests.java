@@ -55,6 +55,7 @@ public class GeneralTests {
 		assertions.addAll(nullDataSources(helper));
 		assertions.addAll(undefinedDataSources(helper));
 		assertions.addAll(undefinedIdentifier(helper));
+		assertions.addAll(dataNodeWithoutGraphId(helper));
 		return assertions;
 	}
 
@@ -305,6 +306,18 @@ public class GeneralTests {
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Data nodes with an identifier but empty label: " + table.getRowCount(), "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> dataNodeWithoutGraphId(SPARQLHelper helper) throws Exception {
+		Test test = new Test("GeneralTests", "dataNodeWithoutGraphId");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("structure/dataNodeWithoutGraphId.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test,
+			0, table.getRowCount(), "Data nodes without @GraphId: " + table.getRowCount(), "" + table
 		));
 		return assertions;
 	}

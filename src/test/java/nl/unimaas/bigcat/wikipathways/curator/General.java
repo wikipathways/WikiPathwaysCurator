@@ -98,12 +98,10 @@ public class General extends JUnitTests {
 
 	@Test
 	public void dataNodeWithoutGraphId() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("structure/dataNodeWithoutGraphId.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertEquals(0, table.getRowCount(), "Data nodes without @GraphId:\n" + table);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		performAssertions(GeneralTests.dataNodeWithoutGraphId(helper));
 	}
 
 	@Test
