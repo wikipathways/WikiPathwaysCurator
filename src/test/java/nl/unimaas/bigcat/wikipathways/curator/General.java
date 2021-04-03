@@ -112,26 +112,6 @@ public class General extends JUnitTests {
 		performAssertions(GeneralTests.groupsHaveDetail(helper));
 	}
 
-	@Disabled("The test needs revisiting")
-	public void nodesHaveTypedParents() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("structure/nodesHaveTypedParents.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertEquals(0, table.getRowCount(), "Parents of DataNodes should be typed: " + table);
-	}
-
-	@Disabled("Apparently, groups without a type are a common use case; examples are WP2940 and WP2543.")
-	public void nodesPointingToUnspecifiedGroups() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("structure/nodesInEmptyGroups.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertEquals(0, table.getRowCount(), "Nodes should not be part of unspecified groups: " + table);
-	}
-
 	@Test
 	public void titlesShortEnough() throws Exception {
 		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
