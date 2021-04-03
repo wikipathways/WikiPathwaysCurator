@@ -106,12 +106,10 @@ public class General extends JUnitTests {
 
 	@Test
 	public void groupsHaveDetail() throws Exception {
-		String sparql = ResourceHelper.resourceAsString("structure/groupDetails.rq");
-		StringMatrix table = (System.getProperty("SPARQLEP").contains("http:"))
-			? SPARQLHelper.sparql(System.getProperty("SPARQLEP"), sparql)
-		    : SPARQLHelper.sparql(OPSWPRDFFiles.loadData(), sparql);
-			Assertions.assertNotNull(table);
-			Assertions.assertEquals(0, table.getRowCount(), "Expected details for things of type gpml:Group: " + table);
+		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
+		performAssertions(GeneralTests.groupsHaveDetail(helper));
 	}
 
 	@Disabled("The test needs revisiting")

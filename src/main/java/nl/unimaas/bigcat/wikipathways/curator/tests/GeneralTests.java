@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.junit.jupiter.api.Assertions;
+
 import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
 import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
 import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
@@ -56,6 +58,7 @@ public class GeneralTests {
 		assertions.addAll(undefinedDataSources(helper));
 		assertions.addAll(undefinedIdentifier(helper));
 		assertions.addAll(dataNodeWithoutGraphId(helper));
+		assertions.addAll(groupsHaveDetail(helper));
 		return assertions;
 	}
 
@@ -318,6 +321,18 @@ public class GeneralTests {
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Data nodes without @GraphId: " + table.getRowCount(), "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> groupsHaveDetail(SPARQLHelper helper) throws Exception {
+		Test test = new Test("GeneralTests", "groupsHaveDetail");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("structure/groupDetails.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test,
+			0, table.getRowCount(), "Expected details for things of type gpml:Group: " + table.getRowCount(), "" + table
 		));
 		return assertions;
 	}
