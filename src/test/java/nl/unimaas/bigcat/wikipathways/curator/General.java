@@ -32,7 +32,6 @@ import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -41,15 +40,17 @@ import nl.unimaas.bigcat.wikipathways.curator.tests.GeneralTests;
 
 public class General extends JUnitTests {
 
+	private static SPARQLHelper helper = null;
+
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
-		if (System.getProperty("SPARQLEP").startsWith("http")) {
-			// ok, assume the SPARQL end point is online
-			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
-		} else {
-			Model data = OPSWPRDFFiles.loadData();
-			Assertions.assertTrue(data.size() > 5000);
-		}
+		helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		Assertions.assertTrue(helper.size() > 5000);
+		String parseErrors = OPSWPRDFFiles.getParseErrors();
+		Assertions.assertNotNull(parseErrors);
+		Assertions.assertEquals(0, parseErrors.length(), parseErrors.toString());
 	}
 
 	@BeforeEach
@@ -58,116 +59,71 @@ public class General extends JUnitTests {
 	@Test
 	@Tag("void")
 	public void recentness() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
 		performAssertions(GeneralTests.recentness(helper));
 	}
 
 	@Test
 	public void nullDataSources() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
 		performAssertions(GeneralTests.nullDataSources(helper));
 	}
 
 	@Test
 	public void undefinedDataSources() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
 		performAssertions(GeneralTests.undefinedDataSources(helper));
 	}
 
 	@Test
 	public void undefinedIdentifier() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
 		performAssertions(GeneralTests.undefinedIdentifier(helper));
 	}
 
 	@Test
 	public void emptyLabelOfNodeWithIdentifier() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
 		performAssertions(GeneralTests.emptyLabelOfNodeWithIdentifier(helper));
 	}
 
 	@Test
 	public void dataNodeWithoutGraphId() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
 		performAssertions(GeneralTests.dataNodeWithoutGraphId(helper));
 	}
 
 	@Test
 	public void groupsHaveDetail() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
 		performAssertions(GeneralTests.groupsHaveDetail(helper));
 	}
 
 	@Test
 	public void titlesShortEnough() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = GeneralTests.titlesShortEnough(helper);
-		performAssertions(assertions);
+		performAssertions(GeneralTests.titlesShortEnough(helper));
 	}
 
 	@Test
 	@Tag("expertCuration")
 	public void weirdCharacterTitles() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = GeneralTests.weirdCharacterTitles(helper);
-		performAssertions(assertions);
+		performAssertions(GeneralTests.weirdCharacterTitles(helper));
 	}
 
 	@Test
 	@Tag("expertCuration")
 	public void duplicateTitles() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = GeneralTests.duplicateTitles(helper);
-		performAssertions(assertions);
+		performAssertions(GeneralTests.duplicateTitles(helper));
 	}
 
 	@Test
 	@Tag("expertCuration")
 	public void curationAndNeedsWork() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = GeneralTests.curationAndNeedsWork(helper);
-		performAssertions(assertions);
+		performAssertions(GeneralTests.curationAndNeedsWork(helper));
 	}
 
 	@Test
 	public void curationAndReactome() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = GeneralTests.curationAndReactome(helper);
-		performAssertions(assertions);
+		performAssertions(GeneralTests.curationAndReactome(helper));
 	}
 
 	@Test
 	@Tag("expertCuration")
 	public void noTags() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = GeneralTests.noTags(helper);
-		performAssertions(assertions);
+		performAssertions(GeneralTests.noTags(helper));
 	}
 
 }
