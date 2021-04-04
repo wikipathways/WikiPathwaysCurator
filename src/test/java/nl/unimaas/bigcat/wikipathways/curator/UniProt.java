@@ -27,32 +27,28 @@
 package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.time.Duration;
-import java.util.List;
 
-import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 import nl.unimaas.bigcat.wikipathways.curator.tests.UniProtTests;
 
 public class UniProt extends JUnitTests {
 
+	private static SPARQLHelper helper = null;
+
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
-		if (System.getProperty("SPARQLEP").startsWith("http")) {
-			// ok, assume the SPARQL end point is online
-			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
-		} else {
-			Model data = OPSWPRDFFiles.loadData();
-			Assertions.assertTrue(data.size() > 5000);
-			String parseErrors = OPSWPRDFFiles.getParseErrors();
-			Assertions.assertNotNull(parseErrors);
-			Assertions.assertEquals(0, parseErrors.length(), parseErrors.toString());
-		}
+		helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		Assertions.assertTrue(helper.size() > 5000);
+		String parseErrors = OPSWPRDFFiles.getParseErrors();
+		Assertions.assertNotNull(parseErrors);
+		Assertions.assertEquals(0, parseErrors.length(), parseErrors.toString());
 	}
 
 	@BeforeEach
@@ -62,11 +58,7 @@ public class UniProt extends JUnitTests {
 	@Test
 	public void outdatedIdentifiers() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = UniProtTests.outdatedIdentifiers(helper);
-			performAssertions(assertions);
+			performAssertions(UniProtTests.outdatedIdentifiers(helper));
 		});
 	}
 
@@ -74,33 +66,21 @@ public class UniProt extends JUnitTests {
 	@Test
 	public void unreviewedIdentifiers() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = UniProtTests.unreviewedIdentifiers(helper);
-			performAssertions(assertions);
+			performAssertions(UniProtTests.unreviewedIdentifiers(helper));
 		});
 	}
 
 	@Test
 	public void deletedIdentifiers() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = UniProtTests.deletedIdentifiers(helper);
-			performAssertions(assertions);
+			performAssertions(UniProtTests.deletedIdentifiers(helper));
 		});
 	}
 
 	@Test
 	public void incorrectIdentifiers() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-			    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = UniProtTests.incorrectIdentifiers(helper);
-			performAssertions(assertions);
+			performAssertions(UniProtTests.incorrectIdentifiers(helper));
 		});
 	}
 }

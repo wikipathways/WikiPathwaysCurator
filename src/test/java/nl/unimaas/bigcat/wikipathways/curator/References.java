@@ -26,59 +26,45 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
-import java.util.List;
-
-import org.apache.jena.rdf.model.Model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 import nl.unimaas.bigcat.wikipathways.curator.tests.ReferencesTests;
 
 public class References extends JUnitTests {
 
+	private static SPARQLHelper helper = null;
+
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
-		if (System.getProperty("SPARQLEP").startsWith("http")) {
-			// ok, assume the SPARQL end point is online
-			System.err.println("SPARQL EP: " + System.getProperty("SPARQLEP"));
-		} else {
-			Model data = OPSWPRDFFiles.loadData();
-			Assertions.assertTrue(data.size() > 5000);
-		}
+		helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		Assertions.assertTrue(helper.size() > 5000);
+		String parseErrors = OPSWPRDFFiles.getParseErrors();
+		Assertions.assertNotNull(parseErrors);
+		Assertions.assertEquals(0, parseErrors.length(), parseErrors.toString());
 	}
 
 	@BeforeEach
 	public void waitForIt() throws InterruptedException { Thread.sleep(OPSWPRDFFiles.SLEEP_TIME); }
-	
+
 	@Test
 	public void nonNumericPubMedIDs() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = ReferencesTests.nonNumericPubMedIDs(helper);
-		performAssertions(assertions);
+		performAssertions(ReferencesTests.nonNumericPubMedIDs(helper));
 	}
 
 	@Test
 	public void zeroPubMedIDs() throws Exception {
-		SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = ReferencesTests.zeroPubMedIDs(helper);
-		performAssertions(assertions);
+		performAssertions(ReferencesTests.zeroPubMedIDs(helper));
 	}
 
     @Tag("expertCuration")
     @Test
     public void atLeastOneReference() throws Exception {
-    	SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-			? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		    : new SPARQLHelper(OPSWPRDFFiles.loadData());
-		List<IAssertion> assertions = ReferencesTests.atLeastOneReference(helper);
-		performAssertions(assertions);
+		performAssertions(ReferencesTests.atLeastOneReference(helper));
     }
 }

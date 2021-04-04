@@ -27,16 +27,28 @@
 package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.time.Duration;
-import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 import nl.unimaas.bigcat.wikipathways.curator.tests.PubChemMetabolitesTests;
 
 public class PubChemMetabolites extends JUnitTests {
+
+	private static SPARQLHelper helper = null;
+
+	@BeforeAll
+	public static void loadData() throws InterruptedException {
+		helper = (System.getProperty("SPARQLEP").contains("http:"))
+			? new SPARQLHelper(System.getProperty("SPARQLEP"))
+			: new SPARQLHelper(OPSWPRDFFiles.loadData());
+		Assertions.assertTrue(helper.size() > 5000);
+		String parseErrors = OPSWPRDFFiles.getParseErrors();
+		Assertions.assertNotNull(parseErrors);
+		Assertions.assertEquals(0, parseErrors.length(), parseErrors.toString());
+	}
 
 	@BeforeEach
 	public void waitForIt() throws InterruptedException { Thread.sleep(OPSWPRDFFiles.SLEEP_TIME); }
@@ -44,33 +56,21 @@ public class PubChemMetabolites extends JUnitTests {
 	@Test
 	public void nonNumericIDs() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(50), () -> {
-			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		        : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = PubChemMetabolitesTests.nonNumericIDs(helper);
-			performAssertions(assertions);
+			performAssertions(PubChemMetabolitesTests.nonNumericIDs(helper));
 		});
 	}
 
 	@Test
 	public void nonLive2LiveIdentifiers() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		        : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = PubChemMetabolitesTests.nonLive2LiveIdentifiers(helper);
-			performAssertions(assertions);
+			performAssertions(PubChemMetabolitesTests.nonLive2LiveIdentifiers(helper));
 		});
 	}
 
 	@Test
 	public void nonExistingIdentifiers() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			SPARQLHelper helper = (System.getProperty("SPARQLEP").contains("http:"))
-				? new SPARQLHelper(System.getProperty("SPARQLEP"))
-		        : new SPARQLHelper(OPSWPRDFFiles.loadData());
-			List<IAssertion> assertions = PubChemMetabolitesTests.nonExistingIdentifiers(helper);
-			performAssertions(assertions);
+			performAssertions(PubChemMetabolitesTests.nonExistingIdentifiers(helper));
 		});
 	}
 
