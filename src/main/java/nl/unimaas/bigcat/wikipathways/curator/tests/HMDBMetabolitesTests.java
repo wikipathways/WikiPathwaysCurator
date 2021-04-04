@@ -36,6 +36,7 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotSame;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class HMDBMetabolitesTests {
 
@@ -47,24 +48,26 @@ public class HMDBMetabolitesTests {
 	}
 
 	public static List<IAssertion> outdatedIdentifiers(SPARQLHelper helper) throws Exception {
+		Test test = new Test("HMDBMetabolitesTests", "outdatedIdentifiers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/hmdb/outdatedHMDBidentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("HMDBMetabolitesTests", "outdatedIdentifiers", table));
-		assertions.add(new AssertEquals("HMDBMetabolitesTests", "outdatedIdentifiers", 
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test, 
 			0, table.getRowCount(), "Outdated HMDB identifiers", table.toString()
 		));
 		return assertions;
 	}
 	
 	public static List<IAssertion> correctFormat(SPARQLHelper helper) throws Exception {
+		Test test = new Test("HMDBMetabolitesTests", "correctFormat");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/allHMDBIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("HMDBMetabolitesTests", "correctFormat", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
-		assertions.add(new AssertNotSame("HMDBMetabolitesTests", "correctFormat", 0, table.getRowCount(), "I expected more than zero HMDB identifiers."));
+		assertions.add(new AssertNotSame(test, 0, table.getRowCount(), "I expected more than zero HMDB identifiers."));
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String identifier = table.get(i, "identifier");
@@ -85,8 +88,7 @@ public class HMDBMetabolitesTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals(
-			"HMDBMetabolitesTests", "correctFormat",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "HMDB identifiers detected with incorrect format: " + errorCount, errors
 		));
 		return assertions;

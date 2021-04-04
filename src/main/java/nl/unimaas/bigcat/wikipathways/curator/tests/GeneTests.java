@@ -35,6 +35,7 @@ import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class GeneTests {
 
@@ -46,10 +47,11 @@ public class GeneTests {
 	}
 
 	public static List<IAssertion> entrezGeneIdentifiersNotNumber(SPARQLHelper helper) throws Exception {
+		Test test = new Test("GeneTests", "entrezGeneIdentifiersNotNumber");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("genes/allEntrezGenesIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("GeneTests", "entrezGeneIdentifiersNotNumber", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -70,17 +72,18 @@ public class GeneTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("GeneTests", "entrezGeneIdentifiersNotNumber", 
+		assertions.add(new AssertEquals(test, 
 			0, errorCount, "Entrez Gene identifiers that are not numbers: " + errorCount, errors
 		));
 		return assertions;
 	}
 	
 	public static List<IAssertion> affyProbeIdentifiersNotCorrect(SPARQLHelper helper) throws Exception {
+		Test test = new Test("GeneTests", "affyProbeIdentifiersNotCorrect");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("genes/allAffyProbeIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("GeneTests", "affyProbeIdentifiersNotCorrect", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -103,7 +106,7 @@ public class GeneTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("GeneTests", "affyProbeIdentifiersNotCorrect", 
+		assertions.add(new AssertEquals(test, 
 			0, errorCount, "Affy Probe identifiers that do not look right: " + errorCount, errors
 		));
 		return assertions;

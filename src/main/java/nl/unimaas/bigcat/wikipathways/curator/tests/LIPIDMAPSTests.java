@@ -37,6 +37,7 @@ import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class LIPIDMAPSTests {
 	
@@ -55,11 +56,12 @@ public class LIPIDMAPSTests {
 	}
 
 	public static List<IAssertion> retiredIdentifiers(SPARQLHelper helper) throws Exception {
+		Test test = new Test("LIPIDMAPSTests", "retiredIdentifiers");
 		// Getting the data
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/lipidmaps.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("LIPIDMAPSTests", "retiredIdentifiers", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 
@@ -77,8 +79,7 @@ public class LIPIDMAPSTests {
 		}
 
 		// Reporting
-		assertions.add(new AssertEquals(
-			"LIPIDMAPSTests", "retiredIdentifiers", 
+		assertions.add(new AssertEquals(test, 
 			0, errorCount, "Retired LIPID MAPS identifiers detected: " + errorCount, errors
 		));
 		return assertions;

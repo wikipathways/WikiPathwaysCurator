@@ -39,6 +39,7 @@ import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class HMDBSecMetabolitesTests {
 	
@@ -66,11 +67,12 @@ public class HMDBSecMetabolitesTests {
 	}
 
 	public static List<IAssertion> outdatedIdentifiers(SPARQLHelper helper) throws Exception {
+		Test test = new Test("HMDBSecMetabolitesTests", "outdatedIdentifiers");
 		// Getting the data
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/allHMDBIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("HMDBSecMetabolitesTests", "outdatedIdentifiers", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 
@@ -91,19 +93,19 @@ public class HMDBSecMetabolitesTests {
 		}		
 
 		// Reporting
-		assertions.add(new AssertEquals(
-			"HMDBSecMetabolitesTests", "outdatedIdentifiers", 
+		assertions.add(new AssertEquals(test, 
 			0, errorCount, "Secondary HMDB identifiers detected: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> nonExisting(SPARQLHelper helper) throws Exception {
+		Test test = new Test("HMDBSecMetabolitesTests", "nonExisting");
 		// Getting the data
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/allHMDBIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("HMDBSecMetabolitesTests", "nonExisting", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 
@@ -120,19 +122,19 @@ public class HMDBSecMetabolitesTests {
 		}
 
 		// Reporting
-		assertions.add(new AssertEquals(
-			"HMDBSecMetabolitesTests", "nonExisting", 
+		assertions.add(new AssertEquals(test, 
 			0, errorCount, "Non-existing HMDB identifiers detected: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> oldFormat(SPARQLHelper helper) throws Exception {
+		Test test = new Test("HMDBSecMetabolitesTests", "oldFormat");
 		// Getting the data
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/allHMDBIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("HMDBSecMetabolitesTests", "oldFormat", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 
@@ -149,33 +151,10 @@ public class HMDBSecMetabolitesTests {
 		}
 
 		// Reporting
-		assertions.add(new AssertEquals(
-			"HMDBSecMetabolitesTests", "oldFormat", 
+		assertions.add(new AssertEquals(test, 
 			0, errorCount, "Old HMDB identifier format detected: " + errorCount, errors
 		));
 		return assertions;
 	}
-
-	/**
-	public static List<IAssertion> interactionsWithoutReferences(SPARQLHelper helper) throws Exception {
-		// Getting the data
-		List<IAssertion> assertions = new ArrayList<>();
-		String sparql = ResourceHelper.resourceAsString("XXX/YYYYYYYY.rq");
-		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("XXXXXXXX", "YYYYYYYYYY", table));
-		String errors = "";
-		int errorCount = 0;
-
-		// Testing
-		
-
-		// Reporting
-		assertions.add(new AssertEquals(
-			"XXXXXXX", "YYYYYYYYY", 
-			0, errorCount, "MMMMMMMMMMMMMMMMMMMMMM:" + errorCount, errors
-		));
-		return assertions;
-	}
-	*/
 
 }

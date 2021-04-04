@@ -37,6 +37,7 @@ import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class InteractionTests {
 	
@@ -58,10 +59,11 @@ public class InteractionTests {
 	}
 
 	public static List<IAssertion> noMetaboliteToNonMetaboliteConversions(SPARQLHelper helper) throws Exception {
+		Test test = new Test("InteractionTests", "noMetaboliteToNonMetaboliteConversions");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/noMetaboliteNonMetaboliteConversions.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("InteractionTests", "noMetaboliteToNonMetaboliteConversions", table));
+		assertions.add(new AssertNotNull(test, table));
 		Set<String> allowedProteinProducts = new HashSet<String>();
             InteractionTests.addIdentifiersOrg(allowedProteinProducts, "identifiers.org/uniprot/H9ZYJ2"); // theoredoxin, e.g. WP3580
             InteractionTests.addIdentifiersOrg(allowedProteinProducts, "identifiers.org/chebi/CHEBI:39026"); // LPL
@@ -79,18 +81,18 @@ public class InteractionTests {
 				} // else, OK, this is allows as conversion target
 			}
 		}
-		assertions.add(new AssertEquals(
-			"InteractionTests", "noMetaboliteToNonMetaboliteConversions", 
+		assertions.add(new AssertEquals(test, 
 			0, errorCount, "Unexpected metabolite to non-metabolite conversions:" + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> noNonMetaboliteToMetaboliteConversions(SPARQLHelper helper) throws Exception {
+		Test test = new Test("InteractionTests", "noNonMetaboliteToMetaboliteConversions");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/noNonMetaboliteMetaboliteConversions.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("InteractionTests", "noNonMetaboliteToMetaboliteConversions", table));
+		assertions.add(new AssertNotNull(test, table));
 		Set<String> allowedProducts = new HashSet<String>();
 		    InteractionTests.addIdentifiersOrg(allowedProducts, "identifiers.org/hmdb/HMDB04246"); // from KNG1, e.g. in WP
 		    InteractionTests.addIdentifiersOrg(allowedProducts, "identifiers.org/hmdb/HMDB0004246"); // from KNG1, e.g. in WP
@@ -116,18 +118,18 @@ public class InteractionTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals(
-			"InteractionTests", "noNonMetaboliteToMetaboliteConversions",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Unexpected non-metabolite to metabolite conversions: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> noGeneProteinConversions(SPARQLHelper helper) throws Exception {
+		Test test = new Test("InteractionTests", "noGeneProteinConversions");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/noGeneProteinConversions.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("InteractionTests", "noGeneProteinConversions", table));
+		assertions.add(new AssertNotNull(test, table));
 		Set<String> allowedProteinSubstrates = new HashSet<String>();
 		    InteractionTests.addIdentifiersOrg(allowedProteinSubstrates, "identifiers.org/uniprot/P0DTD1"); // SARS-CoV-2 main protease
 		String errors = "";
@@ -144,18 +146,18 @@ public class InteractionTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals(
-			"InteractionTests", "noGeneProteinConversions",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Unexpected gene-protein conversions: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> nonNumericIDs(SPARQLHelper helper) throws Exception {
+		Test test = new Test("InteractionTests", "nonNumericIDs");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/nonNumericRhea.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("InteractionTests", "nonNumericIDs", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -172,8 +174,7 @@ public class InteractionTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals(
-			"InteractionTests", "nonNumericIDs",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Incorrect Rhea IDs: " + errorCount, 
 			"Found Rhea IDs that are not numbers (they should not include a 'Rhea:' prefix):\n" + errors
 		));
@@ -181,10 +182,11 @@ public class InteractionTests {
 	}
 
 	public static List<IAssertion> interactionsWithLabels(SPARQLHelper helper) throws Exception {
+		Test test = new Test("InteractionTests", "interactionsWithLabels");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/interactionsWithLabels.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("InteractionTests", "interactionsWithLabels", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -202,18 +204,18 @@ public class InteractionTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals(
-			"InteractionTests", "interactionsWithLabels",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Interactions found that involve Labels: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> possibleTranslocations(SPARQLHelper helper) throws Exception {
+		Test test = new Test("InteractionTests", "possibleTranslocations");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/possibleTranslocations.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("InteractionTests", "possibleTranslocations", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -227,18 +229,18 @@ public class InteractionTests {
 				errorCount++;
 			}
 		}
-		assertions.add(new AssertEquals(
-			"InteractionTests", "possibleTranslocations",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Interactions between identical metabolites: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> noProteinProteinConversions(SPARQLHelper helper) throws Exception {
+		Test test = new Test("InteractionTests", "noProteinProteinConversions");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/noProteinProteinConversions.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("InteractionTests", "noProteinProteinConversions", table));
+		assertions.add(new AssertNotNull(test, table));
 		Set<String> allowedProteinSubstrates = new HashSet<String>();
 		allowedProteinSubstrates.add("https://identifiers.org/uniprot/P0DTD1"); // SARS-CoV-2 main protease
 		allowedProteinSubstrates.add("https://identifiers.org/uniprot/P0DTC2"); // SARS-CoV-2 spike protein (resulting in S1, S2, S2'
@@ -256,8 +258,7 @@ public class InteractionTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals(
-			"InteractionTests", "noProteinProteinConversions",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Unexpected protein-protein conversions: " + errorCount, errors
 		));
 		return assertions;

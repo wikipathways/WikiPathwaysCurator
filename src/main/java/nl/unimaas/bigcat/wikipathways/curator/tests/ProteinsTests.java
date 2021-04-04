@@ -35,6 +35,7 @@ import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class ProteinsTests {
 
@@ -46,10 +47,11 @@ public class ProteinsTests {
 	}
 
 	public static List<IAssertion> wrongBrendaFormat(SPARQLHelper helper) throws Exception {
+		Test test = new Test("ProteinsTests", "wrongBrendaFormat");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("proteins/allBrendaIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("ProteinsTests", "wrongBrendaFormat", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -65,17 +67,18 @@ public class ProteinsTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("ProteinsTests", "wrongBrendaFormat",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "BRENDA identifiers with the wrong format: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> wrongEnzymeNomenclatureFormat(SPARQLHelper helper) throws Exception {
+		Test test = new Test("ProteinsTests", "wrongEnzymeNomenclatureFormat");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("proteins/allECIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("ProteinsTests", "wrongEnzymeNomenclatureFormat", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -91,7 +94,7 @@ public class ProteinsTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("ProteinsTests", "wrongEnzymeNomenclatureFormat",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Enzyme Nomenclature identifiers with the wrong format: " + errorCount, errors
 		));
 		return assertions;

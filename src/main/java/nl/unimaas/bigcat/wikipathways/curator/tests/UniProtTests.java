@@ -39,6 +39,7 @@ import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class UniProtTests {
 
@@ -63,10 +64,11 @@ public class UniProtTests {
 	}
 
 	public static List<IAssertion> outdatedIdentifiers(SPARQLHelper helper) throws Exception {
+		Test test = new Test("UniProtTests", "outdatedIdentifiers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("proteins/allUniProtIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("UniProtTests", "outdatedIdentifiers", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -79,17 +81,18 @@ public class UniProtTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("UniProtTests", "outdatedIdentifiers",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Deprecated UniProt identifiers: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> deletedIdentifiers(SPARQLHelper helper) throws Exception {
+		Test test = new Test("UniProtTests", "deletedIdentifiers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("proteins/allUniProtIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("UniProtTests", "deletedIdentifiers", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -102,17 +105,18 @@ public class UniProtTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("UniProtTests", "deletedIdentifiers",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Deleted UniProt identifiers: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> unreviewedIdentifiers(SPARQLHelper helper) throws Exception {
+		Test test = new Test("UniProtTests", "unreviewedIdentifiers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("proteins/allUniProtIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("UniProtTests", "unreviewedIdentifiers", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -126,17 +130,18 @@ public class UniProtTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("UniProtTests", "unreviewedIdentifiers",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Unreviewed UniProt identifiers: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> incorrectIdentifiers(SPARQLHelper helper) throws Exception {
+		Test test = new Test("UniProtTests", "incorrectIdentifiers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("proteins/allUniProtIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("UniProtTests", "incorrectIdentifiers", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -149,7 +154,7 @@ public class UniProtTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("UniProtTests", "incorrectIdentifiers",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Incorrect UniProt identifiers: " + errorCount, errors
 		));
 		return assertions;

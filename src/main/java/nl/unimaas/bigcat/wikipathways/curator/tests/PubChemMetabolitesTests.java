@@ -37,6 +37,7 @@ import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertEquals;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
+import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class PubChemMetabolitesTests {
 
@@ -51,10 +52,11 @@ public class PubChemMetabolitesTests {
 	}
 
 	public static List<IAssertion> nonNumericIDs(SPARQLHelper helper) throws Exception {
+		Test test = new Test("PubChemMetabolitesTests", "nonNumericIDs");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/badformat/nonNumericPubChem.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("PubChemMetabolitesTests", "nonNumericIDs", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -71,17 +73,18 @@ public class PubChemMetabolitesTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("PubChemMetabolitesTests", "nonNumericIDs",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Found PubChem-compound IDs that are not numbers: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> nonLive2LiveIdentifiers(SPARQLHelper helper) throws Exception {
+		Test test = new Test("PubChemMetabolitesTests", "nonLive2LiveIdentifiers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/allPubChemIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("PubChemMetabolitesTests", "nonLive2LiveIdentifiers", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -96,17 +99,18 @@ public class PubChemMetabolitesTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("PubChemMetabolitesTests", "nonLive2LiveIdentifiers",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Non-live PubChem CIDs detected: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> nonExistingIdentifiers(SPARQLHelper helper) throws Exception {
+		Test test = new Test("PubChemMetabolitesTests", "nonExistingIdentifiers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/allPubChemIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
-		assertions.add(new AssertNotNull("PubChemMetabolitesTests", "nonExistingIdentifiers", table));
+		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -120,7 +124,7 @@ public class PubChemMetabolitesTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals("PubChemMetabolitesTests", "nonExistingIdentifiers",
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Non-existing PubChem CIDs detected: " + errorCount, errors
 		));
 		return assertions;
