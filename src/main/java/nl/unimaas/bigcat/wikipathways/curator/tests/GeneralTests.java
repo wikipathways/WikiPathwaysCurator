@@ -57,6 +57,9 @@ public class GeneralTests {
 		assertions.addAll(undefinedIdentifier(helper));
 		assertions.addAll(dataNodeWithoutGraphId(helper));
 		assertions.addAll(groupsHaveDetail(helper));
+		assertions.addAll(emptyLabelOfNodeWithIdentifier(helper));
+		assertions.addAll(curationAndHypothetical(helper));
+		assertions.addAll(curationAndNeedsWork(helper));
 		return assertions;
 	}
 
