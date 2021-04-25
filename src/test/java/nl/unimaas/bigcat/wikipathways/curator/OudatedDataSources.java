@@ -185,4 +185,11 @@ public class OudatedDataSources extends JUnitTests {
 			performAssertions(OudatedDataSourcesTests.outdatedChemSpiderDataSource(helper));
 		});
 	}
+
+	@Test
+	public void discontinuedUniGene() throws Exception {
+		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
+			performAssertions(OudatedDataSourcesTests.discontinuedUniGene(helper));
+		});
+	}
 }

@@ -63,6 +63,7 @@ public class OudatedDataSourcesTests {
 		assertions.addAll(outdatedEnsemblChickenDataSource(helper));
 		assertions.addAll(outdatedECNumberDataSource(helper));
 		assertions.addAll(outdatedChemSpiderDataSource(helper));
+		assertions.addAll(discontinuedUniGene(helper));
 		return assertions;
 	}
 
@@ -327,6 +328,18 @@ public class OudatedDataSourcesTests {
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertTrue(test,
 			(table.getRowCount() < 1), "Outdated 'ChemSpider' data sources (use 'Chemspider')", "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> discontinuedUniGene(SPARQLHelper helper) throws Exception {
+		Test test = new Test("OudatedDataSourcesTests", "discontinuedUniGene");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("outdated/unigene.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertTrue(test,
+			(table.getRowCount() < 1), "The 'UniGene' database no longer exists", "" + table
 		));
 		return assertions;
 	}
