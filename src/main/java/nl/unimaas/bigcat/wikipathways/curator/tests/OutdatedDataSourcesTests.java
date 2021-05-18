@@ -347,7 +347,7 @@ public class OutdatedDataSourcesTests {
 			}
 		}
 		assertions.add(new AssertEquals(test,
-			0, errorCount, "The 'UniGene' database no longer exists, but used " + errorCount, errors
+			0, errorCount, "The 'UniGene' database no longer exists, but used " + errorCount + " times", errors
 		));
 		return assertions;
 	}
