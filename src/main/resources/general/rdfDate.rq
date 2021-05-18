@@ -3,5 +3,7 @@ prefix pav:   <http://purl.org/pav/>
 
 select distinct ?date where {
   ?dataset a void:Dataset ;
+    dcterms:title ?titleLit ;
     pav:createdOn ?date .
+  FILTER (regex(str(?titleLit), "WikiPathways RDF"))
 }
