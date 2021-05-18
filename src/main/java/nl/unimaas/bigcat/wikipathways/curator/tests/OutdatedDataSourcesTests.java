@@ -338,8 +338,16 @@ public class OutdatedDataSourcesTests {
 		String sparql = ResourceHelper.resourceAsString("outdated/unigene.rq");
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
-		assertions.add(new AssertTrue(test,
-			(table.getRowCount() < 1), "The 'UniGene' database no longer exists", "" + table
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errors += table.get(i, "node") + ", " + table.get(i, "homepage") + "\n";
+				errorCount++;
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "The 'UniGene' database no longer exists, but used " + errorCount, errors
 		));
 		return assertions;
 	}
