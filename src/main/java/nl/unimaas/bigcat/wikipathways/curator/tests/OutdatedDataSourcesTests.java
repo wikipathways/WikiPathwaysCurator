@@ -38,7 +38,7 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertTrue;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
-public class OudatedDataSourcesTests {
+public class OutdatedDataSourcesTests {
 
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();

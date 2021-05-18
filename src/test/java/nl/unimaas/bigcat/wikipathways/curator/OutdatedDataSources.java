@@ -34,9 +34,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import nl.unimaas.bigcat.wikipathways.curator.tests.OudatedDataSourcesTests;
+import nl.unimaas.bigcat.wikipathways.curator.tests.OutdatedDataSourcesTests;
 
-public class OudatedDataSources extends JUnitTests {
+public class OutdatedDataSources extends JUnitTests {
 
 	private static SPARQLHelper helper = null;
 
@@ -56,48 +56,48 @@ public class OudatedDataSources extends JUnitTests {
 
 	@Test
 	public void outdatedUniprot() throws Exception {
-		performAssertions(OudatedDataSourcesTests.outdatedUniprot(helper));
+		performAssertions(OutdatedDataSourcesTests.outdatedUniprot(helper));
 	}
 
 	@Test
 	public void outdatedUniprot2() throws Exception {
-		performAssertions(OudatedDataSourcesTests.outdatedUniprot2(helper));
+		performAssertions(OutdatedDataSourcesTests.outdatedUniprot2(helper));
 	}
 
 	@Test
 	public void outdatedUniprot3() throws Exception {
-		performAssertions(OudatedDataSourcesTests.outdatedUniprot3(helper));
+		performAssertions(OutdatedDataSourcesTests.outdatedUniprot3(helper));
 	}
 
 	@Test
 	public void outdatedUniprot4() throws Exception {
-		performAssertions(OudatedDataSourcesTests.outdatedUniprot4(helper));
+		performAssertions(OutdatedDataSourcesTests.outdatedUniprot4(helper));
 	}
 
 	@Test
 	public void oldUniprotSwissProt() throws Exception {
-		performAssertions(OudatedDataSourcesTests.oldUniprotSwissProt(helper));
+		performAssertions(OutdatedDataSourcesTests.oldUniprotSwissProt(helper));
 	}
 
 	@Test
 	public void wrongPubChem() throws Exception {
-		performAssertions(OudatedDataSourcesTests.wrongPubChem(helper));
+		performAssertions(OutdatedDataSourcesTests.wrongPubChem(helper));
 	}
 
 	@Test
 	public void noInChIDataSourceYet() throws Exception {
-		performAssertions(OudatedDataSourcesTests.noInChIDataSourceYet(helper));
+		performAssertions(OutdatedDataSourcesTests.noInChIDataSourceYet(helper));
 	}
 
 	@Test
 	public void outdatedKeggCompoundDataSource() throws Exception {
-		performAssertions(OudatedDataSourcesTests.outdatedKeggCompoundDataSource(helper));
+		performAssertions(OutdatedDataSourcesTests.outdatedKeggCompoundDataSource(helper));
 	}
 
 	@Test
 	public void outdatedKeggCompoundDataSource2() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			performAssertions(OudatedDataSourcesTests.outdatedKeggCompoundDataSource2(helper));
+			performAssertions(OutdatedDataSourcesTests.outdatedKeggCompoundDataSource2(helper));
 		});
 	}
 
@@ -105,91 +105,91 @@ public class OudatedDataSources extends JUnitTests {
 	@Test
 	public void outdatedKeggOrthologDataSource() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			performAssertions(OudatedDataSourcesTests.outdatedKeggOrthologDataSource(helper));
+			performAssertions(OutdatedDataSourcesTests.outdatedKeggOrthologDataSource(helper));
 		});
 	}
 
 	@Test
 	public void outdatedKeggEnzymeDataSource() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			performAssertions(OudatedDataSourcesTests.outdatedKeggEnzymeDataSource(helper));
+			performAssertions(OutdatedDataSourcesTests.outdatedKeggEnzymeDataSource(helper));
 		});
 	}
 
 	@Test
 	public void outdatedEnsemblMouseDataSource() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			performAssertions(OudatedDataSourcesTests.outdatedEnsemblMouseDataSource(helper));
+			performAssertions(OutdatedDataSourcesTests.outdatedEnsemblMouseDataSource(helper));
 		});
 	}
 
 	@Test
 	public void outdatedEnsemblCapsSource() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			performAssertions(OudatedDataSourcesTests.outdatedEnsemblCapsSource(helper));
+			performAssertions(OutdatedDataSourcesTests.outdatedEnsemblCapsSource(helper));
 		});
 	}
 
 	@Test
 	public void outdatedEnsemblHumanDataSource() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			performAssertions(OudatedDataSourcesTests.outdatedEnsemblHumanDataSource(helper));
+			performAssertions(OutdatedDataSourcesTests.outdatedEnsemblHumanDataSource(helper));
 		});
 	}
 
 	@Test
 	public void outdatedEnsemblMouseDataSourceFromGPML() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			performAssertions(OudatedDataSourcesTests.outdatedEnsemblMouseDataSourceFromGPML(helper));
+			performAssertions(OutdatedDataSourcesTests.outdatedEnsemblMouseDataSourceFromGPML(helper));
 		});
 	}
 
 	@Test
 	public void outdatedEnsemblHumanDataSourceFromGPML() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			performAssertions(OudatedDataSourcesTests.outdatedEnsemblHumanDataSourceFromGPML(helper));
+			performAssertions(OutdatedDataSourcesTests.outdatedEnsemblHumanDataSourceFromGPML(helper));
 		});
 	}
 
 	@Test
 	public void outdatedEnsemblYeastDataSource() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			performAssertions(OudatedDataSourcesTests.outdatedEnsemblYeastDataSource(helper));
+			performAssertions(OutdatedDataSourcesTests.outdatedEnsemblYeastDataSource(helper));
 		});
 	}
 
 	@Test
 	public void outdatedEnsemblCowDataSource() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			performAssertions(OudatedDataSourcesTests.outdatedEnsemblCowDataSource(helper));
+			performAssertions(OutdatedDataSourcesTests.outdatedEnsemblCowDataSource(helper));
 		});
 	}
 
 	@Test
 	public void outdatedEnsemblChickenDataSource() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			performAssertions(OudatedDataSourcesTests.outdatedEnsemblChickenDataSource(helper));
+			performAssertions(OutdatedDataSourcesTests.outdatedEnsemblChickenDataSource(helper));
 		});
 	}
 
 	@Test
 	public void outdatedECNumberDataSource() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			performAssertions(OudatedDataSourcesTests.outdatedECNumberDataSource(helper));
+			performAssertions(OutdatedDataSourcesTests.outdatedECNumberDataSource(helper));
 		});
 	}
 
 	@Test
 	public void outdatedChemSpiderDataSource() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			performAssertions(OudatedDataSourcesTests.outdatedChemSpiderDataSource(helper));
+			performAssertions(OutdatedDataSourcesTests.outdatedChemSpiderDataSource(helper));
 		});
 	}
 
 	@Test
 	public void discontinuedUniGene() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
-			performAssertions(OudatedDataSourcesTests.discontinuedUniGene(helper));
+			performAssertions(OutdatedDataSourcesTests.discontinuedUniGene(helper));
 		});
 	}
 }
