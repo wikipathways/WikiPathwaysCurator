@@ -132,7 +132,7 @@ public class GeneTests {
 		Test test = new Test("GeneTests", "outdatedIdentifiers");
 		// Getting the data
 		List<IAssertion> assertions = new ArrayList<>();
-		String sparql = ResourceHelper.resourceAsString("genes/allHGNCProbeIdentifiers.rq");
+		String sparql = ResourceHelper.resourceAsString("genes/allHGNCIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
