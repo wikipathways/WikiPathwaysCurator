@@ -27,8 +27,11 @@
 package nl.unimaas.bigcat.wikipathways.curator.tests;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import nl.unimaas.bigcat.wikipathways.curator.BridgeDbTiwidReader;
 import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
 import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
 import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
@@ -39,10 +42,23 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class GeneTests {
 
+	private static Map<String,String> oldToNew = new HashMap<String, String>();
+
+	static {
+		// now load the deprecation data
+		String deprecatedData = ResourceHelper.resourceAsString("genes/hgnc/deprecated.tsv");
+		String lines[] = deprecatedData.split("\\r?\\n");
+		for (int i=1; i<lines.length; i++) {
+			String[] ids = lines[i].split("\t");
+			oldToNew.put(ids[0], ids[2]);
+		}
+	}
+
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(entrezGeneIdentifiersNotNumber(helper));
 		assertions.addAll(affyProbeIdentifiersNotCorrect(helper));
+		assertions.addAll(outdatedIdentifiers(helper));
 		return assertions;
 	}
 
@@ -112,4 +128,30 @@ public class GeneTests {
 		return assertions;
 	}
 	
+	public static List<IAssertion> outdatedIdentifiers(SPARQLHelper helper) throws Exception {
+		Test test = new Test("GeneTests", "outdatedIdentifiers");
+		// Getting the data
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("genes/allHGNCProbeIdentifiers.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				if (oldToNew.containsKey(identifier)) {
+					errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+						" has " + identifier + " but has been replace by " +
+						oldToNew.get(identifier) + "\n";
+					errorCount++;
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test, 
+			0, errorCount, "Old HGNC identifiers detected: " + errorCount, errors
+		));
+		return assertions;
+	}
+
 }
