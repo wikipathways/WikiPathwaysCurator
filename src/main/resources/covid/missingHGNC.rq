@@ -1,0 +1,20 @@
+PREFIX dct:   <http://purl.org/dc/terms/>
+PREFIX foaf:  <http://xmlns.com/foaf/0.1/>
+PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX wp:    <http://vocabularies.wikipathways.org/wp#>
+PREFIX xsd:   <http://www.w3.org/2001/XMLSchema#>
+PREFIX cur:   <http://vocabularies.wikipathways.org/wp#Curation:>
+
+SELECT DISTINCT ?pathwayURL ?geneProd ?geneProdLabel ?identifier
+WHERE {
+  VALUES ?geneProd { wp:GeneProduct wp:Protein }
+  ?gene a ?geneProd ;
+        dct:identifier ?identifier ;
+        rdfs:label ?geneProdLabel ;
+        dct:isPartOf ?pathway .
+  ?pathway wp:organismName "Homo sapiens"^^xsd:string ;
+        wp:ontologyTag cur:COVID19 ;
+        foaf:page ?pathwayURL .
+  MINUS { ?pathway wp:ontologyTag cur:Reactome_Approved }
+  MINUS { ?gene wp:bdbHgncSymbol ?hgnc }
+}

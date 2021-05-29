@@ -42,6 +42,7 @@ public class CovidDiseaseMapsTests {
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(interactionsWithoutReferences(helper));
+		assertions.addAll(missingHGNC(helper));
 		return assertions;
 	}
 
@@ -65,5 +66,27 @@ public class CovidDiseaseMapsTests {
 		));
 		return assertions;
 	}
-	
+
+	public static List<IAssertion> missingHGNC(SPARQLHelper helper) throws Exception {
+		Test test = new Test("CovidDiseaseMapsTests", "missingHGNC");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("covid/missingHGNC.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+  			    errors += table.get(i, "pathwayURL") + " has " +
+		                  table.get(i, "geneProdLabel") + " with ID " +
+		                  table.get(i, "identifier") + " without HGNC\n";
+				errorCount++;
+			}
+		}
+		assertions.add(new AssertEquals(test, true, 
+			0, errorCount, "Genes without an HGNC identifier: " + errorCount, errors
+		));
+		return assertions;
+	}
+
 }
