@@ -1,4 +1,4 @@
-/* Copyright (C) 2013,2018,2021  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2021  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -29,11 +29,12 @@ package nl.unimaas.bigcat.wikipathways.curator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import nl.unimaas.bigcat.wikipathways.curator.tests.GeneTests;
+import nl.unimaas.bigcat.wikipathways.curator.tests.CovidDiseaseMapsTests;
 
-public class Genes extends JUnitTests {
+public class COVIDDiseaseMapTests extends JUnitTests {
 
 	private static SPARQLHelper helper = null;
 
@@ -52,17 +53,14 @@ public class Genes extends JUnitTests {
 	public void waitForIt() throws InterruptedException { Thread.sleep(OPSWPRDFFiles.SLEEP_TIME); }
 
 	@Test
-	public void entrezGeneIdentifiersNotNumber() throws Exception {
-		performAssertions(GeneTests.entrezGeneIdentifiersNotNumber(helper));
+	@Tag("covid")
+	public void interactionsWithoutReferences() throws Exception {
+		performAssertions(CovidDiseaseMapsTests.interactionsWithoutReferences(helper));
 	}
 
 	@Test
-	public void affyProbeIdentifiersNotCorrect() throws Exception {
-		performAssertions(GeneTests.affyProbeIdentifiersNotCorrect(helper));
-	}
-
-	@Test
-	public void outdatedIdentifiers() throws Exception {
-		performAssertions(GeneTests.outdatedIdentifiers(helper));
+	@Tag("covid")
+	public void missingHGNC() throws Exception {
+		performAssertions(CovidDiseaseMapsTests.missingHGNC(helper));
 	}
 }
