@@ -308,8 +308,17 @@ public class GeneralTests {
 		String sparql = ResourceHelper.resourceAsString("general/emptyLabelsWithIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errors += table.get(i, "node") + " (" +
+						  table.get(i, "label")+ "), " + table.get(i, "homepage") + "\n";
+				errorCount++;
+			}
+		}
 		assertions.add(new AssertEquals(test,
-			0, table.getRowCount(), "Data nodes with an identifier but empty label: " + table.getRowCount(), "" + table
+			0, errorCount, "Data nodes with an identifier but empty label: " + errorCount, errors
 		));
 		return assertions;
 	}
