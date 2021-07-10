@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import nl.unimaas.bigcat.wikipathways.curator.BridgeDbTiwidReader;
 import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
 import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
 import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
@@ -56,6 +57,16 @@ public class HMDBSecMetabolitesTests {
 		}
 
 		nonExisting.add("HMDB0002708"); // "How did you get here? That page doesn't exist. Oh well, it happens."
+
+		// data from Tiwid
+		Map<String,String> tiwidData = BridgeDbTiwidReader.parseCSV("tiwid/hmdb.csv");
+		for (String identifier : tiwidData.keySet()) {
+			if (tiwidData.get(identifier) != null) {
+				oldToNew.put(identifier, tiwidData.get(identifier));
+			} else {
+				nonExisting.add(identifier);
+			}
+		}
 	}
 
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
