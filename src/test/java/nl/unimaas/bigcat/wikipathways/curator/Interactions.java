@@ -42,7 +42,7 @@ public class Interactions extends JUnitTests {
 
 	@BeforeAll
 	public static void loadData() throws InterruptedException {
-		helper = (System.getProperty("SPARQLEP").contains("http:"))
+		helper = (System.getProperty("SPARQLEP").startsWith("http"))
 			? new SPARQLHelper(System.getProperty("SPARQLEP"))
 			: new SPARQLHelper(OPSWPRDFFiles.loadData());
 		Assertions.assertTrue(helper.size() > 5000);
