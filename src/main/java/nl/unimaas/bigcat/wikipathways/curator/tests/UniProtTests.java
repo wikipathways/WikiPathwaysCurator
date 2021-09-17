@@ -167,16 +167,15 @@ public class UniProtTests {
 		String sparql = ResourceHelper.resourceAsString("proteins/allUniProtP62805.rq");
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
+		System.out.println("Table: " + table);
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String identifier = table.get(i, "identifier");
-				if (identifier.contains(" ") || identifier.contains(";")) {
-					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " + table.get(i, "identifier") +
+				errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " + table.get(i, "identifier") +
 						  " may not be the identifier you intended (P62805 matches 14 different genes), please check; \n";
-					errorCount++;
-				}
+				errorCount++;
 			}
 		}
 		assertions.add(new AssertEquals(test,
