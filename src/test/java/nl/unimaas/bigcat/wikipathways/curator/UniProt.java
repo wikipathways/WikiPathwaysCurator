@@ -83,4 +83,11 @@ public class UniProt extends JUnitTests {
 			performAssertions(UniProtTests.incorrectIdentifiers(helper));
 		});
 	}
+
+	@Test
+	public void allP62805() throws Exception {
+		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
+			performAssertions(UniProtTests.allP62805(helper));
+		});
+	}
 }

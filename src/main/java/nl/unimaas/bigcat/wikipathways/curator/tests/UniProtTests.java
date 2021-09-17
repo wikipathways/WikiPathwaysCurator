@@ -60,6 +60,7 @@ public class UniProtTests {
 		assertions.addAll(deletedIdentifiers(helper));
 		assertions.addAll(unreviewedIdentifiers(helper));
 		assertions.addAll(incorrectIdentifiers(helper));
+		assertions.addAll(allP62805(helper));
 		return assertions;
 	}
 
