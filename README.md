@@ -35,7 +35,7 @@ If you wish to run the tests agains a SPARQL end point (e.g. http://sparql.wikip
 then you run:
 
 ```shell
-mvn install -DSPARQLEP=http://sparql.wikipathways.org/sparql
+mvn install -DSPARQLEP=https://sparql.wikipathways.org/sparql
 ```
 
 If you have the data loaded into a local [Blazegraph](https://github.com/blazegraph/database)
