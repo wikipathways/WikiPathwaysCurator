@@ -28,6 +28,7 @@ package nl.unimaas.bigcat.wikipathways.curator;
 
 import java.time.Duration;
 
+import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -85,6 +86,7 @@ public class UniProt extends JUnitTests {
 	}
 
 	@Test
+	@Ignore
 	public void allP62805() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
 			performAssertions(UniProtTests.allP62805(helper));
