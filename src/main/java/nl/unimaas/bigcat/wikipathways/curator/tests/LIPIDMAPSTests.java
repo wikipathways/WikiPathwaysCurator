@@ -41,13 +41,12 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class LIPIDMAPSTests {
 	
-	private static Set<String> retired = new HashSet<String>();
-	
-	static {
+	@SuppressWarnings("serial")
+	private static Set<String> retired = new HashSet<String>() {{
 		// now load the deprecation data
-		retired.add("LMGP01030007");
-		retired.add("LMFA07050077");
-	}
+		add("LMGP01030007");
+		add("LMFA07050077");
+	}};
 
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();

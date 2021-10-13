@@ -121,11 +121,6 @@ public class Wikidata extends JUnitTests {
 		performAssertions(WikidataTests.wikidataIdentifiersWrong(helper));
 	}
 
-	private static Set<String> allowedDuplicates = new HashSet<>();
-	{{
-		allowedDuplicates.add("7732-18-5"); // water + demi water
-	}}
-
 	@Tag("wikidata")
 	@Test
 	public void duplicateWikidataMappings() throws Exception {
