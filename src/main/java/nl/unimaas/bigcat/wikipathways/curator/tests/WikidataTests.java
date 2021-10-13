@@ -41,55 +41,66 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class WikidataTests {
 
-	private static Set<String> noWarnKEGGCIDs = new HashSet<>();
-	{{  // ACPs (acyl-carrier proteins)
-		noWarnKEGGCIDs.add("C04688");
-		noWarnKEGGCIDs.add("C05729");
-		noWarnKEGGCIDs.add("C05746");
-		noWarnKEGGCIDs.add("C05747");
-		noWarnKEGGCIDs.add("C05748");
-		noWarnKEGGCIDs.add("C05749");
-		noWarnKEGGCIDs.add("C05750");
-		noWarnKEGGCIDs.add("C05751");
-		noWarnKEGGCIDs.add("C05752");
-		noWarnKEGGCIDs.add("C05753");
-		noWarnKEGGCIDs.add("C05754");
-		noWarnKEGGCIDs.add("C05755");
-		noWarnKEGGCIDs.add("C05757");
-		noWarnKEGGCIDs.add("C05758");
-		noWarnKEGGCIDs.add("C05759");
-		noWarnKEGGCIDs.add("C05759");
-		noWarnKEGGCIDs.add("C05761");
-		noWarnKEGGCIDs.add("C05761");
-		noWarnKEGGCIDs.add("C05762");
-		noWarnKEGGCIDs.add("C05763");
-		noWarnKEGGCIDs.add("C05764");
-		noWarnKEGGCIDs.add("C16255");
-		noWarnKEGGCIDs.add("C00173");
-		noWarnKEGGCIDs.add("C16239");
-		// things with R groups
-		noWarnKEGGCIDs.add("C16254");
-		noWarnKEGGCIDs.add("C15973");
-		noWarnKEGGCIDs.add("C06250");
-		noWarnKEGGCIDs.add("C16236");
-		noWarnKEGGCIDs.add("C16237");
-	}}
-
-	private static Set<String> zwitterIonsWithoutWikidata = new HashSet<>();
+	@SuppressWarnings("serial")
+	private static Set<String> acceptableWikidataGenes = new HashSet<String>()
 	{{
-		zwitterIonsWithoutWikidata.add("CHEBI:33384"); // L-serine zwitterion
-		zwitterIonsWithoutWikidata.add("CHEBI:57476"); // L-homoserine zwitterion
-		zwitterIonsWithoutWikidata.add("CHEBI:57427"); // L-leucine zwitterion
-		zwitterIonsWithoutWikidata.add("CHEBI:57743"); // Citrulline zwitterion
-		zwitterIonsWithoutWikidata.add("CHEBI:57844"); // L-Methionine zwitterion
-		zwitterIonsWithoutWikidata.add("CHEBI:57972"); // L-alanine zwitterion
-		zwitterIonsWithoutWikidata.add("CHEBI:58045"); // L-isoleucine zwitterion
-		zwitterIonsWithoutWikidata.add("CHEBI:58048"); // L-asparagine zwitterion
-		zwitterIonsWithoutWikidata.add("CHEBI:58199"); // L-homocystein zwitterion
-		zwitterIonsWithoutWikidata.add("CHEBI:58315"); // L-tyrosine zwitterion
-		zwitterIonsWithoutWikidata.add("CHEBI:58359"); // L-glutamine zwitterion
-		zwitterIonsWithoutWikidata.add("CHEBI:60039"); // L-proline zwitterion
-	}}
+		add("Q27205");   // Protein Fibrin
+		add("Q311213");  // Protein HbA1c
+		add("Q381899");  // Protein Fibrinogen
+		add("Q2162109"); // Protein D-dimer
+	}};
+
+	@SuppressWarnings("serial")
+	private static Set<String> noWarnKEGGCIDs = new HashSet<String>()
+	{{  // ACPs (acyl-carrier proteins)
+		add("C04688");
+		add("C05729");
+		add("C05746");
+		add("C05747");
+		add("C05748");
+		add("C05749");
+		add("C05750");
+		add("C05751");
+		add("C05752");
+		add("C05753");
+		add("C05754");
+		add("C05755");
+		add("C05757");
+		add("C05758");
+		add("C05759");
+		add("C05759");
+		add("C05761");
+		add("C05761");
+		add("C05762");
+		add("C05763");
+		add("C05764");
+		add("C16255");
+		add("C00173");
+		add("C16239");
+		// things with R groups
+		add("C16254");
+		add("C15973");
+		add("C06250");
+		add("C16236");
+		add("C16237");
+	}};
+
+	@SuppressWarnings("serial")
+	private static Set<String> zwitterIonsWithoutWikidata = new HashSet<String>()
+	{{
+		add("CHEBI:33384"); // L-serine zwitterion
+		add("CHEBI:57476"); // L-homoserine zwitterion
+		add("CHEBI:57427"); // L-leucine zwitterion
+		add("CHEBI:57743"); // Citrulline zwitterion
+		add("CHEBI:57844"); // L-Methionine zwitterion
+		add("CHEBI:57972"); // L-alanine zwitterion
+		add("CHEBI:58045"); // L-isoleucine zwitterion
+		add("CHEBI:58048"); // L-asparagine zwitterion
+		add("CHEBI:58199"); // L-homocystein zwitterion
+		add("CHEBI:58315"); // L-tyrosine zwitterion
+		add("CHEBI:58359"); // L-glutamine zwitterion
+		add("CHEBI:60039"); // L-proline zwitterion
+	}};
 
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
@@ -274,14 +285,6 @@ public class WikidataTests {
 		));
 		return assertions;
 	}
-
-	private static Set<String> acceptableWikidataGenes = new HashSet<>();
-	{{
-		acceptableWikidataGenes.add("Q27205");   // Protein Fibrin
-		acceptableWikidataGenes.add("Q311213");  // Protein HbA1c
-		acceptableWikidataGenes.add("Q381899");  // Protein Fibrinogen
-		acceptableWikidataGenes.add("Q2162109"); // Protein D-dimer
-	}}
 
 	public static List<IAssertion> noWikidataForGenes(SPARQLHelper helper) throws Exception {
 		Test test = new Test("WikidataTests", "noWikidataForGenes");
