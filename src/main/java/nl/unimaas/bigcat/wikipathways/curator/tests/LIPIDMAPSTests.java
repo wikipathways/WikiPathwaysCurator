@@ -71,7 +71,7 @@ public class LIPIDMAPSTests {
 				String identifier = table.get(i, "identifier");
 				if (retired.contains(identifier)) {
 					errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
-						" has " + identifier + " but it has beeb retired, see " +
+						" has " + identifier + " but it has been retired, see " +
 					    "https://www.lipidmaps.org/data/LMSDRecord.php?LMID=" + identifier + "\n";
 					errorCount++;
 				}
