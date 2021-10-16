@@ -51,6 +51,7 @@ public class LIPIDMAPSTests {
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(retiredIdentifiers(helper));
+		assertions.addAll(onlyLIPIDMAPS(helper));
 		return assertions;
 	}
 
@@ -83,4 +84,33 @@ public class LIPIDMAPSTests {
 		));
 		return assertions;
 	}
+
+	public static List<IAssertion> onlyLIPIDMAPS(SPARQLHelper helper) throws Exception {
+		Test test = new Test("LIPIDMAPSTests", "onlyLIPIDMAPS");
+		// Getting the data
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/metabolitesWithoutLIPIDMAPSIdentifier.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+
+		// Testing
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+						" has " + identifier + " from " + table.get(i, "source") +
+					    " but expected a LIPID MAPS identifier\n";
+				errorCount++;
+			}
+		}
+
+		// Reporting
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Expected a LIPID MAPS identifier, but found other identifiers: " + errorCount, errors
+		));
+		return assertions;
+	}
+
 }
