@@ -27,8 +27,10 @@
 package nl.unimaas.bigcat.wikipathways.curator.tests;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
@@ -102,6 +104,11 @@ public class InteractionTests {
 			InteractionTests.addIdentifiersOrg(allowedProteinSubstrates, "identifiers.org/uniprot/H9ZYJ2"); // theoredoxin, e.g. WP3580
 			InteractionTests.addIdentifiersOrg(allowedProteinSubstrates, "identifiers.org/chebi/CHEBI:39026"); // LDL
 			InteractionTests.addIdentifiersOrg(allowedProteinSubstrates, "identifiers.org/wikidata/Q381899"); // fibrinogen
+		Map<String,String> allowedInteractions = new HashMap<String,String>();
+			allowedInteractions.put( // CSID1 -> Fe 2+
+				"https://identifiers.org/ensembl/ENSG00000122873",
+				"https://identifiers.org/chebi/CHEBI:29033"
+			);
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
@@ -110,7 +117,8 @@ public class InteractionTests {
 				String metabolite = table.get(i, "metabolite");
 				String nonmetabolite = table.get(i, "target");
 				if (!allowedProducts.contains(metabolite) &&
-						!allowedProteinSubstrates.contains(nonmetabolite)) {
+					!allowedProteinSubstrates.contains(nonmetabolite) &&
+					!(allowedInteractions.get(nonmetabolite).equals(metabolite))) {
 					errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
 							nonmetabolite + " " + metabolite + " " +
 							table.get(i, "interaction") + "\n";
