@@ -167,7 +167,6 @@ public class UniProtTests {
 		String sparql = ResourceHelper.resourceAsString("proteins/allUniProtP62805.rq");
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
-		System.out.println("Table: " + table);
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
