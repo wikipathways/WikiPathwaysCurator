@@ -9,5 +9,5 @@ select distinct (str(?idLit) as ?id) ?homepage where {
   ?pub a gpml:PublicationXref ;
     gpml:id ?idLit ;
     gpml:database "Pubmed"^^xsd:string ;
-    dcterms:isPartOf/foaf:page ?homepage .
+    dcterms:isPartOf+/foaf:page ?homepage .
 } ORDER BY ?homepage
