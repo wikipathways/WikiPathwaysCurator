@@ -19,6 +19,12 @@ options:
 mvn install -DOPSWPRDF=/tmp/doesntexist -DSUBSETPREFIX=wp9
 ```
 
+Or run a specific test:
+
+```shell
+mvn install -DOPSWPRDF=/tmp/doesntexist -DSUBSETPREFIX=wp9 -Dtest=nl.unimaas.bigcat.wikipathways.curator.EnsemblGenes
+```
+
 ## Selection subsets of tests
 
 JUnit was used to define groups of tests, which can be included and excluded on
