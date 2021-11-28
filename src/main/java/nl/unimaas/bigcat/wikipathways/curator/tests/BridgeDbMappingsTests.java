@@ -57,7 +57,7 @@ public class BridgeDbMappingsTests {
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertNotSame(test, 
-			0, table.getRowCount(), "Expected some mapped Entrez Genes identifiers"
+			0, table.getRowCount(), "Expected some mapped Entrez Genes identifiers, but found zero"
 		));
 		return assertions;
 	}
@@ -70,7 +70,7 @@ public class BridgeDbMappingsTests {
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertNotSame(test, 
-			0, table.getRowCount(), "Expected some mapped HMDB identifiers"
+			0, table.getRowCount(), "Expected some mapped HMDB identifiers, but found zero"
 		));
 		return assertions;
 	}
@@ -83,7 +83,7 @@ public class BridgeDbMappingsTests {
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertNotSame(test, 
-			0, table.getRowCount(), "Expected some mapped ChemSpider identifiers"
+			0, table.getRowCount(), "Expected some mapped ChemSpider identifiers, but found zero"
 		));
 		return assertions;
 	}
@@ -96,7 +96,7 @@ public class BridgeDbMappingsTests {
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertNotSame(test, 
-			0, table.getRowCount(), "Expected some mapped Ensembl identifiers"
+			0, table.getRowCount(), "Expected some mapped Ensembl identifiers, but found zero"
 		));
 		return assertions;
 	}
@@ -109,7 +109,7 @@ public class BridgeDbMappingsTests {
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertNotSame(test, 
-			0, table.getRowCount(), "Expected some mapped UniProt identifiers"
+			0, table.getRowCount(), "Expected some mapped UniProt identifiers, but found zero"
 		));
 		return assertions;
 	}
