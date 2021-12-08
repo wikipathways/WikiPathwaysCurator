@@ -42,17 +42,7 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class GeneTests {
 
-	private static Map<String,String> oldToNew = new HashMap<String, String>();
-
-	static {
-		// now load the deprecation data
-		String deprecatedData = ResourceHelper.resourceAsString("genes/hgnc/deprecated.tsv");
-		String lines[] = deprecatedData.split("\\r?\\n");
-		for (int i=1; i<lines.length; i++) {
-			String[] ids = lines[i].split("\t");
-			oldToNew.put(ids[0], ids[2]);
-		}
-	}
+	private static final Map<String,String> deprecated = BridgeDbTiwidReader.parseCSV("tiwid/hgnc.csv");
 
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
@@ -140,10 +130,10 @@ public class GeneTests {
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String identifier = table.get(i, "identifier");
-				if (oldToNew.containsKey(identifier)) {
+				if (deprecated.containsKey(identifier)) {
 					errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
 						" has " + identifier + " but has been replace by " +
-						oldToNew.get(identifier) + "\n";
+						deprecated.get(identifier) + "\n";
 					errorCount++;
 				}
 			}
