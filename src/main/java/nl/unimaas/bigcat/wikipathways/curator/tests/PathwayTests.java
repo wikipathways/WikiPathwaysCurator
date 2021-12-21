@@ -59,7 +59,7 @@ public class PathwayTests {
 		String sparql = "PREFIX dcterms: <http://purl.org/dc/terms/>\n" + 
 				"PREFIX wp:      <http://vocabularies.wikipathways.org/wp#>\n" +
 				"prefix xsd:     <http://www.w3.org/2001/XMLSchema#>\n\n"
-				+ "SELECT ?pathway WHERE {\n  VALUES ?wpid { \n";
+				+ "SELECT ?pathway ?wpid WHERE {\n  VALUES ?wpid { \n";
 		for (String deprecatedPW : deprecated.keySet()) {
 			sparql += "    \"" + deprecatedPW + "\"^^xsd:string\n";
 		}
@@ -73,11 +73,12 @@ public class PathwayTests {
 			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String pathway = table.get(i, "pathway");
-				errors += pathway + " \n";
+				String wpid = table.get(i, "wpid");
+				errors += pathway + " mentions deleted pathway with " + wpid + "\n";
 			}
 		}
 		assertions.add(new AssertEquals(test, Test.HAS_LINK_TO_DOCS,
-			0, table.getRowCount(), "Found " + table.getRowCount() + " deleted pathways.", errors
+			0, table.getRowCount(), "Found " + table.getRowCount() + " deleted pathway(s).", errors
 		));
 		return assertions;
 	}
