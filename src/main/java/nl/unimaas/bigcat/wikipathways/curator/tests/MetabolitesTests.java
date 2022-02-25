@@ -74,6 +74,7 @@ public class MetabolitesTests {
 		Set<String> exceptions = new HashSet<String>();
 		    MetabolitesTests.addIdentifiersOrg(exceptions, "identifiers.org/chebi/CHEBI:16991"); // DNA
 		    MetabolitesTests.addIdentifiersOrg(exceptions, "identifiers.org/chebi/CHEBI:39026"); // LDL
+		    MetabolitesTests.addIdentifiersOrg(exceptions, "identifiers.org/chebi/CHEBI:138181"); // chemokine ligand 8
 		    MetabolitesTests.addIdentifiersOrg(exceptions, "identifiers.org/wikidata/Q27205"); // fibrin
 		    MetabolitesTests.addIdentifiersOrg(exceptions, "identifiers.org/wikidata/Q381899"); // fibrogen
 		    MetabolitesTests.addIdentifiersOrg(exceptions, "identifiers.org/wikidata/Q2162109"); // fibrin degradation product
