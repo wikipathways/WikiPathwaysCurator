@@ -116,9 +116,11 @@ public class InteractionTests {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String metabolite = table.get(i, "metabolite");
 				String nonmetabolite = table.get(i, "target");
-				if (!allowedProducts.contains(metabolite) &&
-					!allowedProteinSubstrates.contains(nonmetabolite) &&
-					!(allowedInteractions.get(nonmetabolite).equals(metabolite))) {
+				if (allowedProducts.contains(metabolite)) {}
+				else if (allowedProteinSubstrates.contains(nonmetabolite)) {}
+				else if (allowedInteractions.containsKey(nonmetabolite) &&
+						allowedInteractions.get(nonmetabolite).equals(metabolite)) {}
+				else { // other situations are not okay
 					errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
 							nonmetabolite + " " + metabolite + " " +
 							table.get(i, "interaction") + "\n";
