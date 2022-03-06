@@ -64,7 +64,12 @@ public class Interactions extends JUnitTests {
 	@Test
 	public void noNonMetaboliteToMetaboliteConversions() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
+		try {
 			performAssertions(InteractionTests.noNonMetaboliteToMetaboliteConversions(helper));
+		} catch (Exception exception) {
+			exception.printStackTrace();
+			throw exception;
+		}
 		});
 	}
 
