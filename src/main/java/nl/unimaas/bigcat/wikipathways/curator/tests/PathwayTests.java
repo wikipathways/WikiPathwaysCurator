@@ -61,7 +61,7 @@ public class PathwayTests {
 				"prefix xsd:     <http://www.w3.org/2001/XMLSchema#>\n\n"
 				+ "SELECT ?pathway ?wpid WHERE {\n  VALUES ?wpid { \n";
 		for (String deprecatedPW : deprecated.keySet()) {
-			sparql += "    \"" + deprecatedPW + "\n";
+			sparql += "    \"" + deprecatedPW + "\"\n";
 		}
 		sparql += "  }\n"
 				+ "  ?pathway dcterms:identifier ?wpid .\n"
@@ -92,7 +92,7 @@ public class PathwayTests {
 				"prefix wp:      <http://vocabularies.wikipathways.org/wp#>\n\n"
 				+ "SELECT ?homepage ?wpid WHERE {\n  VALUES ?wpid { \n";
 		for (String deprecatedPW : deprecated.keySet()) {
-			sparql += "    \"" + deprecatedPW + "\n";
+			sparql += "    \"" + deprecatedPW + "\"\n";
 		}
 		sparql += "  }\n"
 				+ "  ?pathwayNode a wp:DataNode ;\n" + 
