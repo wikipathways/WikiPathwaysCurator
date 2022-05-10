@@ -47,6 +47,7 @@ public class PathwayTests {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(deletedPathways(helper));
 		assertions.addAll(linksToDeletedPathways(helper));
+		assertions.addAll(linksToDeletedPathways_All(helper));
 		assertions.addAll(speciesMismatch(helper));
 		assertions.addAll(testRoundedRectangle(helper));
 		assertions.addAll(youMustCite(helper));
@@ -99,6 +100,7 @@ public class PathwayTests {
 				  "    dcterms:identifier ?wpid ;\n" + 
 				  "    dcterms:isPartOf ?pathway .\n" + 
 				  "  ?pathway foaf:page ?homepage . \n}";
+		System.out.println(sparql);
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
@@ -117,6 +119,23 @@ public class PathwayTests {
 		return assertions;
 	}
 
+	// variation of linksToDeletedPathways() that only works when run on all pathways.
+	// Because if run on only Curated, it will fail on linked pathways that are not in Curated
+	// themselves.
+	public static List<IAssertion> linksToDeletedPathways_All(SPARQLHelper helper) throws Exception {
+		Test test = new Test("PathwayTests", "linksToDeletedPathways_All");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("pathways/linkedDeletedPathways.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test, 0, table.getRowCount(),
+			"Pathway that seem to link to deleted pathways: " + table.getRowCount() + ". Actual deleted pathways should be added"
+			+ " to https://github.com/bridgedb/tiwid/blob/main/data/wikipathways.csv",
+			"" + table
+		));
+		return assertions;
+	}
+	
 	@SuppressWarnings("serial")
 	static List<String> noSpeciesMatch = new ArrayList<String>() {{
 		add("WP3396"); // in WP3632, reason in GPML: "mouse pathway not yet available"

@@ -1,0 +1,13 @@
+PREFIX dcterms: <http://purl.org/dc/terms/>
+prefix xsd:     <http://www.w3.org/2001/XMLSchema#>
+prefix foaf:    <http://xmlns.com/foaf/0.1/>
+prefix wp:      <http://vocabularies.wikipathways.org/wp#>
+
+SELECT ?homepage ?wpid ?pathwayNode WHERE {
+  ?pathwayNode a wp:DataNode ;
+    dc:source "WikiPathways" ;
+    dcterms:identifier ?wpid ;
+    dcterms:isPartOf ?pathway .
+  ?pathway foaf:page ?homepage .
+  MINUS { ?pathwayNode foaf:page ?linkedPathway }
+}

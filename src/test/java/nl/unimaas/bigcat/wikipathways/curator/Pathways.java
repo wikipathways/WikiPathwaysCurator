@@ -69,6 +69,12 @@ public class Pathways extends JUnitTests {
 	}
 
 	@Test
+	@Tag("allOnly")
+	public void linksToDeletedPathways_All() throws Exception {
+		performAssertions(PathwayTests.linksToDeletedPathways_All(helper));
+	}
+
+	@Test
 	public void speciesMismatch() throws Exception {
 		performAssertions(PathwayTests.speciesMismatch(helper));
 	}
