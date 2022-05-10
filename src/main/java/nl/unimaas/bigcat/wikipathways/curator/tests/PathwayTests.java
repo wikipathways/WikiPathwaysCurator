@@ -100,7 +100,6 @@ public class PathwayTests {
 				  "    dcterms:identifier ?wpid ;\n" + 
 				  "    dcterms:isPartOf ?pathway .\n" + 
 				  "  ?pathway foaf:page ?homepage . \n}";
-		System.out.println(sparql);
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
