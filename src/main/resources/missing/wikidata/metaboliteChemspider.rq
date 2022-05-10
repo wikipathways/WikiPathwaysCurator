@@ -7,7 +7,7 @@ prefix foaf:    <http://xmlns.com/foaf/0.1/>
 
 SELECT DISTINCT ?metabolite (STR(?labelStr) AS ?label) ?homepage WHERE {
   ?metabolite a wp:Metabolite ;
-    dc:source "Chemspider"^^xsd:string ;
+    dc:source "Chemspider" ;
     rdfs:label ?labelStr ;
     dcterms:isPartOf ?pathway .
   ?pathway foaf:page ?homepage .

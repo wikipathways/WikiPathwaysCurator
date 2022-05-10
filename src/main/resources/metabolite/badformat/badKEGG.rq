@@ -9,7 +9,7 @@ select distinct ?identifier ?homepage
 where {
   ?mb a wp:Metabolite ;
     rdfs:label ?label ;
-    dc:source "KEGG Compound"^^xsd:string ;
+    dc:source "KEGG Compound" ;
     dcterms:identifier ?identifier ;
     dcterms:isPartOf ?pathway .
   ?pathway foaf:page ?homepage .

@@ -7,7 +7,7 @@ prefix wp: <http://vocabularies.wikipathways.org/wp#>
 
 select distinct ?node ?homepage
 where {
-  ?node gpml:xrefDataSource "UniGene"^^xsd:string ;
+  ?node gpml:xrefDataSource "UniGene" ;
         dcterms:isPartOf ?gpmlpw .
   ?wppw wp:isAbout ?gpmlpw ;
         foaf:page ?homepage .

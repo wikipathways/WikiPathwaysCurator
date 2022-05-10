@@ -8,7 +8,7 @@ prefix gpml:  <http://vocabularies.wikipathways.org/gpml#>
 select distinct (str(?idLit) as ?id) ?pathway ?homepage where {
   ?pub a gpml:PublicationXref ;
     gpml:id ?idLit ;
-    gpml:database "Pubmed"^^xsd:string .
+    gpml:database "Pubmed" .
   ?pub dcterms:isPartOf+/^wp:isAbout ?pathway .
   ?pathway a wp:Pathway ; foaf:page ?homepage .
 } ORDER BY ?homepage

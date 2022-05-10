@@ -7,6 +7,6 @@ prefix wp:      <http://vocabularies.wikipathways.org/wp#>
 select distinct ?id ?homepage where {
   ?pub a wp:Metabolite ;
     dcterms:identifier ?id ;
-    dc:source "PubChem-compound"^^xsd:string ;
+    dc:source "PubChem-compound" ;
     dcterms:isPartOf/foaf:page ?homepage .
 } ORDER BY ?homepage

@@ -7,7 +7,7 @@ prefix foaf:    <http://xmlns.com/foaf/0.1/>
 
 select distinct ?homepage ?label ?identifier 
 where {
-  ?mb dc:source "PubChem-substance"^^xsd:string ;
+  ?mb dc:source "PubChem-substance" ;
     rdfs:label ?label ;
     dcterms:identifier ?identifier ;
     dcterms:isPartOf ?pathway .

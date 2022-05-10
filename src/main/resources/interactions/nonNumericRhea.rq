@@ -7,6 +7,6 @@ prefix wp:      <http://vocabularies.wikipathways.org/wp#>
 select distinct ?id ?homepage where {
   ?pub a wp:Interaction ;
     dcterms:identifier ?id ;
-    dc:source "Rhea"^^xsd:string ;
+    dc:source "Rhea" ;
     dcterms:isPartOf/foaf:page ?homepage .
 } ORDER BY ?homepage

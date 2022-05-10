@@ -9,7 +9,7 @@ select distinct ?pathway ?mb ?label ?identifier
 where {
   ?mb a wp:Metabolite ;
     rdfs:label ?label ;
-    dc:source "Ensembl"^^xsd:string ;
+    dc:source "Ensembl" ;
     dcterms:identifier ?identifier ;
     dcterms:isPartOf ?pathway .
   FILTER (str(?identifier) != "")

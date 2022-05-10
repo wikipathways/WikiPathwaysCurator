@@ -7,7 +7,7 @@ prefix wp: <http://vocabularies.wikipathways.org/wp#>
 
 select distinct ?node ?homepage
 where {
-  ?node gpml:xrefDataSource "Uniprot-SwissProt"^^xsd:string ;
+  ?node gpml:xrefDataSource "Uniprot-SwissProt" ;
         dcterms:isPartOf ?gpmlpw .
   ?wppw wp:isAbout ?gpmlpw ;
         foaf:page ?homepage .

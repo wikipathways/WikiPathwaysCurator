@@ -8,7 +8,7 @@ prefix foaf:    <http://xmlns.com/foaf/0.1/>
 select distinct ?homepage ?identifier 
 where {
   ?mb a wp:Metabolite ;
-    dc:source ""^^xsd:string ;
+    dc:source "" ;
     dc:identifier ?identifier ;
     dcterms:isPartOf ?pathway .
   ?pathway foaf:page ?homepage .

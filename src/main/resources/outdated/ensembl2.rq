@@ -5,7 +5,7 @@ prefix foaf:    <http://xmlns.com/foaf/0.1/>
 
 select distinct ?node ?homepage
 where {
-  ?node dc:source "Ensembl Human"^^xsd:string ;
+  ?node dc:source "Ensembl Human" ;
     dcterms:isPartOf ?pathway .
   ?pathway foaf:page ?homepage .
 }

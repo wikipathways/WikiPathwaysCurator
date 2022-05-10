@@ -6,7 +6,7 @@ prefix wp: <http://vocabularies.wikipathways.org/wp#>
 
 select distinct ?homepage ?node ?pubchem
 where {
-  ?node dc:source "InChIKey"^^xsd:string ;
+  ?node dc:source "InChIKey" ;
     dcterms:isPartOf ?pathway .
   ?pathway foaf:page ?homepage .
   OPTIONAL { ?node wp:bdbPubChem ?pubchem }

@@ -10,7 +10,7 @@ SELECT DISTINCT ?homepage (STR(SUBSTR(STR(?type),41)) AS ?wpType)
 WHERE {
   VALUES ?type { wp:GeneProduct wp:Protein }
   ?gene a ?type ;
-    dc:source "Wikidata"^^xsd:string ;
+    dc:source "Wikidata" ;
     rdfs:label ?labelLit ;
     dcterms:identifier ?identifierLit ;
     dcterms:isPartOf ?pathway .

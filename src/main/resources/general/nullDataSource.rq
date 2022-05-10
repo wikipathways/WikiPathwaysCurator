@@ -10,7 +10,7 @@ select distinct ?identifier ?homepage (str(?labelLit) as ?label)
 where {
   ?mb
       gpml:textlabel ?labelLit ;
-      gpml:xrefDataSource "null"^^xsd:string ;
+      gpml:xrefDataSource "null" ;
       gpml:xrefId ?identifier ;
       dcterms:isPartOf ?gpmlpw .
   ?pathway wp:isAbout ?gpmlpw ;

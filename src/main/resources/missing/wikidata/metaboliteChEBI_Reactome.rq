@@ -8,7 +8,7 @@ PREFIX cur: <http://vocabularies.wikipathways.org/wp#Curation:>
 
 SELECT DISTINCT ?metabolite (STR(?labelStr) AS ?label) ?homepage WHERE {
   ?metabolite a wp:Metabolite ;
-    dc:source "ChEBI"^^xsd:string ;
+    dc:source "ChEBI" ;
     rdfs:label ?labelStr ;
     dcterms:isPartOf ?pathway .
   ?pathway foaf:page ?homepage ;

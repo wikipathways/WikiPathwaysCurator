@@ -13,5 +13,5 @@ where {
     dcterms:identifier ?identifier ;
     dcterms:isPartOf ?pathway .
   ?pathway foaf:page ?homepage .
-  MINUS { ?mb dc:source "LIPID MAPS"^^xsd:string }  
+  MINUS { ?mb dc:source "LIPID MAPS" }  
 } order by ?pathway

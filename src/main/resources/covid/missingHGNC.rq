@@ -12,7 +12,7 @@ WHERE {
         dct:identifier ?identifier ;
         rdfs:label ?geneProdLabel ;
         dct:isPartOf ?pathway .
-  ?pathway wp:organismName "Homo sapiens"^^xsd:string ;
+  ?pathway wp:organismName "Homo sapiens" ;
         wp:ontologyTag cur:COVID19 ;
         foaf:page ?pathwayURL .
   MINUS { ?pathway wp:ontologyTag cur:Reactome_Approved }

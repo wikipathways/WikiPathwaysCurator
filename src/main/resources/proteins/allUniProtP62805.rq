@@ -7,8 +7,8 @@ prefix foaf:    <http://xmlns.com/foaf/0.1/>
 
 SELECT DISTINCT ?homepage ?label ?identifier 
 WHERE {
-  VALUES ?identifier { "P62805"^^xsd:string }
-  ?mb dc:source "Uniprot-TrEMBL"^^xsd:string ;
+  VALUES ?identifier { "P62805" }
+  ?mb dc:source "Uniprot-TrEMBL" ;
     rdfs:label ?label ;
     dcterms:identifier ?identifier ;
     dcterms:isPartOf ?pathway .

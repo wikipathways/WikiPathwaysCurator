@@ -9,7 +9,7 @@ PREFIX cur: <http://vocabularies.wikipathways.org/wp#Curation:>
 SELECT ?homepage ?node ?label WHERE {
   ?node a gpml:DataNode ;
         dcterms:isPartOf ?gpmlPathway ;
-        gpml:type "Unknown"^^xsd:string ;
+        gpml:type "Unknown" ;
         gpml:textlabel ?label .
   ?pathway foaf:page ?homepage ;
            wp:isAbout ?gpmlPathway ;
