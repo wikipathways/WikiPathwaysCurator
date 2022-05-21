@@ -110,7 +110,6 @@ public class WikidataTests {
 		assertions.addAll(casWithoutMapping(helper));
 		assertions.addAll(wikDataTypo(helper));
 		assertions.addAll(duplicateWikidataMappings(helper));
-		assertions.addAll(noWikidataForGenes(helper));
 		assertions.addAll(wikidataIdentifiersWrong(helper));
 		assertions.addAll(chemspiderCIDWithoutMapping(helper));
 		assertions.addAll(lipidMapsWithoutMapping(helper));
