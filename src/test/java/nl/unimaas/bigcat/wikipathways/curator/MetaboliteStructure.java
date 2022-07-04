@@ -55,7 +55,7 @@ public class MetaboliteStructure extends JUnitTests {
 	@Tag("noCovid")
 	@Test
 	public void nullDataSources() throws Exception {
-		performAssertions(MetaboliteStructureTests.nullDataSources(helper));
+		performAssertions(MetaboliteStructureTests.atLeastFifteenMetabolites(helper));
 	}
 
 	@Test

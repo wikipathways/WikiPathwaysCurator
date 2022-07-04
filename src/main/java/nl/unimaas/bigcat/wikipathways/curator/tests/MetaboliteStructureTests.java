@@ -42,13 +42,13 @@ public class MetaboliteStructureTests {
 
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
-		assertions.addAll(nullDataSources(helper));
+		assertions.addAll(atLeastFifteenMetabolites(helper));
 		assertions.addAll(isPartOfAPathway(helper));
 		return assertions;
 	}
 
-	public static List<IAssertion> nullDataSources(SPARQLHelper helper) throws Exception {
-		Test test = new Test("MetaboliteStructureTests", "nullDataSources");
+	public static List<IAssertion> atLeastFifteenMetabolites(SPARQLHelper helper) throws Exception {
+		Test test = new Test("MetaboliteStructureTests", "atLeastFifteenMetabolites");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("structure/metaboliteClass.rq");
 		StringMatrix table = helper.sparql(sparql);
