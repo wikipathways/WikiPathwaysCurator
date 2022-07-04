@@ -39,11 +39,6 @@ public class AssertNotNull extends AbstractAssertion implements IAssertion {
 		this(test, false, value);
 	}
 
-	@Deprecated
-	public AssertNotNull(String testClass, String test, Object value) {
-		this(new Test(testClass, test), value);
-	}
-
 	public Object getValue() {
 		return this.value;
 	}

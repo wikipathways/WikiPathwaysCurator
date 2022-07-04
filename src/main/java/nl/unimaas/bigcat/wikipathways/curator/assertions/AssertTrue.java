@@ -49,16 +49,6 @@ public class AssertTrue extends AbstractAssertion implements IAssertion {
 		this(test, false, isTrue, message);
 	}
 
-	@Deprecated
-	public AssertTrue(String testClass, String test, boolean isTrue, String message, String details) {
-		this(new Test(testClass, test), false, isTrue, message, details);
-	}
-
-	@Deprecated
-	public AssertTrue(String testClass, String test, boolean isTrue, String message) {
-		this(testClass, test, isTrue, message, "");
-	}
-
 	public Object getValue() {
 		return isTrue;
 	}

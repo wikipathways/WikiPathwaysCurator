@@ -48,16 +48,6 @@ public class AssertEquals extends AbstractAssertion implements IAssertion {
 		this(test, expectedValue, value, message, "");
 	}
 
-	@Deprecated
-	public AssertEquals(String testClass, String test, Object expectedValue, Object value, String message) {
-		this(new Test(testClass, test), false, expectedValue, value, message, "");
-	}
-
-	@Deprecated
-	public AssertEquals(String testClass, String test, Object expectedValue, Object value, String message, String details) {
-		this(new Test(testClass, test), false, expectedValue, value, message, details);
-	}
-
 	public Object getExpectedValue() {
 		return this.expectedValue;
 	}
