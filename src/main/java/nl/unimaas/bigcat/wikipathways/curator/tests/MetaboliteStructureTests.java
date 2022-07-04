@@ -54,7 +54,7 @@ public class MetaboliteStructureTests {
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertTrue(test,
-			table.getRowCount() > 15, "Unexpectedly low metabolite count: " + table.getRowCount(), "" + table
+			table.getRowCount() > 15, "Unexpectedly low metabolite count: " + table.getRowCount() + "\n", "" + table
 		));
 		return assertions;
 	}
@@ -66,7 +66,7 @@ public class MetaboliteStructureTests {
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test,
-			0, table.getRowCount(), "Found metabolites that are not part of a pathway: " + table.getRowCount(), "" + table
+			0, table.getRowCount(), "Found metabolites that are not part of a pathway: " + table.getRowCount() + "\n", "" + table
 		));
 		return assertions;
 	}
