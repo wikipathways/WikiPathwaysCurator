@@ -1,8 +1,10 @@
 prefix wp:      <http://vocabularies.wikipathways.org/wp#>
-prefix dcterms: <http://purl.org/dc/terms/>
-prefix foaf:    <http://xmlns.com/foaf/0.1/>
+prefix gpml:    <http://vocabularies.wikipathways.org/gpml#>
 
-select distinct ?metabolite ?type where {
-  VALUES ?type { wp:GeneProduct wp:Rna wp:Protein wp:Complex wp:Pathway }
-  ?metabolite a wp:Metabolite , ?type .
-} ORDER BY ASC(?metabolite)
+SELECT DISTINCT ?pathway ?metabolite ?label ?id ?type WHERE {
+  ?metabolite gpml:xrefDataSource "ChEBI" ; gpml:type ?type ;
+    gpml:textlabel ?label .
+  MINUS { ?metabolite gpml:type "Metabolite" }
+  OPTIONAL { ?metabolite gpml:xrefId ?id . }
+  ?gpmlPathway gpml:hasDataNode ?metabolite ; rdfs:seeAlso ?pathway .
+}
