@@ -1,5 +1,6 @@
 prefix wp:      <http://vocabularies.wikipathways.org/wp#>
 prefix gpml:    <http://vocabularies.wikipathways.org/gpml#>
+prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT DISTINCT ?pathway ?metabolite ?label ?id ?type WHERE {
   ?metabolite gpml:xrefDataSource "ChEBI" ; gpml:type ?type ;
