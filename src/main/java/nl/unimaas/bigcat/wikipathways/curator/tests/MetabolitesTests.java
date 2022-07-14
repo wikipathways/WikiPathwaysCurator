@@ -85,7 +85,8 @@ public class MetabolitesTests {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String metabolite = table.get(i, "metabolite");
 				if (!exceptions.contains(metabolite)) {
-					    errors += metabolite + " is also found to be " + table.get(i, "type") + "\n";
+					    errors += metabolite + " is found to be " + table.get(i, "type") +
+					    		  " in " + table.get(i, "pathway") + "\n";
 				    errorCount++;
 				}
 			}
