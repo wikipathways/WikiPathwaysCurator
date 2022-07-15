@@ -72,12 +72,12 @@ public class MetabolitesTests {
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
 		Set<String> exceptions = new HashSet<String>();
-		    MetabolitesTests.addIdentifiersOrg(exceptions, "identifiers.org/chebi/CHEBI:16991"); // DNA
-		    MetabolitesTests.addIdentifiersOrg(exceptions, "identifiers.org/chebi/CHEBI:39026"); // LDL
-		    MetabolitesTests.addIdentifiersOrg(exceptions, "identifiers.org/chebi/CHEBI:138181"); // chemokine ligand 8
-		    MetabolitesTests.addIdentifiersOrg(exceptions, "identifiers.org/wikidata/Q27205"); // fibrin
-		    MetabolitesTests.addIdentifiersOrg(exceptions, "identifiers.org/wikidata/Q381899"); // fibrogen
-		    MetabolitesTests.addIdentifiersOrg(exceptions, "identifiers.org/wikidata/Q2162109"); // fibrin degradation product
+		    exceptions.add("CHEBI:16991"); exceptions.add("16991"); // DNA
+		    exceptions.add("CHEBI:39026"); exceptions.add("39026"); // LDL
+		    exceptions.add("CHEBI:138181"); exceptions.add("138181"); // chemokine ligand 8
+		    exceptions.add("Q27205"); // fibrin
+		    exceptions.add("Q381899"); // fibrogen
+		    exceptions.add("Q2162109"); // fibrin degradation product
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
