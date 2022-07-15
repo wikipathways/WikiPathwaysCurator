@@ -8,4 +8,5 @@ SELECT DISTINCT ?pathway ?metabolite ?label ?id ?type WHERE {
   MINUS { ?metabolite gpml:type "Metabolite" }
   OPTIONAL { ?metabolite gpml:xrefId ?id . }
   ?gpmlPathway gpml:hasDataNode ?metabolite ; rdfs:seeAlso ?pathway .
+  FILTER ( !CONTAINS(STR(?pathway), "scholia") )
 }
