@@ -84,7 +84,8 @@ public class MetabolitesTests {
 			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String metabolite = table.get(i, "metabolite");
-				if (!exceptions.contains(metabolite)) {
+				String id = table.get(i, "id");
+				if (!exceptions.contains(id)) {
 					    errors += metabolite + " (" + table.get(i, "id") +
 					    		  ") is found to be " + table.get(i, "type") +
 					    		  " in " + table.get(i, "pathway") + "\n";
