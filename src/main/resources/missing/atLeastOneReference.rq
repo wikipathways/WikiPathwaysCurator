@@ -13,6 +13,7 @@ WHERE {
       OPTIONAL {
         ?pathway cito:cites ?pubmed .
       }
+      MINUS { ?pathway wp:ontologyTag cur:Homology_Converted }
     } GROUP BY ?pathway
   }
   ?pathway dc:title ?titleLit ;
