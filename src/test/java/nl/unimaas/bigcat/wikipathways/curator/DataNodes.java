@@ -64,6 +64,7 @@ public class DataNodes extends JUnitTests {
 
 	@Test
 	@Tag("expertCuration")
+	@Tag("reactome")
 	public void unknownTypes_Reactome() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
 			performAssertions(DataNodesTests.unknownTypes_Reactome(helper));

@@ -58,6 +58,7 @@ public class Wikidata extends JUnitTests {
 	public void waitForIt() throws InterruptedException { Thread.sleep(OPSWPRDFFiles.SLEEP_TIME); }
 
 	@Tag("expertCuration")
+	@Tag("reactome")
 	@Test
 	public void chebiWithoutMapping_Reactome() throws Exception {
 		performAssertions(WikidataTests.chebiWithoutMapping_Reactome(helper));
