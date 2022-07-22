@@ -109,4 +109,12 @@ public class Interactions extends JUnitTests {
 			performAssertions(InteractionTests.possibleTranslocations(helper));
 		});
 	}
+
+	@Test
+	public void incorrectKEGGIdentifiers() throws Exception {
+		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
+			performAssertions(InteractionTests.incorrectKEGGIdentifiers(helper));
+		});
+	}
+
 }

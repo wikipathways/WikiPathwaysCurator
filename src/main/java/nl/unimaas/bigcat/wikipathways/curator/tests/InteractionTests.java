@@ -57,6 +57,7 @@ public class InteractionTests {
 		assertions.addAll(interactionsWithLabels(helper));
 		assertions.addAll(possibleTranslocations(helper));
 		assertions.addAll(noProteinProteinConversions(helper));
+		assertions.addAll(incorrectKEGGIdentifiers(helper));
 		return assertions;
 	}
 
@@ -187,6 +188,34 @@ public class InteractionTests {
 		assertions.add(new AssertEquals(test,
 			0, errorCount, "Incorrect Rhea IDs: " + errorCount, 
 			"Found Rhea IDs that are not numbers (they should not include a 'Rhea:' prefix):\n" + errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> incorrectKEGGIdentifiers(SPARQLHelper helper) throws Exception {
+		Test test = new Test("InteractionTests", "incorrectKEGGIdentifiers");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("interactions/keggIdentifiers.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String id = table.get(i, "id");
+				if (id != null && id.length() > 0) {
+					if (id.startsWith("R")) { // all okay
+					} else {
+						errors += table.get(i, "homepage") + " " +
+								table.get(i, "id") + "\n";
+						errorCount++;
+					}
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Incorrect KEGG reaction IDs: " + errorCount,
+			"Found KEGG reaction IDs that do not start with an 'R':\n" + errors
 		));
 		return assertions;
 	}
