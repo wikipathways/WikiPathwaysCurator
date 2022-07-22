@@ -74,6 +74,7 @@ public class MetabolitesTests {
 		Set<String> exceptions = new HashSet<String>();
 		    exceptions.add("CHEBI:16991"); exceptions.add("16991"); // DNA
 		    exceptions.add("CHEBI:39026"); exceptions.add("39026"); // LDL
+		    exceptions.add("CHEBI:81569"); exceptions.add("81569"); // Follicle stimulating hormone
 		    exceptions.add("CHEBI:138181"); exceptions.add("138181"); // chemokine ligand 8
 		    exceptions.add("Q27205"); // fibrin
 		    exceptions.add("Q381899"); // fibrogen
