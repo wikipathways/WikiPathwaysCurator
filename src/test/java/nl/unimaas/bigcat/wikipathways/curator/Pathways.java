@@ -53,7 +53,6 @@ public class Pathways extends JUnitTests {
 	public void waitForIt() throws InterruptedException { Thread.sleep(OPSWPRDFFiles.SLEEP_TIME); }
 
 	@Test
-	@Tag("expertCuration")
 	public void testRoundedRectangle() throws Exception {
 		performAssertions(PathwayTests.testRoundedRectangle(helper));
 	}
