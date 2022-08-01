@@ -1,3 +1,4 @@
+prefix cur: <http://vocabularies.wikipathways.org/wp#Curation:>
 prefix wp:      <http://vocabularies.wikipathways.org/wp#>
 prefix gpml:    <http://vocabularies.wikipathways.org/gpml#>
 prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
@@ -18,4 +19,5 @@ SELECT ?homepage ?node ?datasource WHERE {
         gpml:xrefDataSource ?datasource .
   ?pathway foaf:page ?homepage ;
            wp:isAbout ?gpmlPathway .
+  MINUS { ?pathway wp:ontologyTag cur:Homology_Converted }
 } ORDER BY ?homepage

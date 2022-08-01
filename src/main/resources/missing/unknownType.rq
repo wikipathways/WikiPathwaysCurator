@@ -13,5 +13,6 @@ SELECT ?homepage ?node ?label WHERE {
         gpml:textlabel ?label .
   ?pathway foaf:page ?homepage ;
            wp:isAbout ?gpmlPathway .
+  MINUS { ?pathway wp:ontologyTag cur:Homology_Converted }
   MINUS { ?pathway wp:ontologyTag cur:Reactome_Approved }
 } ORDER BY ?homepage
