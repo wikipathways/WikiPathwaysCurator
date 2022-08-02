@@ -1,4 +1,4 @@
-/* Copyright (C) 2021  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2021-2022  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -190,7 +190,7 @@ public class PathwayTests {
 			}
 		}
 		assertions.add(new AssertEquals(test,
-			0, errorCount, "Pathways DataNodes with WikiPathways ID that can be converted to have a RoundedRectangle StyleType so that they become clickable: " + errorCount, errors
+			0, errorCount, "Pathways DataNodes with WikiPathways ID that can be converted to have a RoundedRectangle ShapeType so that they become clickable: " + errorCount, errors
 		));
 		return assertions;
 	}
