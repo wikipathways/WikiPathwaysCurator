@@ -101,6 +101,7 @@ public class InteractionTests {
 		    InteractionTests.addIdentifiersOrg(allowedProducts, "identifiers.org/hmdb/HMDB0004246"); // from KNG1, e.g. in WP
 		    InteractionTests.addIdentifiersOrg(allowedProducts, "identifiers.org/hmdb/HMDB0061196"); // angiotensin, a peptide hormone
 		    InteractionTests.addIdentifiersOrg(allowedProducts, "identifiers.org/chebi/CHEBI:2718"); // angiotensin, a peptide hormone
+		    InteractionTests.addIdentifiersOrg(allowedProducts, "identifiers.org/pubchem.compound/3081372"); // angiotensin I, a peptide hormone
 		Set<String> allowedProteinSubstrates = new HashSet<String>();
 			InteractionTests.addIdentifiersOrg(allowedProteinSubstrates, "identifiers.org/uniprot/H9ZYJ2"); // theoredoxin, e.g. WP3580
 			InteractionTests.addIdentifiersOrg(allowedProteinSubstrates, "identifiers.org/chebi/CHEBI:39026"); // LDL
