@@ -79,7 +79,7 @@ public class LIPIDMAPSTests {
 		}
 
 		// Reporting
-		assertions.add(new AssertEquals(test, 
+		assertions.add(new AssertEquals(test, true,
 			0, errorCount, "Retired LIPID MAPS identifiers detected: " + errorCount, errors
 		));
 		return assertions;
@@ -107,7 +107,7 @@ public class LIPIDMAPSTests {
 		}
 
 		// Reporting
-		assertions.add(new AssertEquals(test,
+		assertions.add(new AssertEquals(test, true,
 			0, errorCount, "Expected a LIPID MAPS identifier, but found other identifiers: " + errorCount, errors
 		));
 		return assertions;
