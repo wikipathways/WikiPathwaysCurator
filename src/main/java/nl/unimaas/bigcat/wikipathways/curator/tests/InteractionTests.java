@@ -84,7 +84,7 @@ public class InteractionTests {
 				} // else, OK, this is allows as conversion target
 			}
 		}
-		assertions.add(new AssertEquals(test, 
+		assertions.add(new AssertEquals(test, true,
 			0, errorCount, "Unexpected metabolite to non-metabolite conversions:" + errorCount, errors
 		));
 		return assertions;
