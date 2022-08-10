@@ -29,6 +29,7 @@ package nl.unimaas.bigcat.wikipathways.curator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import nl.unimaas.bigcat.wikipathways.curator.tests.LIPIDMAPSTests;
@@ -125,5 +126,11 @@ public class Metabolites extends JUnitTests {
 	@Test
 	public void retiredIdentifiers() throws Exception {
 		performAssertions(LIPIDMAPSTests.retiredIdentifiers(helper));
+	}
+
+	@Test
+	@Tag("expertCuration")
+	public void tooManyInChIKeys() throws Exception {
+		performAssertions(MetabolitesTests.tooManyInChIKeys(helper));
 	}
 }

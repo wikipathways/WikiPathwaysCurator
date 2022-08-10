@@ -1,4 +1,4 @@
-/* Copyright (C) 2013,2018-2020  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2013,2018-2022  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -62,6 +62,7 @@ public class MetabolitesTests {
 		assertions.addAll(PubChemSubstanceIDsNotMarkedAsMetabolite(helper));
 		assertions.addAll(PubChemIDsNotNumbers(helper));
 		assertions.addAll(PubChemSubstanceIDsNotNumbers(helper));
+		assertions.addAll(tooManyInChIKeys(helper));
 		return assertions;
 	}
 
@@ -337,6 +338,32 @@ public class MetabolitesTests {
 		}
 		assertions.add(new AssertEquals(test,
 			0, errorCount, "Unexpected PubChem Substance identifiers for non-metabolites: " + errorCount, errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> tooManyInChIKeys(SPARQLHelper helper) throws Exception {
+		Test test = new Test("MetabolitesTests", "tooManyInChIKeys");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/tooManyInChIKeys.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				try {
+					Integer.parseInt(identifier);
+				} catch (NumberFormatException exception) {
+					errors += table.get(i, "examplePathway") + " (example) has: " + table.get(i, "label") + " " + table.get(i, "identifier") +
+						" with InChIKeys: " + table.get(i, "inchikeys") + "\n" ;
+					errorCount++;
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Non-zero count of metabolites with more than one InChIKey: " + errorCount, errors
 		));
 		return assertions;
 	}

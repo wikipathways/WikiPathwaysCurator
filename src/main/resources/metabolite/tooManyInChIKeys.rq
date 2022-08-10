@@ -1,0 +1,24 @@
+prefix wp:      <http://vocabularies.wikipathways.org/wp#>
+prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix xsd:     <http://www.w3.org/2001/XMLSchema#>
+prefix dc:      <http://purl.org/dc/elements/1.1/>
+prefix foaf:    <http://xmlns.com/foaf/0.1/>
+
+select distinct ?label ?identifier ?inchikeys ?count (SAMPLE(?homepage) AS ?examplePathway)
+where {
+  {
+    select distinct ?mb (COUNT(?inchikey) AS ?count)
+      (GROUP_CONCAT(SUBSTR(STR(?inchikey),34);SEPARATOR=", ") AS ?inchikeys)
+    where {
+      ?mb a wp:Metabolite;
+        wp:bdbInChIKey ?inchikey .
+    } group by ?mb
+  }
+  ?mb dcterms:identifier ?identifier ;
+      dcterms:isPartOf ?pathway ;
+      rdfs:label ?label .
+  ?pathway foaf:page ?homepage .
+  FILTER ( ?count > 1)
+} GROUP BY ?label ?identifier ?count ?inchikeys
+  ORDER BY DESC(?count)
