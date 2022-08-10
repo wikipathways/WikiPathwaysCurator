@@ -1,5 +1,6 @@
 prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
 prefix dcterms: <http://purl.org/dc/terms/>
+prefix gpml:    <http://vocabularies.wikipathways.org/gpml#>
 prefix wp:      <http://vocabularies.wikipathways.org/wp#>
 prefix foaf:    <http://xmlns.com/foaf/0.1/>
 
@@ -20,4 +21,6 @@ WHERE {
    FILTER (?sourceQ = ?targetQ)
    MINUS { ?interaction a wp:Translocation }
    MINUS { ?interaction a wp:TranscriptionTranslation }
+   MINUS { ?source wp:isAbout/^gpml:stateOf [] }
+   MINUS { ?target wp:isAbout/^gpml:stateOf [] }
 }
