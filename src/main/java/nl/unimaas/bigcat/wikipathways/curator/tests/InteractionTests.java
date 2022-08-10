@@ -269,7 +269,7 @@ public class InteractionTests {
 				errorCount++;
 			}
 		}
-		assertions.add(new AssertEquals(test,
+		assertions.add(new AssertEquals(test, true,
 			0, errorCount, "Interactions between identical metabolites: " + errorCount, errors
 		));
 		return assertions;
