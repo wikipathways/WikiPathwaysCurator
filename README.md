@@ -1,4 +1,4 @@
-![Java CI with Maven](https://github.com/BiGCAT-UM/WikiPathwaysCurator/workflows/Java%20CI%20with%20Maven/badge.svg)
+[![Java CI with Maven](https://github.com/wikipathways/WikiPathwaysCurator/actions/workflows/maven.yml/badge.svg)](https://github.com/wikipathways/WikiPathwaysCurator/actions/workflows/maven.yml)
 
 # Unit tests for curating WikiPathways using SPARQL.
 
