@@ -109,6 +109,8 @@ public class GeneralTests {
 					    else if (c == '-') {}
 					    else if (c == ',') {}
 					    else if (c == ':') {}
+					    else if (c == '(') {}
+					    else if (c == ')') {}
 					    else {
 					    	weirdCharCount++;
 					    }
