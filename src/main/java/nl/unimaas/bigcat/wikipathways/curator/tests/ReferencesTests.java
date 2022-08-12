@@ -122,8 +122,8 @@ public class ReferencesTests {
 					table.get(i, "species") + " has zero references; \n";
 			}
 		}
-		assertions.add(new AssertEquals(test,
-			0, table.getRowCount(), "Found " + table.getRowCount() + " pathways with zero references", errors
+		assertions.add(new AssertEquals(test, true,
+			0, table.getRowCount(), "Found " + table.getRowCount() + " pathways with zero (PubMed) references", errors
 		));
 		return assertions;
     }
