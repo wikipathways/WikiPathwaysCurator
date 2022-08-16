@@ -117,6 +117,7 @@ public class WikidataTests {
 		assertions.addAll(replaceWikipedia(helper));
 		assertions.addAll(chebiWithoutMapping_Reactome(helper));
 		assertions.addAll(chebiWithoutMapping(helper));
+		assertions.addAll(inchikeyWithoutMapping(helper));
 		return assertions;
 	}
 
@@ -226,6 +227,24 @@ public class WikidataTests {
 		}
 		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "HMDB identifiers without Wikidata mappings: " + table.getRowCount(), errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> inchikeyWithoutMapping(SPARQLHelper helper) throws Exception {
+		Test test = new Test("WikidataTests", "hmdbWithoutMapping");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteInChIKey.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errors += table.get(i, "inchikey") + "\t" + table.get(i, "label") + "\n";
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, table.getRowCount(), "InChIKey identifiers without Wikidata mappings: " + table.getRowCount(), errors
 		));
 		return assertions;
 	}

@@ -114,6 +114,12 @@ public class Wikidata extends JUnitTests {
 
 	@Tag("wikidata")
 	@Test
+	public void inchikeyWithoutMapping() throws Exception {
+		performAssertions(WikidataTests.inchikeyWithoutMapping(helper));
+	}
+
+	@Tag("wikidata")
+	@Test
 	public void replaceWikipedia() throws Exception {
 		performAssertions(WikidataTests.replaceWikipedia(helper));
 	}
