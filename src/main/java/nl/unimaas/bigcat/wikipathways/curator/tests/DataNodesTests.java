@@ -64,7 +64,7 @@ public class DataNodesTests {
 				errorCount++;
 			}
 		}
-		assertions.add(new AssertEquals(test, 
+		assertions.add(new AssertEquals(test, true,
 			0, errorCount, "The following DataNodes have no identifier: " + errorCount, errors
 		));
 		return assertions;
@@ -80,10 +80,13 @@ public class DataNodesTests {
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
-				errors += table.get(i, "homepage") + " " +
-					table.get(i, "node") + " (" +
-					table.get(i, "datasource") + ")\n";
-				errorCount++;
+				String datasource = table.get(i, "datasource");
+				// Wikidata can be any type and does not quality as "known source"
+				if (!"Wikidata".equals(datasource)) {
+                    errors += table.get(i, "homepage") + " " +
+					    table.get(i, "node") + " (" + datasource + ")\n";
+				    errorCount++;
+				}
 			}
 		}
 		assertions.add(new AssertEquals(test, 
