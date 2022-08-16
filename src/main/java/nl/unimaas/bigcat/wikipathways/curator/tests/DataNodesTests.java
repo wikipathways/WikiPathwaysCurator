@@ -64,7 +64,7 @@ public class DataNodesTests {
 				errorCount++;
 			}
 		}
-		assertions.add(new AssertEquals(test, true,
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "The following DataNodes have no identifier: " + errorCount, errors
 		));
 		return assertions;
@@ -89,7 +89,7 @@ public class DataNodesTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals(test, 
+		assertions.add(new AssertEquals(test, true,
 			0, errorCount, "The following DataNodes have Unknown @Type: " + errorCount, errors
 		));
 		return assertions;
