@@ -28,7 +28,9 @@ package nl.unimaas.bigcat.wikipathways.curator.tests;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import nl.unimaas.bigcat.wikipathways.curator.BridgeDbTiwidReader;
 import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
 import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
 import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
@@ -39,11 +41,14 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class ReferencesTests {
 
+	private static final Map<String,String> retracted = BridgeDbTiwidReader.parseCSV("references/retracted_pmids.csv");
+
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(nonNumericPubMedIDs(helper));
 		assertions.addAll(zeroPubMedIDs(helper));
 		assertions.addAll(atLeastOneReference(helper));
+		assertions.addAll(citesRetractedArticle(helper));
 		return assertions;
 	}
 
@@ -127,4 +132,31 @@ public class ReferencesTests {
 		));
 		return assertions;
     }
+
+	public static List<IAssertion> citesRetractedArticle(SPARQLHelper helper) throws Exception {
+		Test test = new Test("ReferencesTests", "citesRetractedArticle");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("references/nonNumericPubMedIDs.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String id = table.get(i, "id");
+				if (id != null && id.length() > 0) {
+					if (retracted.containsKey(id)) {
+					    errors += table.get(i, "homepage") + " cites PubMed ID " +
+								table.get(i, "id") + "\n";
+						errorCount++;
+					}
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Found pathways citing retracted articles: " + errorCount, errors
+		));
+		return assertions;
+	}
+
 }

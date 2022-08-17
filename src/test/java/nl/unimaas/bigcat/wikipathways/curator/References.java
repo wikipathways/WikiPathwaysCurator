@@ -67,4 +67,10 @@ public class References extends JUnitTests {
     public void atLeastOneReference() throws Exception {
 		performAssertions(ReferencesTests.atLeastOneReference(helper));
     }
+
+	@Test
+	public void citesRetractedArticle() throws Exception {
+		performAssertions(ReferencesTests.citesRetractedArticle(helper));
+	}
+
 }
