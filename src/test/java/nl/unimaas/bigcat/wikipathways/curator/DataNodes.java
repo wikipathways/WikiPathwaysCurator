@@ -72,7 +72,6 @@ public class DataNodes extends JUnitTests {
 	}
 
 	@Test
-	@Tag("expertCuration")
 	public void unknownTypes_knownDatasource() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
 			performAssertions(DataNodesTests.unknownTypes_knownDatasource(helper));
