@@ -1,3 +1,4 @@
+prefix cur: <http://vocabularies.wikipathways.org/wp#Curation:>
 prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
 prefix dcterms: <http://purl.org/dc/terms/>
 prefix gpml:    <http://vocabularies.wikipathways.org/gpml#>
@@ -23,4 +24,6 @@ WHERE {
    MINUS { ?interaction a wp:TranscriptionTranslation }
    MINUS { ?source wp:isAbout/^gpml:stateOf [] }
    MINUS { ?target wp:isAbout/^gpml:stateOf [] }
+   MINUS { ?pathway wp:ontologyTag cur:Homology_Converted }
+   MINUS { ?pathway wp:ontologyTag cur:Reactome_Approved }
 }
