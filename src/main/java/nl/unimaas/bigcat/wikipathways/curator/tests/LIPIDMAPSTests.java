@@ -48,6 +48,24 @@ public class LIPIDMAPSTests {
 		add("LMFA07050077");
 	}};
 
+	// TODO: use identifiers.org or Bioregistry formatted identifiers instead
+	@SuppressWarnings("serial")
+	private static Set<String> okayNonLIPIDMAPIdentifiers = new HashSet<String>() {{
+		// now load the deprecation data
+		add("15346"); // ChEBI, CoA
+		add("16108"); // ChEBI
+		add("17115"); // ChEBI, L-serine
+		add("26523"); // ROS
+		add("26523"); // RNS
+		add("CHEBI:17234"); // glucose
+		add("CHEBI:17489"); // cAMP
+		add("CHEBI:29016"); // arginine
+		add("CHEBI:30616"); // ATP
+		add("CHEBI:33704"); // amino acids
+		add("CHEBI:57560");
+		add("CHEBI:192800"); // LDL-
+	}};
+
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(retiredIdentifiers(helper));
@@ -99,10 +117,14 @@ public class LIPIDMAPSTests {
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String identifier = table.get(i, "identifier");
-				errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+				if (okayNonLIPIDMAPIdentifiers.contains(identifier)) {}
+				  // some small molecules are okay, as we don't expect LIPID MAPS identifiers for them
+				else {
+				  errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
 						" has " + identifier + " from " + table.get(i, "source") +
 					    " but expected a LIPID MAPS identifier\n";
-				errorCount++;
+				  errorCount++;
+				}
 			}
 		}
 
