@@ -9,8 +9,8 @@ prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
 select distinct ?homepage ?label ?identifier
 where {
   ?node gpml:xrefDataSource "LIPID MAPS" ;
-        rdfs:label ?label ;
-        dcterms:identifier ?identifier ;
+        gpml:textlabel ?label ;
+        gpml:xrefId ?identifier ;
         dcterms:isPartOf ?gpmlpw .
   ?wppw wp:isAbout ?gpmlpw ;
         foaf:page ?homepage .
