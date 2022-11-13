@@ -29,8 +29,10 @@ package nl.unimaas.bigcat.wikipathways.curator.tests;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import nl.unimaas.bigcat.wikipathways.curator.BridgeDbTiwidReader;
 import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
 import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
 import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
@@ -102,6 +104,8 @@ public class WikidataTests {
 		add("CHEBI:60039"); // L-proline zwitterion
 	}};
 
+	private static final Map<String,String> retired = BridgeDbTiwidReader.parseCSV("tiwid/wikidata.csv");
+
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(keggWithoutMapping(helper));
@@ -118,6 +122,7 @@ public class WikidataTests {
 		assertions.addAll(chebiWithoutMapping_Reactome(helper));
 		assertions.addAll(chebiWithoutMapping(helper));
 		assertions.addAll(inchikeyWithoutMapping(helper));
+		assertions.addAll(retiredIdentifiers(helper));
 		return assertions;
 	}
 
@@ -434,6 +439,37 @@ public class WikidataTests {
 		}
 		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Wikipedia identifies that can be replaced by Wikidata identifiers: " + table.getRowCount(), errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> retiredIdentifiers(SPARQLHelper helper) throws Exception {
+		Test test = new Test("WikidataTests", "retiredIdentifiers");
+		// Getting the data
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("outdated/allWikidata.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+
+		// Testing
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				if (retired.containsKey(identifier)) {
+					errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+						" has " + identifier + " but it has been replace" +
+					    (retired.get(identifier) != null ? " by " + retired.get(identifier) : "") +
+					    "\n";
+					errorCount++;
+				}
+			}
+		}
+
+		// Reporting
+		assertions.add(new AssertEquals(test, false,
+			0, errorCount, "Retired Wikidata identifiers detected: " + errorCount, errors
 		));
 		return assertions;
 	}
