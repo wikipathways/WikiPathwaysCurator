@@ -46,7 +46,7 @@ public class BridgeDbTiwidReader {
 			while ((line = reader.readLine()) != null) {
 				if (line.startsWith("#")) continue;
 				String fields[] = line.split(",");
-				if (fields.length >= 2) {
+				if (fields.length > 2) {
 					deprecated.put(fields[0], fields[2]);
 				} else {
 					deprecated.put(fields[0], null);
