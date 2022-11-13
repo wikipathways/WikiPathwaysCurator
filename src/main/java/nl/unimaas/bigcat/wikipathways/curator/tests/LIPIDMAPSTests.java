@@ -1,4 +1,4 @@
-/* Copyright (C) 2021  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2021-2022  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -29,8 +29,10 @@ package nl.unimaas.bigcat.wikipathways.curator.tests;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import nl.unimaas.bigcat.wikipathways.curator.BridgeDbTiwidReader;
 import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
 import nl.unimaas.bigcat.wikipathways.curator.SPARQLHelper;
 import nl.unimaas.bigcat.wikipathways.curator.StringMatrix;
@@ -40,13 +42,8 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class LIPIDMAPSTests {
-	
-	@SuppressWarnings("serial")
-	private static Set<String> retired = new HashSet<String>() {{
-		// now load the deprecation data
-		add("LMGP01030007");
-		add("LMFA07050077");
-	}};
+
+	private static final Map<String,String> retired = BridgeDbTiwidReader.parseCSV("tiwid/lipidmaps.csv");
 
 	// TODO: use identifiers.org or Bioregistry formatted identifiers instead
 	@SuppressWarnings("serial")
@@ -87,10 +84,12 @@ public class LIPIDMAPSTests {
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String identifier = table.get(i, "identifier");
-				if (retired.contains(identifier)) {
+				if (retired.containsKey(identifier)) {
 					errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
 						" has " + identifier + " but it has been retired, see " +
-					    "https://www.lipidmaps.org/data/LMSDRecord.php?LMID=" + identifier + "\n";
+					    "https://www.lipidmaps.org/data/LMSDRecord.php?LMID=" + identifier +
+					    (retired.get(identifier) != null ? " and replaced by " + retired.get(identifier) : "") +
+					    "\n";
 					errorCount++;
 				}
 			}
