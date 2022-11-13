@@ -1,4 +1,4 @@
-/* Copyright (C) 2013,2018-2020  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2013,2018-2022  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -270,7 +270,7 @@ public class InteractionTests {
 			}
 		}
 		assertions.add(new AssertEquals(test, true,
-			0, errorCount, "Interactions between identical metabolites: " + errorCount, errors
+			0, errorCount, "Interactions between identical nodes: " + errorCount, errors
 		));
 		return assertions;
 	}
