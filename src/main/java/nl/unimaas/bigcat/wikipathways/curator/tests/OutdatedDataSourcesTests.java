@@ -63,6 +63,7 @@ public class OutdatedDataSourcesTests {
 		assertions.addAll(outdatedEnsemblChickenDataSource(helper));
 		assertions.addAll(outdatedECNumberDataSource(helper));
 		assertions.addAll(outdatedChemSpiderDataSource(helper));
+		assertions.addAll(gpml2021transition(helper));
 		assertions.addAll(discontinuedUniGene(helper));
 		return assertions;
 	}
@@ -328,6 +329,18 @@ public class OutdatedDataSourcesTests {
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertTrue(test,
 			(table.getRowCount() < 1), "Outdated 'ChemSpider' data sources (use 'Chemspider')", "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> gpml2021transition(SPARQLHelper helper) throws Exception {
+		Test test = new Test("OudatedDataSourcesTests", "gpml2021transition");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("outdated/gpml2021transition.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertTrue(test,
+			(table.getRowCount() < 1), "More outdated data sources", "" + table
 		));
 		return assertions;
 	}

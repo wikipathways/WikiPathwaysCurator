@@ -187,6 +187,13 @@ public class OutdatedDataSources extends JUnitTests {
 	}
 
 	@Test
+	public void gpml2021transition() throws Exception {
+		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
+			performAssertions(OutdatedDataSourcesTests.gpml2021transition(helper));
+		});
+	}
+
+	@Test
 	public void discontinuedUniGene() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
 			performAssertions(OutdatedDataSourcesTests.discontinuedUniGene(helper));

@@ -1,0 +1,20 @@
+prefix dcterms:  <http://purl.org/dc/terms/>
+prefix dc:      <http://purl.org/dc/elements/1.1/>
+prefix xsd:     <http://www.w3.org/2001/XMLSchema#>
+prefix foaf:    <http://xmlns.com/foaf/0.1/>
+prefix gpml:  <http://vocabularies.wikipathways.org/gpml#>
+prefix wp: <http://vocabularies.wikipathways.org/wp#>
+
+SELECT DISTINCT ?node ?source ?homepage
+WHERE {
+  VALUES ?source {
+    "PubChem" "PubChem Compound" "ChemIDplus" "Ensembl Plants"
+    "GeneDB" "Uniprot/TrEMBL" "Kegg ortholog" "COMPOUND"
+    "Ensembl Mosquito" "Kegg Compound" "Uniprot-SwissProt"
+    "RiceCyc" "Entrez"
+  }
+  ?node gpml:xrefDataSource ?source ;
+        dcterms:isPartOf ?gpmlpw .
+  ?wppw wp:isAbout ?gpmlpw ;
+        foaf:page ?homepage .
+}
