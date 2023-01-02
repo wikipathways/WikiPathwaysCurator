@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.jena.ttl.turtle.TurtleParseException;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.riot.RiotException;
@@ -83,10 +82,6 @@ public class OPSWPRDFFiles {
 			} catch (FileNotFoundException exception) {
 				parseFailReport.append(file.getName())
 			    .append(": not found\n");
-			} catch (TurtleParseException exception) {
-				parseFailReport.append(file.getName())
-				    .append(": ").append(exception.getMessage())
-				    .append('\n');
 			} catch (RiotException exception) {
 				parseFailReport.append(file.getName())
 			        .append(": ").append(exception.getMessage())
