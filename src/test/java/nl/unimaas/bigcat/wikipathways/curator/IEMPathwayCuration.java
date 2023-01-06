@@ -29,6 +29,7 @@ package nl.unimaas.bigcat.wikipathways.curator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import nl.unimaas.bigcat.wikipathways.curator.tests.IEMPathwayTests;
@@ -52,6 +53,7 @@ public class IEMPathwayCuration extends JUnitTests {
 	public void waitForIt() throws InterruptedException { Thread.sleep(OPSWPRDFFiles.SLEEP_TIME); }
 
 	@Test
+	@Tag("iem")
 	public void allMetabolitesInteract() throws Exception {
 		performAssertions(IEMPathwayTests.allMetabolitesInteract(helper));
 	}
