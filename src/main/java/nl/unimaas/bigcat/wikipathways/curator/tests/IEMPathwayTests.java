@@ -56,7 +56,7 @@ public class IEMPathwayTests {
 		if (table.getRowCount() > 0) {
 			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
-			    errors += table.get(i, "pathway") + " has an metabolite not linked to an interaction: " +
+			    errors += table.get(i, "url") + " has an metabolite not linked to an interaction: " +
 			        table.get(i, "metaboliteLabel") + "\n";
 				errorCount++;
 			}
