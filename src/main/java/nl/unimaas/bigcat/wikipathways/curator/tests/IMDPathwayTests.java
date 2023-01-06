@@ -59,7 +59,6 @@ public class IMDPathwayTests {
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
-			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
 			    errors += table.get(i, "url") + " has an metabolite not linked to an interaction: " +
 			        table.get(i, "metaboliteLabel") + "\n";
@@ -81,7 +80,6 @@ public class IMDPathwayTests {
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
-			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
 			    errors += table.get(i, "url") + " " + table.get(i, "interaction") + "\n";
 				errorCount++;
@@ -110,7 +108,6 @@ public class IMDPathwayTests {
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
-			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String source = table.get(i, "source");
 				if (!commonCatalystDataSources.contains(source)) {
@@ -139,7 +136,6 @@ public class IMDPathwayTests {
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0 && table.getColumnCount() > 2) {
-			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String source = table.get(i, "interactionSource");
 				if (source != null && !commonCatalysisDataSources.contains(source)) {
@@ -165,7 +161,6 @@ public class IMDPathwayTests {
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
-			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String identifier = table.get(i, "href");
 				if (identifier == null || identifier.isEmpty()) {
@@ -191,7 +186,6 @@ public class IMDPathwayTests {
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
-			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String identifier = table.get(i, "href");
 				if (identifier.contains("omim.org")) {
