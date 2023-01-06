@@ -42,6 +42,7 @@ public class IEMPathwayTests {
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(allMetabolitesInteract(helper));
+		assertions.addAll(metabolicConversions(helper));
 		return assertions;
 	}
 
@@ -63,6 +64,27 @@ public class IEMPathwayTests {
 		}
 		assertions.add(new AssertEquals(test,
 			0, errorCount, "Found metabolites without interaction: " + errorCount, errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> metabolicConversions(SPARQLHelper helper) throws Exception {
+		Test test = new Test("IEMPathwayTests", "metabolicConversions");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("iem/metabolicConversions.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			// OK, but then it must be proteins, e.g. IFN-b
+			for (int i=1; i<=table.getRowCount(); i++) {
+			    errors += table.get(i, "url") + " " + table.get(i, "interaction") + "\n";
+				errorCount++;
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Unexpected interactions, not from metabolite to metabolite and not from RNA to RNA: " + errorCount, errors
 		));
 		return assertions;
 	}

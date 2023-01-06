@@ -57,4 +57,10 @@ public class IEMPathwayCuration extends JUnitTests {
 	public void allMetabolitesInteract() throws Exception {
 		performAssertions(IEMPathwayTests.allMetabolitesInteract(helper));
 	}
+
+	@Test
+	@Tag("iem")
+	public void metabolicConversions() throws Exception {
+		performAssertions(IEMPathwayTests.metabolicConversions(helper));
+	}
 }
