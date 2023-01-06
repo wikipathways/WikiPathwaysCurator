@@ -1,0 +1,17 @@
+prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+prefix dc:      <http://purl.org/dc/elements/1.1/>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix wp:      <http://vocabularies.wikipathways.org/wp#>
+
+SELECT DISTINCT ?pathway ?metaboliteLabel
+WHERE {
+   ?pathway a wp:Pathway ;
+      dc:identifier ?url .
+   ?metabolite a wp:DataNode, wp:Metabolite ;
+      dcterms:isPartOf ?pathway ;
+      rdfs:label ?metaboliteLabel .
+  MINUS {
+   ?interaction a wp:Interaction ;
+      wp:participants ?metabolite .
+  }               
+}
