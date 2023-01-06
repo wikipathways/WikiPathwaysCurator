@@ -1,0 +1,12 @@
+SELECT DISTINCT ?url ?interaction ?interactionSource ?interactionID
+WHERE {
+  VALUES ?catalystType { wp:Protein wp:GeneProduct }
+  ?pathway a wp:Pathway ; wp:ontologyTag cur:IEM ; 
+    dc:identifier ?url .
+  ?interaction a wp:Conversion ; dcterms:isPartOf ?pathway ;
+    wp:source / a wp:Metabolite ; wp:target / a wp:Metabolite .
+  ?catalyzes wp:target ?interaction ;
+    wp:source ?catalyst .
+  ?catalyst a ?catalystType ; rdfs:label ?catalystLabel .
+  OPTIONAL { ?interaction dc:source ?interactionSource ; dcterms:identifier ?interactionID }
+}

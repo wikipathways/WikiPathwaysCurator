@@ -44,6 +44,7 @@ public class IMDPathwayTests {
 		assertions.addAll(allMetabolitesInteract(helper));
 		assertions.addAll(metabolicConversions(helper));
 		assertions.addAll(catalystsWithCommonDataSource(helper));
+		assertions.addAll(metabolicConversionIdentifiersCommon(helper));
 		return assertions;
 	}
 
@@ -118,6 +119,37 @@ public class IMDPathwayTests {
 		}
 		assertions.add(new AssertEquals(test,
 			0, errorCount, "Unexpected data source for catalysts: " + errorCount, errors
+		));
+		return assertions;
+	}
+
+	@SuppressWarnings("serial")
+	private static List<String> commonCatalysisDataSources = new ArrayList<>() {{
+		add("Rhea");
+	}};
+
+	public static List<IAssertion> metabolicConversionIdentifiersCommon(SPARQLHelper helper) throws Exception {
+		Test test = new Test("IEMPathwayTests", "metabolicConversionIdentifiersCommon");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("imd/metabolicConversionIdentifiers.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			// OK, but then it must be proteins, e.g. IFN-b
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String source = table.get(i, "interactionSource");
+				if (source != null && !commonCatalysisDataSources.contains(source)) {
+			        errors += table.get(i, "url") + " " + table.get(i, "interaction") + " " +
+				        table.get(i, "interactionSource") + " " +
+				        table.get(i, "interactionID") + "\n";
+				    errorCount++;
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Unexpected data source for the metabolic conversion: " + errorCount, errors
 		));
 		return assertions;
 	}
