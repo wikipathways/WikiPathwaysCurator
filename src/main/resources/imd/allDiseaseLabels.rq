@@ -1,0 +1,18 @@
+prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+prefix dc:      <http://purl.org/dc/elements/1.1/>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix wp:      <http://vocabularies.wikipathways.org/wp#>
+prefix gpml:    <http://vocabularies.wikipathways.org/gpml#>
+
+SELECT DISTINCT ?url ?disease ?diseaseLabel ?href
+WHERE {
+  ?wpPathway wp:isAbout ?pathway ; dc:identifier ?url .
+  ?disease a gpml:Label ; gpml:textlabel ?diseaseLabel ;
+    dcterms:isPartOf ?pathway ; gpml:graphId ?diseaseRef .
+  ?pathway gpml:organism [] .
+  ?point gpml:graphRef ?diseaseRef ; dcterms:isPartOf ?line .
+  ?line a gpml:GraphicalLine ;
+    gpml:hasPoint / gpml:graphRef ?anchorRef .
+  ?interaction gpml:hasAnchor / gpml:graphId ?anchorRef .
+  OPTIONAL { ?disease gpml:href ?href }
+}

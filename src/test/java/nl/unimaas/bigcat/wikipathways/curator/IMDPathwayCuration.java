@@ -76,4 +76,10 @@ public class IMDPathwayCuration extends JUnitTests {
 		performAssertions(IMDPathwayTests.metabolicConversionIdentifiersCommon(helper));
 	}
 
+	@Test
+	@Tag("imd")
+	public void diseasesHaveIdentifiers() throws Exception {
+		performAssertions(IMDPathwayTests.diseasesHaveIdentifiers(helper));
+	}
+
 }
