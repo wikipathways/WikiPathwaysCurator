@@ -6,8 +6,7 @@ prefix wp:      <http://vocabularies.wikipathways.org/wp#>
 SELECT DISTINCT ?url ?catalyst ?catalystLabel ?source ?id
 WHERE {
   VALUES ?catalystType { wp:Protein wp:GeneProduct }
-  VALUES ?url { <https://identifiers.org/wikipathways/WP4518> }
-  ?pathway a wp:Pathway ; wp:ontologyTag cur:IEM ; 
+  ?pathway a wp:Pathway ;
     dc:identifier ?url .
   ?interaction a wp:Conversion ; dcterms:isPartOf ?pathway ;
     wp:source / a wp:Metabolite ; wp:target / a wp:Metabolite .
