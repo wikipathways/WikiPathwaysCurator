@@ -46,6 +46,7 @@ public class IMDPathwayTests {
 		assertions.addAll(catalystsWithCommonDataSource(helper));
 		assertions.addAll(metabolicConversionIdentifiersCommon(helper));
 		assertions.addAll(diseasesHaveIdentifiers(helper));
+		assertions.addAll(omimIdentifiers(helper));
 		return assertions;
 	}
 
@@ -177,6 +178,35 @@ public class IMDPathwayTests {
 		}
 		assertions.add(new AssertEquals(test,
 			0, errorCount, "Likely diseases without identifiers: " + errorCount, errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> omimIdentifiers(SPARQLHelper helper) throws Exception {
+		Test test = new Test("IEMPathwayTests", "omimIdentifiers");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("imd/allDiseaseLabels.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			// OK, but then it must be proteins, e.g. IFN-b
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "href");
+				if (identifier.contains("omim.org")) {
+					if (!identifier.startsWith("https://omim.org/entry/") &&
+							!identifier.startsWith("https://www.omim.org/entry/")) {
+  			            errors += table.get(i, "url") +
+			        	    " \"" + table.get(i, "diseaseLabel").replaceAll("\n"," ") + 
+			        	    "\" has unexpected OMIM href: " + table.get(i, "href") + "\n";
+				        errorCount++;
+					}
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "OMIM links should start with \"https://omim.org/entry/\": " + errorCount, errors
 		));
 		return assertions;
 	}

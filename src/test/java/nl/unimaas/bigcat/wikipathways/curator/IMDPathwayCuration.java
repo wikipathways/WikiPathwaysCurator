@@ -82,4 +82,10 @@ public class IMDPathwayCuration extends JUnitTests {
 		performAssertions(IMDPathwayTests.diseasesHaveIdentifiers(helper));
 	}
 
+	@Test
+	@Tag("imd")
+	public void omimIdentifiers() throws Exception {
+		performAssertions(IMDPathwayTests.omimIdentifiers(helper));
+	}
+
 }
