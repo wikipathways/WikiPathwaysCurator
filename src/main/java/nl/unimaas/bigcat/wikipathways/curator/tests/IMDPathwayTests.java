@@ -37,7 +37,7 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.AssertNotNull;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.IAssertion;
 import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
-public class IEMPathwayTests {
+public class IMDPathwayTests {
 	
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
@@ -49,7 +49,7 @@ public class IEMPathwayTests {
 	public static List<IAssertion> allMetabolitesInteract(SPARQLHelper helper) throws Exception {
 		Test test = new Test("IEMPathwayTests", "allMetabolitesInteract");
 		List<IAssertion> assertions = new ArrayList<>();
-		String sparql = ResourceHelper.resourceAsString("iem/allMetabolitesInteract.rq");
+		String sparql = ResourceHelper.resourceAsString("imd/allMetabolitesInteract.rq");
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
@@ -71,7 +71,7 @@ public class IEMPathwayTests {
 	public static List<IAssertion> metabolicConversions(SPARQLHelper helper) throws Exception {
 		Test test = new Test("IEMPathwayTests", "metabolicConversions");
 		List<IAssertion> assertions = new ArrayList<>();
-		String sparql = ResourceHelper.resourceAsString("iem/metabolicConversions.rq");
+		String sparql = ResourceHelper.resourceAsString("imd/metabolicConversions.rq");
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";

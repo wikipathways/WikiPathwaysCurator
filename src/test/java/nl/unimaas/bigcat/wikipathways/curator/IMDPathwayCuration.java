@@ -32,9 +32,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import nl.unimaas.bigcat.wikipathways.curator.tests.IEMPathwayTests;
+import nl.unimaas.bigcat.wikipathways.curator.tests.IMDPathwayTests;
 
-public class IEMPathwayCuration extends JUnitTests {
+public class IMDPathwayCuration extends JUnitTests {
 
 	private static SPARQLHelper helper = null;
 
@@ -53,14 +53,14 @@ public class IEMPathwayCuration extends JUnitTests {
 	public void waitForIt() throws InterruptedException { Thread.sleep(OPSWPRDFFiles.SLEEP_TIME); }
 
 	@Test
-	@Tag("iem")
+	@Tag("imd")
 	public void allMetabolitesInteract() throws Exception {
-		performAssertions(IEMPathwayTests.allMetabolitesInteract(helper));
+		performAssertions(IMDPathwayTests.allMetabolitesInteract(helper));
 	}
 
 	@Test
-	@Tag("iem")
+	@Tag("imd")
 	public void metabolicConversions() throws Exception {
-		performAssertions(IEMPathwayTests.metabolicConversions(helper));
+		performAssertions(IMDPathwayTests.metabolicConversions(helper));
 	}
 }
