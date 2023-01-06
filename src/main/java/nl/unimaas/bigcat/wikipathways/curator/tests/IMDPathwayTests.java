@@ -138,7 +138,7 @@ public class IMDPathwayTests {
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
-		if (table.getRowCount() > 0) {
+		if (table.getRowCount() > 0 && table.getColumnCount() > 2) {
 			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String source = table.get(i, "interactionSource");
