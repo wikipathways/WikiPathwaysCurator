@@ -26,18 +26,21 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator;
 
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.Scanner;
+import java.nio.charset.StandardCharsets;
+
+import org.apache.commons.io.IOUtils;
 
 public class ResourceHelper {
 
 	public static String resourceAsString(String resource) {
 		InputStream iStream = ResourceHelper.class.getClassLoader().getResourceAsStream(resource);
-		Scanner scanner2 = new Scanner(iStream);
-		Scanner scanner = scanner2.useDelimiter("\\A");
-	    String content = scanner.hasNext() ? scanner.next() : "";
-	    scanner2.close();
-	    return content;
+		try {
+			return IOUtils.toString(iStream, StandardCharsets.UTF_8.name());
+		} catch (IOException e) {
+			return "";
+		}
 	}
 
 }
