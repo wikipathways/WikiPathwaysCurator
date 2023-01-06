@@ -1,0 +1,18 @@
+prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+prefix dc:      <http://purl.org/dc/elements/1.1/>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix wp:      <http://vocabularies.wikipathways.org/wp#>
+
+SELECT DISTINCT ?url ?catalyst ?catalystLabel ?source ?id
+WHERE {
+  VALUES ?catalystType { wp:Protein wp:GeneProduct }
+  VALUES ?url { <https://identifiers.org/wikipathways/WP4518> }
+  ?pathway a wp:Pathway ; wp:ontologyTag cur:IEM ; 
+    dc:identifier ?url .
+  ?interaction a wp:Conversion ; dcterms:isPartOf ?pathway ;
+    wp:source / a wp:Metabolite ; wp:target / a wp:Metabolite .
+  ?catalyzes wp:target ?interaction ;
+    wp:source ?catalyst .
+  ?catalyst a ?catalystType ; rdfs:label ?catalystLabel .
+  OPTIONAL { ?catalyst dc:source ?source ; dcterms:identifier ?id }
+}
