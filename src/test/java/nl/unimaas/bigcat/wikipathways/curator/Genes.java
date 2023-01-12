@@ -29,6 +29,7 @@ package nl.unimaas.bigcat.wikipathways.curator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import nl.unimaas.bigcat.wikipathways.curator.tests.GeneTests;
@@ -64,5 +65,10 @@ public class Genes extends JUnitTests {
 	@Test
 	public void outdatedIdentifiers() throws Exception {
 		performAssertions(GeneTests.outdatedIdentifiers(helper));
+	}
+
+	@Test
+	public void numericHGNCIDs() throws Exception {
+		performAssertions(GeneTests.numericHGNCIDs(helper));
 	}
 }

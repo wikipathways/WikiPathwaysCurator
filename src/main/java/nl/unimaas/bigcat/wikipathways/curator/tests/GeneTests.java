@@ -27,7 +27,6 @@
 package nl.unimaas.bigcat.wikipathways.curator.tests;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +48,7 @@ public class GeneTests {
 		assertions.addAll(entrezGeneIdentifiersNotNumber(helper));
 		assertions.addAll(affyProbeIdentifiersNotCorrect(helper));
 		assertions.addAll(outdatedIdentifiers(helper));
+		assertions.addAll(numericHGNCIDs(helper));
 		return assertions;
 	}
 
@@ -140,6 +140,36 @@ public class GeneTests {
 		}
 		assertions.add(new AssertEquals(test, 
 			0, errorCount, "Old HGNC identifiers detected: " + errorCount, errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> numericHGNCIDs(SPARQLHelper helper) throws Exception {
+		Test test = new Test("GeneTests", "outdatedIdentifiers");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("genes/allHGNCIdentifiers.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String id = table.get(i, "identifier");
+				if (id != null && id.length() > 0) {
+					try {
+						Integer.parseInt(id);
+						// okay, that doesn't look right
+						errorCount++;
+						errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+								" has " + id + "\n";;
+					} catch (NumberFormatException exception) {
+						// this is expected: "HGNC" data source are the symbols
+					}
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Found integer HGNC symbols (did you mean 'HGNC Accession number'?): " + errorCount, errors
 		));
 		return assertions;
 	}
