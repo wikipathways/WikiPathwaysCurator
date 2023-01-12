@@ -143,7 +143,6 @@ public class Wikidata extends JUnitTests {
 	}
 
 	@Test
-	@Tag("foo")
 	public void retiredIdentifiers() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
 			performAssertions(WikidataTests.retiredIdentifiers(helper));
