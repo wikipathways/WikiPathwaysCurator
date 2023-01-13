@@ -71,4 +71,10 @@ public class Genes extends JUnitTests {
 	public void numericHGNCIDs() throws Exception {
 		performAssertions(GeneTests.numericHGNCIDs(helper));
 	}
+
+	@Test
+	public void nonNumericHGNCAccessionNumbers() throws Exception {
+		performAssertions(GeneTests.nonNumericHGNCAccessionNumbers(helper));
+	}
+
 }

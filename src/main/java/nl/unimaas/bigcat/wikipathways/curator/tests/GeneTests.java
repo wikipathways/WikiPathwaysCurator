@@ -49,6 +49,7 @@ public class GeneTests {
 		assertions.addAll(affyProbeIdentifiersNotCorrect(helper));
 		assertions.addAll(outdatedIdentifiers(helper));
 		assertions.addAll(numericHGNCIDs(helper));
+		assertions.addAll(nonNumericHGNCAccessionNumbers(helper));
 		return assertions;
 	}
 
@@ -170,6 +171,34 @@ public class GeneTests {
 		}
 		assertions.add(new AssertEquals(test,
 			0, errorCount, "Found integer HGNC symbols (did you mean 'HGNC Accession number'?): " + errorCount, errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> nonNumericHGNCAccessionNumbers(SPARQLHelper helper) throws Exception {
+		Test test = new Test("GeneTests", "nonNumericHGNCAccessionNumbers");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("genes/allHGNCAccessionNumbers.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String id = table.get(i, "identifier");
+				if (id != null && id.length() > 0) {
+					try {
+						Integer.parseInt(id);
+					} catch (NumberFormatException exception) {
+						errorCount++;
+						errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+								" has " + id + "\n";;
+					}
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Found non-integer HGNC Accession numbers (did you mean 'HGNC'?): " + errorCount, errors
 		));
 		return assertions;
 	}
