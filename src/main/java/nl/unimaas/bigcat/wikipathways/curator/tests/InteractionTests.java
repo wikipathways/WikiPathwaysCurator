@@ -256,17 +256,21 @@ public class InteractionTests {
 		String sparql = ResourceHelper.resourceAsString("interactions/possibleTranslocations.rq");
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
+		Set<String> allowedInNonTranslocation = new HashSet<String>();
+		allowedInNonTranslocation.add("https://identifiers.org/chebi/CHEBI:17984"); // Acyl-CoA (n-2)
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
-				errors += table.get(i, "homepage") + " " +
+				String source = table.get(i, "source");
+				if (!allowedInNonTranslocation.contains(source)) {
+                    errors += table.get(i, "homepage") + " " +
 						table.get(i, "interaction") + " \"" +
-						table.get(i, "sourceLabel") + "\" (" +
-						table.get(i, "source") + ") and \n" +
+						table.get(i, "sourceLabel") + "\" (" + source + ") and \n" +
 						table.get(i, "targetLabel") + "\" (" +
 						table.get(i, "target") + ")\n";
-				errorCount++;
+				    errorCount++;
+				}
 			}
 		}
 		assertions.add(new AssertEquals(test, true,
