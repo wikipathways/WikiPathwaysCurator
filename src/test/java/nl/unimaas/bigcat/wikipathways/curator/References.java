@@ -58,6 +58,12 @@ public class References extends JUnitTests {
 	}
 
 	@Test
+	@Tag("foo")
+	public void unexpectedPubMedIdentifier() throws Exception {
+		performAssertions(ReferencesTests.unexpectedPubMedIdentifier(helper));
+	}
+
+	@Test
 	public void zeroPubMedIDs() throws Exception {
 		performAssertions(ReferencesTests.zeroPubMedIDs(helper));
 	}
@@ -72,5 +78,12 @@ public class References extends JUnitTests {
 	public void citesRetractedArticle() throws Exception {
 		performAssertions(ReferencesTests.citesRetractedArticle(helper));
 	}
+
+	@Test
+	@Tag("foo")
+	public void outdatedPubMedIdentifiers() throws Exception {
+		performAssertions(ReferencesTests.outdatedPubMedIdentifiers(helper));
+	}
+
 
 }

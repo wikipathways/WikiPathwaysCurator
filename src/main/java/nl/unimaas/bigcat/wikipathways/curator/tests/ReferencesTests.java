@@ -41,14 +41,19 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class ReferencesTests {
 
+	// this is list of PubMed identifiers that have been replaced (e.g. because of duplicate PubMed entries)
+	private static final Map<String,String> deprecated = BridgeDbTiwidReader.parseTSV("tiwid/pubmed.tsv");
+	// the next one is existing PubMed identifiers, but where the respective article is retracted
 	private static final Map<String,String> retracted = BridgeDbTiwidReader.parseCSV("references/retracted_pmids.csv");
 
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(nonNumericPubMedIDs(helper));
+		assertions.addAll(unexpectedPubMedIdentifier(helper));
 		assertions.addAll(zeroPubMedIDs(helper));
 		assertions.addAll(atLeastOneReference(helper));
 		assertions.addAll(citesRetractedArticle(helper));
+		assertions.addAll(outdatedPubMedIdentifiers(helper));
 		return assertions;
 	}
 
@@ -61,7 +66,6 @@ public class ReferencesTests {
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
-			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String id = table.get(i, "id");
 				if (id != null && id.length() > 0) {
@@ -79,6 +83,35 @@ public class ReferencesTests {
 		}
 		assertions.add(new AssertEquals(test,
 			0, errorCount, "Found PubMed IDs that are not numbers: " + errorCount, errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> unexpectedPubMedIdentifier(SPARQLHelper helper) throws Exception {
+		Test test = new Test("ReferencesTests", "unexpectedPubMedIdentifier");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("references/nonNumericPubMedIDs.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String id = table.get(i, "id");
+				if (id != null && id.length() > 0) {
+					try {
+						int pmid = Integer.parseInt(id);
+						if (pmid >= 50000000) {
+						    errors += table.get(i, "homepage") + " '" +
+							    id + "' is higher than expected\n";
+						    errorCount++;
+						}
+					} catch (NumberFormatException exception) {}
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Found PubMed IDs with unexpected high value: " + errorCount, errors
 		));
 		return assertions;
 	}
@@ -159,4 +192,28 @@ public class ReferencesTests {
 		return assertions;
 	}
 
+	public static List<IAssertion> outdatedPubMedIdentifiers(SPARQLHelper helper) throws Exception {
+		Test test = new Test("ReferencesTests", "outdatedPubMedIdentifiers");
+		System.out.println(deprecated.toString());
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("references/nonNumericPubMedIDs.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "id");
+				if (deprecated.containsKey(identifier) && deprecated.get(identifier) != null) {
+					errors += table.get(i, "homepage") + " " + table.get(i, "id") +
+						  " is deprecated and possibly replaced by " + deprecated.get(identifier) + "; \n";
+					errorCount++;
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Deprecated PubMed identifiers: " + errorCount, errors
+		));
+		return assertions;
+	}
 }
