@@ -35,9 +35,21 @@ import java.util.Map;
 public class BridgeDbTiwidReader {
 
 	/* Reads Tiwid files in the CSV format with three columns.
-	 * Columns are expected to be: deprecated ID, date of deprecation, replacing ID.
 	 */
 	public static Map<String,String> parseCSV(String tiwidResource) {
+		return parse(tiwidResource, ",");
+	}
+
+	/* Reads Tiwid files in the TSV format with three columns.
+	 */
+	public static Map<String,String> parseTSV(String tiwidResource) {
+		return parse(tiwidResource, "\t");
+	}
+
+	/* Reads Tiwid files in a file with with three columns separated by the given delimeter.
+	 * Columns are expected to be: deprecated ID, date of deprecation, replacing ID.
+	 */
+	private static Map<String,String> parse(String tiwidResource, String delim) {
 		Map<String,String> deprecated = new HashMap<String,String>();
 		String tiwidData = ResourceHelper.resourceAsString(tiwidResource);
 		BufferedReader reader = new BufferedReader(new StringReader(tiwidData));
@@ -45,7 +57,7 @@ public class BridgeDbTiwidReader {
 		try {
 			while ((line = reader.readLine()) != null) {
 				if (line.startsWith("#")) continue;
-				String fields[] = line.split(",");
+				String fields[] = line.split(delim);
 				if (fields.length > 2) {
 					deprecated.put(fields[0], fields[2]);
 				} else {
