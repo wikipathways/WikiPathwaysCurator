@@ -27,8 +27,10 @@
 package nl.unimaas.bigcat.wikipathways.curator.tests;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import nl.unimaas.bigcat.wikipathways.curator.BridgeDbTiwidReader;
 import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
@@ -93,12 +95,14 @@ public class ReferencesTests {
 		String sparql = ResourceHelper.resourceAsString("references/nonNumericPubMedIDs.rq");
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
+		Set<String> allowedIdentifiers = new HashSet<String>();
+		allowedIdentifiers.add("0716730510"); // actually, an ISBN number but not recognized as such (bc bp:ID not accessible in old GPML reader)
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String id = table.get(i, "id");
-				if (id != null && id.length() > 0) {
+				if (id != null && id.length() > 0 && !allowedIdentifiers.contains(id.trim())) {
 					try {
 						int pmid = Integer.parseInt(id);
 						if (pmid >= 50000000) {
