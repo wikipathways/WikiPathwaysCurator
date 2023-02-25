@@ -65,7 +65,7 @@ public class InteractionTests {
 		Test test = new Test("InteractionTests", "noMetaboliteToNonMetaboliteConversions");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/noMetaboliteNonMetaboliteConversions.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "pathway");
 		assertions.add(new AssertNotNull(test, table));
 		Set<String> allowedProteinProducts = new HashSet<String>();
             InteractionTests.addIdentifiersOrg(allowedProteinProducts, "identifiers.org/uniprot/H9ZYJ2"); // theoredoxin, e.g. WP3580
@@ -94,7 +94,7 @@ public class InteractionTests {
 		Test test = new Test("InteractionTests", "noNonMetaboliteToMetaboliteConversions");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/noNonMetaboliteMetaboliteConversions.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "pathway");
 		assertions.add(new AssertNotNull(test, table));
 		Set<String> allowedProducts = new HashSet<String>();
 		    InteractionTests.addIdentifiersOrg(allowedProducts, "identifiers.org/hmdb/HMDB04246"); // from KNG1, e.g. in WP
@@ -140,7 +140,7 @@ public class InteractionTests {
 		Test test = new Test("InteractionTests", "noGeneProteinConversions");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/noGeneProteinConversions.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "pathway");
 		assertions.add(new AssertNotNull(test, table));
 		Set<String> allowedProteinSubstrates = new HashSet<String>();
 		    InteractionTests.addIdentifiersOrg(allowedProteinSubstrates, "identifiers.org/uniprot/P0DTD1"); // SARS-CoV-2 main protease
@@ -168,7 +168,7 @@ public class InteractionTests {
 		Test test = new Test("InteractionTests", "nonNumericIDs");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/nonNumericRhea.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -197,7 +197,7 @@ public class InteractionTests {
 		Test test = new Test("InteractionTests", "incorrectKEGGIdentifiers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/keggIdentifiers.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -225,7 +225,7 @@ public class InteractionTests {
 		Test test = new Test("InteractionTests", "interactionsWithLabels");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/interactionsWithLabels.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -254,7 +254,7 @@ public class InteractionTests {
 		Test test = new Test("InteractionTests", "possibleTranslocations");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/possibleTranslocations.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		Set<String> allowedInNonTranslocation = new HashSet<String>();
 		allowedInNonTranslocation.add("https://identifiers.org/chebi/CHEBI:17984"); // Acyl-CoA (n-2)
@@ -283,7 +283,7 @@ public class InteractionTests {
 		Test test = new Test("InteractionTests", "noProteinProteinConversions");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/noProteinProteinConversions.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "pathway");
 		assertions.add(new AssertNotNull(test, table));
 		Set<String> allowedProteinSubstrates = new HashSet<String>();
 		allowedProteinSubstrates.add("https://identifiers.org/uniprot/P0DTD1"); // SARS-CoV-2 main protease

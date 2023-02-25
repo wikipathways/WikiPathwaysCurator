@@ -192,4 +192,23 @@ public class SPARQLHelper {
 		split[1] = uri;
 		return split;
 	}
+
+	/**
+	 * Updates the matrix context column values to point to the classic WikiPathways website.
+	 *
+	 * @param table      SPARQL results
+	 * @param columnName Column to replace the webpage URL for
+	 */
+	public static StringMatrix classicify(StringMatrix table, String columnName) {
+		if (table.getRowCount() == 0) {
+		} else {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String updatedURL = table.get(i, columnName)
+					.replaceAll("/www.wikipathways.org/", "/classic.wikipathways.org/")
+					.replaceAll("/wikipathways.org/", "/classic.wikipathways.org/");
+				table.set(i, columnName, updatedURL);
+			}
+		}
+		return table;
+	}
 }

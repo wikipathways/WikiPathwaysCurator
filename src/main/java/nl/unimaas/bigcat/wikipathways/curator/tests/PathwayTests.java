@@ -67,7 +67,7 @@ public class PathwayTests {
 		sparql += "  }\n"
 				+ "  ?pathway dcterms:identifier ?wpid .\n"
 				+ "  MINUS { ?pathway a wp:DataNode } \n}";
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "pathway");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		if (table.getRowCount() > 0) {
@@ -100,7 +100,7 @@ public class PathwayTests {
 				  "    dcterms:identifier ?wpid ;\n" + 
 				  "    dcterms:isPartOf ?pathway .\n" + 
 				  "  ?pathway foaf:page ?homepage . \n}";
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		if (table.getRowCount() > 0) {
@@ -125,7 +125,7 @@ public class PathwayTests {
 		Test test = new Test("PathwayTests", "linksToDeletedPathways_All");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("pathways/linkedDeletedPathways.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test, 0, table.getRowCount(),
 			"Pathway that seem to link to deleted pathways: " + table.getRowCount() + ". Actual deleted pathways should be added"
@@ -144,7 +144,7 @@ public class PathwayTests {
 		Test test = new Test("PathwayTests", "speciesMismatch");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/speciesMismatch.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "linkingHomepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -169,7 +169,7 @@ public class PathwayTests {
 		Test test = new Test("PathwayTests", "testRoundedRectangle");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/noRoundedRectangle.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -199,7 +199,7 @@ public class PathwayTests {
 		Test test = new Test("PathwayTests", "youMustCite");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/youMustCite.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test, 0, table.getRowCount(),
 			"Pathway description that contain 'you must cite': " + table.getRowCount(),
