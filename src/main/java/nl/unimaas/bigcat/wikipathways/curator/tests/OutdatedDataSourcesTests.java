@@ -72,7 +72,7 @@ public class OutdatedDataSourcesTests {
 		Test test = new Test("OudatedDataSourcesTests", "outdatedUniprot");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/uniprot.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Outdated 'Uniprot' data sources (use 'Uniprot-TrEMBL')"
@@ -84,7 +84,7 @@ public class OutdatedDataSourcesTests {
 		Test test = new Test("OudatedDataSourcesTests", "outdatedUniprot2");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/uniprot2.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Outdated 'UniProt/TrEMBL' data sources (use 'Uniprot-TrEMBL')"
@@ -96,7 +96,7 @@ public class OutdatedDataSourcesTests {
 		Test test = new Test("OudatedDataSourcesTests", "outdatedUniprot3");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/uniprot3.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Outdated 'Uniprot/TrEMBL' data sources (use 'Uniprot-TrEMBL')"
@@ -108,7 +108,7 @@ public class OutdatedDataSourcesTests {
 		Test test = new Test("OudatedDataSourcesTests", "outdatedUniprot4");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/uniprot4.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Outdated 'UniProt' data sources (use 'Uniprot-TrEMBL')"
@@ -120,7 +120,7 @@ public class OutdatedDataSourcesTests {
 		Test test = new Test("OudatedDataSourcesTests", "oldUniprotSwissProt");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/swissprot.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -140,7 +140,7 @@ public class OutdatedDataSourcesTests {
 		Test test = new Test("OudatedDataSourcesTests", "wrongPubChem");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/pubchem.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		// the metabolite test pathway has one outdated PubChem deliberately (WP2582)
 		assertions.add(new AssertTrue(test,
@@ -153,7 +153,7 @@ public class OutdatedDataSourcesTests {
 		Test test = new Test("OudatedDataSourcesTests", "noInChIDataSourceYet");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/inchi.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Don't use 'InChI' data sources yet, but found: " + table.getRowCount(), "" + table
@@ -165,7 +165,7 @@ public class OutdatedDataSourcesTests {
 		Test test = new Test("OudatedDataSourcesTests", "outdatedKeggCompoundDataSource");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/keggcompound.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		// the metabolite test pathway has one outdated Kegg Compound deliberately (WP2582)
 		assertions.add(new AssertTrue(test,
@@ -178,7 +178,7 @@ public class OutdatedDataSourcesTests {
 		Test test = new Test("OudatedDataSourcesTests", "outdatedKeggCompoundDataSource2");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/keggcompound2.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		// the metabolite test pathway has one outdated Kegg Compound deliberately (WP2582)
 		assertions.add(new AssertTrue(test,
@@ -191,7 +191,7 @@ public class OutdatedDataSourcesTests {
 		Test test = new Test("OudatedDataSourcesTests", "outdatedKeggOrthologDataSource");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/keggortholog.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		// the metabolite test pathway has one outdated Kegg Compound deliberately (WP2582)
 		assertions.add(new AssertTrue(test,
@@ -217,7 +217,7 @@ public class OutdatedDataSourcesTests {
 		Test test = new Test("OudatedDataSourcesTests", "outdatedEnsemblMouseDataSource");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/ensembl.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertTrue(test,
 			(table.getRowCount() <= 1), "Outdated 'Ensembl Mouse' data sources (use 'Ensembl')", "" + table
@@ -229,7 +229,7 @@ public class OutdatedDataSourcesTests {
 		Test test = new Test("OudatedDataSourcesTests", "outdatedEnsemblCapsSource");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/ensemblCaps.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertTrue(test,
 			(table.getRowCount() < 1), "Outdated 'ENSEMBL' data sources (use 'Ensembl')", "" + table
@@ -241,7 +241,7 @@ public class OutdatedDataSourcesTests {
 		Test test = new Test("OudatedDataSourcesTests", "outdatedEnsemblHumanDataSource");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/ensembl2.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertTrue(test,
 			(table.getRowCount() < 1), "Outdated 'Ensembl Human' data sources (use 'Ensembl')", "" + table
@@ -253,7 +253,7 @@ public class OutdatedDataSourcesTests {
 		Test test = new Test("OudatedDataSourcesTests", "outdatedEnsemblMouseDataSourceFromGPML");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/ensembl_gpml.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertTrue(test,
 			(table.getRowCount() < 1), "Outdated 'Ensembl Mouse' data sources (use 'Ensembl')", "" + table
@@ -265,7 +265,7 @@ public class OutdatedDataSourcesTests {
 		Test test = new Test("OudatedDataSourcesTests", "outdatedEnsemblHumanDataSourceFromGPML");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/ensembl2_gpml.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertTrue(test,
 			(table.getRowCount() < 1), "Outdated 'Ensembl Human' data sources (use 'Ensembl')", "" + table
@@ -277,7 +277,7 @@ public class OutdatedDataSourcesTests {
 		Test test = new Test("OudatedDataSourcesTests", "outdatedEnsemblYeastDataSource");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/ensembl3.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertTrue(test,
 			(table.getRowCount() < 1), "Outdated 'Ensembl Yeast' data sources (use 'Ensembl')", "" + table
@@ -289,7 +289,7 @@ public class OutdatedDataSourcesTests {
 		Test test = new Test("OudatedDataSourcesTests", "outdatedEnsemblCowDataSource");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/ensembl4.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertTrue(test,
 			(table.getRowCount() < 1), "Outdated 'Ensembl Cow' data sources (use 'Ensembl')", "" + table
@@ -301,7 +301,7 @@ public class OutdatedDataSourcesTests {
 		Test test = new Test("OudatedDataSourcesTests", "outdatedEnsemblChickenDataSource");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/ensembl_chicken.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertTrue(test,
 			(table.getRowCount() < 1), "Outdated 'Ensembl Chicken' data sources (use 'Ensembl')", "" + table
@@ -313,7 +313,7 @@ public class OutdatedDataSourcesTests {
 		Test test = new Test("OudatedDataSourcesTests", "outdatedECNumberDataSource");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/ecNumber.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertTrue(test,
 			(table.getRowCount() < 1), "Outdated 'EC Number' data sources (use 'Enzyme Nomenclature')", "" + table
@@ -325,7 +325,7 @@ public class OutdatedDataSourcesTests {
 		Test test = new Test("OudatedDataSourcesTests", "outdatedChemSpiderDataSource");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/chemspider.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertTrue(test,
 			(table.getRowCount() < 1), "Outdated 'ChemSpider' data sources (use 'Chemspider')", "" + table
@@ -337,7 +337,7 @@ public class OutdatedDataSourcesTests {
 		Test test = new Test("OudatedDataSourcesTests", "gpml2021transition");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/gpml2021transition.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertTrue(test,
 			(table.getRowCount() < 1), "More outdated data sources", "" + table
@@ -349,7 +349,7 @@ public class OutdatedDataSourcesTests {
 		Test test = new Test("OudatedDataSourcesTests", "discontinuedUniGene");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/unigene.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
