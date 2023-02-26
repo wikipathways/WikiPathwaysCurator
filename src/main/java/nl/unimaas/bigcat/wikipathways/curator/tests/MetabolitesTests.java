@@ -41,11 +41,6 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class MetabolitesTests {
 
-	private static void addIdentifiersOrg(Set<String> setToAddTo, String identifier) {
-		setToAddTo.add("https://" + identifier);
-		setToAddTo.add("http://" + identifier);
-	}
-
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(metaboliteAlsoOtherType(helper));
@@ -70,7 +65,7 @@ public class MetabolitesTests {
 		Test test = new Test("MetabolitesTests", "metaboliteAlsoOtherType");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/badType.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "pathway");
 		assertions.add(new AssertNotNull(test, table));
 		Set<String> exceptions = new HashSet<String>();
 		    exceptions.add("CHEBI:16991"); exceptions.add("16991"); // DNA
@@ -105,7 +100,7 @@ public class MetabolitesTests {
 		Test test = new Test("MetabolitesTests", "chemspiderIDsNotMarkedAsMetabolite");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/chemspiderNumberNotMarkedAsMetabolite.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test, 
 			0, table.getRowCount(), "Unexpected ChemSpider identifiers for non-metabolites: " + table.getRowCount(), table.toString()
@@ -117,7 +112,7 @@ public class MetabolitesTests {
 		Test test = new Test("MetabolitesTests", "HMDBIDsNotMarkedAsMetabolite");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/hmdbNumberNotMarkedAsMetabolite.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test, 
 			0, table.getRowCount(), "Unexpected HMDB identifiers for non-metabolites: " + table.getRowCount(), table.toString()
@@ -129,7 +124,7 @@ public class MetabolitesTests {
 		Test test = new Test("MetabolitesTests", "KEGGIDsNotMarkedAsMetabolite");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/keggNumberNotMarkedAsMetabolite.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test, 
 			0, table.getRowCount(), "Unexpected KEGG identifiers for non-metabolites: " + table.getRowCount(), table.toString()
@@ -141,7 +136,7 @@ public class MetabolitesTests {
 		Test test = new Test("MetabolitesTests", "casNumbersNotMarkedAsMetabolite");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/casNumberNotMarkedAsMetabolite.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		Set<String> allowedProteins = new HashSet<String>();
 		allowedProteins.add("IFN-b");
@@ -166,7 +161,7 @@ public class MetabolitesTests {
 		Test test = new Test("MetabolitesTests", "metabolitesWithAnEnsembleID");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/metabolitesWithAnEnsembleID.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "pathway");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Unexpected metabolites with an Ensemble identifier: " + table.getRowCount(), "" + table
@@ -178,7 +173,7 @@ public class MetabolitesTests {
 		Test test = new Test("MetabolitesTests", "metabolitesWithAnEntrezGeneID");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/metabolitesWithAnEntrezGeneID.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "pathway");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Unexpected metabolites with an Entrez Gene identifier:: " + table.getRowCount(), "" + table
@@ -202,7 +197,7 @@ public class MetabolitesTests {
 		Test test = new Test("MetabolitesTests", "metabolitesWithIdentifierButNoDb");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/metabolitesWithIdentifierButNoDatabase.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Unexpected metabolites with identifier but no database source: " + table.getRowCount(), "" + table
@@ -214,7 +209,7 @@ public class MetabolitesTests {
 		Test test = new Test("MetabolitesTests", "ChEBIIDsNotMarkedAsMetabolite");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/chebiNumberNotMarkedAsMetabolite.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		Set<String> allowed = new HashSet<String>();
 		allowed.add("CHEBI:15986"); // polynucleotide
@@ -247,7 +242,7 @@ public class MetabolitesTests {
 		Test test = new Test("MetabolitesTests", "PubChemIDsNotMarkedAsMetabolite");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/pubchemNumberNotMarkedAsMetabolite.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		Set<String> allowedProteins = new HashSet<String>();
 		allowedProteins.add("Fibrin");
@@ -272,7 +267,7 @@ public class MetabolitesTests {
 		Test test = new Test("MetabolitesTests", "PubChemSubstanceIDsNotMarkedAsMetabolite");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/pubchemSubstanceNumberNotMarkedAsMetabolite.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		Set<String> allowedProteins = new HashSet<String>();
 		String errors = "";
@@ -296,7 +291,7 @@ public class MetabolitesTests {
 		Test test = new Test("MetabolitesTests", "PubChemIDsNotNumbers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/allPubChemIdentifiers.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -321,7 +316,7 @@ public class MetabolitesTests {
 		Test test = new Test("MetabolitesTests", "PubChemSubstanceIDsNotNumbers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/allPubChemSubstanceIdentifiers.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -346,7 +341,7 @@ public class MetabolitesTests {
 		Test test = new Test("MetabolitesTests", "tooManyInChIKeys");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/tooManyInChIKeys.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "examplePathway");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
