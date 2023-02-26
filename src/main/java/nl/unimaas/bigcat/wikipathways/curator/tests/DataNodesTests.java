@@ -52,7 +52,7 @@ public class DataNodesTests {
 		Test test = new Test("DataNodesTests", "dataNodesWithoutIdentifier");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/dataNodesWithoutIdentifier.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -74,7 +74,7 @@ public class DataNodesTests {
 		Test test = new Test("DataNodesTests", "unknownTypes_knownDatasource");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/unknownTypeKnownDatasource.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -99,7 +99,7 @@ public class DataNodesTests {
 		Test test = new Test("DataNodesTests", "unknownTypes_Reactome");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/unknownType_Reactome.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -121,7 +121,7 @@ public class DataNodesTests {
 		Test test = new Test("DataNodesTests", "unknownTypes");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/unknownType.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
