@@ -58,7 +58,7 @@ public class EnsemblTests {
 		Test test = new Test("EnsemblTests", "outdatedIdentifiers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("genes/allEnsemblIdentifiers.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertNotSame(test,
 			0, table.getColumnCount(), "Expected more than 0 Ensembl identifiers"
@@ -85,7 +85,7 @@ public class EnsemblTests {
 		Test test = new Test("EnsemblTests", "wrongEnsemblIDForHumanSpecies");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Human.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -116,7 +116,7 @@ public class EnsemblTests {
 		Test test = new Test("EnsemblTests", "wrongEnsemblIDForRatSpecies");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Rat.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test, 
 			0, table.getRowCount(), "Ensembl identifiers for wrong species for a rat pathway: " + table.getRowCount()
@@ -128,7 +128,7 @@ public class EnsemblTests {
 		Test test = new Test("EnsemblTests", "wrongEnsemblIDForCowSpecies");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Cow.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test, 
 			0, table.getRowCount(), "Ensembl identifiers for wrong species for a cow pathway: " + table.getRowCount()
@@ -140,7 +140,7 @@ public class EnsemblTests {
 		Test test = new Test("EnsemblTests", "wrongEnsemblIDForMouseSpecies");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("genes/ensemblGenesWrongSpecies_Mouse.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
