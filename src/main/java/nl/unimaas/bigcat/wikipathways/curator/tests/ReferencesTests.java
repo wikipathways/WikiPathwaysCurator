@@ -63,7 +63,7 @@ public class ReferencesTests {
 		Test test = new Test("ReferencesTests", "nonNumericPubMedIDs");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("references/nonNumericPubMedIDs.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -93,7 +93,7 @@ public class ReferencesTests {
 		Test test = new Test("ReferencesTests", "unexpectedPubMedIdentifier");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("references/nonNumericPubMedIDs.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		Set<String> allowedIdentifiers = new HashSet<String>();
 		allowedIdentifiers.add("0716730510"); // actually, an ISBN number but not recognized as such (bc bp:ID not accessible in old GPML reader)
@@ -124,7 +124,7 @@ public class ReferencesTests {
 		Test test = new Test("ReferencesTests", "zeroPubMedIDs");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("references/nonNumericPubMedIDs.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -154,7 +154,7 @@ public class ReferencesTests {
 		Test test = new Test("ReferencesTests", "atLeastOneReference");
     	List<IAssertion> assertions = new ArrayList<>();
     	String sparql = ResourceHelper.resourceAsString("missing/atLeastOneReference.rq");
-    	StringMatrix table = helper.sparql(sparql);
+    	StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		if (table.getRowCount() > 0) {
@@ -174,7 +174,7 @@ public class ReferencesTests {
 		Test test = new Test("ReferencesTests", "citesRetractedArticle");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("references/nonNumericPubMedIDs.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -201,7 +201,7 @@ public class ReferencesTests {
 		System.out.println(deprecated.toString());
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("references/nonNumericPubMedIDs.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
