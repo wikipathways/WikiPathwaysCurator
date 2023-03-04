@@ -130,7 +130,7 @@ public class WikidataTests {
 		Test test = new Test("WikidataTests", "chebiWithoutMapping_Reactome");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteChEBI_Reactome.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -154,7 +154,7 @@ public class WikidataTests {
 		Test test = new Test("WikidataTests", "chebiWithoutMapping");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteChEBI.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -178,7 +178,7 @@ public class WikidataTests {
 		Test test = new Test("WikidataTests", "keggWithoutMapping");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteKEGG.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -202,7 +202,7 @@ public class WikidataTests {
 		Test test = new Test("WikidataTests", "pubchemCIDWithoutMapping");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metabolitePubChemCID.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		if (table.getRowCount() > 0) {
@@ -221,7 +221,7 @@ public class WikidataTests {
 		Test test = new Test("WikidataTests", "hmdbWithoutMapping");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteHMDB.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		if (table.getRowCount() > 0) {
@@ -258,7 +258,7 @@ public class WikidataTests {
 		Test test = new Test("WikidataTests", "casWithoutMapping");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteCAS.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		if (table.getRowCount() > 0) {
@@ -313,7 +313,7 @@ public class WikidataTests {
 		Test test = new Test("WikidataTests", "noWikidataForGenes");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("genes/noWikidataYet.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -338,7 +338,7 @@ public class WikidataTests {
 		Test test = new Test("WikidataTests", "wikidataIdentifiersWrong");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/allWikidataIdentifiers.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -371,7 +371,7 @@ public class WikidataTests {
 		Test test = new Test("WikidataTests", "chemspiderCIDWithoutMapping");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteChemspider.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		if (table.getRowCount() > 0) {
@@ -390,7 +390,7 @@ public class WikidataTests {
 		Test test = new Test("WikidataTests", "lipidMapsWithoutMapping");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteLipidMaps.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		if (table.getRowCount() > 0) {
@@ -409,7 +409,7 @@ public class WikidataTests {
 		Test test = new Test("WikidataTests", "kNApSAcKWithoutMapping");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteKNApSAcK.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		if (table.getRowCount() > 0) {
