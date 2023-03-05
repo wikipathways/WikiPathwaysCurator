@@ -67,7 +67,7 @@ public class GeneralTests {
 		Test test = new Test("GeneralTests", "titlesShortEnough");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/allTitles_notReactome.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "page");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -92,7 +92,7 @@ public class GeneralTests {
 		Test test = new Test("GeneralTests", "weirdCharacterTitles");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/allTitles.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "page");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -131,7 +131,7 @@ public class GeneralTests {
 		Test test = new Test("GeneralTests", "duplicateTitles");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/allTitlesBySpecies.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "page");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -159,7 +159,7 @@ public class GeneralTests {
 		Test test = new Test("GeneralTests", "curationAndHypothetical");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/allCurationAndHypothetical.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "page");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -182,7 +182,7 @@ public class GeneralTests {
 		Test test = new Test("GeneralTests", "curationAndNeedsWork");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/allCurationAndNeedsWork.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "page");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -205,7 +205,7 @@ public class GeneralTests {
 		Test test = new Test("GeneralTests", "curationAndReactome");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/allCurationAndReactome.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "page");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -228,7 +228,7 @@ public class GeneralTests {
 		Test test = new Test("GeneralTests", "noTags");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/noTags.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "page");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -306,7 +306,7 @@ public class GeneralTests {
 		Test test = new Test("GeneralTests", "emptyLabelOfNodeWithIdentifier");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/emptyLabelsWithIdentifiers.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
