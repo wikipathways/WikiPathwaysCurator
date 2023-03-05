@@ -396,7 +396,10 @@ public class WikidataTests {
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String lmid = table.get(i, "metabolite");
-				if (lmid.startsWith("LMSP0502") || lmid.startsWith("LMSP0506") || lmid.startsWith("LMSP0601") || lmid.startsWith("LMSP0602")) {
+				if (lmid.startsWith("https://identifiers.org/lipidmaps/LMSP0502") ||
+					lmid.startsWith("https://identifiers.org/lipidmaps/LMSP0506") ||
+					lmid.startsWith("https://identifiers.org/lipidmaps/LMSP0601") ||
+					lmid.startsWith("https://identifiers.org/lipidmaps/LMSP0602")) {
 					// ignore a few glycosphingolipids for now
 				} else {
 				    errors +=  lmid + " (" + table.get(i, "label") + ") "
