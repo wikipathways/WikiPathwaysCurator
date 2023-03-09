@@ -67,16 +67,19 @@ public class InteractionTests {
 		String sparql = ResourceHelper.resourceAsString("interactions/noMetaboliteNonMetaboliteConversions.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "pathway");
 		assertions.add(new AssertNotNull(test, table));
+		Set<String> allowedProducts = new HashSet<String>();
+			InteractionTests.addIdentifiersOrg(allowedProducts, "identifiers.org/chebi/CHEBI:16356"); // cGMP
 		Set<String> allowedProteinProducts = new HashSet<String>();
-            InteractionTests.addIdentifiersOrg(allowedProteinProducts, "identifiers.org/uniprot/H9ZYJ2"); // theoredoxin, e.g. WP3580
-            InteractionTests.addIdentifiersOrg(allowedProteinProducts, "identifiers.org/chebi/CHEBI:39026"); // LPL
+            		InteractionTests.addIdentifiersOrg(allowedProteinProducts, "identifiers.org/uniprot/H9ZYJ2"); // theoredoxin, e.g. WP3580
+           		InteractionTests.addIdentifiersOrg(allowedProteinProducts, "identifiers.org/chebi/CHEBI:39026"); // LPL
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String targetID = table.get(i, "target");
-				if (!allowedProteinProducts.contains(targetID)) {
+				if (allowedProducts.contains(targetID)) {}
+				else if (!allowedProteinProducts.contains(targetID)) {
 					errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
 							table.get(i, "metabolite") + " " + table.get(i, "target") + " " +
 							table.get(i, "interaction") + "\n";
@@ -97,11 +100,12 @@ public class InteractionTests {
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "pathway");
 		assertions.add(new AssertNotNull(test, table));
 		Set<String> allowedProducts = new HashSet<String>();
-		    InteractionTests.addIdentifiersOrg(allowedProducts, "identifiers.org/hmdb/HMDB04246"); // from KNG1, e.g. in WP
-		    InteractionTests.addIdentifiersOrg(allowedProducts, "identifiers.org/hmdb/HMDB0004246"); // from KNG1, e.g. in WP
-		    InteractionTests.addIdentifiersOrg(allowedProducts, "identifiers.org/hmdb/HMDB0061196"); // angiotensin, a peptide hormone
-		    InteractionTests.addIdentifiersOrg(allowedProducts, "identifiers.org/chebi/CHEBI:2718"); // angiotensin, a peptide hormone
-		    InteractionTests.addIdentifiersOrg(allowedProducts, "identifiers.org/pubchem.compound/3081372"); // angiotensin I, a peptide hormone
+		    	InteractionTests.addIdentifiersOrg(allowedProducts, "identifiers.org/hmdb/HMDB04246"); // from KNG1, e.g. in WP
+		    	InteractionTests.addIdentifiersOrg(allowedProducts, "identifiers.org/hmdb/HMDB0004246"); // from KNG1, e.g. in WP
+		    	InteractionTests.addIdentifiersOrg(allowedProducts, "identifiers.org/hmdb/HMDB0061196"); // angiotensin, a peptide hormone
+		    	InteractionTests.addIdentifiersOrg(allowedProducts, "identifiers.org/chebi/CHEBI:2718"); // angiotensin, a peptide hormone
+		    	InteractionTests.addIdentifiersOrg(allowedProducts, "identifiers.org/chebi/CHEBI:16356"); // cGMP
+		    	InteractionTests.addIdentifiersOrg(allowedProducts, "identifiers.org/pubchem.compound/3081372"); // angiotensin I, a peptide hormone
 		Set<String> allowedProteinSubstrates = new HashSet<String>();
 			InteractionTests.addIdentifiersOrg(allowedProteinSubstrates, "identifiers.org/uniprot/H9ZYJ2"); // theoredoxin, e.g. WP3580
 			InteractionTests.addIdentifiersOrg(allowedProteinSubstrates, "identifiers.org/chebi/CHEBI:39026"); // LDL
