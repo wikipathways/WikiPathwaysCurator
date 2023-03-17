@@ -51,7 +51,7 @@ public class HMDBMetabolitesTests {
 		Test test = new Test("HMDBMetabolitesTests", "outdatedIdentifiers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/hmdb/outdatedHMDBidentifiers.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test, 
 			0, table.getRowCount(), "Outdated HMDB identifiers", table.toString()
@@ -63,7 +63,7 @@ public class HMDBMetabolitesTests {
 		Test test = new Test("HMDBMetabolitesTests", "correctFormat");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/allHMDBIdentifiers.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
