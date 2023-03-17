@@ -198,7 +198,6 @@ public class ReferencesTests {
 
 	public static List<IAssertion> outdatedPubMedIdentifiers(SPARQLHelper helper) throws Exception {
 		Test test = new Test("ReferencesTests", "outdatedPubMedIdentifiers");
-		System.out.println(deprecated.toString());
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("references/nonNumericPubMedIDs.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
