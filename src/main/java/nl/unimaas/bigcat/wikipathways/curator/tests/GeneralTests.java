@@ -237,7 +237,8 @@ public class GeneralTests {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String page  = table.get(i, "page");
 				String title = table.get(i, "title");
-				errors += page + " '" + title + "' \n";
+				String organism = table.get(i, "organism");
+				errors += page + " '" + title + " (" + organism + ")' \n";
 				errorCount++;
 			}
 		}
