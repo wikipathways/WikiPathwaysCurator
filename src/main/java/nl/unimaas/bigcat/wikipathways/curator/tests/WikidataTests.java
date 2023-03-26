@@ -393,6 +393,7 @@ public class WikidataTests {
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
+		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String lmid = table.get(i, "metabolite");
@@ -402,13 +403,14 @@ public class WikidataTests {
 					lmid.startsWith("https://identifiers.org/lipidmaps/LMSP0602")) {
 					// ignore a few glycosphingolipids for now
 				} else {
+					errorCount++;
 				    errors +=  lmid + " (" + table.get(i, "label") + ") "
 					    + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
 				}
 			}
 		}
 		assertions.add(new AssertEquals(test,
-			0, table.getRowCount(), "LIPID MAPS identifiers without Wikidata mappings: " + table.getRowCount(), errors
+			0, errorCount, "LIPID MAPS identifiers without Wikidata mappings: " + errorCount, errors
 		));
 		return assertions;
 	}
