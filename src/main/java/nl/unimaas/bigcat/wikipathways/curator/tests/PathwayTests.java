@@ -220,7 +220,7 @@ public class PathwayTests {
 	public static List<IAssertion> oldLicenses(SPARQLHelper helper) throws Exception {
 		Test test = new Test("PathwayTests", "oldLicenses");
 		List<IAssertion> assertions = new ArrayList<>();
-		String sparql = ResourceHelper.resourceAsString("general/allLicensedPathways.rq");
+		String sparql = ResourceHelper.resourceAsString("pathways/allLicensedPathways.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "pathway");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
