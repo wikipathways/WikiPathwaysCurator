@@ -27,8 +27,10 @@
 package nl.unimaas.bigcat.wikipathways.curator.tests;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import nl.unimaas.bigcat.wikipathways.curator.BridgeDbTiwidReader;
 import nl.unimaas.bigcat.wikipathways.curator.ResourceHelper;
@@ -204,6 +206,39 @@ public class PathwayTests {
 		assertions.add(new AssertEquals(test, 0, table.getRowCount(),
 			"Pathway description that contain 'you must cite': " + table.getRowCount(),
 			"" + table
+		));
+		return assertions;
+	}
+
+	@SuppressWarnings("serial")
+	private static Set<String> acceptableLicenses = new HashSet<String>() {{
+		this.add("CCZero");
+		this.add("CC0");
+	}};
+
+	public static List<IAssertion> oldLicenses(SPARQLHelper helper) throws Exception {
+		Test test = new Test("PathwayTests", "oldLicenses");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("general/allLicensedPathways.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "pathway");
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String license = table.get(i, "license");
+				String pathwayPage = table.get(i, "pathway");
+				license = license.trim();
+				if (!license.isEmpty()) {
+					if (!acceptableLicenses.contains(license)) {
+						errors += pathwayPage + " has @License " + license + "\n ";
+						errorCount++;
+					}
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Pathway using an old license (should be CCZero; remove the @License tag?): " + errorCount, errors
 		));
 		return assertions;
 	}

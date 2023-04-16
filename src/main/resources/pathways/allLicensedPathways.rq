@@ -1,0 +1,11 @@
+prefix dc:      <http://purl.org/dc/elements/1.1/>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix xsd:     <http://www.w3.org/2001/XMLSchema#>
+prefix foaf:    <http://xmlns.com/foaf/0.1/>
+prefix wp:      <http://vocabularies.wikipathways.org/wp#>
+
+SELECT ?pathway ?license WHERE {
+  ?wp wp:isAbout / gpml:license ?license ;
+      foaf:page ?pathway .
+  MINUS { ?wp wp:ontologyTag cur:Homology_Converted }
+} ORDER BY ASC(?wp)
