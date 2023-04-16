@@ -53,6 +53,7 @@ public class PathwayTests {
 		assertions.addAll(speciesMismatch(helper));
 		assertions.addAll(testRoundedRectangle(helper));
 		assertions.addAll(youMustCite(helper));
+		assertions.addAll(oldLicenses(helper));
 		return assertions;
 	}
 

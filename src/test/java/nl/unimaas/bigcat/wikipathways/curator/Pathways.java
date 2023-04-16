@@ -83,4 +83,9 @@ public class Pathways extends JUnitTests {
 		performAssertions(PathwayTests.youMustCite(helper));
 	}
 
+	@Test
+	public void oldLicenses() throws Exception {
+		performAssertions(PathwayTests.oldLicenses(helper));
+	}
+
 }
