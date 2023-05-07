@@ -45,8 +45,6 @@ public class ReferencesTests {
 
 	// this is list of PubMed identifiers that have been replaced (e.g. because of duplicate PubMed entries)
 	private static final Map<String,String> deprecated = BridgeDbTiwidReader.parseTSV("tiwid/pubmed.tsv");
-	// the next one is existing PubMed identifiers, but where the respective article is retracted
-	private static final Map<String,String> retracted = BridgeDbTiwidReader.parseCSV("references/retracted_pmids.csv");
 
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
@@ -182,7 +180,7 @@ public class ReferencesTests {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String id = table.get(i, "id");
 				if (id != null && id.length() > 0) {
-					if (retracted.containsKey(id)) {
+					if (deprecated.containsKey(id) && deprecated.get(id) == null) {
 					    errors += table.get(i, "homepage") + " cites PubMed ID " +
 								table.get(i, "id") + "\n";
 						errorCount++;
