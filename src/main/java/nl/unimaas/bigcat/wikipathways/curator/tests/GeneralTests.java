@@ -107,8 +107,14 @@ public class GeneralTests {
 						else if (Character.isDigit(c)) {}
 					    else if (Character.isSpaceChar(c)) {}
 					    else if (c == '-') {}
+					    else if (c == '.') {}
 					    else if (c == ',') {}
 					    else if (c == ':') {}
+					    else if (c == '(') {}
+					    else if (c == ')') {}
+					    else if (c == '[') {}
+					    else if (c == ']') {}
+					    else if (c == '/') {}
 					    else {
 					    	weirdCharCount++;
 					    }
