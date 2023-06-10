@@ -106,6 +106,7 @@ public class GeneralTests {
 						if (Character.isAlphabetic(c)) {}
 						else if (Character.isDigit(c)) {}
 					    else if (Character.isSpaceChar(c)) {}
+					    else if (c == '\'') {}
 					    else if (c == '-') {}
 					    else if (c == '.') {}
 					    else if (c == ',') {}
