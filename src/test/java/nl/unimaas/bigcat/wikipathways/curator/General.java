@@ -110,7 +110,6 @@ public class General extends JUnitTests {
 	}
 
 	@Test
-	@Tag("expertCuration")
 	public void curationAndNeedsWork() throws Exception {
 		performAssertions(GeneralTests.curationAndNeedsWork(helper));
 	}
