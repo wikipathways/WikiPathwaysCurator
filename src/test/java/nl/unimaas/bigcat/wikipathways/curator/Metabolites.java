@@ -129,7 +129,7 @@ public class Metabolites extends JUnitTests {
 	}
 
 	@Test
-	@Tag("expertCuration")
+	@Tag("metabolites")
 	public void tooManyInChIKeys() throws Exception {
 		performAssertions(MetabolitesTests.tooManyInChIKeys(helper));
 	}
