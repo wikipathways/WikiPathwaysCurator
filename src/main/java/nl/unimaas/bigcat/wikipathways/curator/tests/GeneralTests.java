@@ -122,14 +122,14 @@ public class GeneralTests {
 					}
 					if (weirdCharCount > 0) {
 					    errors += table.get(i, "page") + " '" +
-						    	title + "' has " + weirdCharCount + " weird characters\n";
+						    	title + "' has " + weirdCharCount + " weird character(s)\n";
 					    errorCount++;
 					}
 				}
 			}
 		}
 		assertions.add(new AssertEquals(test,
-			0, errorCount, "Titles with unexpected characters (only allow alphanumerics and spaces):" + errorCount, errors
+			0, errorCount, "Titles with unexpected characters (only allow alphanumerics and one of '/\\-.,:()[]'):" + errorCount, errors
 		));
 		return assertions;
 	}
