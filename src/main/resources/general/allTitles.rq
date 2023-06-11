@@ -7,4 +7,5 @@ SELECT ?title ?page WHERE {
   ?pw a wp:Pathway ; dc:title ?title ;
       foaf:page ?page .
   MINUS { ?pw wp:ontologyTag cur:Homology_Converted }
+  MINUS { ?pw wp:ontologyTag cur:Reactome_Approved }
 }
