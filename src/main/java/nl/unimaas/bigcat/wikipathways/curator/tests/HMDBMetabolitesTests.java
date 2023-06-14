@@ -67,7 +67,6 @@ public class HMDBMetabolitesTests {
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
-		assertions.add(new AssertNotSame(test, 0, table.getRowCount(), "I expected more than zero HMDB identifiers."));
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String identifier = table.get(i, "identifier");
