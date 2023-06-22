@@ -97,9 +97,10 @@ public class GeneralTests {
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
-			// OK, but then it must be proteins, e.g. IFN-b
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String title = table.get(i, "title");
+				// okay, there is one situation where a '+' is allows: "NAD+"
+				title = title.replaceAll("NAD+", "");
 				if (title != null) {
 					int weirdCharCount = 0;
 					for (char c : title.toCharArray()) {
