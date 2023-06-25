@@ -3,10 +3,10 @@ prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
 prefix dcterms:  <http://purl.org/dc/terms/>
 PREFIX foaf:    <http://xmlns.com/foaf/0.1/>
 
-select ?homepage ?mb ?label ?identifier
+select ?homepage ?node ?label ?identifier
 where {
-  ?mb dc:source "Other" ;
+  ?node dc:source "Other" ;
     dcterms:identifier ?identifier ;
     dcterms:isPartOf / foaf:page ?homepage .
-  OPTIONAL { ?mb rdfs:label ?mbLabel }
+  OPTIONAL { ?node rdfs:label ?label }
 }
