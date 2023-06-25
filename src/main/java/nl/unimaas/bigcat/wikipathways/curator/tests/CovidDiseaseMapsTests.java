@@ -50,6 +50,7 @@ public class CovidDiseaseMapsTests {
 		Test test = new Test("CovidDiseaseMapsTests", "interactionsWithoutReferences");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("covid/interactionsWithoutReferences.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "pathway");
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
