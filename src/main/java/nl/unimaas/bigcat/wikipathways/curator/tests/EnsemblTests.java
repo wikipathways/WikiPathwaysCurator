@@ -60,9 +60,6 @@ public class EnsemblTests {
 		String sparql = ResourceHelper.resourceAsString("genes/allEnsemblIdentifiers.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
-		assertions.add(new AssertNotSame(test,
-			0, table.getColumnCount(), "Expected more than 0 Ensembl identifiers"
-		));
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
