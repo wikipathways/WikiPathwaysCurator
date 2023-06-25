@@ -85,4 +85,12 @@ public class DataNodes extends JUnitTests {
 			performAssertions(DataNodesTests.dataNodesWithoutIdentifier(helper));
 		});
 	}
+
+	@Test
+	public void otherDataSource() throws Exception {
+		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
+			performAssertions(DataNodesTests.otherDataSource(helper));
+		});
+	}
+
 }

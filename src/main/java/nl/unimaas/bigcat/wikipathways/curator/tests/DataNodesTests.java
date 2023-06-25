@@ -45,6 +45,7 @@ public class DataNodesTests {
 		assertions.addAll(unknownTypes_knownDatasource(helper));
 		assertions.addAll(unknownTypes(helper));
 		assertions.addAll(unknownTypes_Reactome(helper));
+		assertions.addAll(otherDataSource(helper));
 		return assertions;
 	}
 
@@ -135,6 +136,28 @@ public class DataNodesTests {
 		}
 		assertions.add(new AssertEquals(test, 
 			0, errorCount, "The following DataNodes have Unknown @Type: " + errorCount, errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> otherDataSource(SPARQLHelper helper) throws Exception {
+		Test test = new Test("DataNodesTests", "otherDataSource");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("missing/dataNodesOtherDataSource.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String label = table.hasColumn("label") ? table.get(i, "label") : "null";
+				errors += table.get(i, "homepage") + " " +
+					table.get(i, "node") + " (" + label + ")\n";
+				errorCount++;
+			}
+		}
+		assertions.add(new AssertEquals(test, 
+			0, errorCount, "The following DataNodes have a 'Other' datasource: " + errorCount, errors
 		));
 		return assertions;
 	}
