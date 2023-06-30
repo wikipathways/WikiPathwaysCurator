@@ -48,6 +48,7 @@ public class OutdatedDataSourcesTests {
 		assertions.addAll(outdatedUniprot4(helper));
 		assertions.addAll(oldUniprotSwissProt(helper));
 		assertions.addAll(wrongPubChem(helper));
+		assertions.addAll(wrongWikipathwaysSpelling(helper));
 		assertions.addAll(noInChIDataSourceYet(helper));
 		assertions.addAll(outdatedKeggCompoundDataSource(helper));
 		assertions.addAll(outdatedKeggCompoundDataSource2(helper));
@@ -145,6 +146,19 @@ public class OutdatedDataSourcesTests {
 		// the metabolite test pathway has one outdated PubChem deliberately (WP2582)
 		assertions.add(new AssertTrue(test,
 			(table.getRowCount() <= 1), "Outdated 'PubChem' data sources (use 'PubChem-compound' or 'PubChem-substance')", "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> wrongWikipathwaysSpelling(SPARQLHelper helper) throws Exception {
+		Test test = new Test("OudatedDataSourcesTests", "wrongWikipathwaysSpelling");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("outdated/wikipathways.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
+		assertions.add(new AssertNotNull(test, table));
+		// the metabolite test pathway has one outdated PubChem deliberately (WP2582)
+		assertions.add(new AssertTrue(test,
+			(table.getRowCount() <= 1), "Outdated 'Wikipathways' data sources (use 'WikiPathways')", "" + table
 		));
 		return assertions;
 	}

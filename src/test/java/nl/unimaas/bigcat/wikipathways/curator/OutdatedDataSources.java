@@ -85,6 +85,11 @@ public class OutdatedDataSources extends JUnitTests {
 	}
 
 	@Test
+	public void wrongWikipathwaysSpelling() throws Exception {
+		performAssertions(OutdatedDataSourcesTests.wrongWikipathwaysSpelling(helper));
+	}
+
+	@Test
 	public void noInChIDataSourceYet() throws Exception {
 		performAssertions(OutdatedDataSourcesTests.noInChIDataSourceYet(helper));
 	}
