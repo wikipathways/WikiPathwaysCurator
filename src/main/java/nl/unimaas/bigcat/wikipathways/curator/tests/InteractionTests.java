@@ -102,10 +102,12 @@ public class InteractionTests {
 		    InteractionTests.addIdentifiersOrg(allowedProducts, "identifiers.org/hmdb/HMDB0004246"); // from KNG1, e.g. in WP
 		    InteractionTests.addIdentifiersOrg(allowedProducts, "identifiers.org/hmdb/HMDB0061196"); // angiotensin, a peptide hormone
 		    InteractionTests.addIdentifiersOrg(allowedProducts, "identifiers.org/chebi/CHEBI:2718"); // angiotensin, a peptide hormone
+		    InteractionTests.addIdentifiersOrg(allowedProducts, "identifiers.org/chebi/CHEBI:64645"); // amyloid-β, a peptide
 		    InteractionTests.addIdentifiersOrg(allowedProducts, "identifiers.org/pubchem.compound/3081372"); // angiotensin I, a peptide hormone
 		Set<String> allowedProteinSubstrates = new HashSet<String>();
 			InteractionTests.addIdentifiersOrg(allowedProteinSubstrates, "identifiers.org/uniprot/H9ZYJ2"); // theoredoxin, e.g. WP3580
             InteractionTests.addIdentifiersOrg(allowedProteinSubstrates, "identifiers.org/uniprot/Q42533"); // Biotin carboxyl carrier protein of acetyl-CoA carboxylase 1, chloroplastic
+            InteractionTests.addIdentifiersOrg(allowedProteinSubstrates, "identifiers.org/uniprot/P05067"); // Amyloid-beta precursor protein
 			InteractionTests.addIdentifiersOrg(allowedProteinSubstrates, "identifiers.org/chebi/CHEBI:39026"); // LDL
 			InteractionTests.addIdentifiersOrg(allowedProteinSubstrates, "identifiers.org/wikidata/Q381899"); // fibrinogen
 		Map<String,String> allowedInteractions = new HashMap<String,String>();
