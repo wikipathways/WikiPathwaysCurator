@@ -50,7 +50,7 @@ public class ProteinsTests {
 		Test test = new Test("ProteinsTests", "wrongBrendaFormat");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("proteins/allBrendaIdentifiers.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -77,7 +77,7 @@ public class ProteinsTests {
 		Test test = new Test("ProteinsTests", "wrongEnzymeNomenclatureFormat");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("proteins/allECIdentifiers.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
