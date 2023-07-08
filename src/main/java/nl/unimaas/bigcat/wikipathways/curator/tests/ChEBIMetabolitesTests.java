@@ -69,7 +69,7 @@ public class ChEBIMetabolitesTests {
 		Test test = new Test("ChEBIMetabolitesTests", "secondaryChEBIIdentifiers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/allChEBIIdentifiers.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = 0;
@@ -98,7 +98,7 @@ public class ChEBIMetabolitesTests {
 		Test test = new Test("ChEBIMetabolitesTests", "faultyChEBIIdentifiers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/allChEBIIdentifiers.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
 	    String errors = "";
 	    int errorCount = 0;
@@ -127,7 +127,7 @@ public class ChEBIMetabolitesTests {
 		Test test = new Test("ChEBIMetabolitesTests", "chebiDataTypo");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/chebi.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Typo 'CHEBI' data sources (use 'ChEBI'): " + table.getRowCount(),
 			"" +table
@@ -139,7 +139,7 @@ public class ChEBIMetabolitesTests {
 		Test test = new Test("ChEBIMetabolitesTests", "faultyChEBIChEBIIdentifiers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/allChEBIIdentifiers.rq");
-		StringMatrix table = helper.sparql(sparql);
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 	    String errors = "";
 	    int errorCount = 0;
 	    if (table.getRowCount() > 0) {
