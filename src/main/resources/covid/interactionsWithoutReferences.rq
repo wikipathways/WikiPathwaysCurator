@@ -9,4 +9,5 @@ WHERE {
    ?interaction dct:isPartOf ?wpPathway ;
                 a wp:Interaction .
    MINUS { ?interaction dct:bibliographicCitation [] }
+   MINUS { ?interaction dct:references [] }
 }
