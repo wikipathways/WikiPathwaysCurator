@@ -41,14 +41,6 @@ import nl.unimaas.bigcat.wikipathways.curator.tests.ChEBIMetabolitesTests;
 
 public class ChEBIMetabolites extends JUnitTests {
 
-	private static Map<String,String> oldToNew = new HashMap<String, String>();
-
-	private static List<String> nonexisting = new ArrayList<String>();
-	static {{
-		  nonexisting.add("443041");
-		  nonexisting.add("594834");
-	}}
-
 	private static SPARQLHelper helper = null;
 
 	@BeforeAll
@@ -60,14 +52,6 @@ public class ChEBIMetabolites extends JUnitTests {
 		String parseErrors = OPSWPRDFFiles.getParseErrors();
 		Assertions.assertNotNull(parseErrors);
 		Assertions.assertEquals(0, parseErrors.length(), parseErrors.toString());
-
-		// now load the deprecation data
-		String deprecatedData = ResourceHelper.resourceAsString("metabolite/chebi/deprecated.csv");
-		String lines[] = deprecatedData.split("\\r?\\n");
-		for (int i=0; i<lines.length; i++) {
-			String[] ids = lines[i].split(",");
-			oldToNew.put(ids[0], ids[1]);
-		}
 	}
 
 	@BeforeEach
