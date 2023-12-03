@@ -43,6 +43,7 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 public class ChEBIMetabolitesTests {
 
 	private static Map<String,String> oldToNew = new HashMap<String, String>();
+	private static Map<String,String> neutralIons = new HashMap<String, String>();
 
 	private static Map<String,String> nonexisting = BridgeDbTiwidReader.parseCSV("tiwid/chebi.csv");
 
@@ -54,6 +55,13 @@ public class ChEBIMetabolitesTests {
 			String[] ids = lines[i].split(",");
 			oldToNew.put(ids[0], ids[1]);
 		}
+		// now load the neutral ions data
+		String neutralIonsData = ResourceHelper.resourceAsString("metabolite/chebi/neutralIons.csv");
+		lines = neutralIonsData.split("\\r?\\n");
+		for (int i=0; i<lines.length; i++) {
+			String[] ids = lines[i].split(",");
+			neutralIons.put(ids[0], ids[1]);
+		}
 	}
 
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
@@ -62,6 +70,7 @@ public class ChEBIMetabolitesTests {
 		assertions.addAll(faultyChEBIIdentifiers(helper));
 		assertions.addAll(chebiDataTypo(helper));
 		assertions.addAll(faultyChEBIChEBIIdentifiers(helper));
+		assertions.addAll(neutralIons(helper));
 		return assertions;
 	}
 
@@ -90,6 +99,34 @@ public class ChEBIMetabolitesTests {
 		}
 		assertions.add(new AssertEquals(test,
 			0, errorCount, "Secondary ChEBI identifiers detected: " + errorCount, errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> neutralIons(SPARQLHelper helper) throws Exception {
+		Test test = new Test("ChEBIMetabolitesTests", "neutralIons");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/allChEBIIdentifiers.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				if (identifier.startsWith("CHEBI:")) {
+					identifier = identifier.substring(6);
+				}
+				if (neutralIons.containsKey(identifier)) {
+					errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+						" has " + identifier + " for a neutral atom, but maybe you mean the ion which has primary identifier CHEBI:" +
+						neutralIons.get(identifier) + "\n";
+					errorCount++;
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "ChEBI identifiers for neutral atoms which are likely ions: " + errorCount, errors
 		));
 		return assertions;
 	}

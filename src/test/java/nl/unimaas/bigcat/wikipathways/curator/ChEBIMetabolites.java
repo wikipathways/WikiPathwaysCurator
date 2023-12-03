@@ -100,4 +100,11 @@ public class ChEBIMetabolites extends JUnitTests {
 			performAssertions(ChEBIMetabolitesTests.chebiDataTypo(helper));
 		});
 	}
+
+	@Test
+	public void neutralIons() throws Exception {
+		Assertions.assertTimeout(Duration.ofSeconds(10), () -> {
+			performAssertions(ChEBIMetabolitesTests.neutralIons(helper));
+		});
+	}
 }
