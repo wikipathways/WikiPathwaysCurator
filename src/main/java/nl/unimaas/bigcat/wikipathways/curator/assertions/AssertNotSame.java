@@ -1,4 +1,4 @@
-/* Copyright (C) 2020-2021  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2020-2024  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -33,19 +33,15 @@ public class AssertNotSame extends AbstractAssertion implements IAssertion {
 	private String details;
 	private String detailsFormat; // supported: text/markdown and text/plain
 
-	public AssertNotSame(Test test, boolean linkToDocs, Object expectedValue, Object value, String message, String format) {
-		super(test, linkToDocs, message);
+	public AssertNotSame(Test test, Object expectedValue, Object value, String message, String format) {
+		super(test, message);
 		this.expectedValue = expectedValue;
 		this.value = value;
 		this.detailsFormat = format == null ? "text/plain" : format;
 	}
 	
-	public AssertNotSame(Test test, boolean linkToDocs, Object expectedValue, Object value, String message) {
-		this(test, false, expectedValue, value, message, null);
-	}
-
 	public AssertNotSame(Test test, Object expectedValue, Object value, String message) {
-		this(test, false, expectedValue, value, message);
+		this(test, expectedValue, value, message, null);
 	}
 
 	public Object getExpectedValue() {

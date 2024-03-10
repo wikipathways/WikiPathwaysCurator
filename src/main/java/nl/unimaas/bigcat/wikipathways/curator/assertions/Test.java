@@ -1,4 +1,4 @@
-/* Copyright (C) 2021  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2021-2024  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -36,16 +36,31 @@ public class Test {
 	private String testClass;
 	private String test;
 	private String title;
-	private URL defaultLinkToDocs = null;
+	private boolean hasDocs;
+	private String customLinkToDocs;
 
-	public Test(String testClass, String test, String title) {
+	public Test(String testClass, String test, String title, String customLinkToDocs) {
 		this.testClass = testClass;
 		this.test = test;
 		this.title = title == null ? testClass + "." + test : title;
+		this.customLinkToDocs = customLinkToDocs;
+		this.hasDocs = true;
+	}
+
+	public Test(String testClass, String test, String title, boolean hasDocs) {
+		this(testClass, test, title, null);
+	}
+
+	public Test(String testClass, String test, String title) {
+		this(testClass, test, title, null);
+	}
+
+	public Test(String testClass, String test, boolean hasDocs) {
+		this(testClass, test, null, hasDocs);
 	}
 
 	public Test(String testClass, String test) {
-		this(testClass, test, null);
+		this(testClass, test, null, false);
 	}
 
 	public String getClassName() {
@@ -60,12 +75,20 @@ public class Test {
 		return this.title;
 	}
 
-	public URL getDefaultLinkToDocs() {
+	public URL getLinkToDocs() {
+		if (!hasLinkToDocs()) throw new NullPointerException("This assertion does not have a link to documentation");
 		try {
-			if (defaultLinkToDocs == null) defaultLinkToDocs = new URL("https://wikipathways.github.io/WikiPathwaysCurator/" + this.testClass + "/" + this.test);
-			return defaultLinkToDocs;
+			URL url = this.customLinkToDocs != null
+				? new URL(this.customLinkToDocs)
+				: new URL("https://wikipathways.github.io/WikiPathwaysCurator/" + this.testClass + "/" + this.test);
+			return url;
 		} catch (MalformedURLException e) {
 			throw new RuntimeException("Error while creating the default URL: " + e.getMessage());
-		} 
+		}
 	}
+
+	public boolean hasLinkToDocs() {
+		return this.hasDocs;
+	}
+
 }

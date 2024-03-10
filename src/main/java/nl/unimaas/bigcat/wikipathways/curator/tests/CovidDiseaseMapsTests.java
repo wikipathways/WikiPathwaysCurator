@@ -61,14 +61,14 @@ public class CovidDiseaseMapsTests {
 				errorCount++;
 			}
 		}
-		assertions.add(new AssertEquals(test, true, 
+		assertions.add(new AssertEquals(test, 
 			0, errorCount, "Interactions without literature references: " + errorCount, errors
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> missingHGNC(SPARQLHelper helper) throws Exception {
-		Test test = new Test("CovidDiseaseMapsTests", "missingHGNC");
+		Test test = new Test("CovidDiseaseMapsTests", "missingHGNC", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("covid/missingHGNC.rq");
 		StringMatrix table = helper.sparql(sparql);
@@ -83,7 +83,7 @@ public class CovidDiseaseMapsTests {
 				errorCount++;
 			}
 		}
-		assertions.add(new AssertEquals(test, true, 
+		assertions.add(new AssertEquals(test, 
 			0, errorCount, "Genes without an HGNC identifier: " + errorCount, errors
 		));
 		return assertions;

@@ -1,4 +1,4 @@
-/* Copyright (C) 2020-2021  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2020-2024  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -30,13 +30,9 @@ public class AssertNotNull extends AbstractAssertion implements IAssertion {
 
 	private Object value;
 
-	public AssertNotNull(Test test, boolean linkToDocs, Object value) {
-		super(test, linkToDocs, "Value was unexpectedly null");
-		this.value = value;
-	}
-
 	public AssertNotNull(Test test, Object value) {
-		this(test, false, value);
+		super(test, "Value was unexpectedly null");
+		this.value = value;
 	}
 
 	public Object getValue() {

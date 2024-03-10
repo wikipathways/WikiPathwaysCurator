@@ -1,4 +1,4 @@
-/* Copyright (C) 2021  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2021-2024  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -26,34 +26,22 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator.assertions;
 
-import java.net.URL;
-
 abstract class AbstractAssertion implements IAssertion {
 
 	private Test test;
-	private URL linkToDocs;
 	private String message;
 
-	protected AbstractAssertion(Test test, URL linkToDocs, String message) {
+	protected AbstractAssertion(Test test, String message) {
 		this.test = test;
-		this.linkToDocs = linkToDocs;
 		this.message = message;
 	}
 
-	protected AbstractAssertion(Test test, boolean hasLinkToDocs, String message) {
-		this(test, hasLinkToDocs ? test.getDefaultLinkToDocs() : null, message);
-	}
-
-	protected AbstractAssertion(Test test, URL linkToDocs) {
-		this(test, linkToDocs, "");
-	}
-
-	protected AbstractAssertion(Test test, boolean hasLinkToDocs) {
-		this(test, hasLinkToDocs, "");
+	protected AbstractAssertion(Test test) {
+		this(test, "");
 	}
 
 	protected AbstractAssertion(String testClass, String test) {
-		this(new Test(testClass, test), false);
+		this(new Test(testClass, test));
 	}
 
 	public Test getTest() {
@@ -62,15 +50,6 @@ abstract class AbstractAssertion implements IAssertion {
 
 	public String getMessage() {
 		return message;
-	}
-
-	public URL getLinkToDocs() {
-		if (!hasLinkToDocs()) throw new NullPointerException("This assertion does not have a link to documentation");
-		return this.linkToDocs;
-	}
-
-	public boolean hasLinkToDocs() {
-		return (this.linkToDocs != null);
 	}
 
 }

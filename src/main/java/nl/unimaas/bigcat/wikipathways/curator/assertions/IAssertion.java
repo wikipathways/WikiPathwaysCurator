@@ -1,4 +1,4 @@
-/* Copyright (C) 2020-2021  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2020-2024  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -26,16 +26,12 @@
  */
 package nl.unimaas.bigcat.wikipathways.curator.assertions;
 
-import java.net.URL;
-
 public interface IAssertion {
 
 	public Test getTest();
 	public String getMessage();
 	public String getDetails();
 	public String getDetailsFormat();
-	public boolean hasLinkToDocs();
-	public URL getLinkToDocs();
 
 	public Object getValue();
 

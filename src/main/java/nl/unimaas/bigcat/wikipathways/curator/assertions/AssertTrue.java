@@ -1,4 +1,4 @@
-/* Copyright (C) 2020-2021  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2020-2024  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -32,27 +32,19 @@ public class AssertTrue extends AbstractAssertion implements IAssertion {
 	private String details;
 	private String detailsFormat; // supported: text/markdown and text/plain
 
-	public AssertTrue(Test test, boolean linkToDocs, boolean isTrue, String message, String details, String format) {
-		super(test, linkToDocs, message);
+	public AssertTrue(Test test, boolean isTrue, String message, String details, String format) {
+		super(test, message);
 		this.isTrue = isTrue;
 		this.details = details;
 		this.detailsFormat = format == null ? "text/plain" : format;
 	}
 
-	public AssertTrue(Test test, boolean linkToDocs, boolean isTrue, String message, String details) {
-		this(test, linkToDocs, isTrue, message, details, null);
-	}
-
-	public AssertTrue(Test test, boolean linkToDocs, boolean isTrue, String message) {
-		this(test, linkToDocs, isTrue, message, "");
-	}
-
 	public AssertTrue(Test test, boolean isTrue, String message, String details) {
-		this(test, false, isTrue, message, details);
+		this(test, isTrue, message, details, null);
 	}
 
 	public AssertTrue(Test test, boolean isTrue, String message) {
-		this(test, false, isTrue, message);
+		this(test, isTrue, message, "", null);
 	}
 
 	public Object getValue() {

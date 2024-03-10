@@ -62,7 +62,7 @@ public class InteractionTests {
 	}
 
 	public static List<IAssertion> noMetaboliteToNonMetaboliteConversions(SPARQLHelper helper, String format) throws Exception {
-		Test test = new Test("InteractionTests", "noMetaboliteToNonMetaboliteConversions", "No metabolite to non-metabolite conversions");
+		Test test = new Test("InteractionTests", "noMetaboliteToNonMetaboliteConversions", "No metabolite to non-metabolite conversions", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/noMetaboliteNonMetaboliteConversions.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "pathway");
@@ -92,7 +92,7 @@ public class InteractionTests {
 				} // else, OK, this is allows as conversion target
 			}
 		}
-		assertions.add(new AssertEquals(test, true,
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Unexpected metabolite to non-metabolite conversions:" + errorCount, errors, format
 		));
 		return assertions;
@@ -267,7 +267,7 @@ public class InteractionTests {
 	}
 
 	public static List<IAssertion> possibleTranslocations(SPARQLHelper helper, String format) throws Exception {
-		Test test = new Test("InteractionTests", "possibleTranslocations", "Possible MIM translocation");
+		Test test = new Test("InteractionTests", "possibleTranslocations", "Possible MIM translocation", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/possibleTranslocations.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
@@ -289,7 +289,7 @@ public class InteractionTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals(test, true,
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Interactions between identical nodes: " + errorCount, errors
 		));
 		return assertions;

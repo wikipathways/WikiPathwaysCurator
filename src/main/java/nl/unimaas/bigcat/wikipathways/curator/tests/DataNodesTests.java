@@ -72,7 +72,7 @@ public class DataNodesTests {
 	}
 
 	public static List<IAssertion> unknownTypes_knownDatasource(SPARQLHelper helper) throws Exception {
-		Test test = new Test("DataNodesTests", "unknownTypes_knownDatasource", "Data nodes with type 'Unknown'");
+		Test test = new Test("DataNodesTests", "unknownTypes_knownDatasource", "Data nodes with type 'Unknown'", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/unknownTypeKnownDatasource.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
@@ -90,7 +90,7 @@ public class DataNodesTests {
 				}
 			}
 		}
-		assertions.add(new AssertEquals(test, true,
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "The following DataNodes have Unknown @Type: " + errorCount, errors
 		));
 		return assertions;

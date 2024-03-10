@@ -58,7 +58,7 @@ public class PathwayTests {
 	}
 
 	public static List<IAssertion> deletedPathways(SPARQLHelper helper) throws Exception {
-		Test test = new Test("PathwayTests", "deletedPathways");
+		Test test = new Test("PathwayTests", "deletedPathways", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = "PREFIX dcterms: <http://purl.org/dc/terms/>\n" + 
 				"PREFIX wp:      <http://vocabularies.wikipathways.org/wp#>\n" +
@@ -81,7 +81,7 @@ public class PathwayTests {
 				errors += pathway + " mentions deleted pathway with " + wpid + "\n";
 			}
 		}
-		assertions.add(new AssertEquals(test, Test.HAS_LINK_TO_DOCS,
+		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Found " + table.getRowCount() + " deleted pathway(s).", errors
 		));
 		return assertions;

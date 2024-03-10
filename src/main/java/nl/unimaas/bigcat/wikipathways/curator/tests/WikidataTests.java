@@ -478,7 +478,7 @@ public class WikidataTests {
 		}
 
 		// Reporting
-		assertions.add(new AssertEquals(test, false,
+		assertions.add(new AssertEquals(test,
 			0, errorCount, "Retired Wikidata identifiers detected: " + errorCount, errors
 		));
 		return assertions;

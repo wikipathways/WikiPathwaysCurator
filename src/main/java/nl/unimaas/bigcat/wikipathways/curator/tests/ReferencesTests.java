@@ -149,7 +149,7 @@ public class ReferencesTests {
 	}
 
     public static List<IAssertion> atLeastOneReference(SPARQLHelper helper) throws Exception {
-		Test test = new Test("ReferencesTests", "atLeastOneReference", "At least one reference");
+		Test test = new Test("ReferencesTests", "atLeastOneReference", "At least one reference", true);
     	List<IAssertion> assertions = new ArrayList<>();
     	String sparql = ResourceHelper.resourceAsString("missing/atLeastOneReference.rq");
     	StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
@@ -162,7 +162,7 @@ public class ReferencesTests {
 					table.get(i, "species") + " has zero references; \n";
 			}
 		}
-		assertions.add(new AssertEquals(test, true,
+		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Found " + table.getRowCount() + " pathways with zero (PubMed) references", errors
 		));
 		return assertions;
