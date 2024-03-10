@@ -56,12 +56,8 @@ abstract class AbstractAssertion implements IAssertion {
 		this(new Test(testClass, test), false);
 	}
 
-	public String getTestClass() {
-		return this.test.getClassName();
-	}
-
-	public String getTest() {
-		return this.test.getTestName();
+	public Test getTest() {
+		return this.test;
 	}
 
 	public String getMessage() {

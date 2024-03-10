@@ -35,11 +35,17 @@ public class Test {
 
 	private String testClass;
 	private String test;
+	private String title;
 	private URL defaultLinkToDocs = null;
 
-	public Test(String testClass, String test) {
+	public Test(String testClass, String test, String title) {
 		this.testClass = testClass;
 		this.test = test;
+		this.title = title == null ? testClass + "." + test : title;
+	}
+
+	public Test(String testClass, String test) {
+		this(testClass, test, null);
 	}
 
 	public String getClassName() {
