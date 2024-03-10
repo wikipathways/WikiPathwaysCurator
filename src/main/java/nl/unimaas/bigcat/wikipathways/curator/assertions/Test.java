@@ -80,7 +80,7 @@ public class Test {
 		try {
 			URL url = this.customLinkToDocs != null
 				? new URL(this.customLinkToDocs)
-				: new URL("https://wikipathways.github.io/WikiPathwaysCurator/" + this.testClass + "/" + this.test);
+				: new URL("https://www.wikipathways.org/WikiPathwaysCurator/" + this.testClass + "/" + this.test);
 			return url;
 		} catch (MalformedURLException e) {
 			throw new RuntimeException("Error while creating the default URL: " + e.getMessage());
