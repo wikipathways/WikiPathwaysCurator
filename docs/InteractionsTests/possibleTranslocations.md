@@ -9,9 +9,9 @@ An interaction was found between two data nodes about the same molecule.
 
 ## Curation action
 
-The interaction should be looked at. If the interaction is indeed a MIM translation, the
+The interaction should be looked at. If the interaction is indeed a MIM translocation, the
 GPML should be edited (it cannot be done in PathVisio 3.3) and the interaction type should
-be set to `mim-translation`.
+be set to `mim-translocation`.
 
 If the interaction is not a translocation, then possible one of the data node identifiers
 needs correcting.
