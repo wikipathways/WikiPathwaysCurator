@@ -9,5 +9,5 @@ to this data node.
 
 ## Curation action
 
-Add the missing identifier. [This WikiPathwys Academy](https://academy.wikipathways.org/stages/draw-geneproduct/)
+Add the missing identifier. [This WikiPathways Academy](https://academy.wikipathways.org/stages/draw-geneproduct/)
 page describes how.
