@@ -34,6 +34,7 @@ public interface IAssertion {
 	public String getTest();
 	public String getMessage();
 	public String getDetails();
+	public String getDetailsFormat();
 	public boolean hasLinkToDocs();
 	public URL getLinkToDocs();
 

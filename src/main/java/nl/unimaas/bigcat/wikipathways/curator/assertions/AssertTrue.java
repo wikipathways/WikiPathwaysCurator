@@ -30,11 +30,17 @@ public class AssertTrue extends AbstractAssertion implements IAssertion {
 
 	private boolean isTrue;
 	private String details;
+	private String detailsFormat; // supported: text/markdown and text/plain
 
-	public AssertTrue(Test test, boolean linkToDocs, boolean isTrue, String message, String details) {
+	public AssertTrue(Test test, boolean linkToDocs, boolean isTrue, String message, String details, String format) {
 		super(test, linkToDocs, message);
 		this.isTrue = isTrue;
 		this.details = details;
+		this.detailsFormat = format == null ? "text/plain" : format;
+	}
+
+	public AssertTrue(Test test, boolean linkToDocs, boolean isTrue, String message, String details) {
+		this(test, linkToDocs, isTrue, message, details, null);
 	}
 
 	public AssertTrue(Test test, boolean linkToDocs, boolean isTrue, String message) {
@@ -55,6 +61,10 @@ public class AssertTrue extends AbstractAssertion implements IAssertion {
 
 	public String getDetails() {
 		return this.details;
+	}
+
+	public String getDetailsFormat() {
+		return this.detailsFormat;
 	}
 
 }

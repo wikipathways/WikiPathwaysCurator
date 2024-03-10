@@ -31,17 +31,28 @@ public class AssertEquals extends AbstractAssertion implements IAssertion {
 	private Object expectedValue;
 	private Object value;
 	private String details;
+	private String detailsFormat; // supported: text/markdown and text/plain
 
 	public AssertEquals(Test test, boolean linkToDocs, Object expectedValue,
-			            Object value, String message, String details) {
+			            Object value, String message, String details, String format) {
 		super(test, linkToDocs, message);
 		this.expectedValue = expectedValue;
 		this.value = value;
 		this.details = details;
+		this.detailsFormat = format == null ? "text/plain" : format;
+	}
+
+	public AssertEquals(Test test, boolean linkToDocs, Object expectedValue,
+            Object value, String message, String details) {
+		this(test, linkToDocs, expectedValue, value, message, details, null);
+	}
+
+	public AssertEquals(Test test, Object expectedValue, Object value, String message, String details, String format) {
+		this(test, false, expectedValue, value, message, details, format);
 	}
 
 	public AssertEquals(Test test, Object expectedValue, Object value, String message, String details) {
-		this(test, false, expectedValue, value, message, details);
+		this(test, false, expectedValue, value, message, details, null);
 	}
 
 	public AssertEquals(Test test, Object expectedValue, Object value, String message) {
@@ -58,6 +69,10 @@ public class AssertEquals extends AbstractAssertion implements IAssertion {
 
 	public String getDetails() {
 		return this.details;
+	}
+
+	public String getDetailsFormat() {
+		return this.detailsFormat;
 	}
 
 }

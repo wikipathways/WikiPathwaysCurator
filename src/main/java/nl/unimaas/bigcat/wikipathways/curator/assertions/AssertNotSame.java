@@ -31,13 +31,19 @@ public class AssertNotSame extends AbstractAssertion implements IAssertion {
 	private Object expectedValue;
 	private Object value;
 	private String details;
+	private String detailsFormat; // supported: text/markdown and text/plain
 
-	public AssertNotSame(Test test, boolean linkToDocs, Object expectedValue, Object value, String message) {
+	public AssertNotSame(Test test, boolean linkToDocs, Object expectedValue, Object value, String message, String format) {
 		super(test, linkToDocs, message);
 		this.expectedValue = expectedValue;
 		this.value = value;
+		this.detailsFormat = format == null ? "text/plain" : format;
 	}
 	
+	public AssertNotSame(Test test, boolean linkToDocs, Object expectedValue, Object value, String message) {
+		this(test, false, expectedValue, value, message, null);
+	}
+
 	public AssertNotSame(Test test, Object expectedValue, Object value, String message) {
 		this(test, false, expectedValue, value, message);
 	}
@@ -52,6 +58,10 @@ public class AssertNotSame extends AbstractAssertion implements IAssertion {
 
 	public String getDetails() {
 		return this.details;
+	}
+
+	public String getDetailsFormat() {
+		return this.detailsFormat;
 	}
 
 }

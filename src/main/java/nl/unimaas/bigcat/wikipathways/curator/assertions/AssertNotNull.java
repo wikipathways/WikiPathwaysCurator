@@ -47,4 +47,8 @@ public class AssertNotNull extends AbstractAssertion implements IAssertion {
 		return "";
 	}
 
+	public String getDetailsFormat() {
+		return null;
+	}
+
 }

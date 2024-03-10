@@ -1,4 +1,4 @@
-/* Copyright (C) 2013,2018-2022  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2013,2018-2024  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -48,20 +48,20 @@ public class InteractionTests {
 		setToAddTo.add("http://" + identifier);
 	}
 
-	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> all(SPARQLHelper helper, String format) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
-		assertions.addAll(noMetaboliteToNonMetaboliteConversions(helper));
-		assertions.addAll(noNonMetaboliteToMetaboliteConversions(helper));
-		assertions.addAll(noGeneProteinConversions(helper));
-		assertions.addAll(nonNumericIDs(helper));
-		assertions.addAll(interactionsWithLabels(helper));
-		assertions.addAll(possibleTranslocations(helper));
-		assertions.addAll(noProteinProteinConversions(helper));
-		assertions.addAll(incorrectKEGGIdentifiers(helper));
+		assertions.addAll(noMetaboliteToNonMetaboliteConversions(helper, format));
+		assertions.addAll(noNonMetaboliteToMetaboliteConversions(helper, format));
+		assertions.addAll(noGeneProteinConversions(helper, format));
+		assertions.addAll(nonNumericIDs(helper, format));
+		assertions.addAll(interactionsWithLabels(helper, format));
+		assertions.addAll(possibleTranslocations(helper, format));
+		assertions.addAll(noProteinProteinConversions(helper, format));
+		assertions.addAll(incorrectKEGGIdentifiers(helper, format));
 		return assertions;
 	}
 
-	public static List<IAssertion> noMetaboliteToNonMetaboliteConversions(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> noMetaboliteToNonMetaboliteConversions(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("InteractionTests", "noMetaboliteToNonMetaboliteConversions");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/noMetaboliteNonMetaboliteConversions.rq");
@@ -78,20 +78,32 @@ public class InteractionTests {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String targetID = table.get(i, "target");
 				if (!allowedProteinProducts.contains(targetID)) {
-					errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
+					if ("text/markdown".equals(format)) {
+						errors += table.get(i, "organism") + " " + asMarkdownLink(table.get(i, "pathway")) + " → " +
+								asMarkdownLink(table.get(i, "metabolite")) + " " +
+								asMarkdownLink(table.get(i, "target")) + " " +
+								table.get(i, "interaction") + "<br />\n";
+					} else {
+						errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " → " +
 							table.get(i, "metabolite") + " " + table.get(i, "target") + " " +
 							table.get(i, "interaction") + "\n";
+					}
 					errorCount++;
 				} // else, OK, this is allows as conversion target
 			}
 		}
 		assertions.add(new AssertEquals(test, true,
-			0, errorCount, "Unexpected metabolite to non-metabolite conversions:" + errorCount, errors
+			0, errorCount, "Unexpected metabolite to non-metabolite conversions:" + errorCount, errors, format
 		));
 		return assertions;
 	}
 
-	public static List<IAssertion> noNonMetaboliteToMetaboliteConversions(SPARQLHelper helper) throws Exception {
+	private static String asMarkdownLink(String url) {
+		if (url.startsWith("http://classic.wikipathways.org/")) url = url.replace("_rr","_r"); // yeah, silly workaround
+		return "[" + url + "](" + url + ")";
+	}
+
+	public static List<IAssertion> noNonMetaboliteToMetaboliteConversions(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("InteractionTests", "noNonMetaboliteToMetaboliteConversions");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/noNonMetaboliteMetaboliteConversions.rq");
@@ -140,7 +152,7 @@ public class InteractionTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> noGeneProteinConversions(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> noGeneProteinConversions(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("InteractionTests", "noGeneProteinConversions");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/noGeneProteinConversions.rq");
@@ -168,7 +180,7 @@ public class InteractionTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> nonNumericIDs(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> nonNumericIDs(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("InteractionTests", "nonNumericIDs");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/nonNumericRhea.rq");
@@ -197,7 +209,7 @@ public class InteractionTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> incorrectKEGGIdentifiers(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> incorrectKEGGIdentifiers(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("InteractionTests", "incorrectKEGGIdentifiers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/keggIdentifiers.rq");
@@ -225,7 +237,7 @@ public class InteractionTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> interactionsWithLabels(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> interactionsWithLabels(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("InteractionTests", "interactionsWithLabels");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/interactionsWithLabels.rq");
@@ -254,7 +266,7 @@ public class InteractionTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> possibleTranslocations(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> possibleTranslocations(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("InteractionTests", "possibleTranslocations");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/possibleTranslocations.rq");
@@ -283,7 +295,7 @@ public class InteractionTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> noProteinProteinConversions(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> noProteinProteinConversions(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("InteractionTests", "noProteinProteinConversions");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/noProteinProteinConversions.rq");

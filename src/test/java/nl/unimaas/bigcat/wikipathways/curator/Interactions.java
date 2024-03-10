@@ -57,7 +57,7 @@ public class Interactions extends JUnitTests {
 	@Test
 	public void noMetaboliteToNonMetaboliteConversions() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			performAssertions(InteractionTests.noMetaboliteToNonMetaboliteConversions(helper));
+			performAssertions(InteractionTests.noMetaboliteToNonMetaboliteConversions(helper, null));
 		});
 	}
 
@@ -65,7 +65,7 @@ public class Interactions extends JUnitTests {
 	public void noNonMetaboliteToMetaboliteConversions() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
 		try {
-			performAssertions(InteractionTests.noNonMetaboliteToMetaboliteConversions(helper));
+			performAssertions(InteractionTests.noNonMetaboliteToMetaboliteConversions(helper, null));
 		} catch (Exception exception) {
 			exception.printStackTrace();
 			throw exception;
@@ -76,21 +76,21 @@ public class Interactions extends JUnitTests {
 	@Test
 	public void noGeneProteinConversions() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			performAssertions(InteractionTests.noGeneProteinConversions(helper));
+			performAssertions(InteractionTests.noGeneProteinConversions(helper, null));
 		});
 	}
 
 	@Test
 	public void noProteinProteinConversions() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			performAssertions(InteractionTests.noProteinProteinConversions(helper));
+			performAssertions(InteractionTests.noProteinProteinConversions(helper, null));
 		});
 	}
 
 	@Test
 	public void nonNumericIDs() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			performAssertions(InteractionTests.nonNumericIDs(helper));
+			performAssertions(InteractionTests.nonNumericIDs(helper, null));
 		});
 	}
 
@@ -98,7 +98,7 @@ public class Interactions extends JUnitTests {
 	@Test
 	public void interactionsWithLabels() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			performAssertions(InteractionTests.interactionsWithLabels(helper));
+			performAssertions(InteractionTests.interactionsWithLabels(helper, null));
 		});
 	}
 
@@ -106,14 +106,14 @@ public class Interactions extends JUnitTests {
 	@Test
 	public void possibleTranslocations() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			performAssertions(InteractionTests.possibleTranslocations(helper));
+			performAssertions(InteractionTests.possibleTranslocations(helper, null));
 		});
 	}
 
 	@Test
 	public void incorrectKEGGIdentifiers() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			performAssertions(InteractionTests.incorrectKEGGIdentifiers(helper));
+			performAssertions(InteractionTests.incorrectKEGGIdentifiers(helper, null));
 		});
 	}
 
