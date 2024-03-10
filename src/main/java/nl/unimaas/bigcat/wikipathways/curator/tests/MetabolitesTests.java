@@ -220,6 +220,7 @@ public class MetabolitesTests {
 		allowed.add("CHEBI:33699"); // mRNA
 		allowed.add("CHEBI:39026"); // LDL
 		allowed.add("CHEBI:89981"); // LPS
+		allowed.add("CHEBI:138181"); // IL-1β
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
