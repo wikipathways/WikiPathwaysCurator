@@ -62,7 +62,7 @@ public class InteractionTests {
 	}
 
 	public static List<IAssertion> noMetaboliteToNonMetaboliteConversions(SPARQLHelper helper, String format) throws Exception {
-		Test test = new Test("InteractionTests", "noMetaboliteToNonMetaboliteConversions");
+		Test test = new Test("InteractionTests", "noMetaboliteToNonMetaboliteConversions", "No metabolite to non-metabolite conversions");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/noMetaboliteNonMetaboliteConversions.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "pathway");
@@ -267,7 +267,7 @@ public class InteractionTests {
 	}
 
 	public static List<IAssertion> possibleTranslocations(SPARQLHelper helper, String format) throws Exception {
-		Test test = new Test("InteractionTests", "possibleTranslocations");
+		Test test = new Test("InteractionTests", "possibleTranslocations", "Possible MIM translocation");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/possibleTranslocations.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");

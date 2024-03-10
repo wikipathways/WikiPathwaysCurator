@@ -56,6 +56,10 @@ public class Test {
 		return this.test;
 	}
 
+	public String getTitle() {
+		return this.title;
+	}
+
 	public URL getDefaultLinkToDocs() {
 		try {
 			if (defaultLinkToDocs == null) defaultLinkToDocs = new URL("https://wikipathways.github.io/WikiPathwaysCurator/" + this.testClass + "/" + this.test);

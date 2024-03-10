@@ -50,7 +50,7 @@ public class DataNodesTests {
 	}
 
 	public static List<IAssertion> dataNodesWithoutIdentifier(SPARQLHelper helper) throws Exception {
-		Test test = new Test("DataNodesTests", "dataNodesWithoutIdentifier");
+		Test test = new Test("DataNodesTests", "dataNodesWithoutIdentifier", "Data nodes without an identifier");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/dataNodesWithoutIdentifier.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
@@ -72,7 +72,7 @@ public class DataNodesTests {
 	}
 
 	public static List<IAssertion> unknownTypes_knownDatasource(SPARQLHelper helper) throws Exception {
-		Test test = new Test("DataNodesTests", "unknownTypes_knownDatasource");
+		Test test = new Test("DataNodesTests", "unknownTypes_knownDatasource", "Data nodes with type 'Unknown'");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/unknownTypeKnownDatasource.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");

@@ -149,7 +149,7 @@ public class ReferencesTests {
 	}
 
     public static List<IAssertion> atLeastOneReference(SPARQLHelper helper) throws Exception {
-		Test test = new Test("ReferencesTests", "atLeastOneReference");
+		Test test = new Test("ReferencesTests", "atLeastOneReference", "At least one reference");
     	List<IAssertion> assertions = new ArrayList<>();
     	String sparql = ResourceHelper.resourceAsString("missing/atLeastOneReference.rq");
     	StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
