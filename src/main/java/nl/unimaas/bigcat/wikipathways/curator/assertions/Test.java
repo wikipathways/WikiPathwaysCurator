@@ -49,6 +49,7 @@ public class Test {
 
 	public Test(String testClass, String test, String title, boolean hasDocs) {
 		this(testClass, test, title, null);
+		this.hasDocs = hasDocs;
 	}
 
 	public Test(String testClass, String test, String title) {
