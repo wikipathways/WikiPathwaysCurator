@@ -79,7 +79,7 @@ public class InteractionTests {
 				String targetID = table.get(i, "target");
 				if (!allowedProteinProducts.contains(targetID)) {
 					if ("text/markdown".equals(format)) {
-						errors += table.get(i, "organism") + " " + asMarkdownLink(table.get(i, "pathway")) + " → " +
+						errors += "* " + table.get(i, "organism") + " " + asMarkdownLink(table.get(i, "pathway")) + " → " +
 								asMarkdownLink(table.get(i, "metabolite")) + " " +
 								asMarkdownLink(table.get(i, "target")) + " " +
 								table.get(i, "interaction") + "<br />\n";
