@@ -1,4 +1,4 @@
-# Possible MIM translation
+# Possible MIM translocation
 
 This test checks if there are interactions where the reactant and the product are identical,
 in which case it may just be the compound moving around in the cell.
