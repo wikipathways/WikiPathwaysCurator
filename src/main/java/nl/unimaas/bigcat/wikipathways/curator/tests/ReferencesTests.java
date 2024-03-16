@@ -46,18 +46,18 @@ public class ReferencesTests {
 	// this is list of PubMed identifiers that have been replaced (e.g. because of duplicate PubMed entries)
 	private static final Map<String,String> deprecated = BridgeDbTiwidReader.parseTSV("tiwid/pubmed.tsv");
 
-	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> all(SPARQLHelper helper, String format) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
-		assertions.addAll(nonNumericPubMedIDs(helper));
-		assertions.addAll(unexpectedPubMedIdentifier(helper));
-		assertions.addAll(zeroPubMedIDs(helper));
-		assertions.addAll(atLeastOneReference(helper));
-		assertions.addAll(citesRetractedArticle(helper));
-		assertions.addAll(outdatedPubMedIdentifiers(helper));
+		assertions.addAll(nonNumericPubMedIDs(helper, format));
+		assertions.addAll(unexpectedPubMedIdentifier(helper, format));
+		assertions.addAll(zeroPubMedIDs(helper, format));
+		assertions.addAll(atLeastOneReference(helper, format));
+		assertions.addAll(citesRetractedArticle(helper, format));
+		assertions.addAll(outdatedPubMedIdentifiers(helper, format));
 		return assertions;
 	}
 
-	public static List<IAssertion> nonNumericPubMedIDs(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> nonNumericPubMedIDs(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("ReferencesTests", "nonNumericPubMedIDs");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("references/nonNumericPubMedIDs.rq");
@@ -87,7 +87,7 @@ public class ReferencesTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> unexpectedPubMedIdentifier(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> unexpectedPubMedIdentifier(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("ReferencesTests", "unexpectedPubMedIdentifier");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("references/nonNumericPubMedIDs.rq");
@@ -118,7 +118,7 @@ public class ReferencesTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> zeroPubMedIDs(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> zeroPubMedIDs(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("ReferencesTests", "zeroPubMedIDs");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("references/nonNumericPubMedIDs.rq");
@@ -148,7 +148,12 @@ public class ReferencesTests {
 		return assertions;
 	}
 
-    public static List<IAssertion> atLeastOneReference(SPARQLHelper helper) throws Exception {
+	private static String asMarkdownLink(String url) {
+		if (url.startsWith("http://classic.wikipathways.org/")) url = url.replace("_rr","_r"); // yeah, silly workaround
+		return "[" + url + "](" + url + ")";
+	}
+
+    public static List<IAssertion> atLeastOneReference(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("ReferencesTests", "atLeastOneReference", "At least one reference", true);
     	List<IAssertion> assertions = new ArrayList<>();
     	String sparql = ResourceHelper.resourceAsString("missing/atLeastOneReference.rq");
@@ -157,9 +162,15 @@ public class ReferencesTests {
 		String errors = "";
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
-				errors += table.get(i, "homepage") + " '" +
-  					table.get(i, "title") + "' in " +
-					table.get(i, "species") + " has zero references; \n";
+				if ("text/markdown".equals(format)) {
+				    errors += "* " + asMarkdownLink(table.get(i, "homepage")) + " '" +
+	  					    table.get(i, "title") + "' in " +
+						    table.get(i, "species") + " has zero references; \n";
+				} else {
+				    errors += table.get(i, "homepage") + " '" +
+  					    table.get(i, "title") + "' in " +
+					    table.get(i, "species") + " has zero references; \n";
+				}
 			}
 		}
 		assertions.add(new AssertEquals(test,
@@ -168,7 +179,7 @@ public class ReferencesTests {
 		return assertions;
     }
 
-	public static List<IAssertion> citesRetractedArticle(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> citesRetractedArticle(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("ReferencesTests", "citesRetractedArticle");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("references/nonNumericPubMedIDs.rq");
@@ -194,7 +205,7 @@ public class ReferencesTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> outdatedPubMedIdentifiers(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> outdatedPubMedIdentifiers(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("ReferencesTests", "outdatedPubMedIdentifiers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("references/nonNumericPubMedIDs.rq");
