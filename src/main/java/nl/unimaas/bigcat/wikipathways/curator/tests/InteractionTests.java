@@ -153,7 +153,7 @@ public class InteractionTests {
 	}
 
 	public static List<IAssertion> noGeneProteinConversions(SPARQLHelper helper, String format) throws Exception {
-		Test test = new Test("InteractionTests", "noGeneProteinConversions");
+		Test test = new Test("InteractionTests", "noGeneProteinConversions", "Possibly wrong MIM type for Gene-Protein conversions", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/noGeneProteinConversions.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "pathway");
