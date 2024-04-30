@@ -4,3 +4,4 @@ target/
 .settings/
 *.patch
 *.orig
+dependency-reduced-pom.xml
