@@ -120,6 +120,11 @@ public class General extends JUnitTests {
 	}
 
 	@Test
+	public void stockComments() throws Exception {
+		performAssertions(GeneralTests.stockComments(helper));
+	}
+
+	@Test
 	@Tag("expertCuration")
 	public void noTags() throws Exception {
 		performAssertions(GeneralTests.noTags(helper));

@@ -1,0 +1,14 @@
+PREFIX cur: <http://vocabularies.wikipathways.org/wp#Curation:>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix xsd:     <http://www.w3.org/2001/XMLSchema#>
+prefix wp:      <http://vocabularies.wikipathways.org/wp#>
+prefix gpml:    <http://vocabularies.wikipathways.org/gpml#>
+prefix foaf:    <http://xmlns.com/foaf/0.1/>
+
+SELECT DISTINCT ?homepage ?thing WHERE {
+  ?s gpml:commentText "Type your comment here" ;
+     dcterms:isPartOf ?thing .
+  ?thing dcterms:isPartOf ?pw .
+  ?pathway wp:isAbout       ?pw ;
+           foaf:page        ?homepage .
+} ORDER BY ASC(?homepage)

@@ -60,6 +60,7 @@ public class GeneralTests {
 		assertions.addAll(emptyLabelOfNodeWithIdentifier(helper));
 		assertions.addAll(curationAndHypothetical(helper));
 		assertions.addAll(curationAndNeedsWork(helper));
+		assertions.addAll(stockComments(helper));
 		return assertions;
 	}
 
@@ -352,6 +353,18 @@ public class GeneralTests {
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Expected details for things of type gpml:Group: " + table.getRowCount(), "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> stockComments(SPARQLHelper helper) throws Exception {
+		Test test = new Test("GeneralTests", "stockComments");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("general/stockComments.rq");
+		StringMatrix table = helper.sparql(sparql);
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test,
+			0, table.getRowCount(), "Number of graphical items with the comment \"Type your comment here\": " + table.getRowCount(), "" + table
 		));
 		return assertions;
 	}
