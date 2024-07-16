@@ -353,8 +353,8 @@ public class OutdatedDataSourcesTests {
 		String sparql = ResourceHelper.resourceAsString("outdated/gpml2021transition.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
-		assertions.add(new AssertTrue(test,
-			(table.getRowCount() < 1), "More outdated data sources", "" + table
+		assertions.add(new AssertEquals(test,
+			0, table.getRowCount(), "More outdated data sources", "" + table
 		));
 		return assertions;
 	}
