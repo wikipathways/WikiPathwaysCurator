@@ -54,35 +54,35 @@ public class References extends JUnitTests {
 
 	@Test
 	public void nonNumericPubMedIDs() throws Exception {
-		performAssertions(ReferencesTests.nonNumericPubMedIDs(helper));
+		performAssertions(ReferencesTests.nonNumericPubMedIDs(helper, null));
 	}
 
 	@Test
 	@Tag("foo")
 	public void unexpectedPubMedIdentifier() throws Exception {
-		performAssertions(ReferencesTests.unexpectedPubMedIdentifier(helper));
+		performAssertions(ReferencesTests.unexpectedPubMedIdentifier(helper, null));
 	}
 
 	@Test
 	public void zeroPubMedIDs() throws Exception {
-		performAssertions(ReferencesTests.zeroPubMedIDs(helper));
+		performAssertions(ReferencesTests.zeroPubMedIDs(helper, null));
 	}
 
     @Tag("expertCuration")
     @Test
     public void atLeastOneReference() throws Exception {
-		performAssertions(ReferencesTests.atLeastOneReference(helper));
+		performAssertions(ReferencesTests.atLeastOneReference(helper, null));
     }
 
 	@Test
 	public void citesRetractedArticle() throws Exception {
-		performAssertions(ReferencesTests.citesRetractedArticle(helper));
+		performAssertions(ReferencesTests.citesRetractedArticle(helper, null));
 	}
 
 	@Test
 	@Tag("foo")
 	public void outdatedPubMedIdentifiers() throws Exception {
-		performAssertions(ReferencesTests.outdatedPubMedIdentifiers(helper));
+		performAssertions(ReferencesTests.outdatedPubMedIdentifiers(helper, null));
 	}
 
 

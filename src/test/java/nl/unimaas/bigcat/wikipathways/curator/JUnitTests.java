@@ -25,7 +25,7 @@ public class JUnitTests {
 					typedAssertion.getExpectedValue(),
 					typedAssertion.getValue(),
 					typedAssertion.getMessage() +
-					(typedAssertion.hasLinkToDocs() ? (" (See " + typedAssertion.getLinkToDocs() + "). ") : "") +
+					(typedAssertion.getTest().hasLinkToDocs() ? (" (See " + typedAssertion.getTest().getLinkToDocs() + "). ") : "") +
 					". Details:\n" + typedAssertion.getDetails()
 				);
 			} else if (assertion instanceof AssertNotSame) {
@@ -34,7 +34,7 @@ public class JUnitTests {
 					typedAssertion.getExpectedValue(),
 					typedAssertion.getValue(),
 					typedAssertion.getMessage() +
-					(typedAssertion.hasLinkToDocs() ? (" (See " + typedAssertion.getLinkToDocs() + "). ") : "") +
+					(typedAssertion.getTest().hasLinkToDocs() ? (" (See " + typedAssertion.getTest().getLinkToDocs() + "). ") : "") +
 					". Details:\n" + typedAssertion.getDetails()
 				);
 			} else if (assertion instanceof AssertNotNull) {
@@ -42,7 +42,7 @@ public class JUnitTests {
 				Assertions.assertNotNull(
 					typedAssertion.getValue(),
 					typedAssertion.getMessage() +
-					(typedAssertion.hasLinkToDocs() ? (" (See " + typedAssertion.getLinkToDocs() + "). ") : "") +
+					(typedAssertion.getTest().hasLinkToDocs() ? (" (See " + typedAssertion.getTest().getLinkToDocs() + "). ") : "") +
 					". Details:\n" + typedAssertion.getDetails()
 				);
 			} else if (assertion instanceof AssertTrue) {
@@ -50,7 +50,7 @@ public class JUnitTests {
 				Assertions.assertTrue(
 					(boolean)typedAssertion.getValue(),
 					typedAssertion.getMessage() +
-					(typedAssertion.hasLinkToDocs() ? (" (See " + typedAssertion.getLinkToDocs() + "). ") : "") +
+					(typedAssertion.getTest().hasLinkToDocs() ? (" (See " + typedAssertion.getTest().getLinkToDocs() + "). ") : "") +
 					". Details:\n" + typedAssertion.getDetails()
 				);
 			} else {
