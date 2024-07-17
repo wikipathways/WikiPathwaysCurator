@@ -45,26 +45,26 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class GeneralTests {
 
-	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> all(SPARQLHelper helper, String format) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
-		assertions.addAll(titlesShortEnough(helper));
-		assertions.addAll(weirdCharacterTitles(helper));
-		assertions.addAll(duplicateTitles(helper));
-		assertions.addAll(noTags(helper));
-		assertions.addAll(recentness(helper));
-		assertions.addAll(nullDataSources(helper));
-		assertions.addAll(undefinedDataSources(helper));
-		assertions.addAll(undefinedIdentifier(helper));
-		assertions.addAll(dataNodeWithoutGraphId(helper));
-		assertions.addAll(groupsHaveDetail(helper));
-		assertions.addAll(emptyLabelOfNodeWithIdentifier(helper));
-		assertions.addAll(curationAndHypothetical(helper));
-		assertions.addAll(curationAndNeedsWork(helper));
-		assertions.addAll(stockComments(helper));
+		assertions.addAll(titlesShortEnough(helper, format));
+		assertions.addAll(weirdCharacterTitles(helper, format));
+		assertions.addAll(duplicateTitles(helper, format));
+		assertions.addAll(noTags(helper, format));
+		assertions.addAll(recentness(helper, format));
+		assertions.addAll(nullDataSources(helper, format));
+		assertions.addAll(undefinedDataSources(helper, format));
+		assertions.addAll(undefinedIdentifier(helper, format));
+		assertions.addAll(dataNodeWithoutGraphId(helper, format));
+		assertions.addAll(groupsHaveDetail(helper, format));
+		assertions.addAll(emptyLabelOfNodeWithIdentifier(helper, format));
+		assertions.addAll(curationAndHypothetical(helper, format));
+		assertions.addAll(curationAndNeedsWork(helper, format));
+		assertions.addAll(stockComments(helper, format));
 		return assertions;
 	}
 
-	public static List<IAssertion> titlesShortEnough(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> titlesShortEnough(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("GeneralTests", "titlesShortEnough");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/allTitles_notReactome.rq");
@@ -89,7 +89,7 @@ public class GeneralTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> weirdCharacterTitles(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> weirdCharacterTitles(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("GeneralTests", "weirdCharacterTitles");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/allTitles.rq");
@@ -136,7 +136,7 @@ public class GeneralTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> duplicateTitles(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> duplicateTitles(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("GeneralTests", "duplicateTitles");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/allTitlesBySpecies.rq");
@@ -164,7 +164,7 @@ public class GeneralTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> curationAndHypothetical(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> curationAndHypothetical(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("GeneralTests", "curationAndHypothetical");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/allCurationAndHypothetical.rq");
@@ -187,7 +187,7 @@ public class GeneralTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> curationAndNeedsWork(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> curationAndNeedsWork(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("GeneralTests", "curationAndNeedsWork");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/allCurationAndNeedsWork.rq");
@@ -210,7 +210,7 @@ public class GeneralTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> curationAndReactome(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> curationAndReactome(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("GeneralTests", "curationAndReactome");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/allCurationAndReactome.rq");
@@ -233,7 +233,7 @@ public class GeneralTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> noTags(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> noTags(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("GeneralTests", "noTags");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/noTags.rq");
@@ -257,7 +257,7 @@ public class GeneralTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> recentness(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> recentness(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("GeneralTests", "recentness");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/rdfDate.rq");
@@ -276,7 +276,7 @@ public class GeneralTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> nullDataSources(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> nullDataSources(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("GeneralTests", "nullDataSources");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/nullDataSource.rq");
@@ -288,7 +288,7 @@ public class GeneralTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> undefinedDataSources(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> undefinedDataSources(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("GeneralTests", "undefinedDataSources");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/undefinedDataSource.rq");
@@ -300,7 +300,7 @@ public class GeneralTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> undefinedIdentifier(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> undefinedIdentifier(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("GeneralTests", "undefinedIdentifier");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/allUndefinedIdentifiers.rq");
@@ -312,7 +312,7 @@ public class GeneralTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> emptyLabelOfNodeWithIdentifier(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> emptyLabelOfNodeWithIdentifier(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("GeneralTests", "emptyLabelOfNodeWithIdentifier");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/emptyLabelsWithIdentifiers.rq");
@@ -333,7 +333,7 @@ public class GeneralTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> dataNodeWithoutGraphId(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> dataNodeWithoutGraphId(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("GeneralTests", "dataNodeWithoutGraphId");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("structure/dataNodeWithoutGraphId.rq");
@@ -345,7 +345,7 @@ public class GeneralTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> groupsHaveDetail(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> groupsHaveDetail(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("GeneralTests", "groupsHaveDetail");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("structure/groupDetails.rq");
@@ -357,16 +357,31 @@ public class GeneralTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> stockComments(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> stockComments(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("GeneralTests", "stockComments");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/stockComments.rq");
 		StringMatrix table = helper.sparql(sparql);
 		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		if (table.getRowCount() > 0) {
+            for (int i=1; i<=table.getRowCount(); i++) {
+            	if ("text/markdown".equals(format)) {
+				    errors += asMarkdownLink(table.get(i, "homepage")) + " " + table.get(i, "thing") + "\n";
+            	} else {
+            		errors += table.get(i, "homepage") + " " + table.get(i, "thing") + "\n";
+            	}
+			}
+		}
 		assertions.add(new AssertEquals(test,
-			0, table.getRowCount(), "Number of graphical items with the comment \"Type your comment here\": " + table.getRowCount(), "" + table
+			0, table.getRowCount(), "Number of graphical items with the comment \"Type your comment here\": " + table.getRowCount(), errors
 		));
 		return assertions;
+	}
+
+	private static String asMarkdownLink(String url) {
+		if (url.startsWith("http://classic.wikipathways.org/")) url = url.replace("_rr","_r"); // yeah, silly workaround
+		return "[" + url + "](" + url + ")";
 	}
 
 }

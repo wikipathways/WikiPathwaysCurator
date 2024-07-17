@@ -59,75 +59,75 @@ public class General extends JUnitTests {
 	@Test
 	@Tag("void")
 	public void recentness() throws Exception {
-		performAssertions(GeneralTests.recentness(helper));
+		performAssertions(GeneralTests.recentness(helper, null));
 	}
 
 	@Test
 	public void nullDataSources() throws Exception {
-		performAssertions(GeneralTests.nullDataSources(helper));
+		performAssertions(GeneralTests.nullDataSources(helper, null));
 	}
 
 	@Test
 	public void undefinedDataSources() throws Exception {
-		performAssertions(GeneralTests.undefinedDataSources(helper));
+		performAssertions(GeneralTests.undefinedDataSources(helper, null));
 	}
 
 	@Test
 	public void undefinedIdentifier() throws Exception {
-		performAssertions(GeneralTests.undefinedIdentifier(helper));
+		performAssertions(GeneralTests.undefinedIdentifier(helper, null));
 	}
 
 	@Test
 	public void emptyLabelOfNodeWithIdentifier() throws Exception {
-		performAssertions(GeneralTests.emptyLabelOfNodeWithIdentifier(helper));
+		performAssertions(GeneralTests.emptyLabelOfNodeWithIdentifier(helper, null));
 	}
 
 	@Test
 	public void dataNodeWithoutGraphId() throws Exception {
-		performAssertions(GeneralTests.dataNodeWithoutGraphId(helper));
+		performAssertions(GeneralTests.dataNodeWithoutGraphId(helper, null));
 	}
 
 	@Test
 	public void groupsHaveDetail() throws Exception {
-		performAssertions(GeneralTests.groupsHaveDetail(helper));
+		performAssertions(GeneralTests.groupsHaveDetail(helper, null));
 	}
 
 	@Test
 	public void titlesShortEnough() throws Exception {
-		performAssertions(GeneralTests.titlesShortEnough(helper));
+		performAssertions(GeneralTests.titlesShortEnough(helper, null));
 	}
 
 	@Test
 	@Tag("expertCuration")
 	public void weirdCharacterTitles() throws Exception {
-		performAssertions(GeneralTests.weirdCharacterTitles(helper));
+		performAssertions(GeneralTests.weirdCharacterTitles(helper, null));
 	}
 
 	@Test
 	@Tag("expertCuration")
 	public void duplicateTitles() throws Exception {
-		performAssertions(GeneralTests.duplicateTitles(helper));
+		performAssertions(GeneralTests.duplicateTitles(helper, null));
 	}
 
 	@Test
 	public void curationAndNeedsWork() throws Exception {
-		performAssertions(GeneralTests.curationAndNeedsWork(helper));
+		performAssertions(GeneralTests.curationAndNeedsWork(helper, null));
 	}
 
 	@Test
 	public void curationAndReactome() throws Exception {
-		performAssertions(GeneralTests.curationAndReactome(helper));
+		performAssertions(GeneralTests.curationAndReactome(helper, null));
 	}
 
 	@Test
 	public void stockComments() throws Exception {
-		performAssertions(GeneralTests.stockComments(helper));
+		performAssertions(GeneralTests.stockComments(helper, null));
 	}
 
 	@Test
 	@Tag("expertCuration")
 	public void noTags() throws Exception {
-		performAssertions(GeneralTests.noTags(helper));
+		performAssertions(GeneralTests.noTags(helper, null));
 	}
 
 }
