@@ -39,18 +39,23 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class DataNodesTests {
 
-	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> all(SPARQLHelper helper, String format) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
-		assertions.addAll(dataNodesWithoutIdentifier(helper));
-		assertions.addAll(unknownTypes_knownDatasource(helper));
-		assertions.addAll(unknownTypes(helper));
-		assertions.addAll(unknownTypes_Reactome(helper));
-		assertions.addAll(otherDataSource(helper));
+		assertions.addAll(dataNodesWithoutIdentifier(helper, format));
+		assertions.addAll(unknownTypes_knownDatasource(helper, format));
+		assertions.addAll(unknownTypes(helper, format));
+		assertions.addAll(unknownTypes_Reactome(helper, format));
+		assertions.addAll(otherDataSource(helper, format));
 		return assertions;
 	}
 
-	public static List<IAssertion> dataNodesWithoutIdentifier(SPARQLHelper helper) throws Exception {
-		Test test = new Test("DataNodesTests", "dataNodesWithoutIdentifier", "Data nodes without an identifier");
+	private static String asMarkdownLink(String url) {
+		if (url.startsWith("http://classic.wikipathways.org/")) url = url.replace("_rr","_r"); // yeah, silly workaround
+		return "[" + url + "](" + url + ")";
+	}
+
+	public static List<IAssertion> dataNodesWithoutIdentifier(SPARQLHelper helper, String format) throws Exception {
+		Test test = new Test("DataNodesTests", "dataNodesWithoutIdentifier", "Data nodes without an identifier", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/dataNodesWithoutIdentifier.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
@@ -59,9 +64,15 @@ public class DataNodesTests {
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
-				errors += table.get(i, "homepage") + " " +
-					table.get(i, "node") + " (" +
-					table.get(i, "label") + ")\n";
+				if ("text/markdown".equals(format)) {
+					errors += asMarkdownLink(table.get(i, "homepage")) + " " +
+						       table.get(i, "node") + " (" +
+							   table.get(i, "label") + ")\n";
+				} else {
+					errors += table.get(i, "homepage") + " " +
+				       table.get(i, "node") + " (" +
+					   table.get(i, "label") + ")\n";
+				}
 				errorCount++;
 			}
 		}
@@ -71,7 +82,7 @@ public class DataNodesTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> unknownTypes_knownDatasource(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> unknownTypes_knownDatasource(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("DataNodesTests", "unknownTypes_knownDatasource", "Data nodes with type 'Unknown'", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/unknownTypeKnownDatasource.rq");
@@ -96,7 +107,7 @@ public class DataNodesTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> unknownTypes_Reactome(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> unknownTypes_Reactome(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("DataNodesTests", "unknownTypes_Reactome");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/unknownType_Reactome.rq");
@@ -118,7 +129,7 @@ public class DataNodesTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> unknownTypes(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> unknownTypes(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("DataNodesTests", "unknownTypes");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/unknownType.rq");
@@ -140,7 +151,7 @@ public class DataNodesTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> otherDataSource(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> otherDataSource(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("DataNodesTests", "otherDataSource");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/dataNodesOtherDataSource.rq");
