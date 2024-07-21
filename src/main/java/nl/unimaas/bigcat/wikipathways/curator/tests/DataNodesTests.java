@@ -130,7 +130,7 @@ public class DataNodesTests {
 	}
 
 	public static List<IAssertion> unknownTypes(SPARQLHelper helper, String format) throws Exception {
-		Test test = new Test("DataNodesTests", "unknownTypes");
+		Test test = new Test("DataNodesTests", "unknownTypes", "Datanodes of unknown type", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/unknownType.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
@@ -139,14 +139,20 @@ public class DataNodesTests {
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
-				String label = table.hasColumn("label") ? table.get(i, "label") : "null";
-				errors += table.get(i, "homepage") + " " +
-					table.get(i, "node") + " (" + label + ")\n";
+				if ("text/markdown".equals(format)) {
+				    String label = table.hasColumn("label") ? table.get(i, "label") : "null";
+				    errors += "* " + asMarkdownLink(table.get(i, "homepage")) + " " +
+					    table.get(i, "node") + " (" + label + ")\n";
+				} else {
+					String label = table.hasColumn("label") ? table.get(i, "label") : "null";
+				    errors += table.get(i, "homepage") + " " +
+					    table.get(i, "node") + " (" + label + ")\n";
+				}
 				errorCount++;
 			}
 		}
 		assertions.add(new AssertEquals(test, 
-			0, errorCount, "The following DataNodes have Unknown @Type: " + errorCount, errors
+			0, errorCount, "The following DataNodes have Unknown @Type: " + errorCount, errors, format
 		));
 		return assertions;
 	}
