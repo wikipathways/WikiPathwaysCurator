@@ -104,7 +104,7 @@ public class InteractionTests {
 	}
 
 	public static List<IAssertion> noNonMetaboliteToMetaboliteConversions(SPARQLHelper helper, String format) throws Exception {
-		Test test = new Test("InteractionTests", "noNonMetaboliteToMetaboliteConversions");
+		Test test = new Test("InteractionTests", "noNonMetaboliteToMetaboliteConversions", "No non-metabolite to metabolite conversions", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/noNonMetaboliteMetaboliteConversions.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "pathway");
@@ -139,9 +139,15 @@ public class InteractionTests {
 				else if (allowedInteractions.containsKey(nonmetabolite) &&
 						allowedInteractions.get(nonmetabolite).equals(metabolite)) {}
 				else { // other situations are not okay
-					errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
+					if ("text/markdown".equals(format)) {
+				        errors += table.get(i, "organism") + " " + asMarkdownLink(table.get(i, "pathway")) + " → " +
+				        	asMarkdownLink(nonmetabolite) + " " + asMarkdownLink(metabolite) + " " +
+							table.get(i, "interaction") + "\n";
+					} else {
+						errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
 							nonmetabolite + " " + metabolite + " " +
 							table.get(i, "interaction") + "\n";
+					}
 					errorCount++;
 				}
 			}
