@@ -367,7 +367,7 @@ public class GeneralTests {
 		if (table.getRowCount() > 0) {
             for (int i=1; i<=table.getRowCount(); i++) {
             	if ("text/markdown".equals(format)) {
-				    errors += asMarkdownLink(table.get(i, "homepage")) + " " + table.get(i, "thing") + "\n";
+				    errors += "* " + asMarkdownLink(table.get(i, "homepage")) + " " + table.get(i, "thing") + "\n";
             	} else {
             		errors += table.get(i, "homepage") + " " + table.get(i, "thing") + "\n";
             	}

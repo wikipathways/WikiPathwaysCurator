@@ -140,7 +140,7 @@ public class InteractionTests {
 						allowedInteractions.get(nonmetabolite).equals(metabolite)) {}
 				else { // other situations are not okay
 					if ("text/markdown".equals(format)) {
-				        errors += table.get(i, "organism") + " " + asMarkdownLink(table.get(i, "pathway")) + " → " +
+				        errors += "* " + table.get(i, "organism") + " " + asMarkdownLink(table.get(i, "pathway")) + " → " +
 				        	asMarkdownLink(nonmetabolite) + " " + asMarkdownLink(metabolite) + " " +
 							table.get(i, "interaction") + "\n";
 					} else {
