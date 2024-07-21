@@ -374,7 +374,7 @@ public class GeneralTests {
 			}
 		}
 		assertions.add(new AssertEquals(test,
-			0, table.getRowCount(), "Number of graphical items with the comment \"Type your comment here\": " + table.getRowCount(), errors
+			0, table.getRowCount(), "Number of graphical items with the comment \"Type your comment here\": " + table.getRowCount(), errors, format
 		));
 		return assertions;
 	}

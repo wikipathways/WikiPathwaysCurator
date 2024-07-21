@@ -58,7 +58,7 @@ public class DataNodes extends JUnitTests {
 	@Tag("expertCuration")
 	public void unknownTypes() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			performAssertions(DataNodesTests.unknownTypes(helper));
+			performAssertions(DataNodesTests.unknownTypes(helper, null));
 		});
 	}
 
@@ -67,14 +67,14 @@ public class DataNodes extends JUnitTests {
 	@Tag("reactome")
 	public void unknownTypes_Reactome() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			performAssertions(DataNodesTests.unknownTypes_Reactome(helper));
+			performAssertions(DataNodesTests.unknownTypes_Reactome(helper, null));
 		});
 	}
 
 	@Test
 	public void unknownTypes_knownDatasource() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			performAssertions(DataNodesTests.unknownTypes_knownDatasource(helper));
+			performAssertions(DataNodesTests.unknownTypes_knownDatasource(helper, null));
 		});
 	}
 
@@ -82,14 +82,14 @@ public class DataNodes extends JUnitTests {
 	@Tag("covid")
 	public void dataNodesWithoutIdentifier() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			performAssertions(DataNodesTests.dataNodesWithoutIdentifier(helper));
+			performAssertions(DataNodesTests.dataNodesWithoutIdentifier(helper, null));
 		});
 	}
 
 	@Test
 	public void otherDataSource() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
-			performAssertions(DataNodesTests.otherDataSource(helper));
+			performAssertions(DataNodesTests.otherDataSource(helper, null));
 		});
 	}
 

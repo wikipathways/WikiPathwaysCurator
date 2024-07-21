@@ -77,7 +77,7 @@ public class DataNodesTests {
 			}
 		}
 		assertions.add(new AssertEquals(test,
-			0, errorCount, "The following DataNodes have no identifier: " + errorCount, errors
+			0, errorCount, "The following DataNodes have no identifier: " + errorCount, errors, format
 		));
 		return assertions;
 	}

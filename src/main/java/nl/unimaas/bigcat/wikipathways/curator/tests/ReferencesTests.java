@@ -174,7 +174,7 @@ public class ReferencesTests {
 			}
 		}
 		assertions.add(new AssertEquals(test,
-			0, table.getRowCount(), "Found " + table.getRowCount() + " pathways with zero (PubMed) references", errors
+			0, table.getRowCount(), "Found " + table.getRowCount() + " pathways with zero (PubMed) references", errors, format
 		));
 		return assertions;
     }

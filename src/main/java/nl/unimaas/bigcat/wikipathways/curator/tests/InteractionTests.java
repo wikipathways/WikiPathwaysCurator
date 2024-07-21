@@ -153,7 +153,7 @@ public class InteractionTests {
 			}
 		}
 		assertions.add(new AssertEquals(test,
-			0, errorCount, "Unexpected non-metabolite to metabolite conversions: " + errorCount, errors
+			0, errorCount, "Unexpected non-metabolite to metabolite conversions: " + errorCount, errors, format
 		));
 		return assertions;
 	}
