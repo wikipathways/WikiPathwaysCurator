@@ -10,5 +10,8 @@ bradykinin, but not generally applicable.
 
 ## Curation action
 
+If this report is a false-positive (e.g. another hormone), then please
+[report it here](https://github.com/wikipathways/WikiPathwaysCurator/issues).
+
 In most cases the use of `mim-conversion` was an error, and quite common as
 the depiction in PathVisio is identical as a regular directed interaction.
