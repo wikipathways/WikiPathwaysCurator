@@ -311,10 +311,10 @@ public class GeneralTests {
             for (int i=1; i<=table.getRowCount(); i++) {
             	if ("text/markdown".equals(format)) {
 				    errors += "* " + asMarkdownLink(table.get(i, "homepage")) + " " + table.get(i, "identifier") +
-				    	"(" + table.get(i, "label") + ")\n";
+				    	" (" + table.get(i, "label") + ")\n";
             	} else {
             		errors += table.get(i, "homepage") + " " + table.get(i, "identifier") +
-    				    "(" + table.get(i, "label") + ")\n";
+    				    " (" + table.get(i, "label") + ")\n";
             	}
 			}
 		}
