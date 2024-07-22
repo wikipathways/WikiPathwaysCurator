@@ -358,7 +358,7 @@ public class GeneralTests {
 	}
 
 	public static List<IAssertion> stockComments(SPARQLHelper helper, String format) throws Exception {
-		Test test = new Test("GeneralTests", "stockComments");
+		Test test = new Test("GeneralTests", "stockComments", "The pathway contains stock comments", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/stockComments.rq");
 		StringMatrix table = helper.sparql(sparql);
