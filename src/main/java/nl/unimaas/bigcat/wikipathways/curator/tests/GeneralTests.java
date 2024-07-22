@@ -54,6 +54,7 @@ public class GeneralTests {
 		assertions.addAll(recentness(helper, format));
 		assertions.addAll(nullDataSources(helper, format));
 		assertions.addAll(undefinedDataSources(helper, format));
+		assertions.addAll(emptyDataSources(helper, format));
 		assertions.addAll(undefinedIdentifier(helper, format));
 		assertions.addAll(dataNodeWithoutGraphId(helper, format));
 		assertions.addAll(groupsHaveDetail(helper, format));
@@ -296,6 +297,29 @@ public class GeneralTests {
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test,
 			0, table.getRowCount(), "Data nodes with an 'undefined' data source: " + table.getRowCount(), "" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> emptyDataSources(SPARQLHelper helper, String format) throws Exception {
+		Test test = new Test("GeneralTests", "emptyDataSources", "Data nodes with an identifier by an empty data source", false);
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("general/emptyDataSource.rq");
+		StringMatrix table = helper.sparql(sparql);
+		String errors = "";
+		if (table.getRowCount() > 0) {
+            for (int i=1; i<=table.getRowCount(); i++) {
+            	if ("text/markdown".equals(format)) {
+				    errors += "* " + asMarkdownLink(table.get(i, "homepage")) + " " + table.get(i, "identifier") +
+				    	"(" + table.get(i, "label") + ")\n";
+            	} else {
+            		errors += table.get(i, "homepage") + " " + table.get(i, "identifier") +
+    				    "(" + table.get(i, "label") + ")\n";
+            	}
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, table.getRowCount(), "Data nodes with a '' data source: " + table.getRowCount(), errors, format
 		));
 		return assertions;
 	}
