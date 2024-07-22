@@ -8,9 +8,9 @@ prefix foaf:    <http://xmlns.com/foaf/0.1/>
 SELECT ?homepage ?node ?label WHERE {
   ?node a gpml:DataNode ;
         dcterms:isPartOf ?gpmlPathway ;
-        gpml:textlabel ?label .
-  MINUS { ?node gpml:xrefDataSource [] . }
-  MINUS { ?node gpml:xrefId [] . }
+        gpml:textlabel ?label ;
+        gpml:xrefDataSource "" ;
+        gpml:xrefId "" .
   ?pathway foaf:page ?homepage ;
            wp:isAbout ?gpmlPathway .
 } ORDER BY ?homepage
