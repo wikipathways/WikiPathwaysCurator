@@ -302,7 +302,7 @@ public class GeneralTests {
 	}
 
 	public static List<IAssertion> emptyDataSources(SPARQLHelper helper, String format) throws Exception {
-		Test test = new Test("GeneralTests", "emptyDataSources", "Data nodes with an identifier by an empty data source", false);
+		Test test = new Test("GeneralTests", "emptyDataSources", "Data nodes with an identifier but an empty data source", false);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/emptyDataSource.rq");
 		StringMatrix table = helper.sparql(sparql);
