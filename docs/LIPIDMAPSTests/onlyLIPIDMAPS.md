@@ -1,6 +1,6 @@
 # Only LIPID MAPS identifiers
 
-Some communities want lipids in pathways only annotated LIPID MAPS identifiers.
+Some communities want lipids in pathways only annotated [LIPID MAPS](https://lipidmaps.org/databases/lmsd) identifiers.
 This test checks if only those are used.
 
 ## Why does this fail show up?
