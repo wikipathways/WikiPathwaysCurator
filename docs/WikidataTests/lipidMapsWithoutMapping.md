@@ -1,7 +1,7 @@
 # LIPID MAPS identifier without a match in Wikidata
 
-This https://lipidmaps.org/databases/lmsd identifier is used in WikiPathways but it does not have a known
-entry in https://wikidata.org/.
+This [LIPID MAPS](https://lipidmaps.org/databases/lmsd) identifier is used in WikiPathways but it does not
+have a known entry in [Wikidata](https://wikidata.org/).
 
 ## Why does this fail show up?
 
@@ -15,9 +15,10 @@ not capture it yet.
 ## Curation action
 
 This test is really aimed a curation of Wikidata and LIPID MAPS. You can check if the lipid is
-found in Wikidata with this https://scholia.toolforge.org/ URL pattern:
+found in Wikidata with this [Scholia](https://scholia.toolforge.org/) URL pattern:
 [https://scholia.toolforge.org/lipidmaps/LMFA03020002](https://scholia.toolforge.org/lipidmaps/LMFA03020002).
 
-If it is there, then the BridgeDb metabolite ID mapping database may be too old. You can encourage
-the development team in [this issue tracker](https://github.com/bridgedb/create-bridgedb-metabolites/issues)
+If it is there, then the [BridgeDb](https://www.bridgedb.org/) metabolite ID mapping database may be too old.
+You can encourage the development team in
+[this issue tracker](https://github.com/bridgedb/create-bridgedb-metabolites/issues)
 to make a new release.
