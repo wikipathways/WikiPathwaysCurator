@@ -6,11 +6,11 @@ with the replacing LIPID MAPS identifier.
 
 ## Why does this fail show up?
 
-The identifier has been retired by LIPID MAPS.
+The identifier has been retired by LIPID MAPS, like, for example, [LMFA01010040](https://lipidmaps.org/databases/lmsd/LMFA01010040).
 
 ## Curation action
 
-If the test fails, you can check the LIPID MAPS website if a reason is given.
+If the test fails, you can check [the LIPID MAPS website](https://lipidmaps.org/databases/lmsd) if a reason is given.
 Second, you can look up a new valid LIPID MAPS identifier. The GPML source
 of the pathway can then be updated to list the new identifier.
 
