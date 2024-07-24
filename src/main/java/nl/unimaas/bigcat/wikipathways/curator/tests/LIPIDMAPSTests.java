@@ -71,7 +71,7 @@ public class LIPIDMAPSTests {
 	}
 
 	public static List<IAssertion> retiredIdentifiers(SPARQLHelper helper) throws Exception {
-		Test test = new Test("LIPIDMAPSTests", "retiredIdentifiers", true);
+		Test test = new Test("LIPIDMAPSTests", "retiredIdentifiers", "Retired LIPID MAPS identifiers", true);
 		// Getting the data
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("outdated/lipidmaps.rq");
@@ -103,7 +103,7 @@ public class LIPIDMAPSTests {
 	}
 
 	public static List<IAssertion> onlyLIPIDMAPS(SPARQLHelper helper) throws Exception {
-		Test test = new Test("LIPIDMAPSTests", "onlyLIPIDMAPS", true);
+		Test test = new Test("LIPIDMAPSTests", "onlyLIPIDMAPS", "Only LIPID MAPS identifiers", true);
 		// Getting the data
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/metabolitesWithoutLIPIDMAPSIdentifier.rq");
