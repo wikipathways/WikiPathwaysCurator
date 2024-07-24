@@ -151,7 +151,7 @@ public class WikidataTests {
 	}
 
 	public static List<IAssertion> chebiWithoutMapping(SPARQLHelper helper) throws Exception {
-		Test test = new Test("WikidataTests", "chebiWithoutMapping");
+		Test test = new Test("WikidataTests", "chebiWithoutMapping", "ChEBI identifier without a match in Wikidata", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteChEBI.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
@@ -387,7 +387,7 @@ public class WikidataTests {
 	}
 
 	public static List<IAssertion> lipidMapsWithoutMapping(SPARQLHelper helper) throws Exception {
-		Test test = new Test("WikidataTests", "lipidMapsWithoutMapping");
+		Test test = new Test("WikidataTests", "lipidMapsWithoutMapping", "LIPID MAPS identifier without a match in Wikidata", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteLipidMaps.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
