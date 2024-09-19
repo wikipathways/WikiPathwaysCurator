@@ -15,3 +15,6 @@ be set to `mim-translocation`.
 
 If the interaction is not a translocation, then possible one of the data node identifiers
 needs correcting.
+
+[This WikiPathways Academy page](https://academy.wikipathways.org/stages/draw-transport/)
+gives more detail on how to draw molecular transport interactions.
