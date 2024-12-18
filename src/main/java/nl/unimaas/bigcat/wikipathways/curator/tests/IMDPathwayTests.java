@@ -125,6 +125,7 @@ public class IMDPathwayTests {
 	@SuppressWarnings("serial")
 	private static List<String> commonCatalysisDataSources = new ArrayList<>() {{
 		add("Rhea");
+		add("Reactome");
 	}};
 
 	public static List<IAssertion> metabolicConversionIdentifiersCommon(SPARQLHelper helper) throws Exception {
