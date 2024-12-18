@@ -93,6 +93,7 @@ public class IMDPathwayTests {
 
 	@SuppressWarnings("serial")
 	private static List<String> commonCatalystDataSources = new ArrayList<>() {{
+		add("NCBI Protein");
 		add("Uniprot-TrEMBL");
 		add("Ensembl");
 		add("Entrez Gene");
