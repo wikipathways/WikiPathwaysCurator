@@ -237,7 +237,7 @@ public class WikidataTests {
 	}
 
 	public static List<IAssertion> inchikeyWithoutMapping(SPARQLHelper helper) throws Exception {
-		Test test = new Test("WikidataTests", "hmdbWithoutMapping");
+		Test test = new Test("WikidataTests", "inchikeyWithoutMapping");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteInChIKey.rq");
 		StringMatrix table = helper.sparql(sparql);
