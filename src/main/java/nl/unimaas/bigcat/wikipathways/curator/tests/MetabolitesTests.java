@@ -41,7 +41,7 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class MetabolitesTests {
 
-	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> all(SPARQLHelper helper, String format) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(metaboliteAlsoOtherType(helper));
 		assertions.addAll(casNumbersNotMarkedAsMetabolite(helper));
@@ -57,7 +57,7 @@ public class MetabolitesTests {
 		assertions.addAll(PubChemSubstanceIDsNotMarkedAsMetabolite(helper));
 		assertions.addAll(PubChemIDsNotNumbers(helper));
 		assertions.addAll(PubChemSubstanceIDsNotNumbers(helper));
-		assertions.addAll(tooManyInChIKeys(helper));
+		assertions.addAll(tooManyInChIKeys(helper, format));
 		return assertions;
 	}
 
@@ -338,7 +338,7 @@ public class MetabolitesTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> tooManyInChIKeys(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> tooManyInChIKeys(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("MetabolitesTests", "tooManyInChIKeys");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/tooManyInChIKeys.rq");
@@ -352,16 +352,27 @@ public class MetabolitesTests {
 				try {
 					Integer.parseInt(identifier);
 				} catch (NumberFormatException exception) {
-					errors += table.get(i, "examplePathway") + " (example) has: " + table.get(i, "label") + " " + table.get(i, "identifier") +
-						" with InChIKeys: " + table.get(i, "inchikeys") + "\n" ;
+					if ("text/markdown".equals(format)) {
+						errors += "* " + asMarkdownLink(table.get(i, "examplePathway")) +
+								" has: " + table.get(i, "label") + " (" + table.get(i, "identifier") +
+								") with InChIKeys: `" + table.get(i, "inchikeys") + "`\n" ;
+					} else {
+						errors += table.get(i, "examplePathway") + " (example) has: " + table.get(i, "label") + " " + table.get(i, "identifier") +
+							" with InChIKeys: " + table.get(i, "inchikeys") + "\n" ;
+					}
 					errorCount++;
 				}
 			}
 		}
 		assertions.add(new AssertEquals(test,
-			0, errorCount, "Non-zero count of metabolites with more than one InChIKey: " + errorCount, errors
+			0, errorCount, "Non-zero count of metabolites with more than one InChIKey: " + errorCount,
+			errors, format
 		));
 		return assertions;
 	}
 
+	private static String asMarkdownLink(String url) {
+		if (url.startsWith("http://classic.wikipathways.org/")) url = url.replace("_rr","_r"); // yeah, silly workaround
+		return "[" + url + "](" + url + ")";
+	}
 }

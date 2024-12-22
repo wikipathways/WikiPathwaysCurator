@@ -131,6 +131,6 @@ public class Metabolites extends JUnitTests {
 	@Test
 	@Tag("metabolites")
 	public void tooManyInChIKeys() throws Exception {
-		performAssertions(MetabolitesTests.tooManyInChIKeys(helper));
+		performAssertions(MetabolitesTests.tooManyInChIKeys(helper, null));
 	}
 }

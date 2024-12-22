@@ -165,7 +165,7 @@ public class WikidataTests {
 					String chebiIRI = table.get(i, "metabolite");
 					String wpURL = table.get(i, "homepage");
 					if ("text/markdown".equals(format)) {
-						errors += "[" + chebiIRI + "](" + chebiIRI + ") (" + table.get(i, "label") + ") "
+						errors += "* [" + chebiIRI + "](" + chebiIRI + ") (" + table.get(i, "label") + ") "
 			 		        + "does not have a Wikidata mapping in [" + wpURL + "](" + wpURL + ")\n";
 					} else {
 						errors += chebiIRI + " (" + table.get(i, "label") + ") "

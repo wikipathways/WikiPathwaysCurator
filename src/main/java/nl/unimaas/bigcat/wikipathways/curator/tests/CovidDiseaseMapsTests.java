@@ -39,15 +39,16 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class CovidDiseaseMapsTests {
 
-	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> all(SPARQLHelper helper, String format) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
-		assertions.addAll(interactionsWithoutReferences(helper));
+		assertions.addAll(interactionsWithoutReferences(helper, format));
 		assertions.addAll(missingHGNC(helper));
 		return assertions;
 	}
 
-	public static List<IAssertion> interactionsWithoutReferences(SPARQLHelper helper) throws Exception {
-		Test test = new Test("CovidDiseaseMapsTests", "interactionsWithoutReferences");
+	public static List<IAssertion> interactionsWithoutReferences(SPARQLHelper helper, String format) throws Exception {
+		Test test = new Test("CovidDiseaseMapsTests", "interactionsWithoutReferences",
+			"Interactions without references", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("covid/interactionsWithoutReferences.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "pathway");
@@ -56,19 +57,25 @@ public class CovidDiseaseMapsTests {
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
-  			    errors += table.get(i, "pathway") + " -> " +
+				if ("text/markdown".equals(format)) {
+					errors += "* [" + table.get(i, "pathway") + "](" + table.get(i, "pathway") +
+						  ") -> [" + table.get(i, "interaction") + "](" +
+		                  table.get(i, "interaction") + ")\n";
+				} else {
+					errors += table.get(i, "pathway") + " -> " +
 		                  table.get(i, "interaction") + "\n";
+				}
 				errorCount++;
 			}
 		}
 		assertions.add(new AssertEquals(test, 
-			0, errorCount, "Interactions without literature references: " + errorCount, errors
+			0, errorCount, "Interactions without literature references: " + errorCount, errors, format
 		));
 		return assertions;
 	}
 
 	public static List<IAssertion> missingHGNC(SPARQLHelper helper) throws Exception {
-		Test test = new Test("CovidDiseaseMapsTests", "missingHGNC", true);
+		Test test = new Test("CovidDiseaseMapsTests", "missingHGNC", "Genes without a HGNC identifier", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("covid/missingHGNC.rq");
 		StringMatrix table = helper.sparql(sparql);

@@ -55,7 +55,7 @@ public class COVIDDiseaseMapTests extends JUnitTests {
 	@Test
 	@Tag("covid")
 	public void interactionsWithoutReferences() throws Exception {
-		performAssertions(CovidDiseaseMapsTests.interactionsWithoutReferences(helper));
+		performAssertions(CovidDiseaseMapsTests.interactionsWithoutReferences(helper, null));
 	}
 
 	@Test

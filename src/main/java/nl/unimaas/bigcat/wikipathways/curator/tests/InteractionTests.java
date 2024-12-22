@@ -293,11 +293,19 @@ public class InteractionTests {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String source = table.get(i, "source");
 				if (!allowedInNonTranslocation.contains(source)) {
-                    errors += table.get(i, "homepage") + " " +
-						table.get(i, "interaction") + " \"" +
-						table.get(i, "sourceLabel") + "\" (" + source + ") and \n" +
-						table.get(i, "targetLabel") + "\" (" +
-						table.get(i, "target") + ")\n";
+					if ("text/markdown".equals(format)) {
+						errors += "* " + asMarkdownLink(table.get(i, "homepage")) + " " +
+							asMarkdownLink(table.get(i, "interaction")) + " \"" +
+							table.get(i, "sourceLabel") + "\" (" + asMarkdownLink(source) + ") and \n" +
+							table.get(i, "targetLabel") + "\" (" +
+							asMarkdownLink(table.get(i, "target")) + ")\n";
+					} else {
+						errors += table.get(i, "homepage") + " " +
+							table.get(i, "interaction") + " \"" +
+							table.get(i, "sourceLabel") + "\" (" + source + ") and \n" +
+							table.get(i, "targetLabel") + "\" (" +
+							table.get(i, "target") + ")\n";
+					}
 				    errorCount++;
 				}
 			}
