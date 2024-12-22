@@ -106,7 +106,7 @@ public class WikidataTests {
 
 	private static final Map<String,String> retired = BridgeDbTiwidReader.parseCSV("tiwid/wikidata.csv");
 
-	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> all(SPARQLHelper helper, String format) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(keggWithoutMapping(helper));
 		assertions.addAll(pubchemCIDWithoutMapping(helper));
@@ -114,13 +114,13 @@ public class WikidataTests {
 		assertions.addAll(casWithoutMapping(helper));
 		assertions.addAll(wikDataTypo(helper));
 		assertions.addAll(duplicateWikidataMappings(helper));
-		assertions.addAll(wikidataIdentifiersWrong(helper));
+		assertions.addAll(wikidataIdentifiersWrong(helper, format));
 		assertions.addAll(chemspiderCIDWithoutMapping(helper));
 		assertions.addAll(lipidMapsWithoutMapping(helper));
 		assertions.addAll(kNApSAcKWithoutMapping(helper));
 		assertions.addAll(replaceWikipedia(helper));
 		assertions.addAll(chebiWithoutMapping_Reactome(helper));
-		assertions.addAll(chebiWithoutMapping(helper));
+		assertions.addAll(chebiWithoutMapping(helper, format));
 		assertions.addAll(inchikeyWithoutMapping(helper));
 		assertions.addAll(retiredIdentifiers(helper));
 		return assertions;
@@ -150,7 +150,7 @@ public class WikidataTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> chebiWithoutMapping(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> chebiWithoutMapping(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("WikidataTests", "chebiWithoutMapping", "ChEBI identifier without a match in Wikidata", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteChEBI.rq");
@@ -162,8 +162,15 @@ public class WikidataTests {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String chebiID = table.get(i, "metabolite");
 				if (!zwitterIonsWithoutWikidata.contains(chebiID.substring(29))) {
-				    errors += table.get(i, "metabolite") + " (" + table.get(i, "label") + ") "
-					       + "does not have a Wikidata mapping in " + table.get(i, "homepage") + " ; \n";
+					String chebiIRI = table.get(i, "metabolite");
+					String wpURL = table.get(i, "homepage");
+					if ("text/markdown".equals(format)) {
+						errors += "[" + chebiIRI + "](" + chebiIRI + ") (" + table.get(i, "label") + ") "
+			 		        + "does not have a Wikidata mapping in [" + wpURL + "](\" + wpURL + \") ; \n";
+					} else {
+						errors += chebiIRI + " (" + table.get(i, "label") + ") "
+						    + "does not have a Wikidata mapping in " + wpURL + " ; \n";
+					}
 				    errorCount++;
 				}
 			}
@@ -334,7 +341,7 @@ public class WikidataTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> wikidataIdentifiersWrong(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> wikidataIdentifiersWrong(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("WikidataTests", "wikidataIdentifiersWrong");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/allWikidataIdentifiers.rq");
@@ -347,15 +354,25 @@ public class WikidataTests {
 				String identifier = table.get(i, "identifier").trim();
 				String pathwayPage = table.get(i, "homepage");
 				if (identifier.isEmpty() || !identifier.startsWith("Q")) {
-					errors += pathwayPage + " -> " + table.get(i, "label") +
+					if ("text/markdown".equals(format)) {
+						errors += "[" + pathwayPage + "](" + pathwayPage + ") -> " + table.get(i, "label") +
 							", '" + table.get(i, "identifier") + "'\n ";
+					} else {
+						errors += pathwayPage + " -> " + table.get(i, "label") +
+								", '" + table.get(i, "identifier") + "'\n ";
+					}
 					errorCount++;
 				} else if (!identifier.isEmpty() && identifier.startsWith("Q")) {
 					try {
 						Integer.parseInt(identifier.substring(1));
 					} catch (NumberFormatException exception) {
-						errors += pathwayPage + " -> " + table.get(i, "label") +
+						if ("text/markdown".equals(format)) {
+							errors += "[" + pathwayPage + "](" + pathwayPage + ") -> " + table.get(i, "label") +
 								", " + table.get(i, "identifier") + "\n ";
+						} else {
+							errors += pathwayPage + " -> " + table.get(i, "label") +
+								", " + table.get(i, "identifier") + "\n ";
+						}
 						errorCount++;
 					}
 				}

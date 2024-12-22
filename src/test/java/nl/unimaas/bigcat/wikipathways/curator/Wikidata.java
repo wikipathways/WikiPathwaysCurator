@@ -67,7 +67,7 @@ public class Wikidata extends JUnitTests {
 	@Tag("wikidata")
 	@Test
 	public void chebiWithoutMapping() throws Exception {
-		performAssertions(WikidataTests.chebiWithoutMapping(helper));
+		performAssertions(WikidataTests.chebiWithoutMapping(helper, null));
 	}
 
 	@Tag("wikidata")
@@ -126,7 +126,7 @@ public class Wikidata extends JUnitTests {
 
 	@Test
 	public void wikidataIdentifiersWrong() throws Exception {
-		performAssertions(WikidataTests.wikidataIdentifiersWrong(helper));
+		performAssertions(WikidataTests.wikidataIdentifiersWrong(helper, null));
 	}
 
 	@Tag("wikidata")
