@@ -166,7 +166,7 @@ public class WikidataTests {
 					String wpURL = table.get(i, "homepage");
 					if ("text/markdown".equals(format)) {
 						errors += "[" + chebiIRI + "](" + chebiIRI + ") (" + table.get(i, "label") + ") "
-			 		        + "does not have a Wikidata mapping in [" + wpURL + "](\" + wpURL + \") ; \n";
+			 		        + "does not have a Wikidata mapping in [" + wpURL + "](" + wpURL + ")\n";
 					} else {
 						errors += chebiIRI + " (" + table.get(i, "label") + ") "
 						    + "does not have a Wikidata mapping in " + wpURL + " ; \n";
@@ -176,7 +176,7 @@ public class WikidataTests {
 			}
 		}
 		assertions.add(new AssertEquals(test,
-			0, errorCount, "ChEBI identifiers without Wikidata mappings: " + errorCount, errors
+			0, errorCount, "ChEBI identifiers without Wikidata mappings: " + errorCount, errors, format
 		));
 		return assertions;
 	}
@@ -355,7 +355,7 @@ public class WikidataTests {
 				String pathwayPage = table.get(i, "homepage");
 				if (identifier.isEmpty() || !identifier.startsWith("Q")) {
 					if ("text/markdown".equals(format)) {
-						errors += "[" + pathwayPage + "](" + pathwayPage + ") -> " + table.get(i, "label") +
+						errors += "* [" + pathwayPage + "](" + pathwayPage + ") -> " + table.get(i, "label") +
 							", '" + table.get(i, "identifier") + "'\n ";
 					} else {
 						errors += pathwayPage + " -> " + table.get(i, "label") +
@@ -367,7 +367,7 @@ public class WikidataTests {
 						Integer.parseInt(identifier.substring(1));
 					} catch (NumberFormatException exception) {
 						if ("text/markdown".equals(format)) {
-							errors += "[" + pathwayPage + "](" + pathwayPage + ") -> " + table.get(i, "label") +
+							errors += "* [" + pathwayPage + "](" + pathwayPage + ") -> " + table.get(i, "label") +
 								", " + table.get(i, "identifier") + "\n ";
 						} else {
 							errors += pathwayPage + " -> " + table.get(i, "label") +
@@ -379,7 +379,8 @@ public class WikidataTests {
 			}
 		}
 		assertions.add(new AssertEquals(test,
-			0, errorCount, "Wikidata identifiers that do not start with a 'Q' followed by a number: " + errorCount, errors
+			0, errorCount, "Wikidata identifiers that do not start with a 'Q' followed by a number: " + errorCount,
+			errors, format
 		));
 		return assertions;
 	}

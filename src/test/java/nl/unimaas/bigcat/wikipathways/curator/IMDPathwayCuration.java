@@ -55,7 +55,7 @@ public class IMDPathwayCuration extends JUnitTests {
 	@Test
 	@Tag("imd")
 	public void allMetabolitesInteract() throws Exception {
-		performAssertions(IMDPathwayTests.allMetabolitesInteract(helper));
+		performAssertions(IMDPathwayTests.allMetabolitesInteract(helper, null));
 	}
 
 	@Test

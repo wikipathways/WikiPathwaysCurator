@@ -39,9 +39,9 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class IMDPathwayTests {
 	
-	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> all(SPARQLHelper helper, String format) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
-		assertions.addAll(allMetabolitesInteract(helper));
+		assertions.addAll(allMetabolitesInteract(helper, format));
 		assertions.addAll(metabolicConversions(helper));
 		assertions.addAll(catalystsWithCommonDataSource(helper));
 		assertions.addAll(metabolicConversionIdentifiersCommon(helper));
@@ -50,7 +50,7 @@ public class IMDPathwayTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> allMetabolitesInteract(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> allMetabolitesInteract(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("IEMPathwayTests", "allMetabolitesInteract");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("imd/allMetabolitesInteract.rq");
@@ -60,13 +60,20 @@ public class IMDPathwayTests {
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
-			    errors += table.get(i, "url") + " has an metabolite not linked to an interaction: " +
-			        table.get(i, "metaboliteLabel") + "\n";
+				String wpURL = table.get(i, "url");
+				if ("text/markdown".equals(format)) {
+					errors += "* [" + wpURL + "](" + table.get(i, "url") + ") has an metabolite not linked to an interaction: " +
+						table.get(i, "metaboliteLabel") + "\n";
+				} else {
+					errors += table.get(i, "url") + " has an metabolite not linked to an interaction: " +
+						table.get(i, "metaboliteLabel") + "\n";
+				}
 				errorCount++;
 			}
 		}
 		assertions.add(new AssertEquals(test,
-			0, errorCount, "Found metabolites without interaction: " + errorCount, errors
+			0, errorCount, "Found metabolites without interaction: " + errorCount,
+			errors, format
 		));
 		return assertions;
 	}

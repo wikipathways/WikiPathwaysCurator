@@ -258,16 +258,23 @@ public class InteractionTests {
 					try {
 						Integer.parseInt(id);
 					} catch (NumberFormatException exception) {
-						errors += table.get(i, "homepage") + " \"" +
+						String wpURL = table.get(i, "homepage"); 
+						if ("text/markdown".equals(format)) {
+							errors +=  "* [" + wpURL + "](" + wpURL + ") \"" +
 								table.get(i, "label") + "\" with graphId " +
-							table.get(i, "id") + "\n";
+								table.get(i, "id") + "\n";
+						} else {
+							errors += wpURL + " \"" +
+								table.get(i, "label") + "\" with graphId " +
+								table.get(i, "id") + "\n";
+						}
 						errorCount++;
 					}
 				}
 			}
 		}
 		assertions.add(new AssertEquals(test,
-			0, errorCount, "Interactions found that involve Labels: " + errorCount, errors
+			0, errorCount, "Interactions found that involve Labels: " + errorCount, errors, format
 		));
 		return assertions;
 	}
