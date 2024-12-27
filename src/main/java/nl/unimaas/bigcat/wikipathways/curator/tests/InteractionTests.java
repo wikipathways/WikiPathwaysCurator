@@ -244,7 +244,7 @@ public class InteractionTests {
 	}
 
 	public static List<IAssertion> interactionsWithLabels(SPARQLHelper helper, String format) throws Exception {
-		Test test = new Test("InteractionTests", "interactionsWithLabels");
+		Test test = new Test("InteractionTests", "interactionsWithLabels", "Interactions with Labels", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/interactionsWithLabels.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
