@@ -42,7 +42,7 @@ public class IMDPathwayTests {
 	public static List<IAssertion> all(SPARQLHelper helper, String format) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(allMetabolitesInteract(helper, format));
-		assertions.addAll(metabolicConversions(helper));
+		assertions.addAll(metabolicConversions(helper, format));
 		assertions.addAll(catalystsWithCommonDataSource(helper));
 		assertions.addAll(metabolicConversionIdentifiersCommon(helper, format));
 		assertions.addAll(diseasesHaveIdentifiers(helper));
@@ -63,7 +63,7 @@ public class IMDPathwayTests {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String wpURL = table.get(i, "url");
 				if ("text/markdown".equals(format)) {
-					errors += "* [" + wpURL + "](" + table.get(i, "url") + ") has an metabolite not linked to an interaction: " +
+					errors += "* " + asMarkdownLink(table.get(i, "url")) + " has an metabolite not linked to an interaction: " +
 						table.get(i, "metaboliteLabel") + "\n";
 				} else {
 					errors += table.get(i, "url") + " has an metabolite not linked to an interaction: " +
@@ -79,8 +79,8 @@ public class IMDPathwayTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> metabolicConversions(SPARQLHelper helper) throws Exception {
-		Test test = new Test("IEMPathwayTests", "metabolicConversions");
+	public static List<IAssertion> metabolicConversions(SPARQLHelper helper, String format) throws Exception {
+		Test test = new Test("IEMPathwayTests", "metabolicConversions", "Unexpected metabolic conversion", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("imd/metabolicConversions.rq");
 		StringMatrix table = helper.sparql(sparql);
@@ -89,12 +89,17 @@ public class IMDPathwayTests {
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
-			    errors += table.get(i, "url") + " " + table.get(i, "interaction") + "\n";
+				if ("text/markdown".equals(format)) {
+					errors += "* " + asMarkdownLink(table.get(i, "url")) + " " + table.get(i, "interaction") + "\n";
+				} else {
+					errors += table.get(i, "url") + " " + table.get(i, "interaction") + "\n";
+				}
 				errorCount++;
 			}
 		}
 		assertions.add(new AssertEquals(test,
-			0, errorCount, "Unexpected interactions, not from metabolite to metabolite and not from RNA to RNA: " + errorCount, errors
+			0, errorCount, "Unexpected interactions, not from metabolite to metabolite and not from RNA to RNA: " +
+		    errorCount, errors, format
 		));
 		return assertions;
 	}
@@ -138,7 +143,8 @@ public class IMDPathwayTests {
 	}};
 
 	public static List<IAssertion> metabolicConversionIdentifiersCommon(SPARQLHelper helper, String format) throws Exception {
-		Test test = new Test("IEMPathwayTests", "metabolicConversionIdentifiersCommon");
+		Test test = new Test("IEMPathwayTests", "metabolicConversionIdentifiersCommon",
+			"Common metabolite-metabolite conversion identifier", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("imd/metabolicConversionIdentifiers.rq");
 		StringMatrix table = helper.sparql(sparql);

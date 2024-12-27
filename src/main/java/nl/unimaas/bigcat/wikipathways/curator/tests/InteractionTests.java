@@ -311,7 +311,7 @@ public class InteractionTests {
 			}
 		}
 		assertions.add(new AssertEquals(test,
-			0, errorCount, "Interactions between identical nodes: " + errorCount, errors
+			0, errorCount, "Interactions between identical nodes: " + errorCount, errors, format
 		));
 		return assertions;
 	}
