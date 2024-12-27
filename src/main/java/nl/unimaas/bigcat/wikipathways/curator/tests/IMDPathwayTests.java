@@ -44,14 +44,15 @@ public class IMDPathwayTests {
 		assertions.addAll(allMetabolitesInteract(helper, format));
 		assertions.addAll(metabolicConversions(helper));
 		assertions.addAll(catalystsWithCommonDataSource(helper));
-		assertions.addAll(metabolicConversionIdentifiersCommon(helper));
+		assertions.addAll(metabolicConversionIdentifiersCommon(helper, format));
 		assertions.addAll(diseasesHaveIdentifiers(helper));
 		assertions.addAll(omimIdentifiers(helper));
 		return assertions;
 	}
 
 	public static List<IAssertion> allMetabolitesInteract(SPARQLHelper helper, String format) throws Exception {
-		Test test = new Test("IEMPathwayTests", "allMetabolitesInteract");
+		Test test = new Test("IEMPathwayTests", "allMetabolitesInteract",
+			"All metabolites are involved in interactions", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("imd/allMetabolitesInteract.rq");
 		StringMatrix table = helper.sparql(sparql);
@@ -136,7 +137,7 @@ public class IMDPathwayTests {
 		add("Reactome");
 	}};
 
-	public static List<IAssertion> metabolicConversionIdentifiersCommon(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> metabolicConversionIdentifiersCommon(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("IEMPathwayTests", "metabolicConversionIdentifiersCommon");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("imd/metabolicConversionIdentifiers.rq");
@@ -148,15 +149,23 @@ public class IMDPathwayTests {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String source = table.get(i, "interactionSource");
 				if (source != null && !commonCatalysisDataSources.contains(source)) {
-			        errors += table.get(i, "url") + " " + table.get(i, "interaction") + " " +
-				        table.get(i, "interactionSource") + " " +
-				        table.get(i, "interactionID") + "\n";
+					if ("text/markdown".equals(format)) {
+						errors += "* " + asMarkdownLink(table.get(i, "url")) + " " +
+							asMarkdownLink(table.get(i, "interaction")) + " " +
+							table.get(i, "interactionSource") + " " +
+							table.get(i, "interactionID") + "\n";
+					} else {
+						errors += table.get(i, "url") + " " + table.get(i, "interaction") + " " +
+							table.get(i, "interactionSource") + " " +
+							table.get(i, "interactionID") + "\n";
+					}
 				    errorCount++;
 				}
 			}
 		}
 		assertions.add(new AssertEquals(test,
-			0, errorCount, "Unexpected data source for the metabolic conversion: " + errorCount, errors
+			0, errorCount, "Unexpected data source for the metabolic conversion: " + errorCount,
+			errors, format
 		));
 		return assertions;
 	}
@@ -214,4 +223,8 @@ public class IMDPathwayTests {
 		return assertions;
 	}
 
+	private static String asMarkdownLink(String url) {
+		if (url.startsWith("http://classic.wikipathways.org/")) url = url.replace("_rr","_r"); // yeah, silly workaround
+		return "[" + url + "](" + url + ")";
+	}
 }

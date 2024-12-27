@@ -317,7 +317,7 @@ public class InteractionTests {
 	}
 
 	public static List<IAssertion> noProteinProteinConversions(SPARQLHelper helper, String format) throws Exception {
-		Test test = new Test("InteractionTests", "noProteinProteinConversions");
+		Test test = new Test("InteractionTests", "noProteinProteinConversions", "Protein converted into another protein", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/noProteinProteinConversions.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "pathway");
@@ -332,15 +332,21 @@ public class InteractionTests {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String protein1 = table.get(i, "protein1");
 				if (!allowedProteinSubstrates.contains(protein1)) {
-				    errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
-				    		protein1 + " " + table.get(i, "protein2") + " " +
-				        table.get(i, "interaction") + "\n";
+					if ("text/markdown".equals(format)) {
+						errors += "* " + table.get(i, "organism") + " " + asMarkdownLink(table.get(i, "pathway")) +
+							" -> " + asMarkdownLink(protein1) + " " + asMarkdownLink(table.get(i, "protein2")) +
+							" " + asMarkdownLink(table.get(i, "interaction")) + "\n";
+					} else {
+						errors += table.get(i, "organism") + " " + table.get(i, "pathway") + " -> " +
+					    	protein1 + " " + table.get(i, "protein2") + " " +
+					        table.get(i, "interaction") + "\n";
+					}
 					errorCount++;
 				}
 			}
 		}
 		assertions.add(new AssertEquals(test,
-			0, errorCount, "Unexpected protein-protein conversions: " + errorCount, errors
+			0, errorCount, "Unexpected protein-protein conversions: " + errorCount, errors, format
 		));
 		return assertions;
 	}

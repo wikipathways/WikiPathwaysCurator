@@ -54,13 +54,13 @@ public class UniProtTests {
 	add("C9JNK1");
 	}};
 
-	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> all(SPARQLHelper helper, String format) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(outdatedIdentifiers(helper));
 		assertions.addAll(deletedIdentifiers(helper));
-		assertions.addAll(unreviewedIdentifiers(helper));
-		assertions.addAll(incorrectIdentifiers(helper));
-		assertions.addAll(allP62805(helper));
+		assertions.addAll(unreviewedIdentifiers(helper, format));
+		assertions.addAll(incorrectIdentifiers(helper, format));
+		assertions.addAll(allP62805(helper, format));
 		return assertions;
 	}
 
@@ -112,8 +112,8 @@ public class UniProtTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> unreviewedIdentifiers(SPARQLHelper helper) throws Exception {
-		Test test = new Test("UniProtTests", "unreviewedIdentifiers");
+	public static List<IAssertion> unreviewedIdentifiers(SPARQLHelper helper, String format) throws Exception {
+		Test test = new Test("UniProtTests", "unreviewedIdentifiers", "Unreviewed UniProtKB identifiers", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("proteins/allUniProtIdentifiers.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
@@ -124,20 +124,26 @@ public class UniProtTests {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String identifier = table.get(i, "identifier");
 				if (unreviewed.contains(identifier)) {
-					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " + table.get(i, "identifier") +
-						  " is unreviewed, please visit UniProt (https://www.uniprot.org/uniprot/" +
-					      table.get(i, "identifier") + ") for (potential) reviewed version; \n";
+					if ("text/markdown".equals(format)) {
+						errors += "* " + asMarkdownLink(table.get(i, "homepage")) + " " + table.get(i, "label") + " " + table.get(i, "identifier") +
+						    " is unreviewed, please visit UniProt (https://www.uniprot.org/uniprot/" +
+					        table.get(i, "identifier") + ") for (potential) reviewed version; \n";
+					} else {
+						errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " + table.get(i, "identifier") +
+						    " is unreviewed, please visit UniProt (https://www.uniprot.org/uniprot/" +
+					        table.get(i, "identifier") + ") for (potential) reviewed version; \n";
+					}
 					errorCount++;
 				}
 			}
 		}
 		assertions.add(new AssertEquals(test,
-			0, errorCount, "Unreviewed UniProt identifiers: " + errorCount, errors
+			0, errorCount, "Unreviewed UniProt identifiers: " + errorCount, errors, format
 		));
 		return assertions;
 	}
 
-	public static List<IAssertion> incorrectIdentifiers(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> incorrectIdentifiers(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("UniProtTests", "incorrectIdentifiers");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("proteins/allUniProtIdentifiers.rq");
@@ -156,13 +162,13 @@ public class UniProtTests {
 			}
 		}
 		assertions.add(new AssertEquals(test,
-			0, errorCount, "Incorrect UniProt identifiers: " + errorCount, errors
+			0, errorCount, "Incorrect UniProt identifiers: " + errorCount, errors, format
 		));
 		return assertions;
 	}
 
-	public static List<IAssertion> allP62805(SPARQLHelper helper) throws Exception {
-		Test test = new Test("UniProtTests", "allP62805");
+	public static List<IAssertion> allP62805(SPARQLHelper helper, String format) throws Exception {
+		Test test = new Test("UniProtTests", "allP62805", "P62805 matches 14 genes", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("proteins/allUniProtP62805.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
@@ -172,14 +178,24 @@ public class UniProtTests {
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
 				String identifier = table.get(i, "identifier");
-				errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " + identifier +
-						  " may not be the identifier you intended (P62805 matches 14 different genes), please check; \n";
+				if ("text/markdown".equals(format)) {
+					errors += "* " + asMarkdownLink(table.get(i, "homepage")) + " " + table.get(i, "label") +
+						" uses " + identifier + "\n";
+				} else {
+					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " + identifier +
+						" may not be the identifier you intended (P62805 matches 14 different genes), please check; \n";
+				}
 				errorCount++;
 			}
 		}
 		assertions.add(new AssertEquals(test,
-			0, errorCount, "Potentially imprecise UniProt identifier: " + errorCount, errors
+			0, errorCount, "Potentially imprecise UniProt identifier: " + errorCount, errors, format
 		));
 		return assertions;
+	}
+
+	private static String asMarkdownLink(String url) {
+		if (url.startsWith("http://classic.wikipathways.org/")) url = url.replace("_rr","_r"); // yeah, silly workaround
+		return "[" + url + "](" + url + ")";
 	}
 }
