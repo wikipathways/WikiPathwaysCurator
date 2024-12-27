@@ -339,7 +339,7 @@ public class MetabolitesTests {
 	}
 
 	public static List<IAssertion> tooManyInChIKeys(SPARQLHelper helper, String format) throws Exception {
-		Test test = new Test("MetabolitesTests", "tooManyInChIKeys");
+		Test test = new Test("MetabolitesTests", "tooManyInChIKeys", "Too many InChIKeys for the used identifier", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/tooManyInChIKeys.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "examplePathway");

@@ -182,7 +182,7 @@ public class WikidataTests {
 	}
 
 	public static List<IAssertion> keggWithoutMapping(SPARQLHelper helper) throws Exception {
-		Test test = new Test("WikidataTests", "keggWithoutMapping");
+		Test test = new Test("WikidataTests", "keggWithoutMapping", "KEGG Compound identifier without a match in Wikidata", false);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteKEGG.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
@@ -206,7 +206,7 @@ public class WikidataTests {
 	}
 
 	public static List<IAssertion> pubchemCIDWithoutMapping(SPARQLHelper helper) throws Exception {
-		Test test = new Test("WikidataTests", "pubchemCIDWithoutMapping");
+		Test test = new Test("WikidataTests", "pubchemCIDWithoutMapping", "PubChem Compound identifier without a match in Wikidata", false);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metabolitePubChemCID.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
@@ -225,7 +225,7 @@ public class WikidataTests {
 	}
 
 	public static List<IAssertion> hmdbWithoutMapping(SPARQLHelper helper) throws Exception {
-		Test test = new Test("WikidataTests", "hmdbWithoutMapping");
+		Test test = new Test("WikidataTests", "hmdbWithoutMapping", "HMDB identifier without a match in Wikidata", false);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteHMDB.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
@@ -244,7 +244,7 @@ public class WikidataTests {
 	}
 
 	public static List<IAssertion> inchikeyWithoutMapping(SPARQLHelper helper) throws Exception {
-		Test test = new Test("WikidataTests", "inchikeyWithoutMapping");
+		Test test = new Test("WikidataTests", "inchikeyWithoutMapping", "InChIKey without a match in Wikidata", false);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteInChIKey.rq");
 		StringMatrix table = helper.sparql(sparql);
@@ -262,7 +262,7 @@ public class WikidataTests {
 	}
 
 	public static List<IAssertion> casWithoutMapping(SPARQLHelper helper) throws Exception {
-		Test test = new Test("WikidataTests", "casWithoutMapping");
+		Test test = new Test("WikidataTests", "casWithoutMapping", "CAS registry number without a match in Wikidata", false);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteCAS.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
@@ -386,7 +386,7 @@ public class WikidataTests {
 	}
 
 	public static List<IAssertion> chemspiderCIDWithoutMapping(SPARQLHelper helper) throws Exception {
-		Test test = new Test("WikidataTests", "chemspiderCIDWithoutMapping");
+		Test test = new Test("WikidataTests", "chemspiderCIDWithoutMapping", "ChemSpider Compound identifier without a match in Wikidata", false);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("missing/wikidata/metaboliteChemspider.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
