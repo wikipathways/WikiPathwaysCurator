@@ -108,6 +108,7 @@ public class IMDPathwayTests {
 	private static List<String> commonCatalystDataSources = new ArrayList<>() {{
 		add("NCBI Protein");
 		add("Uniprot-TrEMBL");
+		add("UniProtKB");
 		add("Ensembl");
 		add("Entrez Gene");
 		add("Enzyme Nomenclature");
