@@ -1,0 +1,21 @@
+prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+prefix dc:      <http://purl.org/dc/elements/1.1/>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix xsd:     <http://www.w3.org/2001/XMLSchema#>
+prefix wp:      <http://vocabularies.wikipathways.org/wp#>
+prefix foaf:    <http://xmlns.com/foaf/0.1/>
+
+select distinct ?homepage (str(?wpid) as ?pathway) (str(?title) as ?pathwayTitle)
+  ?geneTitle ?dataSource
+where {
+  ?gene a wp:GeneProduct ;
+    dcterms:identifier ?id ;
+    dcterms:isPartOf ?pathwayRes ;
+    rdfs:label ?geneTitle ;
+    dc:source ?dataSource .
+  MINUS { ?gene wp:bdbEnsembl ?ensId }
+  ?pathwayRes a wp:Pathway ;
+    foaf:page ?homepage ;
+    dcterms:identifier ?wpid ;
+    dc:title ?title .
+}

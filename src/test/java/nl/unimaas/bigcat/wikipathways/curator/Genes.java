@@ -77,4 +77,9 @@ public class Genes extends JUnitTests {
 		performAssertions(GeneTests.nonNumericHGNCAccessionNumbers(helper));
 	}
 
+	@Test
+	public void genesWithoutEnsemblMapping() throws Exception {
+		performAssertions(GeneTests.genesWithoutEnsemblMapping(helper));
+	}
+
 }

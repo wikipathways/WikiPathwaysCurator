@@ -50,6 +50,7 @@ public class GeneTests {
 		assertions.addAll(outdatedIdentifiers(helper));
 		assertions.addAll(numericHGNCIDs(helper));
 		assertions.addAll(nonNumericHGNCAccessionNumbers(helper));
+		assertions.addAll(genesWithoutEnsemblMapping(helper));
 		return assertions;
 	}
 
@@ -199,6 +200,27 @@ public class GeneTests {
 		}
 		assertions.add(new AssertEquals(test,
 			0, errorCount, "Found non-integer HGNC Accession numbers (did you mean 'HGNC'?): " + errorCount, errors
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> genesWithoutEnsemblMapping(SPARQLHelper helper) throws Exception {
+		Test test = new Test("GeneTests", "genesWithoutEnsemblMapping", "Genes with identifier but no Ensembl identifier mapping", true);
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("genes/allGenesWithoutEnsemblMapping.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errorCount++;
+				errors += table.get(i, "homepage") + " " + table.get(i, "geneTitle").replace('\n', ' ') +
+					" with datasource " + table.get(i, "dataSource") + "\n";
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "The following genes with an identifier have been found but that do not have a mapping to Ensembl: " + errorCount, errors
 		));
 		return assertions;
 	}
