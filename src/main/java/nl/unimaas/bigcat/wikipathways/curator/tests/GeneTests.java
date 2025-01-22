@@ -54,7 +54,7 @@ public class GeneTests {
 	}
 
 	public static List<IAssertion> entrezGeneIdentifiersNotNumber(SPARQLHelper helper) throws Exception {
-		Test test = new Test("GeneTests", "entrezGeneIdentifiersNotNumber");
+		Test test = new Test("GeneTests", "entrezGeneIdentifiersNotNumber", "NCBI Gene identifier is not an integer", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("genes/allEntrezGenesIdentifiers.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
