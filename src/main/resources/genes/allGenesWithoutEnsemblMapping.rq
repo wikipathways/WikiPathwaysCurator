@@ -13,6 +13,7 @@ where {
     dcterms:isPartOf ?pathwayRes ;
     rdfs:label ?geneTitle ;
     dc:source ?dataSource .
+  MINUS { ?gene dc:source "Enzyme Nomenclature" }
   MINUS { ?gene wp:bdbEnsembl ?ensId }
   ?pathwayRes a wp:Pathway ;
     foaf:page ?homepage ;
