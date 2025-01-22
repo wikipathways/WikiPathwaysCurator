@@ -67,7 +67,7 @@ public class UniProt extends JUnitTests {
 	@Test
 	public void unreviewedIdentifiers() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			performAssertions(UniProtTests.unreviewedIdentifiers(helper));
+			performAssertions(UniProtTests.unreviewedIdentifiers(helper, null));
 		});
 	}
 
@@ -81,7 +81,7 @@ public class UniProt extends JUnitTests {
 	@Test
 	public void incorrectIdentifiers() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			performAssertions(UniProtTests.incorrectIdentifiers(helper));
+			performAssertions(UniProtTests.incorrectIdentifiers(helper, null));
 		});
 	}
 
@@ -89,7 +89,7 @@ public class UniProt extends JUnitTests {
 	@Disabled
 	public void allP62805() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(20), () -> {
-			performAssertions(UniProtTests.allP62805(helper));
+			performAssertions(UniProtTests.allP62805(helper, null));
 		});
 	}
 }

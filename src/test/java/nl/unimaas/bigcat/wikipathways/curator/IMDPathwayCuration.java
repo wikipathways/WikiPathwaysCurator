@@ -61,7 +61,7 @@ public class IMDPathwayCuration extends JUnitTests {
 	@Test
 	@Tag("imd")
 	public void metabolicConversions() throws Exception {
-		performAssertions(IMDPathwayTests.metabolicConversions(helper));
+		performAssertions(IMDPathwayTests.metabolicConversions(helper, null));
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class IMDPathwayCuration extends JUnitTests {
 	@Test
 	@Tag("imd")
 	public void metabolicConversionIdentifiersCommon() throws Exception {
-		performAssertions(IMDPathwayTests.metabolicConversionIdentifiersCommon(helper));
+		performAssertions(IMDPathwayTests.metabolicConversionIdentifiersCommon(helper, null));
 	}
 
 	@Test
