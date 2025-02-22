@@ -58,6 +58,7 @@ public class MetabolitesTests {
 		assertions.addAll(PubChemIDsNotNumbers(helper));
 		assertions.addAll(PubChemSubstanceIDsNotNumbers(helper));
 		assertions.addAll(tooManyInChIKeys(helper, format));
+		assertions.addAll(achiralAminoAcids(helper));
 		return assertions;
 	}
 
@@ -375,4 +376,31 @@ public class MetabolitesTests {
 		if (url.startsWith("http://classic.wikipathways.org/")) url = url.replace("_rr","_r"); // yeah, silly workaround
 		return "[" + url + "](" + url + ")";
 	}
+
+	public static List<IAssertion> achiralAminoAcids(SPARQLHelper helper) throws Exception {
+		Test test = new Test("MetabolitesTests", "achiralAminoAcids");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/achiralAminoAcids.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "achiralAA");
+				try {
+					Integer.parseInt(identifier);
+				} catch (NumberFormatException exception) {
+					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " +
+				        table.get(i, "achiralAA").substring(30) + "\n";
+					errorCount++;
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Metabolites with ChEBI identifiers of achiral amino acids: " + errorCount, errors
+		));
+		return assertions;
+	}
+
 }

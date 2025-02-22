@@ -133,4 +133,10 @@ public class Metabolites extends JUnitTests {
 	public void tooManyInChIKeys() throws Exception {
 		performAssertions(MetabolitesTests.tooManyInChIKeys(helper, null));
 	}
+
+	@Test
+	public void achiralAminoAcids() throws Exception {
+		performAssertions(MetabolitesTests.achiralAminoAcids(helper));
+	}
+
 }
