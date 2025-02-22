@@ -54,6 +54,7 @@ public class PathwayTests {
 		assertions.addAll(testRoundedRectangle(helper));
 		assertions.addAll(youMustCite(helper));
 		assertions.addAll(oldLicenses(helper));
+		assertions.addAll(mediawikiLinks(helper));
 		return assertions;
 	}
 
@@ -206,6 +207,19 @@ public class PathwayTests {
 		assertions.add(new AssertNotNull(test, table));
 		assertions.add(new AssertEquals(test, 0, table.getRowCount(),
 			"Pathway description that contain 'you must cite': " + table.getRowCount(),
+			"" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> mediawikiLinks(SPARQLHelper helper) throws Exception {
+		Test test = new Test("PathwayTests", "mediawikiLinks");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("general/mediawikiLinks.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test, 0, table.getRowCount(),
+			"Pathways of which the description may contain MediaWiki-style links: " + table.getRowCount(),
 			"" + table
 		));
 		return assertions;

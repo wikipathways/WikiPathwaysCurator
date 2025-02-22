@@ -88,4 +88,9 @@ public class Pathways extends JUnitTests {
 		performAssertions(PathwayTests.oldLicenses(helper));
 	}
 
+	@Test
+	public void mediawikiLinks() throws Exception {
+		performAssertions(PathwayTests.mediawikiLinks(helper));
+	}
+
 }
