@@ -383,14 +383,13 @@ public class MetabolitesTests {
 		String sparql = ResourceHelper.resourceAsString("metabolite/achiralAminoAcids.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
+		Set<String> allowed = new HashSet<String>();
+		allowed.add("WP3953"); // has cysteine convert into L-cysteine
 		String errors = "";
 		int errorCount = 0;
 		if (table.getRowCount() > 0) {
 			for (int i=1; i<=table.getRowCount(); i++) {
-				String identifier = table.get(i, "achiralAA");
-				try {
-					Integer.parseInt(identifier);
-				} catch (NumberFormatException exception) {
+				if (!allowed.contains(table.get(i, "wpid"))) {
 					errors += table.get(i, "homepage") + " " + table.get(i, "label") + " " +
 				        table.get(i, "achiralAA").substring(30) + "\n";
 					errorCount++;

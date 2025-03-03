@@ -4,7 +4,7 @@ prefix dcterms: <http://purl.org/dc/terms/>
 prefix foaf:    <http://xmlns.com/foaf/0.1/>
 prefix CHEBI:   <https://identifiers.org/chebi/CHEBI:>
 
-select distinct ?homepage ?label ?achiralAA where {
+select distinct ?homepage ?wpid ?label ?achiralAA where {
   VALUES ?achiralAA {
     CHEBI:16449 CHEBI:29016 CHEBI:22653 CHEBI:22660 CHEBI:15356 CHEBI:28300
     CHEBI:28300 CHEBI:27570 CHEBI:24898 CHEBI:25017 CHEBI:25094
@@ -16,5 +16,6 @@ select distinct ?homepage ?label ?achiralAA where {
     dcterms:isPartOf ?pathway ;
     wp:bdbChEBI ?achiralAA .
   ?pathway a wp:Pathway ;
+    dcterms:identifier ?wpid ;
     foaf:page ?homepage .
 }
