@@ -1,7 +1,7 @@
-/* Copyright (C) 2013,2018-2022  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2013,2018-2025  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *   - Redistributions of source code must retain the above copyright
@@ -12,7 +12,7 @@
  *   - Neither the name of the <organization> nor the
  *     names of its contributors may be used to endorse or promote products
  *     derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -378,7 +378,7 @@ public class MetabolitesTests {
 	}
 
 	public static List<IAssertion> achiralAminoAcids(SPARQLHelper helper) throws Exception {
-		Test test = new Test("MetabolitesTests", "achiralAminoAcids");
+		Test test = new Test("MetabolitesTests", "achiralAminoAcids", "Identifier used of a amino acid with undefined stereochemistry", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("metabolite/achiralAminoAcids.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
