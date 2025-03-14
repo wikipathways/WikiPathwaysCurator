@@ -9,6 +9,9 @@ Currently, the GPML supports PubMed identifiers, DOIs, and ISBN numbers.
 
 The pathway does not cite a reference with a PubMed identifier, DOI, or ISBN.
 
+Because the current platform does not recognize URLs, it can occur that this curation suggestion shows
+up, despite there being a reference, being the URL (e.g. an online reference book from the NIH).
+
 ## Curation action
 
 An additional PubMed identifier or DOI can be added to the pathway.
