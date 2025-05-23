@@ -1,4 +1,4 @@
-/* Copyright (C) 2016,2018-2021  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2016-2025  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -99,6 +99,14 @@ public class Interactions extends JUnitTests {
 	public void interactionsWithLabels() throws Exception {
 		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
 			performAssertions(InteractionTests.interactionsWithLabels(helper, null));
+		});
+	}
+
+	@Tag("expertCuration")
+	@Test
+	public void interactionsWithUnconnectedPoints() throws Exception {
+		Assertions.assertTimeout(Duration.ofSeconds(30), () -> {
+			performAssertions(InteractionTests.interactionsWithUnconnectedPoints(helper, null));
 		});
 	}
 

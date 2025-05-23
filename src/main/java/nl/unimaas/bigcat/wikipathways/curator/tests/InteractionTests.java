@@ -55,6 +55,7 @@ public class InteractionTests {
 		assertions.addAll(noGeneProteinConversions(helper, format));
 		assertions.addAll(nonNumericIDs(helper, format));
 		assertions.addAll(interactionsWithLabels(helper, format));
+		assertions.addAll(interactionsWithUnconnectedPoints(helper, format));
 		assertions.addAll(possibleTranslocations(helper, format));
 		assertions.addAll(noProteinProteinConversions(helper, format));
 		assertions.addAll(incorrectKEGGIdentifiers(helper, format));
@@ -275,6 +276,29 @@ public class InteractionTests {
 		}
 		assertions.add(new AssertEquals(test,
 			0, errorCount, "Interactions found that involve Labels: " + errorCount, errors, format
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> interactionsWithUnconnectedPoints(SPARQLHelper helper, String format) throws Exception {
+		Test test = new Test("InteractionTests", "UnconnectedPoints", "Interactions with unconnected points", true);
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("interactions/interactionsWithUnconnectedPoints.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
+		System.out.println(table);
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = table.getRowCount();
+		if (errorCount > 0) {
+			String wpURL = table.get(1, "homepage"); 
+			if ("text/markdown".equals(format)) {
+				errors +=  "* [" + wpURL + "](" + wpURL + ")\n";
+			} else {
+				errors += wpURL + "\n";
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Interactions with unconnected points: " + errorCount, errors, format
 		));
 		return assertions;
 	}

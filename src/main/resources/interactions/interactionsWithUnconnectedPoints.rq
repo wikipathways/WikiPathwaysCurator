@@ -1,0 +1,20 @@
+prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+prefix cur: <http://vocabularies.wikipathways.org/wp#Curation:>
+prefix dc:      <http://purl.org/dc/elements/1.1/>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix xsd:     <http://www.w3.org/2001/XMLSchema#>
+prefix wp:      <http://vocabularies.wikipathways.org/wp#>
+prefix gpml:    <http://vocabularies.wikipathways.org/gpml#>
+prefix foaf:    <http://xmlns.com/foaf/0.1/>
+
+SELECT DISTINCT ?interaction ?homepage WHERE {
+  ?point a gpml:Point ; 
+         dcterms:isPartOf ?gpmlpathway ;
+         dcterms:isPartOf ?interaction .
+  ?interaction a gpml:Interaction .
+  MINUS { ?point gpml:graphRef ?idLit . }
+  ?wppathway a wp:Pathway ;
+             wp:isAbout ?gpmlpathway  ;
+             foaf:page ?homepage .
+  MINUS { ?wppathway wp:ontologyTag cur:Homology_Converted }
+}
