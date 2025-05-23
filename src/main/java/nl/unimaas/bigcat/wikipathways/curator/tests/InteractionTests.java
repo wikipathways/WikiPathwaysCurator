@@ -285,7 +285,6 @@ public class InteractionTests {
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("interactions/interactionsWithUnconnectedPoints.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
-		System.out.println(table);
 		assertions.add(new AssertNotNull(test, table));
 		String errors = "";
 		int errorCount = table.getRowCount();
