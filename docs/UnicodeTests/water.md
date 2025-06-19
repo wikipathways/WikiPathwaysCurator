@@ -1,6 +1,6 @@
 # Water chemical formula can use Unicode
 
-This test checks for labels of water data nodes which can use Unicode.
+This test checks for labels of water data nodes which can use [Unicode](https://en.wikipedia.org/wiki/Unicode_subscripts_and_superscripts#Superscripts_and_subscripts_block).
 
 ## Why does this test show up?
 
