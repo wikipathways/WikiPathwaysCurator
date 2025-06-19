@@ -61,7 +61,7 @@ public class UnicodeTests {
 			}
 		}
 		assertions.add(new AssertEquals(test, 
-			0, errorCount, "Metabolite can use H₂O instead of H2O: " + errorCount, errors
+			0, errorCount, "Metabolite can use H₂O instead of H2O: " + errorCount, errors, format
 		));
 		return assertions;
 	}
