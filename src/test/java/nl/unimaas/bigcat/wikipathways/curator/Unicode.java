@@ -56,4 +56,9 @@ public class Unicode extends JUnitTests {
 		performAssertions(UnicodeTests.water(helper, null));
 	}
 
+	@Test
+	public void calcium() throws Exception {
+		performAssertions(UnicodeTests.calcium(helper, null));
+	}
+
 }

@@ -42,6 +42,7 @@ public class UnicodeTests {
 	public static List<IAssertion> all(SPARQLHelper helper, String format) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(water(helper, format));
+		assertions.addAll(calcium(helper, format));
 		return assertions;
 	}
 
@@ -62,6 +63,27 @@ public class UnicodeTests {
 		}
 		assertions.add(new AssertEquals(test, 
 			0, errorCount, "Metabolite can use H₂O instead of H2O: " + errorCount, errors, format
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> calcium(SPARQLHelper helper, String format) throws Exception {
+		Test test = new Test("UnicodeTests", "calcium", "Calcium chemical formula can use Unicode", true);
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/unicode/calcium.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = table.getRowCount();
+		for (int i=1; i<=errorCount; i++) {
+			if ("text/markdown".equals(format)) {
+				errors += "* " + asMarkdownLink(table.get(i, "homepage")) + "\n" ;
+			} else {
+				errors += table.get(i, "homepage") + "\n" ;
+			}
+		}
+		assertions.add(new AssertEquals(test, 
+			0, errorCount, "Metabolite can use Ca²⁺ instead of Ca2+: " + errorCount, errors, format
 		));
 		return assertions;
 	}
