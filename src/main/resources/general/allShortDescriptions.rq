@@ -1,0 +1,10 @@
+prefix wp:      <http://vocabularies.wikipathways.org/wp#>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix foaf:    <http://xmlns.com/foaf/0.1/>
+
+SELECT ?homepage ?description WHERE {
+  ?pathway a wp:Pathway ;
+           dcterms:description ?description ;
+           foaf:page ?homepage .
+  FILTER (strlen(str(?description)) > 0 && strlen(str(?description)) < 50)
+}

@@ -225,6 +225,32 @@ public class PathwayTests {
 		return assertions;
 	}
 
+	public static List<IAssertion> allEmptyDescriptions(SPARQLHelper helper) throws Exception {
+		Test test = new Test("PathwayTests", "allEmptyDescriptions");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("general/allEmptyDescriptions.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test, 0, table.getRowCount(),
+			"Pathways of with an empty description: " + table.getRowCount(),
+			"" + table
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> allShortDescriptions(SPARQLHelper helper) throws Exception {
+		Test test = new Test("PathwayTests", "allShortDescriptions");
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("general/allShortDescriptions.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
+		assertions.add(new AssertNotNull(test, table));
+		assertions.add(new AssertEquals(test, 0, table.getRowCount(),
+			"Pathways of with an empty description: " + table.getRowCount(),
+			"" + table
+		));
+		return assertions;
+	}
+
 	@SuppressWarnings("serial")
 	private static Set<String> acceptableLicenses = new HashSet<String>() {{
 		this.add("CCZero");
