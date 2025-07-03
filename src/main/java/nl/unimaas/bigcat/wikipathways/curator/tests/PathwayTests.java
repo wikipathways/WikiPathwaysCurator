@@ -55,6 +55,8 @@ public class PathwayTests {
 		assertions.addAll(youMustCite(helper));
 		assertions.addAll(oldLicenses(helper));
 		assertions.addAll(mediawikiLinks(helper));
+		assertions.addAll(allEmptyDescriptions(helper));
+		assertions.addAll(allShortDescriptions(helper));
 		return assertions;
 	}
 
