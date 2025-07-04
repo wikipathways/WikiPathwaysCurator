@@ -45,7 +45,7 @@ public class PathwayTests {
 
 	private static final Map<String,String> deprecated = BridgeDbTiwidReader.parseCSV("tiwid/wikipathways.csv");
 
-	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> all(SPARQLHelper helper, String format) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(deletedPathways(helper));
 		assertions.addAll(linksToDeletedPathways(helper));
@@ -54,9 +54,9 @@ public class PathwayTests {
 		assertions.addAll(testRoundedRectangle(helper));
 		assertions.addAll(youMustCite(helper));
 		assertions.addAll(oldLicenses(helper));
-		assertions.addAll(mediawikiLinks(helper));
-		assertions.addAll(allEmptyDescriptions(helper));
-		assertions.addAll(allShortDescriptions(helper));
+		assertions.addAll(mediawikiLinks(helper, format));
+		assertions.addAll(allEmptyDescriptions(helper, format));
+		assertions.addAll(allShortDescriptions(helper, format));
 		return assertions;
 	}
 
@@ -214,43 +214,83 @@ public class PathwayTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> mediawikiLinks(SPARQLHelper helper) throws Exception {
+	public static List<IAssertion> mediawikiLinks(SPARQLHelper helper, String format) throws Exception {
 		Test test = new Test("PathwayTests", "mediawikiLinks");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/mediawikiLinks.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
-		assertions.add(new AssertEquals(test, 0, table.getRowCount(),
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errorCount++;
+				if ("text/markdown".equals(format)) {
+					errors += "* " + asMarkdownLink(table.get(i, "homepage"));
+				} else {
+					errors += table.get(i, "homepage") + "\n";
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test, 0, errorCount,
 			"Pathways of which the description may contain MediaWiki-style links: " + table.getRowCount(),
-			"" + table
+			errors
 		));
 		return assertions;
 	}
 
-	public static List<IAssertion> allEmptyDescriptions(SPARQLHelper helper) throws Exception {
-		Test test = new Test("PathwayTests", "allEmptyDescriptions");
+	public static List<IAssertion> allEmptyDescriptions(SPARQLHelper helper, String format) throws Exception {
+		Test test = new Test("PathwayTests", "allEmptyDescriptions", "Pathway description is empty", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/allEmptyDescriptions.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
-		assertions.add(new AssertEquals(test, 0, table.getRowCount(),
-			"Pathways of with an empty description: " + table.getRowCount(),
-			"" + table
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errorCount++;
+				if ("text/markdown".equals(format)) {
+					errors += "* " + asMarkdownLink(table.get(i, "homepage"));
+				} else {
+					errors += table.get(i, "homepage") + "\n";
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test, 0, errorCount,
+			"Pathways of with an empty description: " + table.getRowCount(), errors
 		));
 		return assertions;
 	}
 
-	public static List<IAssertion> allShortDescriptions(SPARQLHelper helper) throws Exception {
-		Test test = new Test("PathwayTests", "allShortDescriptions");
+	public static List<IAssertion> allShortDescriptions(SPARQLHelper helper, String format) throws Exception {
+		Test test = new Test("PathwayTests", "allShortDescriptions", "Pathway description is too short", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/allShortDescriptions.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
 		assertions.add(new AssertNotNull(test, table));
-		assertions.add(new AssertEquals(test, 0, table.getRowCount(),
-			"Pathways of with an empty description: " + table.getRowCount(),
-			"" + table
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errorCount++;
+				if ("text/markdown".equals(format)) {
+					errors += "* " + asMarkdownLink(table.get(i, "homepage"));
+				} else {
+					errors += table.get(i, "homepage") + "\n";
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test, 0, errorCount,
+			"Pathways of with a very short description: " + table.getRowCount(),
+			errors
 		));
 		return assertions;
+	}
+
+	private static String asMarkdownLink(String url) {
+		if (url.startsWith("http://classic.wikipathways.org/")) url = url.replace("_rr","_r"); // yeah, silly workaround
+		return "[" + url + "](" + url + ")";
 	}
 
 	@SuppressWarnings("serial")
