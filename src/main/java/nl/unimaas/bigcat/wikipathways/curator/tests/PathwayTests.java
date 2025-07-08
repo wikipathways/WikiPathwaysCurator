@@ -258,7 +258,7 @@ public class PathwayTests {
 			}
 		}
 		assertions.add(new AssertEquals(test, 0, errorCount,
-			"Pathways of with an empty description: " + table.getRowCount(), errors
+			"Pathways of with an empty description: " + table.getRowCount(), errors, format
 		));
 		return assertions;
 	}
@@ -283,7 +283,7 @@ public class PathwayTests {
 		}
 		assertions.add(new AssertEquals(test, 0, errorCount,
 			"Pathways of with a very short description: " + table.getRowCount(),
-			errors
+			errors, format
 		));
 		return assertions;
 	}
