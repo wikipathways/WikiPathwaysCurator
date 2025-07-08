@@ -90,17 +90,22 @@ public class Pathways extends JUnitTests {
 
 	@Test
 	public void mediawikiLinks() throws Exception {
-		performAssertions(PathwayTests.mediawikiLinks(helper));
+		performAssertions(PathwayTests.mediawikiLinks(helper, null));
 	}
 
 	@Test
 	public void allEmptyDescriptions() throws Exception {
-		performAssertions(PathwayTests.allEmptyDescriptions(helper));
+		performAssertions(PathwayTests.allEmptyDescriptions(helper, null));
 	}
 
 	@Test
 	public void allShortDescriptions() throws Exception {
-		performAssertions(PathwayTests.allShortDescriptions(helper));
+		performAssertions(PathwayTests.allShortDescriptions(helper, null));
+	}
+
+	@Test
+	public void multipleDescriptions() throws Exception {
+		performAssertions(PathwayTests.multipleDescriptions(helper, null));
 	}
 
 }

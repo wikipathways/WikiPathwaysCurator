@@ -57,6 +57,7 @@ public class PathwayTests {
 		assertions.addAll(mediawikiLinks(helper, format));
 		assertions.addAll(allEmptyDescriptions(helper, format));
 		assertions.addAll(allShortDescriptions(helper, format));
+		assertions.addAll(multipleDescriptions(helper, format));
 		return assertions;
 	}
 
@@ -283,6 +284,33 @@ public class PathwayTests {
 		}
 		assertions.add(new AssertEquals(test, 0, errorCount,
 			"Pathways of with a very short description: " + table.getRowCount(),
+			errors, format
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> multipleDescriptions(SPARQLHelper helper, String format) throws Exception {
+		Test test = new Test("PathwayTests", "multipleDescriptions", "Pathway has more than one GPML description", false);
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("general/multipleDescriptions.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errorCount++;
+				String description = table.get(i, "description2").replaceAll("\n", " ");
+				if ("text/markdown".equals(format)) {
+					errors += "* " + asMarkdownLink(table.get(i, "homepage")) + " has description: \"" +
+						description + "\"\n";
+				} else {
+					errors += table.get(i, "homepage") + " has description: \"" + description + "\"\n";
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test, 0, errorCount,
+			"Number of pathway GPML descriptions: " + table.getRowCount(),
 			errors, format
 		));
 		return assertions;

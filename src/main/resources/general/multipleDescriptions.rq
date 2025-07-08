@@ -1,0 +1,15 @@
+prefix wp:      <http://vocabularies.wikipathways.org/wp#>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix foaf:    <http://xmlns.com/foaf/0.1/>
+
+SELECT DISTINCT ?descriptionCount ?homepage ?description2 WHERE {
+  ?pathway dcterms:description ?description2 ;
+           foaf:page ?homepage .
+  FILTER (?descriptionCount > 1)
+  {
+    SELECT ?pathway (COUNT(DISTINCT ?description) AS ?descriptionCount) WHERE {
+      ?pathway a wp:Pathway ;
+           dcterms:description ?description .
+    } GROUP BY ?pathway
+  }
+} ORDER BY DESC(?descriptionCount) ?homepage ?description2
