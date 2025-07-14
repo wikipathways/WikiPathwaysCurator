@@ -235,7 +235,7 @@ public class PathwayTests {
 		}
 		assertions.add(new AssertEquals(test, 0, errorCount,
 			"Pathways of which the description may contain MediaWiki-style links: " + table.getRowCount(),
-			errors
+			errors, format
 		));
 		return assertions;
 	}
