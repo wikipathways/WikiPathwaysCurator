@@ -61,4 +61,19 @@ public class Unicode extends JUnitTests {
 		performAssertions(UnicodeTests.calcium(helper, null));
 	}
 
+	@Test
+	public void hydron() throws Exception {
+		performAssertions(UnicodeTests.hydron(helper, null));
+	}
+
+	@Test
+	public void potassium() throws Exception {
+		performAssertions(UnicodeTests.potassium(helper, null));
+	}
+
+	@Test
+	public void sodium() throws Exception {
+		performAssertions(UnicodeTests.sodium(helper, null));
+	}
+
 }
