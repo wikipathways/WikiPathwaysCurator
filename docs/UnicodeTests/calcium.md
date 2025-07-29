@@ -4,7 +4,7 @@ This test checks for labels of calcium ion data nodes which can use [Unicode](ht
 
 ## Why does this test show up?
 
-For a calcium ion data node the label Ca2+ is used, but the chemically more correct Unicode
+For a calcium ion data node the label Ca2+ or Ca++ (or a variation) is used, but the chemically more correct Unicode
 version Ca²⁺ can be used.
 
 ## Curation action
