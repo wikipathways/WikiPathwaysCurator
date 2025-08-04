@@ -42,12 +42,16 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 public class GeneTests {
 
 	private static final Map<String,String> deprecated = BridgeDbTiwidReader.parseCSV("tiwid/hgnc.csv");
+	private static final Map<String,String> deprecated2 = BridgeDbTiwidReader.parseTSV("outdated/HGNC_secID2priID.tsv", 3, 1);
+	private static final Map<String,String> deprecated3 = BridgeDbTiwidReader.parseTSV("outdated/HGNC_secID2priID.tsv", 2, 0);
 
 	public static List<IAssertion> all(SPARQLHelper helper) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(entrezGeneIdentifiersNotNumber(helper));
 		assertions.addAll(affyProbeIdentifiersNotCorrect(helper));
 		assertions.addAll(outdatedIdentifiers(helper));
+		assertions.addAll(outdatedIdentifiers2(helper));
+		assertions.addAll(outdatedIdentifiers3(helper));
 		assertions.addAll(numericHGNCIDs(helper));
 		assertions.addAll(nonNumericHGNCAccessionNumbers(helper));
 		assertions.addAll(genesWithoutEnsemblMapping(helper));
@@ -134,7 +138,7 @@ public class GeneTests {
 				String identifier = table.get(i, "identifier");
 				if (deprecated.containsKey(identifier)) {
 					errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
-						" has " + identifier + " but has been replace by " +
+						" has " + identifier + " but has been replaced by " +
 						deprecated.get(identifier) + "\n";
 					errorCount++;
 				}
@@ -146,8 +150,61 @@ public class GeneTests {
 		return assertions;
 	}
 
+	public static List<IAssertion> outdatedIdentifiers2(SPARQLHelper helper) throws Exception {
+		Test test = new Test("GeneTests", "outdatedIdentifiers2", "HGNC Symbol has been retracted", false);
+		// Getting the data
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("genes/allHGNCIdentifiers.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				if (deprecated2.containsKey(identifier)) {
+					errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+						" has " + identifier + " but has been replaced by " +
+						deprecated2.get(identifier) + "\n";
+					errorCount++;
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Old HGNC Symbol detected: " + errorCount, errors
+		));
+		return assertions;
+	}
+
+
+	public static List<IAssertion> outdatedIdentifiers3(SPARQLHelper helper) throws Exception {
+		Test test = new Test("GeneTests", "outdatedIdentifiers3", "HGNC Accession number has been retracted", false);
+		// Getting the data
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("genes/allHGNCAccessionIdentifiers.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = "HGNC:" + table.get(i, "identifier");
+				if (deprecated3.containsKey(identifier)) {
+					errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+						" has HGNC Accession " + identifier + " but has been replaced by " +
+						deprecated3.get(identifier) + "\n";
+					errorCount++;
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Old HGNC Accession numbers detected: " + errorCount, errors
+		));
+		return assertions;
+	}
+
 	public static List<IAssertion> numericHGNCIDs(SPARQLHelper helper) throws Exception {
-		Test test = new Test("GeneTests", "outdatedIdentifiers");
+		Test test = new Test("GeneTests", "numericHGNCIDs");
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("genes/allHGNCIdentifiers.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");

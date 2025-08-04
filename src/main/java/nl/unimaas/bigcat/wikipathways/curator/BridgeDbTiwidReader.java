@@ -46,22 +46,41 @@ public class BridgeDbTiwidReader {
 		return parse(tiwidResource, "\t");
 	}
 
+	/* Reads TSV files with at least enough columns.
+	 */
+	public static Map<String,String> parseTSV(String tiwidResource, int firstColumn, int secondColumn) {
+		return parse(tiwidResource, "\t", firstColumn, secondColumn);
+	}
+
+	/* Reads CSV files with at least enough columns.
+	 */
+	public static Map<String,String> parseCSV(String tiwidResource, int firstColumn, int secondColumn) {
+		return parse(tiwidResource, ",", firstColumn, secondColumn);
+	}
+
 	/* Reads Tiwid files in a file with with three columns separated by the given delimeter.
 	 * Columns are expected to be: deprecated ID, date of deprecation, replacing ID.
 	 */
 	private static Map<String,String> parse(String tiwidResource, String delim) {
+		return parse(tiwidResource, delim, 0, 2);
+	}
+
+	/* Reads TSV files in a file with two columns as given in the parameters. The index starts at zero.
+	 */
+	private static Map<String,String> parse(String resource, String delim, int firstColumn, int secondColumn) {
 		Map<String,String> deprecated = new HashMap<String,String>();
-		String tiwidData = ResourceHelper.resourceAsString(tiwidResource);
+		String tiwidData = ResourceHelper.resourceAsString(resource);
 		BufferedReader reader = new BufferedReader(new StringReader(tiwidData));
+		int columns = Math.max(firstColumn, secondColumn);
 		String line;
 		try {
 			while ((line = reader.readLine()) != null) {
 				if (line.startsWith("#")) continue;
 				String fields[] = line.split(delim);
-				if (fields.length > 2) {
-					deprecated.put(fields[0], fields[2]);
+				if (fields.length > columns) {
+					deprecated.put(fields[firstColumn], fields[secondColumn]);
 				} else {
-					deprecated.put(fields[0], null);
+					deprecated.put(fields[firstColumn], null);
 				}
 			}
 		} catch (IOException e) {
