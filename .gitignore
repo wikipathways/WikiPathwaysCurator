@@ -5,3 +5,5 @@ target/
 *.patch
 *.orig
 dependency-reduced-pom.xml
+
+src/main/resources/outdated/NCBI_secID2priID.tsv

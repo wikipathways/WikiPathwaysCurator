@@ -69,7 +69,14 @@ public class BridgeDbTiwidReader {
 	 */
 	private static Map<String,String> parse(String resource, String delim, int firstColumn, int secondColumn) {
 		Map<String,String> deprecated = new HashMap<String,String>();
-		String tiwidData = ResourceHelper.resourceAsString(resource);
+		String tiwidData = "";
+		try {
+			tiwidData = ResourceHelper.resourceAsString(resource);
+		} catch (Exception exception) {
+			// resource not found. Some files are too big for the repository, and we want the tests to run without them too
+			System.out.println("Could not find the resource: " + resource);
+			return deprecated;
+		}
 		BufferedReader reader = new BufferedReader(new StringReader(tiwidData));
 		int columns = Math.max(firstColumn, secondColumn);
 		String line;
