@@ -44,6 +44,7 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 public class UniProtTests {
 
 	private static final Map<String,String> deprecated = BridgeDbTiwidReader.parseCSV("tiwid/uniprot.csv");
+	private static final Map<String,String> deprecated2 = BridgeDbTiwidReader.parseTSV("outdated/UniProt_secID2priID.tsv", 1, 0);
 
 	@SuppressWarnings({ "serial" })
 	private static final Set<String> unreviewed = new HashSet<String>() {{ //Unreviewed IDs; website doesn't contains replacement info
@@ -61,6 +62,7 @@ public class UniProtTests {
 		assertions.addAll(unreviewedIdentifiers(helper, format));
 		assertions.addAll(incorrectIdentifiers(helper, format));
 		assertions.addAll(allP62805(helper, format));
+		assertions.addAll(outdatedUniProtKBIdentifiers(helper, format));
 		return assertions;
 	}
 
@@ -198,4 +200,41 @@ public class UniProtTests {
 		if (url.startsWith("http://classic.wikipathways.org/")) url = url.replace("_rr","_r"); // yeah, silly workaround
 		return "[" + url + "](" + url + ")";
 	}
+
+	public static List<IAssertion> outdatedUniProtKBIdentifiers(SPARQLHelper helper, String format) throws Exception {
+		Test test = new Test("UniProtTests", "outdatedUniProtKBIdentifiers", "UniProtKB identifier has been retracted", false);
+		// Getting the data
+		List<IAssertion> assertions = new ArrayList<>();
+		if (deprecated2.size() == 0) {
+			return assertions; // data file did not load, so no fails. the file is large and doesn't fit the repo
+		}
+		
+		String sparql = ResourceHelper.resourceAsString("proteins/allUniProtIdentifiers.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				if (deprecated2.containsKey(identifier)) {
+					if ("text/markdown".equals(format)) {
+					    errors += "* " + asMarkdownLink(table.get(i, "homepage")) + " " + table.get(i, "label").replace('\n', ' ') +
+					    	" has UniProtKB [" + identifier + "](https://bioregistry.io/uniprot:" + identifier + ") but has been replaced by " +
+					    	deprecated2.get(identifier) + "\n";
+					} else {
+						errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+						    	" has UniProtKB " + identifier + " but has been replaced by " +
+						    	deprecated2.get(identifier) + "\n";
+					}
+					errorCount++;
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Old UniProtKB identifiers detected: " + errorCount, errors, format
+		));
+		return assertions;
+	}
+
 }
