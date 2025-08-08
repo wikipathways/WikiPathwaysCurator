@@ -76,4 +76,14 @@ public class Unicode extends JUnitTests {
 		performAssertions(UnicodeTests.sodium(helper, null));
 	}
 
+	@Test
+	public void carbondioxide() throws Exception {
+		performAssertions(UnicodeTests.carbondioxide(helper, null));
+	}
+
+	@Test
+	public void oxygen() throws Exception {
+		performAssertions(UnicodeTests.oxygen(helper, null));
+	}
+
 }

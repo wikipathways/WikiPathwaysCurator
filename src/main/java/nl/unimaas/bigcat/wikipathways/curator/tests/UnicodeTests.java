@@ -46,6 +46,8 @@ public class UnicodeTests {
 		assertions.addAll(hydron(helper, format));
 		assertions.addAll(sodium(helper, format));
 		assertions.addAll(potassium(helper, format));
+		assertions.addAll(oxygen(helper, format));
+		assertions.addAll(carbondioxide(helper, format));
 		return assertions;
 	}
 
@@ -157,6 +159,48 @@ public class UnicodeTests {
 	private static String asMarkdownLink(String url) {
 		if (url.startsWith("http://classic.wikipathways.org/")) url = url.replace("_rr","_r"); // yeah, silly workaround
 		return "[" + url + "](" + url + ")";
+	}
+
+	public static List<IAssertion> carbondioxide(SPARQLHelper helper, String format) throws Exception {
+		Test test = new Test("UnicodeTests", "carbondioxide", "The carbon dioxide chemical formula can use Unicode", true);
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/unicode/carbondioxide.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = table.getRowCount();
+		for (int i=1; i<=errorCount; i++) {
+			if ("text/markdown".equals(format)) {
+				errors += "* " + asMarkdownLink(table.get(i, "homepage")) + "\n" ;
+			} else {
+				errors += table.get(i, "homepage") + "\n" ;
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Metabolite can use CO₂ instead of CO2: " + errorCount, errors, format
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> oxygen(SPARQLHelper helper, String format) throws Exception {
+		Test test = new Test("UnicodeTests", "oxygen", "The oxygen chemical formula can use Unicode", true);
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/unicode/oxygen.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = table.getRowCount();
+		for (int i=1; i<=errorCount; i++) {
+			if ("text/markdown".equals(format)) {
+				errors += "* " + asMarkdownLink(table.get(i, "homepage")) + "\n" ;
+			} else {
+				errors += table.get(i, "homepage") + "\n" ;
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Metabolite can use O₂ instead of O2: " + errorCount, errors, format
+		));
+		return assertions;
 	}
 
 }
