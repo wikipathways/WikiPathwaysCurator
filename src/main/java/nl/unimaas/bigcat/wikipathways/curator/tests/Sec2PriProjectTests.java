@@ -54,7 +54,7 @@ public class Sec2PriProjectTests {
 	}
 
 	public static List<IAssertion> outdatedIdentifiers2(SPARQLHelper helper, String format) throws Exception {
-		Test test = new Test("GeneTests", "outdatedIdentifiers2", "HGNC Symbol has been retracted", false);
+		Test test = new Test("Sec2PriProjectTests", "outdatedIdentifiers2", "HGNC Symbol has been retracted", false);
 		// Getting the data
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("genes/allHGNCIdentifiers.rq");
@@ -87,7 +87,7 @@ public class Sec2PriProjectTests {
 
 
 	public static List<IAssertion> outdatedIdentifiers3(SPARQLHelper helper, String format) throws Exception {
-		Test test = new Test("GeneTests", "outdatedIdentifiers3", "HGNC Accession number has been retracted", false);
+		Test test = new Test("Sec2PriProjectTests", "outdatedIdentifiers3", "HGNC Accession number has been retracted", false);
 		// Getting the data
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("genes/allHGNCAccessionIdentifiers.rq");
@@ -124,7 +124,7 @@ public class Sec2PriProjectTests {
 	}
 
 	public static List<IAssertion> outdatedNCBIIdentifiers(SPARQLHelper helper, String format) throws Exception {
-		Test test = new Test("GeneTests", "outdatedNCBIIdentifiers", "NCBI Gene identifier has been retracted", false);
+		Test test = new Test("Sec2PriProjectTests", "outdatedNCBIIdentifiers", "NCBI Gene identifier has been retracted", false);
 		// Getting the data
 		List<IAssertion> assertions = new ArrayList<>();
 		if (deprecated4.size() == 0) return assertions; // data file did not load, so no fails. the file is large and doesn't fit the repo
