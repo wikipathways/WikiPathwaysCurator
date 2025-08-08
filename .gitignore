@@ -7,3 +7,5 @@ target/
 dependency-reduced-pom.xml
 
 src/main/resources/outdated/NCBI_secID2priID.tsv
+src/main/resources/outdated/HMDB_secID2priID.tsv
+src/main/resources/outdated/UniProt_secID2priID.tsv

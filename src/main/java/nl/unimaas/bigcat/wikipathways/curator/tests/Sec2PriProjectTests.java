@@ -41,20 +41,26 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 
 public class Sec2PriProjectTests {
 
+	private static final Map<String,String> deprecated1 = BridgeDbTiwidReader.parseTSV("outdated/ChEBI_secID2priID.tsv", 1, 0);
 	private static final Map<String,String> deprecated2 = BridgeDbTiwidReader.parseTSV("outdated/HGNC_secID2priID.tsv", 3, 1);
 	private static final Map<String,String> deprecated3 = BridgeDbTiwidReader.parseTSV("outdated/HGNC_secID2priID.tsv", 2, 0);
 	private static final Map<String,String> deprecated4 = BridgeDbTiwidReader.parseTSV("outdated/NCBI_secID2priID.tsv", 1, 0);
+	private static final Map<String,String> deprecated5 = BridgeDbTiwidReader.parseTSV("outdated/HMDB_secID2priID.tsv", 1, 0);
+	private static final Map<String,String> deprecated6 = BridgeDbTiwidReader.parseTSV("outdated/UniProt_secID2priID.tsv", 1, 0);
 
 	public static List<IAssertion> all(SPARQLHelper helper, String format) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
-		assertions.addAll(outdatedIdentifiers2(helper, format));
-		assertions.addAll(outdatedIdentifiers3(helper, format));
+		assertions.addAll(outdatedHGNCSymbol(helper, format));
+		assertions.addAll(outdatedHGNCAccessionNumber(helper, format));
 		assertions.addAll(outdatedNCBIIdentifiers(helper, format));
+		assertions.addAll(outdatedChEBIIdentifiers(helper, format));
+		assertions.addAll(outdatedHMDBIdentifiers(helper, format));
+		assertions.addAll(outdatedUniProtKBIdentifiers2(helper, format));
 		return assertions;
 	}
 
-	public static List<IAssertion> outdatedIdentifiers2(SPARQLHelper helper, String format) throws Exception {
-		Test test = new Test("Sec2PriProjectTests", "outdatedIdentifiers2", "HGNC Symbol has been retracted", false);
+	public static List<IAssertion> outdatedHGNCSymbol(SPARQLHelper helper, String format) throws Exception {
+		Test test = new Test("Sec2PriProjectTests", "outdatedHGNCSymbol", "HGNC Symbol has been retracted", false);
 		// Getting the data
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("genes/allHGNCIdentifiers.rq");
@@ -86,8 +92,8 @@ public class Sec2PriProjectTests {
 	}
 
 
-	public static List<IAssertion> outdatedIdentifiers3(SPARQLHelper helper, String format) throws Exception {
-		Test test = new Test("Sec2PriProjectTests", "outdatedIdentifiers3", "HGNC Accession number has been retracted", false);
+	public static List<IAssertion> outdatedHGNCAccessionNumber(SPARQLHelper helper, String format) throws Exception {
+		Test test = new Test("Sec2PriProjectTests", "outdatedHGNCAccessionNumber", "HGNC Accession number has been retracted", false);
 		// Getting the data
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("genes/allHGNCAccessionIdentifiers.rq");
@@ -153,6 +159,109 @@ public class Sec2PriProjectTests {
 		}
 		assertions.add(new AssertEquals(test,
 			0, errorCount, "Old NCBI Gene identifiers detected: " + errorCount, errors, format
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> outdatedChEBIIdentifiers(SPARQLHelper helper, String format) throws Exception {
+		Test test = new Test("Sec2PriProjectTests", "outdatedChEBIIdentifiers", "ChEBI identifier has been retracted", false);
+		// Getting the data
+		List<IAssertion> assertions = new ArrayList<>();
+		if (deprecated1.size() == 0) return assertions; // data file did not load, so no fails. the file is large and doesn't fit the repo
+		
+		String sparql = ResourceHelper.resourceAsString("metabolite/allChEBIIdentifiers.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				if (!(identifier.startsWith("CHEBI:"))) identifier = "CHEBI:" + identifier;
+				if (deprecated1.containsKey(identifier)) {
+					if ("text/markdown".equals(format)) {
+					    errors += "* " + asMarkdownLink(table.get(i, "homepage")) + " " + table.get(i, "label").replace('\n', ' ') +
+					    	" has ChEBI ID [" + identifier + "](https://bioregistry.io/" + identifier + ") but has been replaced by " +
+					    	deprecated1.get(identifier) + "\n";
+					} else {
+						errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+					    	" has ChEBI ID " + identifier + " but has been replaced by " +
+					    	deprecated1.get(identifier) + "\n";
+					}
+					errorCount++;
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Old ChEBI identifiers detected: " + errorCount, errors, format
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> outdatedHMDBIdentifiers(SPARQLHelper helper, String format) throws Exception {
+		Test test = new Test("Sec2PriProjectTests", "outdatedHMDBIdentifiers", "HMDB identifier has been retracted", false);
+		// Getting the data
+		List<IAssertion> assertions = new ArrayList<>();
+		if (deprecated5.size() == 0) return assertions; // data file did not load, so no fails. the file is large and doesn't fit the repo
+		
+		String sparql = ResourceHelper.resourceAsString("metabolite/allHMDBIdentifiers.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				if (deprecated5.containsKey(identifier)) {
+					if ("text/markdown".equals(format)) {
+					    errors += "* " + asMarkdownLink(table.get(i, "homepage")) + " " + table.get(i, "label").replace('\n', ' ') +
+					    	" has HMDB ID [" + identifier + "](https://bioregistry.io/hmdb:" + identifier + ") but has been replaced by " +
+					    	deprecated5.get(identifier) + "\n";
+					} else {
+						errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+					    	" has HMDB ID " + identifier + " but has been replaced by " +
+					    	deprecated5.get(identifier) + "\n";
+					}
+					errorCount++;
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Old HMDB identifiers detected: " + errorCount, errors, format
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> outdatedUniProtKBIdentifiers2(SPARQLHelper helper, String format) throws Exception {
+		Test test = new Test("Sec2PriProjectTests", "outdatedUniProtKBIdentifiers2", "UniProtKB identifier has been retracted", false);
+		// Getting the data
+		List<IAssertion> assertions = new ArrayList<>();
+		if (deprecated6.size() == 0) return assertions; // data file did not load, so no fails. the file is large and doesn't fit the repo
+		
+		String sparql = ResourceHelper.resourceAsString("proteins/allUniProtIdentifiers.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				String identifier = table.get(i, "identifier");
+				if (deprecated6.containsKey(identifier)) {
+					if ("text/markdown".equals(format)) {
+					    errors += "* " + asMarkdownLink(table.get(i, "homepage")) + " " + table.get(i, "label").replace('\n', ' ') +
+					    	" has UniProtKB ID [" + identifier + "](https://bioregistry.io/" + identifier + ") but has been replaced by " +
+					    	deprecated6.get(identifier) + "\n";
+					} else {
+						errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
+					    	" has UniProtKB ID " + identifier + " but has been replaced by " +
+					    	deprecated6.get(identifier) + "\n";
+					}
+					errorCount++;
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Old UniProtKB identifiers detected: " + errorCount, errors, format
 		));
 		return assertions;
 	}
