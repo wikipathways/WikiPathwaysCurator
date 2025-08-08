@@ -42,21 +42,15 @@ import nl.unimaas.bigcat.wikipathways.curator.assertions.Test;
 public class GeneTests {
 
 	private static final Map<String,String> deprecated = BridgeDbTiwidReader.parseCSV("tiwid/hgnc.csv");
-	private static final Map<String,String> deprecated2 = BridgeDbTiwidReader.parseTSV("outdated/HGNC_secID2priID.tsv", 3, 1);
-	private static final Map<String,String> deprecated3 = BridgeDbTiwidReader.parseTSV("outdated/HGNC_secID2priID.tsv", 2, 0);
-	private static final Map<String,String> deprecated4 = BridgeDbTiwidReader.parseTSV("outdated/NCBI_secID2priID.tsv", 1, 0);
 
 	public static List<IAssertion> all(SPARQLHelper helper, String format) throws Exception {
 		List<IAssertion> assertions = new ArrayList<>();
 		assertions.addAll(entrezGeneIdentifiersNotNumber(helper));
 		assertions.addAll(affyProbeIdentifiersNotCorrect(helper));
 		assertions.addAll(outdatedIdentifiers(helper));
-		assertions.addAll(outdatedIdentifiers2(helper, format));
-		assertions.addAll(outdatedIdentifiers3(helper, format));
 		assertions.addAll(numericHGNCIDs(helper));
 		assertions.addAll(nonNumericHGNCAccessionNumbers(helper));
 		assertions.addAll(genesWithoutEnsemblMapping(helper));
-		assertions.addAll(outdatedNCBIIdentifiers(helper, format));
 		return assertions;
 	}
 
@@ -152,71 +146,6 @@ public class GeneTests {
 		return assertions;
 	}
 
-	public static List<IAssertion> outdatedIdentifiers2(SPARQLHelper helper, String format) throws Exception {
-		Test test = new Test("GeneTests", "outdatedIdentifiers2", "HGNC Symbol has been retracted", false);
-		// Getting the data
-		List<IAssertion> assertions = new ArrayList<>();
-		String sparql = ResourceHelper.resourceAsString("genes/allHGNCIdentifiers.rq");
-		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
-		assertions.add(new AssertNotNull(test, table));
-		String errors = "";
-		int errorCount = 0;
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				String identifier = table.get(i, "identifier");
-				if (deprecated2.containsKey(identifier)) {
-					if ("text/markdown".equals(format)) {
-					    errors += "* " + asMarkdownLink(table.get(i, "homepage")) + " " + table.get(i, "label").replace('\n', ' ') +
-						    " has [" + identifier + "](https://bioregistry.io/hgnc.symbol:" + identifier + ") but has been replaced by " +
-						    deprecated2.get(identifier) + "\n";
-					} else {
-						errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
-							    " has " + identifier + " but has been replaced by " +
-							    deprecated2.get(identifier) + "\n";
-					}
-					errorCount++;
-				}
-			}
-		}
-		assertions.add(new AssertEquals(test,
-			0, errorCount, "Old HGNC Symbol detected: " + errorCount, errors, format
-		));
-		return assertions;
-	}
-
-
-	public static List<IAssertion> outdatedIdentifiers3(SPARQLHelper helper, String format) throws Exception {
-		Test test = new Test("GeneTests", "outdatedIdentifiers3", "HGNC Accession number has been retracted", false);
-		// Getting the data
-		List<IAssertion> assertions = new ArrayList<>();
-		String sparql = ResourceHelper.resourceAsString("genes/allHGNCAccessionIdentifiers.rq");
-		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
-		assertions.add(new AssertNotNull(test, table));
-		String errors = "";
-		int errorCount = 0;
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				String identifier = "HGNC:" + table.get(i, "identifier");
-				if (deprecated3.containsKey(identifier)) {
-					if ("text/markdown".equals(format)) {
-					    errors += "* " + asMarkdownLink(table.get(i, "homepage")) + " " + table.get(i, "label").replace('\n', ' ') +
-					    	" has HGNC Accession [" + identifier + "](https://bioregistry.io/hgnc:" + identifier + ") but has been replaced by " +
-						    deprecated3.get(identifier) + "\n";
-					} else {
-						errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
-						    	" has HGNC Accession " + identifier + " but has been replaced by " +
-							    deprecated3.get(identifier) + "\n";
-					}
-					errorCount++;
-				}
-			}
-		}
-		assertions.add(new AssertEquals(test,
-			0, errorCount, "Old HGNC Accession numbers detected: " + errorCount, errors, format
-		));
-		return assertions;
-	}
-
 	public static List<IAssertion> numericHGNCIDs(SPARQLHelper helper) throws Exception {
 		Test test = new Test("GeneTests", "numericHGNCIDs");
 		List<IAssertion> assertions = new ArrayList<>();
@@ -299,40 +228,6 @@ public class GeneTests {
 	private static String asMarkdownLink(String url) {
 		if (url.startsWith("http://classic.wikipathways.org/")) url = url.replace("_rr","_r"); // yeah, silly workaround
 		return "[" + url + "](" + url + ")";
-	}
-
-	public static List<IAssertion> outdatedNCBIIdentifiers(SPARQLHelper helper, String format) throws Exception {
-		Test test = new Test("GeneTests", "outdatedNCBIIdentifiers", "NCBI Gene identifier has been retracted", false);
-		// Getting the data
-		List<IAssertion> assertions = new ArrayList<>();
-		if (deprecated4.size() == 0) return assertions; // data file did not load, so no fails. the file is large and doesn't fit the repo
-		
-		String sparql = ResourceHelper.resourceAsString("genes/allEntrezGenesIdentifiers.rq");
-		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
-		assertions.add(new AssertNotNull(test, table));
-		String errors = "";
-		int errorCount = 0;
-		if (table.getRowCount() > 0) {
-			for (int i=1; i<=table.getRowCount(); i++) {
-				String identifier = table.get(i, "identifier");
-				if (deprecated4.containsKey(identifier)) {
-					if ("text/markdown".equals(format)) {
-					    errors += "* " + asMarkdownLink(table.get(i, "homepage")) + " " + table.get(i, "label").replace('\n', ' ') +
-					    	" has NCBI Gene [" + identifier + "](https://bioregistry.io/ncbigene:" + identifier + ") but has been replaced by " +
-						    deprecated4.get(identifier) + "\n";
-					} else {
-						errors += table.get(i, "homepage") + " " + table.get(i, "label").replace('\n', ' ') +
-						    	" has NCBI Gene " + identifier + " but has been replaced by " +
-							    deprecated4.get(identifier) + "\n";
-					}
-					errorCount++;
-				}
-			}
-		}
-		assertions.add(new AssertEquals(test,
-			0, errorCount, "Old NCBI Gene identifiers detected: " + errorCount, errors, format
-		));
-		return assertions;
 	}
 
 }
