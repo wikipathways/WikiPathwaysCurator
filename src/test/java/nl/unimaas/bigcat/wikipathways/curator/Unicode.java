@@ -86,4 +86,14 @@ public class Unicode extends JUnitTests {
 		performAssertions(UnicodeTests.oxygen(helper, null));
 	}
 
+	@Test
+	public void iron2() throws Exception {
+		performAssertions(UnicodeTests.carbondioxide(helper, null));
+	}
+
+	@Test
+	public void iron3() throws Exception {
+		performAssertions(UnicodeTests.oxygen(helper, null));
+	}
+
 }
