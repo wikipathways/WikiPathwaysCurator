@@ -96,4 +96,24 @@ public class Unicode extends JUnitTests {
 		performAssertions(UnicodeTests.oxygen(helper, null));
 	}
 
+	@Test
+	public void copper() throws Exception {
+		performAssertions(UnicodeTests.copper(helper, null));
+	}
+
+	@Test
+	public void copper2() throws Exception {
+		performAssertions(UnicodeTests.copper2(helper, null));
+	}
+
+	@Test
+	public void manganese() throws Exception {
+		performAssertions(UnicodeTests.manganese(helper, null));
+	}
+
+	@Test
+	public void magnesium() throws Exception {
+		performAssertions(UnicodeTests.magnesium(helper, null));
+	}
+
 }

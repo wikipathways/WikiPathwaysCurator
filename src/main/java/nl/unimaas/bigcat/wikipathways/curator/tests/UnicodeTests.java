@@ -50,6 +50,10 @@ public class UnicodeTests {
 		assertions.addAll(carbondioxide(helper, format));
 		assertions.addAll(iron2(helper, format));
 		assertions.addAll(iron3(helper, format));
+		assertions.addAll(copper(helper, format));
+		assertions.addAll(copper2(helper, format));
+		assertions.addAll(manganese(helper, format));
+		assertions.addAll(magnesium(helper, format));
 		return assertions;
 	}
 
@@ -243,6 +247,90 @@ public class UnicodeTests {
 		}
 		assertions.add(new AssertEquals(test,
 			0, errorCount, "Metabolite can use Fe³⁺ instead of Fe3+: " + errorCount, errors, format
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> copper(SPARQLHelper helper, String format) throws Exception {
+		Test test = new Test("UnicodeTests", "copper", "The copper ion formula can use Unicode", true);
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/unicode/copper.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = table.getRowCount();
+		for (int i=1; i<=errorCount; i++) {
+			if ("text/markdown".equals(format)) {
+				errors += "* " + asMarkdownLink(table.get(i, "homepage")) + "\n" ;
+			} else {
+				errors += table.get(i, "homepage") + "\n" ;
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Metabolite can use Cu⁺ instead of Cu+: " + errorCount, errors, format
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> copper2(SPARQLHelper helper, String format) throws Exception {
+		Test test = new Test("UnicodeTests", "copper2", "The copper ion formula can use Unicode", true);
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/unicode/copper2.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = table.getRowCount();
+		for (int i=1; i<=errorCount; i++) {
+			if ("text/markdown".equals(format)) {
+				errors += "* " + asMarkdownLink(table.get(i, "homepage")) + "\n" ;
+			} else {
+				errors += table.get(i, "homepage") + "\n" ;
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Metabolite can use Cu²⁺ instead of Cu2+: " + errorCount, errors, format
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> manganese(SPARQLHelper helper, String format) throws Exception {
+		Test test = new Test("UnicodeTests", "manganese", "The manganese ion formula can use Unicode", true);
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/unicode/manganese.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = table.getRowCount();
+		for (int i=1; i<=errorCount; i++) {
+			if ("text/markdown".equals(format)) {
+				errors += "* " + asMarkdownLink(table.get(i, "homepage")) + "\n" ;
+			} else {
+				errors += table.get(i, "homepage") + "\n" ;
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Metabolite can use Mn²⁺ instead of Mn2+: " + errorCount, errors, format
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> magnesium(SPARQLHelper helper, String format) throws Exception {
+		Test test = new Test("UnicodeTests", "magnesium", "The magnesium ion formula can use Unicode", true);
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/unicode/magnesium.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = table.getRowCount();
+		for (int i=1; i<=errorCount; i++) {
+			if ("text/markdown".equals(format)) {
+				errors += "* " + asMarkdownLink(table.get(i, "homepage")) + "\n" ;
+			} else {
+				errors += table.get(i, "homepage") + "\n" ;
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Metabolite can use Mg²⁺ instead of Mg2+: " + errorCount, errors, format
 		));
 		return assertions;
 	}
