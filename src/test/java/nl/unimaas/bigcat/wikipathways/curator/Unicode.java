@@ -122,6 +122,11 @@ public class Unicode extends JUnitTests {
 	}
 
 	@Test
+	public void ammonium() throws Exception {
+		performAssertions(UnicodeTests.ammonium(helper, null));
+	}
+
+	@Test
 	public void bicarbonate() throws Exception {
 		performAssertions(UnicodeTests.bicarbonate(helper, null));
 	}
