@@ -1,0 +1,10 @@
+prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+prefix dcterms: <http://purl.org/dc/terms/>
+prefix foaf:    <http://xmlns.com/foaf/0.1/>
+
+select distinct ?homepage
+where {
+  ?mb rdfs:label "O3" ;
+    dcterms:isPartOf ?pathway .
+  ?pathway foaf:page ?homepage .
+} order by ?pathway

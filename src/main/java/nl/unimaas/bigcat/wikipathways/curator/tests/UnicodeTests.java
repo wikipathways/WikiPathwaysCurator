@@ -47,6 +47,7 @@ public class UnicodeTests {
 		assertions.addAll(sodium(helper, format));
 		assertions.addAll(potassium(helper, format));
 		assertions.addAll(oxygen(helper, format));
+		assertions.addAll(ozone(helper, format));
 		assertions.addAll(carbondioxide(helper, format));
 		assertions.addAll(iron2(helper, format));
 		assertions.addAll(iron3(helper, format));
@@ -188,6 +189,27 @@ public class UnicodeTests {
 		}
 		assertions.add(new AssertEquals(test,
 			0, errorCount, "Metabolite can use CO₂ instead of CO2: " + errorCount, errors, format
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> ozone(SPARQLHelper helper, String format) throws Exception {
+		Test test = new Test("UnicodeTests", "ozone", "The ozone chemical formula can use Unicode", true);
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("metabolite/unicode/ozone.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = table.getRowCount();
+		for (int i=1; i<=errorCount; i++) {
+			if ("text/markdown".equals(format)) {
+				errors += "* " + asMarkdownLink(table.get(i, "homepage")) + "\n" ;
+			} else {
+				errors += table.get(i, "homepage") + "\n" ;
+			}
+		}
+		assertions.add(new AssertEquals(test,
+			0, errorCount, "Metabolite can use O₂ instead of O2: " + errorCount, errors, format
 		));
 		return assertions;
 	}
