@@ -93,12 +93,12 @@ public class Unicode extends JUnitTests {
 
 	@Test
 	public void iron2() throws Exception {
-		performAssertions(UnicodeTests.carbondioxide(helper, null));
+		performAssertions(UnicodeTests.iron2(helper, null));
 	}
 
 	@Test
 	public void iron3() throws Exception {
-		performAssertions(UnicodeTests.oxygen(helper, null));
+		performAssertions(UnicodeTests.iron3(helper, null));
 	}
 
 	@Test
