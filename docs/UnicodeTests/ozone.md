@@ -4,8 +4,8 @@ This test checks for labels of ozone data nodes which can use [Unicode](https://
 
 ## Why does this test show up?
 
-For a ozone data node the label O₃ is used, but the chemically more correct Unicode
-version O₂ can be used.
+For a ozone data node the label O2 is used, but the chemically more correct Unicode
+version O₃ can be used.
 
 ## Curation action
 

@@ -209,7 +209,7 @@ public class UnicodeTests {
 			}
 		}
 		assertions.add(new AssertEquals(test,
-			0, errorCount, "Metabolite can use O₂ instead of O2: " + errorCount, errors, format
+			0, errorCount, "Metabolite can use O₃ instead of O3: " + errorCount, errors, format
 		));
 		return assertions;
 	}
