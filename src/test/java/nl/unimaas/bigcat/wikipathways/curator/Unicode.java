@@ -141,4 +141,9 @@ public class Unicode extends JUnitTests {
 		performAssertions(UnicodeTests.chloride(helper, null));
 	}
 
+	@Test
+	public void nitrate() throws Exception {
+		performAssertions(UnicodeTests.nitrate(helper, null));
+	}
+
 }
