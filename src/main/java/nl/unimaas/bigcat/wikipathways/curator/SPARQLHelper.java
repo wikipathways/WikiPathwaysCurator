@@ -203,9 +203,7 @@ public class SPARQLHelper {
 		if (table.getRowCount() == 0) {
 		} else {
 			for (int i=1; i<=table.getRowCount(); i++) {
-				String updatedURL = table.get(i, columnName)
-					.replaceAll("/www.wikipathways.org/", "/classic.wikipathways.org/")
-					.replaceAll("/wikipathways.org/", "/classic.wikipathways.org/");
+				String updatedURL = table.get(i, columnName);
 				table.set(i, columnName, updatedURL);
 			}
 		}
