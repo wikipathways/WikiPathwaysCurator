@@ -1,4 +1,4 @@
-/* Copyright (C) 2021-2022  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2021-2026  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -55,6 +55,7 @@ public class PathwayTests {
 		assertions.addAll(youMustCite(helper));
 		assertions.addAll(oldLicenses(helper));
 		assertions.addAll(mediawikiLinks(helper, format));
+		assertions.addAll(allMissingDescriptions(helper, format));
 		assertions.addAll(allEmptyDescriptions(helper, format));
 		assertions.addAll(allShortDescriptions(helper, format));
 		assertions.addAll(multipleDescriptions(helper, format));
@@ -260,6 +261,30 @@ public class PathwayTests {
 		}
 		assertions.add(new AssertEquals(test, 0, errorCount,
 			"Pathways of with an empty description: " + table.getRowCount(), errors, format
+		));
+		return assertions;
+	}
+
+	public static List<IAssertion> allMissingDescriptions(SPARQLHelper helper, String format) throws Exception {
+		Test test = new Test("PathwayTests", "allMissingDescriptions", "Pathway description is missing", true);
+		List<IAssertion> assertions = new ArrayList<>();
+		String sparql = ResourceHelper.resourceAsString("general/allMissingDescriptions.rq");
+		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "homepage");
+		assertions.add(new AssertNotNull(test, table));
+		String errors = "";
+		int errorCount = 0;
+		if (table.getRowCount() > 0) {
+			for (int i=1; i<=table.getRowCount(); i++) {
+				errorCount++;
+				if ("text/markdown".equals(format)) {
+					errors += "* " + asMarkdownLink(table.get(i, "homepage"));
+				} else {
+					errors += table.get(i, "homepage") + "\n";
+				}
+			}
+		}
+		assertions.add(new AssertEquals(test, 0, errorCount,
+			"Pathways of with a missing description: " + table.getRowCount(), errors, format
 		));
 		return assertions;
 	}

@@ -1,4 +1,4 @@
-/* Copyright (C) 2020-2021  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2020-2026  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -91,6 +91,11 @@ public class Pathways extends JUnitTests {
 	@Test
 	public void mediawikiLinks() throws Exception {
 		performAssertions(PathwayTests.mediawikiLinks(helper, null));
+	}
+
+	@Test
+	public void allMissingDescriptions() throws Exception {
+		performAssertions(PathwayTests.allMissingDescriptions(helper, null));
 	}
 
 	@Test
