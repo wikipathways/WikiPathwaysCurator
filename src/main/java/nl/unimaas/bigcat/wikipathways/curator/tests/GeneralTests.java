@@ -1,4 +1,4 @@
-/* Copyright (C) 2020  Egon Willighagen <egon.willighagen@gmail.com>
+/* Copyright (C) 2020-2026  Egon Willighagen <egon.willighagen@gmail.com>
  *
  * All rights reserved.
  * 
@@ -66,7 +66,7 @@ public class GeneralTests {
 	}
 
 	public static List<IAssertion> titlesShortEnough(SPARQLHelper helper, String format) throws Exception {
-		Test test = new Test("GeneralTests", "titlesShortEnough");
+		Test test = new Test("GeneralTests", "titlesShortEnough", "The pathwaytitle is too long", true);
 		List<IAssertion> assertions = new ArrayList<>();
 		String sparql = ResourceHelper.resourceAsString("general/allTitles_notReactome.rq");
 		StringMatrix table = SPARQLHelper.classicify(helper.sparql(sparql), "page");
